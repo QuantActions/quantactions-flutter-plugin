@@ -22,11 +22,24 @@ class MethodChannelQAFlutterPlugin extends QAFlutterPluginPlatform {
   }
 
   @visibleForTesting
-  final eventChannel = const EventChannel('qa_flutter_plugin_stream');
+  final eventChannelSleepScore = const EventChannel('qa_flutter_plugin_stream/sleep');
+  final eventChannelCognitiveFitness = const EventChannel('qa_flutter_plugin_stream/cognitive');
+  final eventChannelSocialEngagementScore = const EventChannel('qa_flutter_plugin_stream/social');
 
   @override
   Stream<dynamic> getSomeStream(String metric) {
-    return eventChannel.receiveBroadcastStream(metric);
+    debugPrint("Requesting stream for $metric");
+    switch (metric) {
+      case 'sleepScore':
+        return eventChannelSleepScore.receiveBroadcastStream(metric);
+      case 'cognitiveFitness':
+        return eventChannelCognitiveFitness.receiveBroadcastStream(metric);
+      case 'socialEngagementScore':
+        return eventChannelSocialEngagementScore.receiveBroadcastStream(metric);
+      default:
+        throw UnimplementedError('getSomeStream() has not been implemented.');
+    }
+
 
   }
 

@@ -1,9 +1,11 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_text_patterns.dart';
@@ -24,11 +26,18 @@ class _MyAppState extends State<MyApp> {
   String _passingArgs = "No args passed";
   String _someStream = "No stream";
   final _qa = QA();
+  late HashMap<Metric, Stream<TimeSeries>> _streams;
+
+
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
+    _streams = HashMap<Metric, Stream<TimeSeries>>();
+    _streams[Metric.socialEngagementScore] = _qa.getStat(Metric.socialEngagementScore);
+    _streams[Metric.sleepScore] = _qa.getStat(Metric.sleepScore);
+    _streams[Metric.cognitiveFitness] = _qa.getStat(Metric.cognitiveFitness);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -64,11 +73,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     // now we listen to the event channel
-    final socialEngagementStream = _qa.getStat(Metric.socialEngagementScore);
-    final sleepScoreStream = _qa.getStat(Metric.sleepScore);
-    // final cognitiveFitnessStream = _qa.getStat(Metric.cognitiveFitness);
 
     return MaterialApp(
       home: Scaffold(
@@ -80,34 +85,54 @@ class _MyAppState extends State<MyApp> {
             children: [
               Text('Running on: $_platformVersion\n'),
               Text('Passing args: $_passingArgs\n'),
+              for (var stream in _streams.entries)
               StreamBuilder(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
-                  StatisticCore data = snapshot.data;
-                  return Text('The stream: ${data.data.last} @ ${data.timestamps.last}\n');
+                  TimeSeries data = snapshot.data;
+                  return Text('${stream.key}: ${data.values.last} @ ${data.timestamps.last}\n');
                 } else {
                   return const Text('No data');
                 }
-              }, stream: socialEngagementStream),
-              StreamBuilder(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  StatisticCore data = snapshot.data;
-                  return Text('The stream: ${data.data.last} @ ${data.timestamps.last}\n');
-                } else {
-                  return const Text('No data');
-                }
-              }, stream: sleepScoreStream),
-              // StreamBuilder(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              //   if (snapshot.hasData) {
-              //     StatisticCore data = snapshot.data;
-              //     return Text('The stream: ${data.data.last} @ ${data.timestamps.last}\n');
-              //   } else {
-              //     return const Text('No data');
-              //   }
-              // }, stream: cognitiveFitnessStream),
+              }, stream: stream.value),
+
             ],
           ),
         ),
       ),
     );
   }
+
+  // sleepStreamBuilder(Bloc bloc) {
+  //   return StreamBuilder(
+  //     stream: bloc.sleepScoreStream,
+  //     builder: (context, AsyncSnapshot<StatisticCore> snapshot) {
+  //       if (snapshot.hasData) {
+  //         StatisticCore? data = snapshot.data;
+  //         return Column(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: <Widget>[
+  //           Text('The stream: ${data?.data.last} @ ${data?.timestamps.last}\n'),
+  //           ],
+  //         );
+  //       } else if (snapshot.hasError) {
+  //         return Column(
+  //           children: <Widget>[
+  //             Image.network("http://megatron.co.il/en/wp-content/uploads/sites/2/2017/11/out-of-stock.jpg",
+  //                 fit: BoxFit.fill),
+  //             const Text(
+  //               "Error!",
+  //               style: TextStyle(
+  //                 fontSize: 20.0,
+  //               ),
+  //             ),
+  //           ],
+  //         );
+  //       }
+  //       return const Text("No item in collect office");
+  //     },
+  //   );
+  // }
 }
+
+
+

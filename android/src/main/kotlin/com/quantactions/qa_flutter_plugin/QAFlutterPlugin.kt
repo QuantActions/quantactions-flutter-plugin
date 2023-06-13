@@ -5,8 +5,6 @@ import android.content.Context
 import android.util.Log
 import androidx.annotation.NonNull
 import com.quantactions.sdk.Metric
-import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.Lifecycle
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -17,27 +15,16 @@ import io.flutter.embedding.engine.plugins.activity.ActivityAware
 
 import com.quantactions.sdk.QA
 import com.quantactions.sdk.TimeSeries
-import com.quantactions.sdk.data.api.SkipSerialization
-import com.quantactions.sdk.data.api.responses.DataFrameSchema
 import com.squareup.moshi.JsonClass
-import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.json.JSONObject
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import kotlin.coroutines.coroutineContext
 
 /** TestPlugin */
 class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventChannel.StreamHandler {
@@ -46,7 +33,13 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
-    private lateinit var eventChannel: EventChannel
+    private lateinit var eventChannels: List<EventChannel>
+
+    private val listOfMetrics = listOf(
+        Metric.SLEEP_SCORE,
+        Metric.COGNITIVE_FITNESS,
+        Metric.SOCIAL_ENGAGEMENT
+    )
 
     private lateinit var context: Context
     private lateinit var activity: Activity
@@ -74,8 +67,14 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin")
         channel.setMethodCallHandler(this)
 
-        eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream")
-        eventChannel.setStreamHandler(this)
+        eventChannels = listOfMetrics.map {
+            Log.w("QAFlutterPlugin","Created event channel qa_flutter_plugin_stream/${it.id}")
+            EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/${it.id}")
+        }
+
+        eventChannels.forEach {
+            it.setStreamHandler(this)
+        }
 
         qa = QA.getInstance(flutterPluginBinding.applicationContext)
 
@@ -83,19 +82,14 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
     }
 
     // The scope for the UI thread
-    private val mainScope = CoroutineScope(Dispatchers.Main)
-    private val ioScope = CoroutineScope(Dispatchers.IO)
+    val mainScope = CoroutineScope(Dispatchers.Main)
+    val ioScope = CoroutineScope(Dispatchers.IO)
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-        Log.e("MyPlugin!", call.method)
-        val args = call.arguments
-
         mainScope.launch {
-            Log.e("MyPlugin", "onMethodCall: I'm working in thread ${Thread.currentThread().name}")
             when (call.method) {
                 "getPlatformVersion" -> {
                     result.success("Android ${android.os.Build.VERSION.RELEASE}")
-                    Log.e("MyPlugin!", "called platform!")
                 }
 
                 "initQA" -> qa.init(
@@ -107,7 +101,6 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
                 )
 
                 "someOtherMethod" -> {
-                    Log.e("MyPlugin!", "These are the args: $args")
                     result.success("Success!")
                 }
 
@@ -124,8 +117,8 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
             "socialEngagementScore" -> Metric.SOCIAL_ENGAGEMENT
             else -> Metric.SLEEP_SCORE
         }
+        Log.d("QAFlutterPlugin","metricToAsk $metricToAsk")
 
-        Log.e("MyPlugin!", "Calling a flow")
        return QA.getInstance(context)
             .getMetricSample(context, "55b9cf50-dac2-11e6-b535-fd8dff3bf4e9", metricToAsk)
     }
@@ -137,9 +130,12 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
 
     @JsonClass(generateAdapter = true)
     @Serializable
-    data class StatisticCore (
+    data class SerializableTimeSeries<T> (
         val timestamps: List<String>,
-        val data: List<Double>,
+        val values: List<T>,
+        val confidenceIntervalLow: List<T>,
+        val confidenceIntervalHigh: List<T>,
+        val confidence: List<Double>,
     )
 
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
@@ -147,7 +143,14 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
             getMetric(arguments.toString()).collect {
                 mainScope.launch { events?.success(
                     Json.encodeToString(
-                        StatisticCore(it.timestamps.map{ it.toString() }, it.values))) }
+                        SerializableTimeSeries(
+                            it.timestamps.map { it.toString() },
+                            it.values,
+                            it.confidenceIntervalLow,
+                            it.confidenceIntervalHigh,
+                            it.confidence
+                        )
+                    )) }
             }
         }
     }

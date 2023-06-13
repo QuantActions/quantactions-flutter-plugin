@@ -1,8 +1,8 @@
 
 import 'dart:convert';
+import 'dart:core';
 
 import 'qa_flutter_plugin_platform_interface.dart';
-import 'package:time_machine/time_machine.dart';
 
 enum Metric {
   sleepScore,
@@ -19,27 +19,52 @@ class QA {
     return QAFlutterPluginPlatform.instance.someOtherMethod(map);
   }
 
-  Stream<StatisticCore> getStat(Metric metric) {
-    return QAFlutterPluginPlatform.instance.getSomeStream(metric.name).map((event) => StatisticCore.fromJson(jsonDecode(event)));
+  Stream<TimeSeries> getStat(Metric metric) {
+    return QAFlutterPluginPlatform.instance.getSomeStream(metric.name).map((event) => TimeSeries.fromJson(jsonDecode(event)));
   }
-
-
 }
 
-
-
-class StatisticCore {
+class TimeSeries<T> {
+  final List<T> values;
   final List<DateTime> timestamps;
-  final List<double> data;
-  StatisticCore({
+  final List<T> confidenceIntervalLow;
+  final List<T> confidenceIntervalHigh;
+  final List<double> confidence;
+
+  TimeSeries({
+    required this.values,
     required this.timestamps,
-    required this.data,
+    required this.confidenceIntervalLow,
+    required this.confidenceIntervalHigh,
+    required this.confidence,
   });
 
-  factory StatisticCore.fromJson(Map<String, dynamic> json) {
-    return StatisticCore(
+  factory TimeSeries.fromJson(Map<String, dynamic> json) {
+    return TimeSeries<T>(
       timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
-      data: json['data'].cast<double>(),
+      values: json['values'].cast<T>(),
+      confidenceIntervalLow: json['confidenceIntervalLow'].cast<T>(),
+      confidenceIntervalHigh: json['confidenceIntervalHigh'].cast<T>(),
+      confidence: json['confidence'].cast<double>(),
     );
   }
+
 }
+
+
+
+// class StatisticCore {
+//   final List<DateTime> timestamps;
+//   final List<double> data;
+//   StatisticCore({
+//     required this.timestamps,
+//     required this.data,
+//   });
+//
+//   factory StatisticCore.fromJson(Map<String, dynamic> json) {
+//     return StatisticCore(
+//       timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
+//       data: json['data'].cast<double>(),
+//     );
+//   }
+// }
