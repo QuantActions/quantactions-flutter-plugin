@@ -1,14 +1,10 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_text_patterns.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +20,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   String _passingArgs = "No args passed";
-  String _someStream = "No stream";
   final _qa = QA();
   late HashMap<Metric, Stream<TimeSeries>> _streams;
 
@@ -35,9 +30,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     initPlatformState();
     _streams = HashMap<Metric, Stream<TimeSeries>>();
-    _streams[Metric.socialEngagementScore] = _qa.getStat(Metric.socialEngagementScore);
-    _streams[Metric.sleepScore] = _qa.getStat(Metric.sleepScore);
-    _streams[Metric.cognitiveFitness] = _qa.getStat(Metric.cognitiveFitness);
+    _streams[Metric.socialEngagement] = _qa.getMetric(Metric.socialEngagement);
+    _streams[Metric.sleepScore] = _qa.getMetric(Metric.sleepScore);
+    _streams[Metric.cognitiveFitness] = _qa.getMetric(Metric.cognitiveFitness);
+    // _streams[Metric.cognitiveFitness] = _qa.getMetric(Trend.cognitiveFitness);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -89,12 +85,12 @@ class _MyAppState extends State<MyApp> {
               StreamBuilder(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   TimeSeries data = snapshot.data;
-                  return Text('${stream.key}: ${data.values.last} @ ${data.timestamps.last}\n');
+                  return Text('${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
+                      '${data.values.last.runtimeType}');
                 } else {
                   return const Text('No data');
                 }
               }, stream: stream.value),
-
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 
 import 'qa_flutter_plugin_method_channel.dart';
 
@@ -32,7 +33,7 @@ abstract class QAFlutterPluginPlatform extends PlatformInterface {
     throw UnimplementedError('someOtherMethod() has not been implemented.');
   }
 
-  Stream<dynamic> getSomeStream(String metric) {
+  Stream<dynamic> getSomeStream(MetricOrTrend metricOrTrend) {
     throw UnimplementedError('someOtherMethod() has not been implemented.');
   }
 

@@ -15,6 +15,9 @@ import io.flutter.embedding.engine.plugins.activity.ActivityAware
 
 import com.quantactions.sdk.QA
 import com.quantactions.sdk.TimeSeries
+import com.quantactions.sdk.Trend
+import com.quantactions.sdk.data.entity.TimestampedEntity
+import com.quantactions.sdk.data.model.SerializableSleepSummary
 import com.squareup.moshi.JsonClass
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.EventChannel
@@ -27,7 +30,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 /** TestPlugin */
-class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventChannel.StreamHandler {
+class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
+    EventChannel.StreamHandler {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -35,10 +39,24 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
     private lateinit var channel: MethodChannel
     private lateinit var eventChannels: List<EventChannel>
 
-    private val listOfMetrics = listOf(
-        Metric.SLEEP_SCORE,
+    private val listOfMetricsAndTrends = listOf(
         Metric.COGNITIVE_FITNESS,
-        Metric.SOCIAL_ENGAGEMENT
+        Metric.ACTION_SPEED,
+        Metric.TYPING_SPEED,
+        Metric.SOCIAL_ENGAGEMENT,
+        Metric.SLEEP_SUMMARY,
+        Metric.SLEEP_SCORE,
+        Metric.SCREEN_TIME_AGGREGATE,
+        Metric.SOCIAL_TAPS,
+        Trend.COGNITIVE_FITNESS,
+        Trend.ACTION_SPEED,
+        Trend.SOCIAL_ENGAGEMENT,
+        Trend.SLEEP_SCORE,
+        Trend.SLEEP_LENGTH,
+        Trend.SLEEP_INTERRUPTIONS,
+        Trend.SOCIAL_SCREEN_TIME,
+        Trend.SOCIAL_TAPS,
+        Trend.TYPING_SPEED,
     )
 
     private lateinit var context: Context
@@ -67,8 +85,8 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin")
         channel.setMethodCallHandler(this)
 
-        eventChannels = listOfMetrics.map {
-            Log.w("QAFlutterPlugin","Created event channel qa_flutter_plugin_stream/${it.id}")
+        eventChannels = listOfMetricsAndTrends.map {
+            Log.d("QAFlutterPlugin", "Creating event channel for ${it.id}")
             EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/${it.id}")
         }
 
@@ -82,8 +100,8 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
     }
 
     // The scope for the UI thread
-    val mainScope = CoroutineScope(Dispatchers.Main)
-    val ioScope = CoroutineScope(Dispatchers.IO)
+    private val mainScope = CoroutineScope(Dispatchers.Main)
+    private val ioScope = CoroutineScope(Dispatchers.IO)
 
     override fun onMethodCall(call: MethodCall, result: Result) {
         mainScope.launch {
@@ -109,17 +127,32 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
         }
     }
 
-    fun getMetric(metric: String): Flow<TimeSeries<Double>> {
+    private fun getMetric(metric: String): Flow<TimeSeries<out Any>> {
 
-        val metricToAsk = when(metric) {
-            "sleepScore" -> Metric.SLEEP_SCORE
-            "cognitiveFitness" -> Metric.COGNITIVE_FITNESS
-            "socialEngagementScore" -> Metric.SOCIAL_ENGAGEMENT
+        val metricToAsk = when (metric) {
+            "sleep" -> Metric.SLEEP_SCORE
+            "cognitive" -> Metric.COGNITIVE_FITNESS
+            "social" -> Metric.SOCIAL_ENGAGEMENT
+            "action" -> Metric.ACTION_SPEED
+            "typing" -> Metric.TYPING_SPEED
+            "sleep_summary" -> Metric.SLEEP_SUMMARY
+            "screen_time_aggregate" -> Metric.SCREEN_TIME_AGGREGATE
+            "social_taps" -> Metric.SOCIAL_TAPS;
+            "sleep_trend" -> Trend.SLEEP_SCORE
+            "cognitive_trend" -> Trend.COGNITIVE_FITNESS
+            "social_engagement_trend" -> Trend.SOCIAL_ENGAGEMENT
+            "action_trend" -> Trend.ACTION_SPEED
+            "typing_trend" -> Trend.TYPING_SPEED
+            "sleep_length_trend" -> Trend.SLEEP_LENGTH
+            "sleep_interruptions_trend" -> Trend.SLEEP_INTERRUPTIONS
+            "social_screen_time_trend" -> Trend.SOCIAL_SCREEN_TIME
+            "social_taps_trend" -> Trend.SOCIAL_TAPS
+            "the_wave_trend" -> Trend.THE_WAVE
             else -> Metric.SLEEP_SCORE
-        }
-        Log.d("QAFlutterPlugin","metricToAsk $metricToAsk")
 
-       return QA.getInstance(context)
+        }
+
+        return QA.getInstance(context)
             .getMetricSample(context, "55b9cf50-dac2-11e6-b535-fd8dff3bf4e9", metricToAsk)
     }
 
@@ -130,7 +163,7 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
 
     @JsonClass(generateAdapter = true)
     @Serializable
-    data class SerializableTimeSeries<T> (
+    data class SerializableTimeSeries<T>(
         val timestamps: List<String>,
         val values: List<T>,
         val confidenceIntervalLow: List<T>,
@@ -141,16 +174,77 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, EventCh
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
         ioScope.launch {
             getMetric(arguments.toString()).collect {
-                mainScope.launch { events?.success(
-                    Json.encodeToString(
-                        SerializableTimeSeries(
-                            it.timestamps.map { it.toString() },
-                            it.values,
-                            it.confidenceIntervalLow,
-                            it.confidenceIntervalHigh,
-                            it.confidence
-                        )
-                    )) }
+
+                // her I have to map the return types
+                mainScope.launch {
+
+                    when (arguments.toString()) {
+                        "sleep", "cognitive", "social", "action", "typing", "social_taps" -> {
+                            val it2 = it as TimeSeries.DoubleTimeSeries
+                            events?.success(
+                                Json.encodeToString(
+                                    SerializableTimeSeries(
+                                        it2.timestamps.map { v -> v.toString() },
+                                        it2.values.map { v -> if (v.isNaN()) null else v },
+                                        it2.confidenceIntervalLow.map { v -> if (v.isNaN()) null else v },
+                                        it2.confidenceIntervalHigh.map { v -> if (v.isNaN()) null else v },
+                                        it2.confidence.map { v -> if (v.isNaN()) 0.0 else v }
+                                    )
+                                )
+                            )
+                        }
+
+                        "sleep_summary" -> {
+                            val it2 = it as TimeSeries.SleepSummaryTimeTimeSeries
+                            events?.success(
+                                Json.encodeToString(
+                                    SerializableTimeSeries(
+                                        it2.timestamps.map { v -> v.toString() },
+                                        it2.values.map { v -> v.serialize() },
+                                        it2.confidenceIntervalLow.map { v -> v.serialize() },
+                                        it2.confidenceIntervalHigh.map { v -> v.serialize() },
+                                        it2.confidence.map { v -> if (v.isNaN()) 0.0 else v }
+                                    )
+                                )
+                            )
+
+                        }
+
+                        "screen_time_aggregate" -> {
+                            val it2 = it as TimeSeries.ScreenTimeAggregateTimeSeries
+                            events?.success(
+                                Json.encodeToString(
+                                    SerializableTimeSeries(
+                                        it2.timestamps.map { v -> v.toString() },
+                                        it2.values,
+                                        it2.confidenceIntervalLow,
+                                        it2.confidenceIntervalHigh,
+                                        it2.confidence.map { v -> if (v.isNaN()) 0.0 else v }
+                                    )
+                                )
+                            )
+                        }
+
+                        else -> {
+                            val it2 = it as TimeSeries.TrendTimeSeries
+
+                            events?.success(
+                                Json.encodeToString(
+                                    SerializableTimeSeries(
+                                        it2.timestamps.map { v -> v.toString() },
+                                        it2.values,
+                                        it2.confidenceIntervalLow,
+                                        it2.confidenceIntervalHigh,
+                                        it2.confidence.map { v -> if (v.isNaN()) 0.0 else v }
+                                    )
+                                )
+                            )
+
+
+                        }
+
+                    }
+                }
             }
         }
     }

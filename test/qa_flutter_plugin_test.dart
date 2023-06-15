@@ -12,7 +12,7 @@ class MockTestPluginPlatform
   Future<String?> getPlatformVersion() => Future.value('42');
 
   @override
-  Stream<dynamic> getSomeStream(Map<String, String> map) {
+  Stream<dynamic> getSomeStream(MetricOrTrend metricOrTrend) {
     // TODO: implement getSomeStream
     throw UnimplementedError();
   }
