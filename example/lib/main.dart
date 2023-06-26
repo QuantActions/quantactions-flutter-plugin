@@ -87,7 +87,10 @@ class _MyAppState extends State<MyApp> {
               StreamBuilder(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   TimeSeries data = snapshot.data;
+
                   if (stream.key == Metric.sleepSummary) {
+                    var data2 = data as TimeSeries<SleepSummary>;
+                    debugPrint(data2.values.length.toString());
                     return Text('${stream.key}: ${(data.values.last as SleepSummary).sleepEnd} @ ${data.timestamps.last} & ${(data.confidenceIntervalHigh.last as SleepSummary).sleepEnd}');
                   }
                   if (stream.key == Trend.cognitiveFitness) {

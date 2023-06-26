@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'qa_flutter_plugin_platform_interface.dart';
 
 
-class MetricOrTrend {
+class MetricOrTrend<T> {
   const MetricOrTrend({
     required this.id,
   });
@@ -16,16 +16,16 @@ class MetricOrTrend {
   final String id;
 }
 
-enum Metric implements MetricOrTrend {
+enum Metric<T> implements MetricOrTrend<T> {
 
-  sleepScore(id: 'sleep'),
-  cognitiveFitness(id: 'cognitive'),
-  socialEngagement(id: 'social'),
-  actionSpeed(id: 'action'),
-  typingSpeed(id: 'typing'),
-  sleepSummary(id: 'sleep_summary'),
-  screenTimeAggregate(id: 'screen_time_aggregate'),
-  socialTaps(id: 'social_taps');
+  sleepScore<double>(id: 'sleep'),
+  cognitiveFitness<double>(id: 'cognitive'),
+  socialEngagement<double>(id: 'social'),
+  actionSpeed<double>(id: 'action'),
+  typingSpeed<double>(id: 'typing'),
+  sleepSummary<SleepSummary>(id: 'sleep_summary'),
+  screenTimeAggregate<ScreenTimeAggregate>(id: 'screen_time_aggregate'),
+  socialTaps<double>(id: 'social_taps');
 
   const Metric({
     required this.id,
@@ -36,18 +36,18 @@ enum Metric implements MetricOrTrend {
 
 }
 
-enum Trend implements MetricOrTrend {
+enum Trend<T> implements MetricOrTrend<T> {
 
-  sleepScore(id: 'sleep_trend'),
-  cognitiveFitness(id: 'cognitive_trend'),
-  socialEngagement(id: 'social_engagement_trend'),
-  actionSpeed(id: 'action_trend'),
-  typingSpeed(id: 'typing_trend'),
-  sleepLength(id: 'sleep_length_trend'),
-  sleepInterruptions(id: 'sleep_interruptions_trend'),
-  socialScreenTime(id: 'social_screen_time_trend'),
-  socialTaps(id: 'social_taps_trend'),
-  theWave(id: 'the_wave_trend');
+  sleepScore<TrendHolder>(id: 'sleep_trend'),
+  cognitiveFitness<TrendHolder>(id: 'cognitive_trend'),
+  socialEngagement<TrendHolder>(id: 'social_engagement_trend'),
+  actionSpeed<TrendHolder>(id: 'action_trend'),
+  typingSpeed<TrendHolder>(id: 'typing_trend'),
+  sleepLength<TrendHolder>(id: 'sleep_length_trend'),
+  sleepInterruptions<TrendHolder>(id: 'sleep_interruptions_trend'),
+  socialScreenTime<TrendHolder>(id: 'social_screen_time_trend'),
+  socialTaps<TrendHolder>(id: 'social_taps_trend'),
+  theWave<TrendHolder>(id: 'the_wave_trend');
 
   const Trend({
     required this.id,
@@ -79,7 +79,7 @@ class QA {
     return QAFlutterPluginPlatform.instance.someOtherMethod(map);
   }
 
-  Stream<TimeSeries> getMetric(MetricOrTrend metricOrTrend) {
+  Stream<TimeSeries<dynamic>> getMetric(MetricOrTrend metricOrTrend) {
     switch (metricOrTrend) {
       case Trend.sleepScore:
       case Trend.cognitiveFitness:
@@ -92,7 +92,6 @@ class QA {
       case Trend.socialTaps:
       case Trend.theWave:
         var ret = QAFlutterPluginPlatform.instance.getSomeStream(metricOrTrend).map((event) => TimeSeries.fromJsonTrendTimeSeries(jsonDecode(event)));
-        debugPrint(ret.toString());
         return ret;
       // case Metric.sleepScore:
       // case Metric.cognitiveFitness:
@@ -134,19 +133,41 @@ class TimeSeries<T> {
     required this.confidence,
   });
 
-  factory TimeSeries.fromJson(Map<String, dynamic> json) {
-
+  TimeSeries<T> takeLast(int n) {
     return TimeSeries<T>(
+      values: values.sublist(values.length - n),
+      timestamps: timestamps.sublist(timestamps.length - n),
+      confidenceIntervalLow: confidenceIntervalLow.sublist(confidenceIntervalLow.length - n),
+      confidenceIntervalHigh: confidenceIntervalHigh.sublist(confidenceIntervalHigh.length - n),
+      confidence: confidence.sublist(confidence.length - n),
+    );
+  }
+
+  static TimeSeries empty() {
+    return TimeSeries<SleepSummary>(
+      values: List.empty(),
+      timestamps:  List.empty(),
+      confidenceIntervalLow: List.empty(),
+      confidenceIntervalHigh: List.empty(),
+      confidence: List.empty(),
+    );
+  }
+
+    static TimeSeries<double> fromJson(Map<String, dynamic> json) {
+
+    debugPrint(json.keys.toString());
+
+    return TimeSeries<double>(
       timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
-      values: json['values'].cast<T>().map<double>((e) => e == null ? double.nan : e as double).toList(),
-      confidenceIntervalLow: json['confidenceIntervalLow'].cast<T>().map<double>((e) => e == null ? double.nan : e as double).toList(),
-      confidenceIntervalHigh: json['confidenceIntervalHigh'].cast<T>().map<double>((e) => e == null ? double.nan : e as double).toList(),
+      values: json['values'].cast<double>().map<double>((e) => e == null ? double.nan : e as double).toList(),
+      confidenceIntervalLow: json['confidenceIntervalLow'].map<double>((e) => e == null ? double.nan : e as double).toList(),
+      confidenceIntervalHigh: json['confidenceIntervalHigh'].map<double>((e) => e == null ? double.nan : e as double).toList(),
       confidence: json['confidence'].cast<double>(),
     );
   }
 
-  factory TimeSeries.fromJsonTrendTimeSeries(Map<String, dynamic> json) {
-    return TimeSeries<T>(
+  static TimeSeries<TrendHolder> fromJsonTrendTimeSeries(Map<String, dynamic> json) {
+    return TimeSeries<TrendHolder>(
       timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
       values: json['values'].map<TrendHolder>((e) => TrendHolder.fromJson(e)).toList(),
       confidenceIntervalLow: json['confidenceIntervalLow'].map<TrendHolder>((e) => TrendHolder.fromJson(e)).toList(),
@@ -155,8 +176,8 @@ class TimeSeries<T> {
     );
   }
 
-  factory TimeSeries.fromJsonSleepSummaryTimeSeries(Map<String, dynamic> json) {
-    return TimeSeries<T>(
+  static TimeSeries<SleepSummary> fromJsonSleepSummaryTimeSeries(Map<String, dynamic> json) {
+    return TimeSeries<SleepSummary>(
       timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
       values: json['values'].map<SleepSummary>((e) => SleepSummary.fromJson(e)).toList(),
       confidenceIntervalLow: json['confidenceIntervalLow'].map<SleepSummary>((e) => SleepSummary.fromJson(e)).toList(),
@@ -165,11 +186,9 @@ class TimeSeries<T> {
     );
   }
 
-  factory TimeSeries.fromJsonScreenTimeAggregateTimeSeries(Map<String, dynamic> json) {
+  static TimeSeries<ScreenTimeAggregate> fromJsonScreenTimeAggregateTimeSeries(Map<String, dynamic> json) {
 
-    debugPrint(json.keys.toString());
-
-    return TimeSeries<T>(
+    return TimeSeries<ScreenTimeAggregate>(
       timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
       values: json['values'].map<ScreenTimeAggregate>((e) => ScreenTimeAggregate.fromJson(e)).toList(),
       confidenceIntervalLow: json['confidenceIntervalLow'].map<ScreenTimeAggregate>((e) => ScreenTimeAggregate.fromJson(e)).toList(),
@@ -266,8 +285,6 @@ class ScreenTimeAggregate {
   });
 
   factory ScreenTimeAggregate.fromJson(Map<String, dynamic> json) {
-
-    debugPrint(json.keys.toString());
 
     return ScreenTimeAggregate(
       totalScreenTime: json['totalScreenTime'] ?? double.nan,
