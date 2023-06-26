@@ -91,14 +91,22 @@ class QA {
       case Trend.socialScreenTime:
       case Trend.socialTaps:
       case Trend.theWave:
-        return QAFlutterPluginPlatform.instance.getSomeStream(metricOrTrend).map((event) => TimeSeries.fromJsonTrendTimeSeries(jsonDecode(event)));
+        var ret = QAFlutterPluginPlatform.instance.getSomeStream(metricOrTrend).map((event) => TimeSeries.fromJsonTrendTimeSeries(jsonDecode(event)));
+        debugPrint(ret.toString());
+        return ret;
       // case Metric.sleepScore:
       // case Metric.cognitiveFitness:
       // case Metric.socialEngagement:
       // case Metric.actionSpeed:
       // case Metric.typingSpeed:
-      // case Metric.sleepSummary:
-      // case Metric.screenTimeAggregate:
+      case Metric.sleepSummary:
+        return QAFlutterPluginPlatform.instance.getSomeStream(metricOrTrend).map((event) =>
+            TimeSeries.fromJsonSleepSummaryTimeSeries(jsonDecode(event))
+        );
+      case Metric.screenTimeAggregate:
+        return QAFlutterPluginPlatform.instance.getSomeStream(metricOrTrend).map((event) =>
+            TimeSeries.fromJsonScreenTimeAggregateTimeSeries(jsonDecode(event))
+        );
       // case Metric.socialTaps:
       default:
         return QAFlutterPluginPlatform.instance.getSomeStream(metricOrTrend).map((event) =>
@@ -127,6 +135,7 @@ class TimeSeries<T> {
   });
 
   factory TimeSeries.fromJson(Map<String, dynamic> json) {
+
     return TimeSeries<T>(
       timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
       values: json['values'].cast<T>().map<double>((e) => e == null ? double.nan : e as double).toList(),
@@ -137,12 +146,34 @@ class TimeSeries<T> {
   }
 
   factory TimeSeries.fromJsonTrendTimeSeries(Map<String, dynamic> json) {
-
-    return TimeSeries(
+    return TimeSeries<T>(
       timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
-      values: json['values'].cast<TrendHolder>(),
-      confidenceIntervalLow: json['confidenceIntervalLow'].cast<TrendHolder>(),
-      confidenceIntervalHigh: json['confidenceIntervalHigh'].cast<TrendHolder>(),
+      values: json['values'].map<TrendHolder>((e) => TrendHolder.fromJson(e)).toList(),
+      confidenceIntervalLow: json['confidenceIntervalLow'].map<TrendHolder>((e) => TrendHolder.fromJson(e)).toList(),
+      confidenceIntervalHigh: json['confidenceIntervalHigh'].map<TrendHolder>((e) => TrendHolder.fromJson(e)).toList(),
+      confidence: json['confidence'].cast<double>(),
+    );
+  }
+
+  factory TimeSeries.fromJsonSleepSummaryTimeSeries(Map<String, dynamic> json) {
+    return TimeSeries<T>(
+      timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
+      values: json['values'].map<SleepSummary>((e) => SleepSummary.fromJson(e)).toList(),
+      confidenceIntervalLow: json['confidenceIntervalLow'].map<SleepSummary>((e) => SleepSummary.fromJson(e)).toList(),
+      confidenceIntervalHigh: json['confidenceIntervalHigh'].map<SleepSummary>((e) => SleepSummary.fromJson(e)).toList(),
+      confidence: json['confidence'].cast<double>(),
+    );
+  }
+
+  factory TimeSeries.fromJsonScreenTimeAggregateTimeSeries(Map<String, dynamic> json) {
+
+    debugPrint(json.keys.toString());
+
+    return TimeSeries<T>(
+      timestamps: json['timestamps'].cast<String>().map<DateTime>((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList(),
+      values: json['values'].map<ScreenTimeAggregate>((e) => ScreenTimeAggregate.fromJson(e)).toList(),
+      confidenceIntervalLow: json['confidenceIntervalLow'].map<ScreenTimeAggregate>((e) => ScreenTimeAggregate.fromJson(e)).toList(),
+      confidenceIntervalHigh: json['confidenceIntervalHigh'].map<ScreenTimeAggregate>((e) => ScreenTimeAggregate.fromJson(e)).toList(),
       confidence: json['confidence'].cast<double>(),
     );
   }
@@ -171,5 +202,78 @@ class TrendHolder {
     required this.statistic1Year,
     required this.significance1Year,
   });
+
+  factory TrendHolder.fromJson(Map<String, dynamic> json) {
+    return TrendHolder(
+      difference2Weeks: json['difference2Weeks'] ?? double.nan,
+      statistic2Weeks: json['statistic2Weeks'] ?? double.nan,
+      significance2Weeks: json['significance2Weeks'] ?? double.nan,
+      difference6Weeks: json['difference6Weeks'] ?? double.nan,
+      statistic6Weeks: json['statistic6Weeks'] ?? double.nan,
+      significance6Weeks: json['significance6Weeks'] ?? double.nan,
+      difference1Year: json['difference1Year'] ?? double.nan,
+      statistic1Year: json['statistic1Year'] ?? double.nan,
+      significance1Year: json['significance1Year'] ?? double.nan,
+    );
+  }
 }
+
+class SleepSummary{
+
+  final DateTime sleepStart;
+  final DateTime sleepEnd;
+  final List<DateTime> interruptionsStart;
+  final List<DateTime> interruptionsEnd;
+  final List<int> interruptionsNumberOfTaps;
+
+
+  SleepSummary({
+    required this.sleepStart,
+    required this.sleepEnd,
+    required this.interruptionsStart,
+    required this.interruptionsEnd,
+    required this.interruptionsNumberOfTaps,
+  });
+
+  factory SleepSummary.emptySummary() {
+    return SleepSummary(
+        sleepStart: DateTime.fromMicrosecondsSinceEpoch(0),
+        sleepEnd: DateTime.fromMicrosecondsSinceEpoch(0),
+        interruptionsStart: List.generate(1, (index) => DateTime.fromMicrosecondsSinceEpoch(0)),
+        interruptionsEnd: List.generate(1, (index) => DateTime.fromMicrosecondsSinceEpoch(0)),
+        interruptionsNumberOfTaps: List.generate(1, (index) => 0));
+  }
+
+  factory SleepSummary.fromJson(Map<String, dynamic> json) {
+
+    return SleepSummary(
+      sleepStart: json['sleepStart'] == null ? DateTime.fromMicrosecondsSinceEpoch(0) : DateTime.parse((json['sleepStart'] as String).split('[').first).toLocal() ,
+      sleepEnd: json['sleepEnd'] == null ? DateTime.fromMicrosecondsSinceEpoch(0) : DateTime.parse((json['sleepEnd'] as String).split('[').first).toLocal(),
+      interruptionsStart: json['interruptionsStart'] == null ? List.empty() : json['interruptionsStart'].cast<String>().map((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList().cast<DateTime>(),
+      interruptionsEnd: json['interruptionsEnd'] == null ? List.empty() : json['interruptionsStart'].cast<String>().map((e) => DateTime.parse((e as String).split('[').first).toLocal()).toList().cast<DateTime>(),
+      interruptionsNumberOfTaps: json['interruptionsNumberOfTaps'] == null ? List.empty() : json['interruptionsNumberOfTaps'].cast<int>(),
+    );
+  }
+}
+
+class ScreenTimeAggregate {
+  final double totalScreenTime;
+  final double socialScreenTime;
+
+  ScreenTimeAggregate({
+    required this.totalScreenTime,
+    required this.socialScreenTime
+  });
+
+  factory ScreenTimeAggregate.fromJson(Map<String, dynamic> json) {
+
+    debugPrint(json.keys.toString());
+
+    return ScreenTimeAggregate(
+      totalScreenTime: json['totalScreenTime'] ?? double.nan,
+      socialScreenTime: json['socialScreenTime'] ?? double.nan,
+    );
+  }
+}
+
 

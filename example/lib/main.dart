@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   String _passingArgs = "No args passed";
   final _qa = QA();
-  late HashMap<Metric, Stream<TimeSeries>> _streams;
+  late HashMap<MetricOrTrend, Stream<TimeSeries>> _streams;
 
 
 
@@ -29,11 +29,13 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
-    _streams = HashMap<Metric, Stream<TimeSeries>>();
+    _streams = HashMap<MetricOrTrend, Stream<TimeSeries>>();
     _streams[Metric.socialEngagement] = _qa.getMetric(Metric.socialEngagement);
     _streams[Metric.sleepScore] = _qa.getMetric(Metric.sleepScore);
     _streams[Metric.cognitiveFitness] = _qa.getMetric(Metric.cognitiveFitness);
-    // _streams[Metric.cognitiveFitness] = _qa.getMetric(Trend.cognitiveFitness);
+    _streams[Trend.cognitiveFitness] = _qa.getMetric(Trend.cognitiveFitness);
+    _streams[Metric.sleepSummary] = _qa.getMetric(Metric.sleepSummary);
+    _streams[Metric.screenTimeAggregate] = _qa.getMetric(Metric.screenTimeAggregate);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -85,6 +87,15 @@ class _MyAppState extends State<MyApp> {
               StreamBuilder(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   TimeSeries data = snapshot.data;
+                  if (stream.key == Metric.sleepSummary) {
+                    return Text('${stream.key}: ${(data.values.last as SleepSummary).sleepEnd} @ ${data.timestamps.last} & ${(data.confidenceIntervalHigh.last as SleepSummary).sleepEnd}');
+                  }
+                  if (stream.key == Trend.cognitiveFitness) {
+                    return Text('${stream.key}: ${(data.values.last as TrendHolder).difference2Weeks} @ ${data.timestamps.last} & ${(data.confidenceIntervalHigh.last as TrendHolder).difference2Weeks}');
+                  }
+                  if (stream.key == Metric.screenTimeAggregate) {
+                    return Text('${stream.key}: ${(data.values.last as ScreenTimeAggregate).totalScreenTime} @ ${data.timestamps.last} & ${(data.confidenceIntervalHigh.last as ScreenTimeAggregate).totalScreenTime}');
+                  }
                   return Text('${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
                       '${data.values.last.runtimeType}');
                 } else {

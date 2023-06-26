@@ -227,7 +227,6 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
                         else -> {
                             val it2 = it as TimeSeries.TrendTimeSeries
-
                             events?.success(
                                 Json.encodeToString(
                                     SerializableTimeSeries(
