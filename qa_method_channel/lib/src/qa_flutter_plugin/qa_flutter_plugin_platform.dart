@@ -1,6 +1,5 @@
-import 'package:flutter/services.dart';
+import 'package:core/core.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 
 import 'qa_flutter_plugin_method_channel.dart';
 
@@ -10,15 +9,15 @@ abstract class QAFlutterPluginPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static QAFlutterPluginPlatform _instance = MethodChannelQAFlutterPlugin();
+  static QAFlutterPluginPlatform _instance = QAFlutterPluginMethodChannel();
 
-  /// The default instance of [QAFlutterPluginPlatform] to use.
+  /// The default instance of [MethodChannelProvider] to use.
   ///
-  /// Defaults to [MethodChannelQAFlutterPlugin].
+  /// Defaults to [MethodChannelProviderImpl].
   static QAFlutterPluginPlatform get instance => _instance;
 
   /// Platform-specific implementations should set this with their own
-  /// platform-specific class that extends [QAFlutterPluginPlatform] when
+  /// platform-specific class that extends [MethodChannelProvider] when
   /// they register themselves.
   static set instance(QAFlutterPluginPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
@@ -33,8 +32,9 @@ abstract class QAFlutterPluginPlatform extends PlatformInterface {
     throw UnimplementedError('someOtherMethod() has not been implemented.');
   }
 
-  Stream<dynamic> getSomeStream(MetricOrTrend metricOrTrend) {
+  Stream<dynamic> getStreamBy({
+    required MetricOrTrend metricOrTrend,
+  }) {
     throw UnimplementedError('someOtherMethod() has not been implemented.');
   }
-
 }

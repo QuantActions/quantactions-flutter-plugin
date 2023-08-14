@@ -1,0 +1,24 @@
+name: qa_method_channel
+description: A new Flutter package project.
+version: 0.0.1
+homepage: 'https://quantactions.com'
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+  get_it: ^7.6.0
+
+  core:
+    path: ../core
+  qa_parser:
+    path: ../qa_parser
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0

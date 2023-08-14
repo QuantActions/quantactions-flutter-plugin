@@ -1,20 +1,20 @@
-name: qa_flutter_plugin
-description: A cross-platform plugin for QA SDK
+name: qa_parser
+description: A new Flutter package project.
 version: 0.0.1
 homepage: 'https://quantactions.com'
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
-  flutter: ">=3.3.0"
+  sdk: '>=3.0.6 <4.0.0'
+  flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   qa_method_channel:
-    path: qa_method_channel
+    path: ../qa_method_channel
   core:
-    path: core
+    path: ../core
 
 dev_dependencies:
   flutter_test:
