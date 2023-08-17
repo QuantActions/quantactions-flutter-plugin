@@ -36,51 +36,51 @@ class TimeSeriesStreamMapper {
     );
   }
 
-  static Stream<TimeSeries<ActionSpeed>> getActionSpeed(
+  static Stream<TimeSeries<double>> getActionSpeed(
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonActionSpeed(jsonDecode(event)),
+      (event) => TimeSeriesMapper.fromJson(jsonDecode(event)),
     );
   }
 
-  static Stream<TimeSeries<CognitiveFitness>> getCognitiveFitness(
+  static Stream<TimeSeries<double>> getCognitiveFitness(
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonCognitiveFitness(jsonDecode(event)),
+      (event) => TimeSeriesMapper.fromJson(jsonDecode(event)),
     );
   }
 
-  static Stream<TimeSeries<ScreenScope>> getScreenScope(
+  static Stream<TimeSeries<double>> getScreenScope(
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonScreenScope(jsonDecode(event)),
+      (event) => TimeSeriesMapper.fromJson(jsonDecode(event)),
     );
   }
 
-  static Stream<TimeSeries<SocialEngagement>> getSocialEngagement(
+  static Stream<TimeSeries<double>> getSocialEngagement(
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonSocialEngagement(jsonDecode(event)),
+      (event) => TimeSeriesMapper.fromJson(jsonDecode(event)),
     );
   }
 
-  static Stream<TimeSeries<SocialTap>> getSocialTap(
+  static Stream<TimeSeries<double>> getSocialTap(
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonSocialTap(jsonDecode(event)),
+      (event) => TimeSeriesMapper.fromJson(jsonDecode(event)),
     );
   }
 
-  static Stream<TimeSeries<TypingSpeed>> getTypingSpeed(
+  static Stream<TimeSeries<double>> getTypingSpeed(
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonTypingSpeed(jsonDecode(event)),
+      (event) => TimeSeriesMapper.fromJson(jsonDecode(event)),
     );
   }
 }
