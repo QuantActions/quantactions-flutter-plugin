@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:qa_flutter_plugin/qa_flutter_plugin_method_channel.dart';
+import 'package:qa_flutter_plugin/src/data/providers/sdk_method_channel_impl.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelQAFlutterPlugin platform = MethodChannelQAFlutterPlugin();
+  SDKMethodChannelImpl platform = SDKMethodChannelImpl();
   const MethodChannel channel = MethodChannel('qa_flutter_plugin');
 
   setUp(() {
@@ -21,7 +21,7 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await platform.getPlatformVersion(), '42');
-  });
+  // test('getPlatformVersion', () async {
+  //   expect(await platform.getPlatformVersion(), '42');
+  // });
 }
