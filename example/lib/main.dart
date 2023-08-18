@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-   return MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
 
                       return Text(
                           '${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
-                              '${data.values.last.runtimeType}');
+                          '${data.values.last.runtimeType}');
                     } else {
                       return const Text('No data');
                     }
@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
 
                       return Text(
                           '${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
-                              '${data.values.last.runtimeType}');
+                          '${data.values.last.runtimeType}');
                     } else {
                       return const Text('No data');
                     }
