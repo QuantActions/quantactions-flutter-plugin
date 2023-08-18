@@ -12,43 +12,15 @@ class MetricRepositoryImpl implements MetricRepository {
 
   @override
   Stream<TimeSeries<dynamic>> getByMetric(Metric metric) {
+    final Stream<dynamic> stream = _sdkMethodChannel.getMetricStream(metric);
+
     switch (metric) {
-      case Metric.actionSpeed:
-        return TimeSeriesStreamMapper.getActionSpeed(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
-      case Metric.cognitiveFitness:
-        return TimeSeriesStreamMapper.getCognitiveFitness(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
-      case Metric.sleepScore:
-        return TimeSeriesStreamMapper.getScreenScope(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
-      case Metric.socialEngagement:
-        return TimeSeriesStreamMapper.getSocialEngagement(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
-      case Metric.socialTaps:
-        return TimeSeriesStreamMapper.getSocialTap(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
-      case Metric.typingSpeed:
-        return TimeSeriesStreamMapper.getTypingSpeed(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
       case Metric.sleepSummary:
-        return TimeSeriesStreamMapper.getSleepSummary(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
+        return TimeSeriesStreamMapper.getSleepSummary(stream);
       case Metric.screenTimeAggregate:
-        return TimeSeriesStreamMapper.getScreenTimeAggregate(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
+        return TimeSeriesStreamMapper.getScreenTimeAggregate(stream);
       default:
-        return TimeSeriesStreamMapper.getDefault(
-          _sdkMethodChannel.getMetricStream(metric),
-        );
+        return TimeSeriesStreamMapper.getDouble(stream);
     }
   }
 }

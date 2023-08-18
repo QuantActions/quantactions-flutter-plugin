@@ -38,32 +38,30 @@ class _MyAppState extends State<MyApp> {
     _metricStreams[Metric.typingSpeed] = _qa.getMetric(Metric.typingSpeed);
 
     _trendStreams = HashMap<Trend, Stream<TimeSeries>>();
-    // _trendStreams[Trend.typingSpeed] = _qa.getTrend(Trend.typingSpeed);
-    // _trendStreams[Trend.socialTaps] = _qa.getTrend(Trend.socialTaps);
-    // _trendStreams[Trend.socialEngagement] =
-    //     _qa.getTrend(Trend.socialEngagement);
-    // _trendStreams[Trend.sleepScore] = _qa.getTrend(Trend.sleepScore);
-    // _trendStreams[Trend.cognitiveFitness] =
-    //     _qa.getTrend(Trend.cognitiveFitness);
-    // _trendStreams[Trend.actionSpeed] = _qa.getTrend(Trend.actionSpeed);
-    // _trendStreams[Trend.sleepInterruptions] =
-    //     _qa.getTrend(Trend.sleepInterruptions);
-    // _trendStreams[Trend.sleepLength] = _qa.getTrend(Trend.sleepLength);
-    // _trendStreams[Trend.socialScreenTime] =
-    //     _qa.getTrend(Trend.socialScreenTime);
-    // _trendStreams[Trend.theWave] = _qa.getTrend(Trend.theWave);
+    _trendStreams[Trend.typingSpeed] = _qa.getTrend(Trend.typingSpeed);
+    _trendStreams[Trend.socialTaps] = _qa.getTrend(Trend.socialTaps);
+    _trendStreams[Trend.socialEngagement] =
+        _qa.getTrend(Trend.socialEngagement);
+    _trendStreams[Trend.sleepScore] = _qa.getTrend(Trend.sleepScore);
+    _trendStreams[Trend.cognitiveFitness] =
+        _qa.getTrend(Trend.cognitiveFitness);
+    _trendStreams[Trend.actionSpeed] = _qa.getTrend(Trend.actionSpeed);
+    _trendStreams[Trend.sleepInterruptions] =
+        _qa.getTrend(Trend.sleepInterruptions);
+    _trendStreams[Trend.sleepLength] = _qa.getTrend(Trend.sleepLength);
+    _trendStreams[Trend.socialScreenTime] =
+        _qa.getTrend(Trend.socialScreenTime);
+    _trendStreams[Trend.theWave] = _qa.getTrend(Trend.theWave);
   }
 
   @override
   Widget build(BuildContext context) {
-    // now we listen to the event channel
-
-    return MaterialApp(
+   return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               const Text('metrics'),

@@ -11,25 +11,9 @@ class TrendRepositoryImpl implements TrendRepository {
   }) : _sdkMethodChannel = sdkMethodChannel;
 
   @override
-  Stream<TimeSeries<dynamic>> getByTrend(Trend trend) {
-    switch (trend) {
-      case Trend.typingSpeed:
-      case Trend.socialTaps:
-      case Trend.socialEngagement:
-      case Trend.sleepScore:
-      case Trend.cognitiveFitness:
-      case Trend.actionSpeed:
-      case Trend.theWave:
-        return TimeSeriesStreamMapper.getTheWave(
-          _sdkMethodChannel.getTrendStream(trend),
-        );
-      case Trend.socialScreenTime:
-      case Trend.sleepLength:
-      case Trend.sleepInterruptions:
-      default:
-        return TimeSeriesStreamMapper.getDefault(
-          _sdkMethodChannel.getTrendStream(trend),
-        );
-    }
+  Stream<TimeSeries<TrendHolder>> getByTrend(Trend trend) {
+    return TimeSeriesStreamMapper.getTrendHolder(
+      _sdkMethodChannel.getTrendStream(trend),
+    );
   }
 }
