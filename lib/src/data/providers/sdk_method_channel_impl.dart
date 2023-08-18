@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -36,11 +37,29 @@ class SDKMethodChannelImpl extends SDKMethodChannel {
 
   @override
   Stream<dynamic> getMetricStream(Metric metric) {
-    return metricEventChannels[metric]!.receiveBroadcastStream(metric.id);
+    return _safeRequest(
+      request: () =>
+          metricEventChannels[metric]!.receiveBroadcastStream(metric.id),
+    );
   }
 
   @override
   Stream<dynamic> getTrendStream(Trend trend) {
-    return trendEventChannels[trend]!.receiveBroadcastStream(trend.id);
+    return _safeRequest(
+      request: () =>
+          trendEventChannels[trend]!.receiveBroadcastStream(trend.id),
+    );
+  }
+
+  Stream<dynamic> _safeRequest({
+    required Function() request,
+  }) {
+    if (!Platform.isAndroid) {
+      throw Exception(
+        'QAFlutterPlugin for ${Platform.operatingSystem} platform not yet implemented',
+      );
+    } else {
+      return request();
+    }
   }
 }
