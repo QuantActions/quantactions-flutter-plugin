@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 
 void main() {
@@ -18,55 +17,41 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  String _passingArgs = "No args passed";
-  final _qa = QA();
-  late HashMap<MetricOrTrend, Stream<TimeSeries>> _streams;
-
-
+  final _qa = QAFlutterPlugin();
+  late HashMap<Metric, Stream<TimeSeries>> _metricStreams;
+  late HashMap<Trend, Stream<TimeSeries>> _trendStreams;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-    _streams = HashMap<MetricOrTrend, Stream<TimeSeries>>();
-    _streams[Metric.socialEngagement] = _qa.getMetric(Metric.socialEngagement);
-    _streams[Metric.sleepScore] = _qa.getMetric(Metric.sleepScore);
-    _streams[Metric.cognitiveFitness] = _qa.getMetric(Metric.cognitiveFitness);
-    _streams[Trend.cognitiveFitness] = _qa.getMetric(Trend.cognitiveFitness);
-    _streams[Metric.sleepSummary] = _qa.getMetric(Metric.sleepSummary);
-    _streams[Metric.screenTimeAggregate] = _qa.getMetric(Metric.screenTimeAggregate);
-  }
+    _metricStreams = HashMap<Metric, Stream<TimeSeries>>();
+    _metricStreams[Metric.actionSpeed] = _qa.getMetric(Metric.actionSpeed);
+    _metricStreams[Metric.cognitiveFitness] =
+        _qa.getMetric(Metric.cognitiveFitness);
+    _metricStreams[Metric.screenTimeAggregate] =
+        _qa.getMetric(Metric.screenTimeAggregate);
+    _metricStreams[Metric.sleepScore] = _qa.getMetric(Metric.sleepScore);
+    _metricStreams[Metric.sleepSummary] = _qa.getMetric(Metric.sleepSummary);
+    _metricStreams[Metric.socialEngagement] =
+        _qa.getMetric(Metric.socialEngagement);
+    _metricStreams[Metric.socialTaps] = _qa.getMetric(Metric.socialTaps);
+    _metricStreams[Metric.typingSpeed] = _qa.getMetric(Metric.typingSpeed);
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    String passingArgs;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _qa.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    try {
-      passingArgs =
-          await _qa.someOtherMethod({'test': 'hello'}) ?? 'Unknown args';
-    } on PlatformException {
-      passingArgs = 'Failed to get passing args.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-      _passingArgs = passingArgs;
-    });
+    _trendStreams = HashMap<Trend, Stream<TimeSeries>>();
+    _trendStreams[Trend.typingSpeed] = _qa.getTrend(Trend.typingSpeed);
+    _trendStreams[Trend.socialTaps] = _qa.getTrend(Trend.socialTaps);
+    _trendStreams[Trend.socialEngagement] =
+        _qa.getTrend(Trend.socialEngagement);
+    _trendStreams[Trend.sleepScore] = _qa.getTrend(Trend.sleepScore);
+    _trendStreams[Trend.cognitiveFitness] =
+        _qa.getTrend(Trend.cognitiveFitness);
+    _trendStreams[Trend.actionSpeed] = _qa.getTrend(Trend.actionSpeed);
+    _trendStreams[Trend.sleepInterruptions] =
+        _qa.getTrend(Trend.sleepInterruptions);
+    _trendStreams[Trend.sleepLength] = _qa.getTrend(Trend.sleepLength);
+    _trendStreams[Trend.socialScreenTime] =
+        _qa.getTrend(Trend.socialScreenTime);
+    _trendStreams[Trend.theWave] = _qa.getTrend(Trend.theWave);
   }
 
   @override
@@ -81,68 +66,43 @@ class _MyAppState extends State<MyApp> {
         body: Center(
           child: Column(
             children: [
-              Text('Running on: $_platformVersion\n'),
-              Text('Passing args: $_passingArgs\n'),
-              for (var stream in _streams.entries)
-              StreamBuilder(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  TimeSeries data = snapshot.data;
+              const Text('metrics'),
+              for (var stream in _metricStreams.entries)
+                StreamBuilder(
+                  stream: stream.value,
+                  builder: (_, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData) {
+                      TimeSeries data = snapshot.data;
 
-                  if (stream.key == Metric.sleepSummary) {
-                    var data2 = data as TimeSeries<SleepSummary>;
-                    debugPrint(data2.values.length.toString());
-                    return Text('${stream.key}: ${(data.values.last as SleepSummary).sleepEnd} @ ${data.timestamps.last} & ${(data.confidenceIntervalHigh.last as SleepSummary).sleepEnd}');
-                  }
-                  if (stream.key == Trend.cognitiveFitness) {
-                    return Text('${stream.key}: ${(data.values.last as TrendHolder).difference2Weeks} @ ${data.timestamps.last} & ${(data.confidenceIntervalHigh.last as TrendHolder).difference2Weeks}');
-                  }
-                  if (stream.key == Metric.screenTimeAggregate) {
-                    return Text('${stream.key}: ${(data.values.last as ScreenTimeAggregate).totalScreenTime} @ ${data.timestamps.last} & ${(data.confidenceIntervalHigh.last as ScreenTimeAggregate).totalScreenTime}');
-                  }
-                  return Text('${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
-                      '${data.values.last.runtimeType}');
-                } else {
-                  return const Text('No data');
-                }
-              }, stream: stream.value),
+                      return Text(
+                          '${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
+                          '${data.values.last.runtimeType}');
+                    } else {
+                      return const Text('No data');
+                    }
+                  },
+                ),
+              const Divider(),
+              const Text('trends'),
+              for (var stream in _trendStreams.entries)
+                StreamBuilder(
+                  stream: stream.value,
+                  builder: (_, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData) {
+                      TimeSeries data = snapshot.data;
+
+                      return Text(
+                          '${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
+                          '${data.values.last.runtimeType}');
+                    } else {
+                      return const Text('No data');
+                    }
+                  },
+                ),
             ],
           ),
         ),
       ),
     );
   }
-
-  // sleepStreamBuilder(Bloc bloc) {
-  //   return StreamBuilder(
-  //     stream: bloc.sleepScoreStream,
-  //     builder: (context, AsyncSnapshot<StatisticCore> snapshot) {
-  //       if (snapshot.hasData) {
-  //         StatisticCore? data = snapshot.data;
-  //         return Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: <Widget>[
-  //           Text('The stream: ${data?.data.last} @ ${data?.timestamps.last}\n'),
-  //           ],
-  //         );
-  //       } else if (snapshot.hasError) {
-  //         return Column(
-  //           children: <Widget>[
-  //             Image.network("http://megatron.co.il/en/wp-content/uploads/sites/2/2017/11/out-of-stock.jpg",
-  //                 fit: BoxFit.fill),
-  //             const Text(
-  //               "Error!",
-  //               style: TextStyle(
-  //                 fontSize: 20.0,
-  //               ),
-  //             ),
-  //           ],
-  //         );
-  //       }
-  //       return const Text("No item in collect office");
-  //     },
-  //   );
-  // }
 }
-
-
-
