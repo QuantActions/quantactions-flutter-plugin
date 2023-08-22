@@ -1,10 +1,12 @@
 import 'package:qa_flutter_plugin/src/core/core.dart';
+import 'package:qa_flutter_plugin/src/domain/domain.dart';
 
-import '../../domain/repositories/metric_repository.dart';
-import '../../domain/repositories/trend_repository.dart';
 import '../providers/sdk_method_channel.dart';
 import '../providers/sdk_method_channel_impl.dart';
+import '../repositories/data_collection_repository_impl.dart';
 import '../repositories/metric_repository_impl.dart';
+import '../repositories/permission_repository_impl.dart';
+import '../repositories/sdk_repository_impl.dart';
 import '../repositories/trend_repository_impl.dart';
 
 final DataDI dataDI = DataDI();
@@ -23,6 +25,24 @@ class DataDI {
 
     appLocator.registerSingleton<TrendRepository>(
       TrendRepositoryImpl(
+        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
+      ),
+    );
+
+    appLocator.registerSingleton<PermissionRepository>(
+      PermissionRepositoryImpl(
+        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
+      ),
+    );
+
+    appLocator.registerSingleton<SDKRepository>(
+      SDKRepositoryImpl(
+        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
+      ),
+    );
+
+    appLocator.registerSingleton<DataCollectionRepository>(
+      DataCollectionRepositoryImpl(
         sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
       ),
     );

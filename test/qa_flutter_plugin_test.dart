@@ -18,6 +18,66 @@ class MockTestPluginPlatform
     // TODO: implement getTrendStream
     throw UnimplementedError();
   }
+
+  @override
+  Future<bool?> canDraw() {
+    // TODO: implement canDraw
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool?> canUsage() {
+    // TODO: implement canDraw
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool?> isDataCollectionRunning() {
+    // TODO: implement canDraw
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool?> isInit() {
+    // TODO: implement canDraw
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> initAsync({
+    int? age,
+    Gender? gender,
+    bool? selfDeclaredHealthy,
+  }) {
+    // TODO: implement initAsync
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<bool> init({
+    int? age,
+    Gender? gender,
+    bool? selfDeclaredHealthy,
+  }) {
+    // TODO: implement init
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool?> isDeviceRegistered() {
+    // TODO: implement isDeviceRegistered
+    throw UnimplementedError();
+  }
+
+  @override
+  void pauseDataCollection() {
+    // TODO: implement pauseDataCollection
+  }
+
+  @override
+  void resumeDataCollection() {
+    // TODO: implement resumeDataCollection
+  }
 }
 
 void main() {

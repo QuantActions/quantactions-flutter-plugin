@@ -14,6 +14,9 @@ class SDKMethodChannelImpl extends SDKMethodChannel {
   @visibleForTesting
   final methodChannel =
       const MethodChannel(MethodChannelConsts.mainMethodChannel);
+  @visibleForTesting
+  final eventChannel = 
+    const EventChannel(MethodChannelConsts.eventMethodChannelPrefix);
 
   @visibleForTesting
   final metricEventChannels = HashMap<Metric, EventChannel>.fromIterables(
@@ -61,7 +64,95 @@ class SDKMethodChannelImpl extends SDKMethodChannel {
     );
   }
 
-  Stream<dynamic> _safeRequest({
+  @override
+  Future<bool?> canDraw() {
+    return _safeRequest(
+      request: () => methodChannel.invokeMethod<bool>('canDraw'),
+    );
+  }
+
+  @override
+  Future<bool?> canUsage() {
+    return _safeRequest(
+      request: () => methodChannel.invokeMethod<bool>('canUsage'),
+    );
+  }
+
+  @override
+  Future<bool?> isDataCollectionRunning() {
+    return _safeRequest(
+      request: () =>
+          methodChannel.invokeMethod<bool?>('isDataCollectionRunning'),
+    );
+  }
+
+  @override
+  void pauseDataCollection() {
+    _safeRequest(
+      request: () {
+        methodChannel.invokeMethod<bool?>('pauseDataCollection');
+      },
+    );
+  }
+
+  @override
+  void resumeDataCollection() {
+    _safeRequest(
+      request: () {
+        methodChannel.invokeMethod<bool?>('resumeDataCollection');
+      },
+    );
+  }
+
+  @override
+  Future<bool?> isInit() {
+    return _safeRequest(
+      request: () => methodChannel.invokeMethod<bool?>('isInit'),
+    );
+  }
+
+  @override
+  Future<bool?> isDeviceRegistered() {
+    return _safeRequest(
+      request: () => methodChannel.invokeMethod<bool>('isDeviceRegistered'),
+    );
+  }
+
+  @override
+  Future<bool?> initAsync({
+    int? age,
+    Gender? gender,
+    bool? selfDeclaredHealthy,
+  }) {
+    return _safeRequest(
+      request: () => methodChannel.invokeMethod<bool>(
+        'initAsync',
+        {
+          "age": age,
+          "gender": gender?.id,
+          "selfDeclaredHealthy": selfDeclaredHealthy,
+        },
+      ),
+    );
+  }
+
+  @override
+  Stream<dynamic> init({
+    int? age,
+    Gender? gender,
+    bool? selfDeclaredHealthy,
+  }) {
+    return _safeRequest(
+      request: () => eventChannel.receiveBroadcastStream({
+        "event": 'init',
+        "age": age,
+        "gender": gender?.id,
+        "selfDeclaredHealthy": selfDeclaredHealthy,
+      }),
+    );
+  }
+
+  dynamic _safeRequest({
     required Function() request,
   }) {
     if (!Platform.isAndroid) {
