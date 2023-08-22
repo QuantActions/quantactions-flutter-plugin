@@ -28,40 +28,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     try {
-      _initStream = _qa.init(
-        age: 1991,
-        gender: Gender.male,
-        selfDeclaredHealthy: true,
-      );
-
-      _metricStreams = HashMap<Metric, Stream<TimeSeries>>();
-      _metricStreams[Metric.actionSpeed] = _qa.getMetric(Metric.actionSpeed);
-      _metricStreams[Metric.cognitiveFitness] =
-          _qa.getMetric(Metric.cognitiveFitness);
-      _metricStreams[Metric.screenTimeAggregate] =
-          _qa.getMetric(Metric.screenTimeAggregate);
-      _metricStreams[Metric.sleepScore] = _qa.getMetric(Metric.sleepScore);
-      _metricStreams[Metric.sleepSummary] = _qa.getMetric(Metric.sleepSummary);
-      _metricStreams[Metric.socialEngagement] =
-          _qa.getMetric(Metric.socialEngagement);
-      _metricStreams[Metric.socialTaps] = _qa.getMetric(Metric.socialTaps);
-      _metricStreams[Metric.typingSpeed] = _qa.getMetric(Metric.typingSpeed);
-
-      _trendStreams = HashMap<Trend, Stream<TimeSeries>>();
-      _trendStreams[Trend.typingSpeed] = _qa.getTrend(Trend.typingSpeed);
-      _trendStreams[Trend.socialTaps] = _qa.getTrend(Trend.socialTaps);
-      _trendStreams[Trend.socialEngagement] =
-          _qa.getTrend(Trend.socialEngagement);
-      _trendStreams[Trend.sleepScore] = _qa.getTrend(Trend.sleepScore);
-      _trendStreams[Trend.cognitiveFitness] =
-          _qa.getTrend(Trend.cognitiveFitness);
-      _trendStreams[Trend.actionSpeed] = _qa.getTrend(Trend.actionSpeed);
-      _trendStreams[Trend.sleepInterruptions] =
-          _qa.getTrend(Trend.sleepInterruptions);
-      _trendStreams[Trend.sleepLength] = _qa.getTrend(Trend.sleepLength);
-      _trendStreams[Trend.socialScreenTime] =
-          _qa.getTrend(Trend.socialScreenTime);
-      _trendStreams[Trend.theWave] = _qa.getTrend(Trend.theWave);
+      _initDependencies();
     } catch (e) {
       errorText = e.toString();
     }
@@ -239,5 +206,42 @@ class _MyAppState extends State<MyApp> {
               ),
       ),
     );
+  }
+
+  void _initDependencies() {
+    _initStream = _qa.init(
+        age: 1991,
+        gender: Gender.male,
+        selfDeclaredHealthy: true,
+      );
+    
+    _metricStreams = HashMap<Metric, Stream<TimeSeries>>();
+    _metricStreams[Metric.actionSpeed] = _qa.getMetric(Metric.actionSpeed);
+    _metricStreams[Metric.cognitiveFitness] =
+        _qa.getMetric(Metric.cognitiveFitness);
+    _metricStreams[Metric.screenTimeAggregate] =
+        _qa.getMetric(Metric.screenTimeAggregate);
+    _metricStreams[Metric.sleepScore] = _qa.getMetric(Metric.sleepScore);
+    _metricStreams[Metric.sleepSummary] = _qa.getMetric(Metric.sleepSummary);
+    _metricStreams[Metric.socialEngagement] =
+        _qa.getMetric(Metric.socialEngagement);
+    _metricStreams[Metric.socialTaps] = _qa.getMetric(Metric.socialTaps);
+    _metricStreams[Metric.typingSpeed] = _qa.getMetric(Metric.typingSpeed);
+
+    _trendStreams = HashMap<Trend, Stream<TimeSeries>>();
+    _trendStreams[Trend.typingSpeed] = _qa.getTrend(Trend.typingSpeed);
+    _trendStreams[Trend.socialTaps] = _qa.getTrend(Trend.socialTaps);
+    _trendStreams[Trend.socialEngagement] =
+        _qa.getTrend(Trend.socialEngagement);
+    _trendStreams[Trend.sleepScore] = _qa.getTrend(Trend.sleepScore);
+    _trendStreams[Trend.cognitiveFitness] =
+        _qa.getTrend(Trend.cognitiveFitness);
+    _trendStreams[Trend.actionSpeed] = _qa.getTrend(Trend.actionSpeed);
+    _trendStreams[Trend.sleepInterruptions] =
+        _qa.getTrend(Trend.sleepInterruptions);
+    _trendStreams[Trend.sleepLength] = _qa.getTrend(Trend.sleepLength);
+    _trendStreams[Trend.socialScreenTime] =
+        _qa.getTrend(Trend.socialScreenTime);
+    _trendStreams[Trend.theWave] = _qa.getTrend(Trend.theWave);
   }
 }
