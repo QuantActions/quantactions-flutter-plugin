@@ -5,87 +5,91 @@ import '../../../domain/domain.dart';
 import '../sleep_summary/sleep_summary_mapper.dart';
 
 class TimeSeriesMapper {
-  static TimeSeries<double> fromJson(Map<String, dynamic> json) {
+  static const String _timestamps = 'timestamps';
+  static const String _values = 'values';
+  static const String _confidenceIntervalLow = 'confidenceIntervalLow';
+  static const String _confidenceIntervalHigh = 'confidenceIntervalHigh';
+  static const String _confidence = 'confidence';
+
+  static TimeSeries<double> fromJsonDouble(Map<String, dynamic> json) {
     return TimeSeries<double>(
-      timestamps: json['timestamps']
-          .cast<String>()
-          .map<DateTime>(
-              (e) => DateTime.parse((e as String).split('[').first).toLocal())
-          .toList(),
-      values: json['values']
+      timestamps: _getTimestamps(json[_timestamps]),
+      values: json[_values]
           .cast<double>()
           .map<double>((e) => e == null ? double.nan : e as double)
           .toList(),
-      confidenceIntervalLow: json['confidenceIntervalLow']
+      confidenceIntervalLow: json[_confidenceIntervalLow]
           .map<double>((e) => e == null ? double.nan : e as double)
           .toList(),
-      confidenceIntervalHigh: json['confidenceIntervalHigh']
+      confidenceIntervalHigh: json[_confidenceIntervalHigh]
           .map<double>((e) => e == null ? double.nan : e as double)
           .toList(),
-      confidence: json['confidence'].cast<double>(),
+      confidence: json[_confidence].cast<double>(),
     );
   }
 
-  static TimeSeries<TrendHolder> fromJsonTrendTimeSeries(
-      Map<String, dynamic> json) {
+  static TimeSeries<TrendHolder> fromJsonTrendHolderTimeSeries(
+    Map<String, dynamic> json,
+  ) {
     return TimeSeries<TrendHolder>(
-      timestamps: json['timestamps']
-          .cast<String>()
-          .map<DateTime>(
-              (e) => DateTime.parse((e as String).split('[').first).toLocal())
-          .toList(),
-      values: json['values']
+      timestamps: _getTimestamps(json[_timestamps]),
+      values: json[_values]
           .map<TrendHolder>((e) => TrendHolderMapper.fromJson(e))
           .toList(),
-      confidenceIntervalLow: json['confidenceIntervalLow']
+      confidenceIntervalLow: json[_confidenceIntervalLow]
           .map<TrendHolder>((e) => TrendHolderMapper.fromJson(e))
           .toList(),
-      confidenceIntervalHigh: json['confidenceIntervalHigh']
+      confidenceIntervalHigh: json[_confidenceIntervalHigh]
           .map<TrendHolder>((e) => TrendHolderMapper.fromJson(e))
           .toList(),
-      confidence: json['confidence'].cast<double>(),
+      confidence: json[_confidence].cast<double>(),
     );
   }
 
   static TimeSeries<SleepSummary> fromJsonSleepSummaryTimeSeries(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return TimeSeries<SleepSummary>(
-      timestamps: json['timestamps']
-          .cast<String>()
-          .map<DateTime>(
-              (e) => DateTime.parse((e as String).split('[').first).toLocal())
-          .toList(),
-      values: json['values']
+      timestamps: _getTimestamps(json[_timestamps]),
+      values: json[_values]
           .map<SleepSummary>((e) => SleepSummaryMapper.fromJson(e))
           .toList(),
-      confidenceIntervalLow: json['confidenceIntervalLow']
+      confidenceIntervalLow: json[_confidenceIntervalLow]
           .map<SleepSummary>((e) => SleepSummaryMapper.fromJson(e))
           .toList(),
-      confidenceIntervalHigh: json['confidenceIntervalHigh']
+      confidenceIntervalHigh: json[_confidenceIntervalHigh]
           .map<SleepSummary>((e) => SleepSummaryMapper.fromJson(e))
           .toList(),
-      confidence: json['confidence'].cast<double>(),
+      confidence: json[_confidence].cast<double>(),
     );
   }
 
   static TimeSeries<ScreenTimeAggregate> fromJsonScreenTimeAggregateTimeSeries(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return TimeSeries<ScreenTimeAggregate>(
-      timestamps: json['timestamps']
-          .cast<String>()
-          .map<DateTime>(
-              (e) => DateTime.parse((e as String).split('[').first).toLocal())
+      timestamps: _getTimestamps(json[_timestamps]),
+      values: json[_values]
+          .map<ScreenTimeAggregate>(
+              (e) => ScreenTimeAggregateMapper.fromJson(e))
           .toList(),
-      values: json['values']
-          .map<ScreenTimeAggregate>((e) => ScreenTimeAggregateMapper.fromJson(e))
+      confidenceIntervalLow: json[_confidenceIntervalLow]
+          .map<ScreenTimeAggregate>(
+              (e) => ScreenTimeAggregateMapper.fromJson(e))
           .toList(),
-      confidenceIntervalLow: json['confidenceIntervalLow']
-          .map<ScreenTimeAggregate>((e) => ScreenTimeAggregateMapper.fromJson(e))
+      confidenceIntervalHigh: json[_confidenceIntervalHigh]
+          .map<ScreenTimeAggregate>(
+              (e) => ScreenTimeAggregateMapper.fromJson(e))
           .toList(),
-      confidenceIntervalHigh: json['confidenceIntervalHigh']
-          .map<ScreenTimeAggregate>((e) => ScreenTimeAggregateMapper.fromJson(e))
-          .toList(),
-      confidence: json['confidence'].cast<double>(),
+      confidence: json[_confidence].cast<double>(),
     );
+  }
+
+  static List<DateTime> _getTimestamps(dynamic data) {
+    return data
+        .map<DateTime>(
+          (e) => DateTime.parse((e as String).split('[').first).toLocal(),
+        )
+        .toList();
   }
 }

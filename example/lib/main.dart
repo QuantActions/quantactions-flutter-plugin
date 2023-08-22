@@ -56,14 +56,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // now we listen to the event channel
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               const Text('metrics'),

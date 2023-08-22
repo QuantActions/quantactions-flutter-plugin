@@ -57,6 +57,7 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         Trend.SOCIAL_SCREEN_TIME,
         Trend.SOCIAL_TAPS,
         Trend.TYPING_SPEED,
+        Trend.THE_WAVE,
     )
 
     private lateinit var context: Context

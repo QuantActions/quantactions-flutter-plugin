@@ -3,16 +3,10 @@ import 'dart:convert';
 import '../../domain/domain.dart';
 import 'time_series/time_series_mapper.dart';
 
-class StreamMapper {
-  static Stream<TimeSeries<dynamic>> getDefault(Stream<dynamic> stream) {
-    return stream.map((event) => TimeSeriesMapper.fromJson(jsonDecode(event)));
-  }
-
-  static Stream<TimeSeries<TrendHolder>> getTheWave(Stream<dynamic> stream) {
+class TimeSeriesStreamMapper {
+  static Stream<TimeSeries<dynamic>> getDouble(Stream<dynamic> stream) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonTrendTimeSeries(
-        jsonDecode(event),
-      ),
+      (event) => TimeSeriesMapper.fromJsonDouble(jsonDecode(event)),
     );
   }
 
@@ -31,6 +25,16 @@ class StreamMapper {
   ) {
     return stream.map(
       (event) => TimeSeriesMapper.fromJsonScreenTimeAggregateTimeSeries(
+        jsonDecode(event),
+      ),
+    );
+  }
+
+  static Stream<TimeSeries<TrendHolder>> getTrendHolder(
+    Stream<dynamic> stream,
+  ) {
+    return stream.map(
+      (event) => TimeSeriesMapper.fromJsonTrendHolderTimeSeries(
         jsonDecode(event),
       ),
     );
