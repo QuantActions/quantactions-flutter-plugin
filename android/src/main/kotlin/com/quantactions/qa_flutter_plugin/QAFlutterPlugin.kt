@@ -3,7 +3,6 @@ package com.quantactions.qa_flutter_plugin
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import androidx.annotation.NonNull
 import com.quantactions.sdk.Metric
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -16,16 +15,12 @@ import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import com.quantactions.sdk.QA
 import com.quantactions.sdk.TimeSeries
 import com.quantactions.sdk.Trend
-import com.quantactions.sdk.data.entity.TimestampedEntity
-import com.quantactions.sdk.data.model.SerializableSleepSummary
-import com.squareup.moshi.JsonClass
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -38,32 +33,16 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
     private lateinit var eventChannels: List<EventChannel>
-
-    private val listOfMetricsAndTrends = listOf(
-        Metric.COGNITIVE_FITNESS,
-        Metric.ACTION_SPEED,
-        Metric.TYPING_SPEED,
-        Metric.SOCIAL_ENGAGEMENT,
-        Metric.SLEEP_SUMMARY,
-        Metric.SLEEP_SCORE,
-        Metric.SCREEN_TIME_AGGREGATE,
-        Metric.SOCIAL_TAPS,
-        Trend.COGNITIVE_FITNESS,
-        Trend.ACTION_SPEED,
-        Trend.SOCIAL_ENGAGEMENT,
-        Trend.SLEEP_SCORE,
-        Trend.SLEEP_LENGTH,
-        Trend.SLEEP_INTERRUPTIONS,
-        Trend.SOCIAL_SCREEN_TIME,
-        Trend.SOCIAL_TAPS,
-        Trend.TYPING_SPEED,
-        Trend.THE_WAVE,
-    )
+    private lateinit var eventChannel: EventChannel
 
     private lateinit var context: Context
     private lateinit var activity: Activity
 
-    lateinit var qa: QA
+    // The scope for the UI thread
+    private val mainScope = CoroutineScope(Dispatchers.Main)
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+
+    private lateinit var qa: QA
 
     override fun onDetachedFromActivity() {
         print("Activity detached, but service should continue!")
@@ -81,28 +60,11 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         print("Activity detached, for config changes but service should continue!")
     }
 
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        Log.d("MyPlugin", "onAttachedToEngine")
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin")
-        channel.setMethodCallHandler(this)
-
-        eventChannels = listOfMetricsAndTrends.map {
-            Log.d("QAFlutterPlugin", "Creating event channel for ${it.id}")
-            EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/${it.id}")
-        }
-
-        eventChannels.forEach {
-            it.setStreamHandler(this)
-        }
-
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        initChannels(flutterPluginBinding)
         qa = QA.getInstance(flutterPluginBinding.applicationContext)
-
         context = flutterPluginBinding.applicationContext
     }
-
-    // The scope for the UI thread
-    private val mainScope = CoroutineScope(Dispatchers.Main)
-    private val ioScope = CoroutineScope(Dispatchers.IO)
 
     override fun onMethodCall(call: MethodCall, result: Result) {
         mainScope.launch {
@@ -111,25 +73,154 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                     result.success("Android ${android.os.Build.VERSION.RELEASE}")
                 }
 
-                "initQA" -> qa.init(
-                    context,
-                    "55b9cf50-dac2-11e6-b535-fd8dff3bf4e9",
-                    age = 1991,
-                    gender = QA.Gender.MALE,
-                    true
-                )
-
                 "someOtherMethod" -> {
                     result.success("Success!")
                 }
+
+                "initAsync" -> {
+                    val age = call.argument<Int>("age") ?: 0
+                    val selfDeclaredHealthy = call.argument<Boolean>("selfDeclaredHealthy") ?: false
+                    val gender = QAFlutterPluginHelper.parseGender(call.argument<String>("gender"))
+
+                    result.success(
+                        qa.initAsync(
+                            context,
+                            QAFlutterPluginHelper.initApiKey,
+                            age = age,
+                            gender = gender,
+                            selfDeclaredHealthy,
+                        )
+                    )
+                }
+
+                "canDraw" -> result.success(qa.canDraw(context))
+
+                "canUsage" -> result.success(qa.canUsage(context))
+
+                "isDataCollectionRunning" -> result.success(qa.isDataCollectionRunning(context))
+
+                "isInit" -> result.success(qa.isInit())
+
+                "isDeviceRegistered" -> result.success(qa.isDeviceRegistered(context))
 
                 else -> result.notImplemented()
             }
         }
     }
 
-    private fun getMetric(metric: String): Flow<TimeSeries<out Any>> {
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+    }
 
+    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+        ioScope.launch {
+            val params = arguments as? Map<*, *>
+
+            when (params?.get("event") as? String) {
+                null -> onListenMetric(arguments as String, events)
+                else -> onListenEvent(arguments, events)
+            }
+        }
+    }
+
+    override fun onCancel(arguments: Any?) {
+        // nothing
+    }
+
+    private fun initChannels(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        Log.d("MyPlugin", "onAttachedToEngine")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin")
+        channel.setMethodCallHandler(this)
+
+        eventChannels = QAFlutterPluginHelper.listOfMetricsAndTrends.map {
+            Log.d("QAFlutterPlugin", "Creating event channel for ${it.id}")
+            EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/${it.id}")
+        }
+
+        eventChannels.forEach {
+            it.setStreamHandler(this)
+        }
+
+        Log.d("QAFlutterPlugin", "Creating event channel}")
+        eventChannel =
+            EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream")
+
+        eventChannel.setStreamHandler(this)
+    }
+
+    private suspend fun onListenMetric(event: String, events: EventChannel.EventSink?) {
+        getMetric(event).collect {
+            // her I have to map the return types
+            mainScope.launch {
+                when (event) {
+                    "sleep", "cognitive", "social", "action", "typing", "social_taps" -> {
+                        events?.success(
+                            QAFlutterPluginSerializable.serializeDouble(
+                                it as TimeSeries.DoubleTimeSeries
+                            )
+                        )
+                    }
+
+                    "sleep_summary" -> {
+                        events?.success(
+                            QAFlutterPluginSerializable.serializeSleepSummaryTime(
+                                it as TimeSeries.SleepSummaryTimeTimeSeries
+                            )
+                        )
+                    }
+
+                    "screen_time_aggregate" -> {
+                        events?.success(
+                            QAFlutterPluginSerializable.serializeScreenTimeAggregate(
+                                it as TimeSeries.ScreenTimeAggregateTimeSeries
+                            )
+                        )
+                    }
+
+                    else -> {
+                        events?.success(
+                            QAFlutterPluginSerializable.serializeTrend(
+                                it as TimeSeries.TrendTimeSeries
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun onListenEvent(arguments: Any?, events: EventChannel.EventSink?) {
+        mainScope.launch {
+            val params = arguments as? Map<*, *>
+
+            when (params?.get("event") as? String) {
+                "init" -> {
+                    val age = params["age"] as? Int? ?: 0
+                    val selfDeclaredHealthy = params["age"] as? Boolean? ?: false
+                    val gender = QAFlutterPluginHelper.parseGender(params["gender"] as? String)
+
+                    qa.init(
+                        context,
+                        QAFlutterPluginHelper.initApiKey,
+                        age = age,
+                        gender = gender,
+                        selfDeclaredHealthy,
+                    ).collect {
+                        events?.success(
+                            Json.encodeToString(
+                                QAFlutterPluginSerializable.SerializableQAResponse(
+                                    it.data.toString(),
+                                    it.message.toString(),
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getMetric(metric: String): Flow<TimeSeries<out Any>> {
         val metricToAsk = when (metric) {
             "sleep" -> Metric.SLEEP_SCORE
             "cognitive" -> Metric.COGNITIVE_FITNESS
@@ -153,104 +244,7 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
         }
 
-        return QA.getInstance(context)
-            .getMetricSample(context, "55b9cf50-dac2-11e6-b535-fd8dff3bf4e9", metricToAsk)
-    }
-
-
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-        channel.setMethodCallHandler(null)
-    }
-
-    @JsonClass(generateAdapter = true)
-    @Serializable
-    data class SerializableTimeSeries<T>(
-        val timestamps: List<String>,
-        val values: List<T>,
-        val confidenceIntervalLow: List<T>,
-        val confidenceIntervalHigh: List<T>,
-        val confidence: List<Double>,
-    )
-
-    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
-        ioScope.launch {
-            getMetric(arguments.toString()).collect {
-
-                // her I have to map the return types
-                mainScope.launch {
-
-                    when (arguments.toString()) {
-                        "sleep", "cognitive", "social", "action", "typing", "social_taps" -> {
-                            val it2 = it as TimeSeries.DoubleTimeSeries
-                            events?.success(
-                                Json.encodeToString(
-                                    SerializableTimeSeries(
-                                        it2.timestamps.map { v -> v.toString() },
-                                        it2.values.map { v -> if (v.isNaN()) null else v },
-                                        it2.confidenceIntervalLow.map { v -> if (v.isNaN()) null else v },
-                                        it2.confidenceIntervalHigh.map { v -> if (v.isNaN()) null else v },
-                                        it2.confidence.map { v -> if (v.isNaN()) 0.0 else v }
-                                    )
-                                )
-                            )
-                        }
-
-                        "sleep_summary" -> {
-                            val it2 = it as TimeSeries.SleepSummaryTimeTimeSeries
-                            events?.success(
-                                Json.encodeToString(
-                                    SerializableTimeSeries(
-                                        it2.timestamps.map { v -> v.toString() },
-                                        it2.values.map { v -> v.serialize() },
-                                        it2.confidenceIntervalLow.map { v -> v.serialize() },
-                                        it2.confidenceIntervalHigh.map { v -> v.serialize() },
-                                        it2.confidence.map { v -> if (v.isNaN()) 0.0 else v }
-                                    )
-                                )
-                            )
-
-                        }
-
-                        "screen_time_aggregate" -> {
-                            val it2 = it as TimeSeries.ScreenTimeAggregateTimeSeries
-                            events?.success(
-                                Json.encodeToString(
-                                    SerializableTimeSeries(
-                                        it2.timestamps.map { v -> v.toString() },
-                                        it2.values,
-                                        it2.confidenceIntervalLow,
-                                        it2.confidenceIntervalHigh,
-                                        it2.confidence.map { v -> if (v.isNaN()) 0.0 else v }
-                                    )
-                                )
-                            )
-                        }
-
-                        else -> {
-                            val it2 = it as TimeSeries.TrendTimeSeries
-                            events?.success(
-                                Json.encodeToString(
-                                    SerializableTimeSeries(
-                                        it2.timestamps.map { v -> v.toString() },
-                                        it2.values,
-                                        it2.confidenceIntervalLow,
-                                        it2.confidenceIntervalHigh,
-                                        it2.confidence.map { v -> if (v.isNaN()) 0.0 else v }
-                                    )
-                                )
-                            )
-
-
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onCancel(arguments: Any?) {
-        // nothing
+        return qa.getMetricSample(context, QAFlutterPluginHelper.initApiKey, metricToAsk)
     }
 
 }

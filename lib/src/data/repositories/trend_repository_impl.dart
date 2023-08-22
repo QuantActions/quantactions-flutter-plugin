@@ -1,6 +1,6 @@
 import 'package:qa_flutter_plugin/src/domain/domain.dart';
 
-import '../mappers/time_series_stream_mapper.dart';
+import '../mappers/time_series/time_series_stream_mapper.dart';
 import '../providers/sdk_method_channel.dart';
 
 class TrendRepositoryImpl implements TrendRepository {

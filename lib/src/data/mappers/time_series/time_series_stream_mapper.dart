@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import '../../domain/domain.dart';
-import 'time_series/time_series_mapper.dart';
+import '../../../domain/domain.dart';
+import 'time_series_mapper.dart';
 
 class TimeSeriesStreamMapper {
   static Stream<TimeSeries<dynamic>> getDouble(Stream<dynamic> stream) {

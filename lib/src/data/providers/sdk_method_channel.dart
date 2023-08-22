@@ -31,4 +31,42 @@ abstract class SDKMethodChannel extends PlatformInterface {
   Stream<dynamic> getMetricStream(Metric metric) {
     throw UnimplementedError('getMetricStream() has not been implemented.');
   }
+
+  Future<bool?> canDraw() {
+    throw UnimplementedError('canDraw() has not been implemented.');
+  }
+
+  Future<bool?> canUsage() {
+    throw UnimplementedError('canUsage() has not been implemented.');
+  }
+
+  Future<bool?> isDataCollectionRunning() {
+    throw UnimplementedError(
+      'isDataCollectionRunning() has not been implemented.',
+    );
+  }
+
+  Future<bool?> isInit() {
+    throw UnimplementedError('isInit() has not been implemented.');
+  }
+
+  Future<bool?> isDeviceRegistered() {
+    throw UnimplementedError('isDeviceRegistered() has not been implemented.');
+  }
+
+  Future<bool?> initAsync({
+    int? age,
+    Gender? gender,
+    bool? selfDeclaredHealthy,
+  }) {
+    throw UnimplementedError('init() has not been implemented.');
+  }
+
+  Stream<dynamic> init({
+    int? age,
+    Gender? gender,
+    bool? selfDeclaredHealthy,
+  }) {
+    throw UnimplementedError('init() has not been implemented.');
+  }
 }
