@@ -78,6 +78,11 @@ class MockTestPluginPlatform
   void resumeDataCollection() {
     // TODO: implement resumeDataCollection
   }
+
+  @override
+  void savePublicKey() {
+    // TODO: implement savePublicKey
+  }
 }
 
 void main() {

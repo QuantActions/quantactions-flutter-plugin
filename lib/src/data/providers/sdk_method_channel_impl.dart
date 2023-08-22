@@ -15,8 +15,8 @@ class SDKMethodChannelImpl extends SDKMethodChannel {
   final methodChannel =
       const MethodChannel(MethodChannelConsts.mainMethodChannel);
   @visibleForTesting
-  final eventChannel = 
-    const EventChannel(MethodChannelConsts.eventMethodChannelPrefix);
+  final eventChannel =
+      const EventChannel(MethodChannelConsts.eventMethodChannelPrefix);
 
   @visibleForTesting
   final metricEventChannels = HashMap<Metric, EventChannel>.fromIterables(
@@ -150,6 +150,13 @@ class SDKMethodChannelImpl extends SDKMethodChannel {
         "selfDeclaredHealthy": selfDeclaredHealthy,
       }),
     );
+  }
+
+  @override
+  void savePublicKey() {
+    _safeRequest(request: () {
+      methodChannel.invokeMethod<bool?>('savePublicKey');
+    });
   }
 
   dynamic _safeRequest({

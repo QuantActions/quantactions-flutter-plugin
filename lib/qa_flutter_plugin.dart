@@ -80,4 +80,8 @@ class QAFlutterPlugin {
       selfDeclaredHealthy: selfDeclaredHealthy,
     );
   }
+
+  void savePublicKey() {
+    return _sdkRepository.savePublicKey();
+  }
 }

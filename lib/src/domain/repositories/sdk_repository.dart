@@ -16,4 +16,6 @@ abstract class SDKRepository {
     Gender? gender,
     bool? selfDeclaredHealthy,
   });
+
+  void savePublicKey();
 }
