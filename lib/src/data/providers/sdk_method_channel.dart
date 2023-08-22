@@ -78,4 +78,8 @@ abstract class SDKMethodChannel extends PlatformInterface {
   }) {
     throw UnimplementedError('init() has not been implemented.');
   }
+
+  void savePublicKey() {
+    throw UnimplementedError('savePublicKey() has not been implemented.');
+  }
 }

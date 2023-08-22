@@ -47,4 +47,9 @@ class SDKRepositoryImpl implements SDKRepository {
 
     return QAResponseStreamMapper.getString(initStream);
   }
+
+  @override
+  void savePublicKey() {
+    _sdkMethodChannel.savePublicKey();
+  }
 }

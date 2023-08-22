@@ -107,6 +107,8 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
                 "isDeviceRegistered" -> result.success(qa.isDeviceRegistered(context))
 
+                "savePublicKey" -> qa.savePublicKey(context)
+
                 else -> result.notImplemented()
             }
         }
