@@ -9,6 +9,7 @@ class QAFlutterPlugin {
   late MetricRepository _metricRepository;
   late PermissionRepository _permissionRepository;
   late SDKRepository _sdkRepository;
+  late DataCollectionRepository _dataCollectionRepository;
 
   QAFlutterPlugin() {
     dataDI.initDependencies();
@@ -17,6 +18,7 @@ class QAFlutterPlugin {
     _metricRepository = appLocator.get<MetricRepository>();
     _permissionRepository = appLocator.get<PermissionRepository>();
     _sdkRepository = appLocator.get<SDKRepository>();
+    _dataCollectionRepository = appLocator.get<DataCollectionRepository>();
   }
 
   Stream<TimeSeries<dynamic>> getTrend(Trend trend) {
@@ -36,7 +38,15 @@ class QAFlutterPlugin {
   }
 
   Future<bool?> isDataCollectionRunning() {
-    return _sdkRepository.isDataCollectionRunning();
+    return _dataCollectionRepository.isDataCollectionRunning();
+  }
+
+  void pauseDataCollection() {
+    return _dataCollectionRepository.pauseDataCollection();
+  }
+
+  void resumeDataCollection() {
+    return _dataCollectionRepository.resumeDataCollection();
   }
 
   Future<bool?> isInit() {

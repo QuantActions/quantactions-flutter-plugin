@@ -68,6 +68,16 @@ class MockTestPluginPlatform
     // TODO: implement isDeviceRegistered
     throw UnimplementedError();
   }
+
+  @override
+  void pauseDataCollection() {
+    // TODO: implement pauseDataCollection
+  }
+
+  @override
+  void resumeDataCollection() {
+    // TODO: implement resumeDataCollection
+  }
 }
 
 void main() {

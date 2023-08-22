@@ -46,6 +46,15 @@ abstract class SDKMethodChannel extends PlatformInterface {
     );
   }
 
+  void pauseDataCollection() {
+    throw UnimplementedError('pauseDataCollection() has not been implemented.');
+  }
+
+  void resumeDataCollection() {
+    throw UnimplementedError(
+        'resumeDataCollection() has not been implemented.');
+  }
+
   Future<bool?> isInit() {
     throw UnimplementedError('isInit() has not been implemented.');
   }

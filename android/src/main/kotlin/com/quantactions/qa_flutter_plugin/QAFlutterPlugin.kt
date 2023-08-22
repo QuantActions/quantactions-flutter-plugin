@@ -99,6 +99,10 @@ class QAFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
                 "isDataCollectionRunning" -> result.success(qa.isDataCollectionRunning(context))
 
+                "pauseDataCollection" -> qa.pauseDataCollection(context)
+
+                "resumeDataCollection" -> qa.resumeDataCollection(context)
+
                 "isInit" -> result.success(qa.isInit())
 
                 "isDeviceRegistered" -> result.success(qa.isDeviceRegistered(context))

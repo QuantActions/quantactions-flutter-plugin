@@ -21,11 +21,6 @@ class SDKRepositoryImpl implements SDKRepository {
   }
 
   @override
-  Future<bool?> isDataCollectionRunning() {
-    return _sdkMethodChannel.isDataCollectionRunning();
-  }
-
-  @override
   Future<bool?> initAsync({
     int? age,
     Gender? gender,

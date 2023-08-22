@@ -3,6 +3,7 @@ import 'package:qa_flutter_plugin/src/domain/domain.dart';
 
 import '../providers/sdk_method_channel.dart';
 import '../providers/sdk_method_channel_impl.dart';
+import '../repositories/data_collection_repository_impl.dart';
 import '../repositories/metric_repository_impl.dart';
 import '../repositories/permission_repository_impl.dart';
 import '../repositories/sdk_repository_impl.dart';
@@ -36,6 +37,12 @@ class DataDI {
 
     appLocator.registerSingleton<SDKRepository>(
       SDKRepositoryImpl(
+        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
+      ),
+    );
+
+    appLocator.registerSingleton<DataCollectionRepository>(
+      DataCollectionRepositoryImpl(
         sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
       ),
     );

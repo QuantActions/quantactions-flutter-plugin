@@ -5,8 +5,6 @@ abstract class SDKRepository {
 
   Future<bool?> isDeviceRegistered();
 
-  Future<bool?> isDataCollectionRunning();
-
   Future<bool?> initAsync({
     int? age,
     Gender? gender,

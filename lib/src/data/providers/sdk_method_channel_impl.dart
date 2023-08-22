@@ -69,7 +69,26 @@ class SDKMethodChannelImpl extends SDKMethodChannel {
   @override
   Future<bool?> isDataCollectionRunning() {
     return _safeRequest(
-      request: () => methodChannel.invokeMethod<bool?>('isDataCollectionRunning'),
+      request: () =>
+          methodChannel.invokeMethod<bool?>('isDataCollectionRunning'),
+    );
+  }
+
+  @override
+  void pauseDataCollection() {
+    _safeRequest(
+      request: () {
+        methodChannel.invokeMethod<bool?>('pauseDataCollection');
+      },
+    );
+  }
+
+  @override
+  void resumeDataCollection() {
+    _safeRequest(
+      request: () {
+        methodChannel.invokeMethod<bool?>('resumeDataCollection');
+      },
     );
   }
 
