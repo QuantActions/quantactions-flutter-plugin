@@ -1,23 +1,22 @@
-import 'package:qa_flutter_plugin/src/data/mappers/qa_response/qa_response_stream_mapper.dart';
+import '../../../domain/domain.dart';
+import '../../mappers/qa_response/qa_response_stream_mapper.dart';
+import '../providers/qa_provider.dart';
 
-import '../../domain/domain.dart';
-import '../providers/sdk_method_channel.dart';
+class QARepositoryImpl implements QARepository {
+  final QAProvider _qaProvider;
 
-class SDKRepositoryImpl implements SDKRepository {
-  final SDKMethodChannel _sdkMethodChannel;
-
-  SDKRepositoryImpl({
-    required SDKMethodChannel sdkMethodChannel,
-  }) : _sdkMethodChannel = sdkMethodChannel;
+  QARepositoryImpl({
+    required QAProvider qaProvider,
+  }) : _qaProvider = qaProvider;
 
   @override
   Future<bool?> isInit() {
-    return _sdkMethodChannel.isInit();
+    return _qaProvider.isInit();
   }
 
   @override
   Future<bool?> isDeviceRegistered() {
-    return _sdkMethodChannel.isDeviceRegistered();
+    return _qaProvider.isDeviceRegistered();
   }
 
   @override
@@ -26,7 +25,7 @@ class SDKRepositoryImpl implements SDKRepository {
     Gender? gender,
     bool? selfDeclaredHealthy,
   }) {
-    return _sdkMethodChannel.initAsync(
+    return _qaProvider.initAsync(
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
@@ -39,7 +38,7 @@ class SDKRepositoryImpl implements SDKRepository {
     Gender? gender,
     bool? selfDeclaredHealthy,
   }) {
-    final initStream = _sdkMethodChannel.init(
+    final Stream<dynamic> initStream = _qaProvider.init(
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
@@ -50,6 +49,6 @@ class SDKRepositoryImpl implements SDKRepository {
 
   @override
   void savePublicKey() {
-    _sdkMethodChannel.savePublicKey();
+    _qaProvider.savePublicKey();
   }
 }

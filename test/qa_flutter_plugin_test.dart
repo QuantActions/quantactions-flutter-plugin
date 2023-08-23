@@ -1,12 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:qa_flutter_plugin/src/data/providers/sdk_method_channel.dart';
-import 'package:qa_flutter_plugin/src/data/providers/sdk_method_channel_impl.dart';
+import 'package:qa_flutter_plugin/src/data/core/sdk_method_channel_core.dart';
 
 class MockTestPluginPlatform
     with MockPlatformInterfaceMixin
-    implements SDKMethodChannel {
+    implements SDKMethodChannelCore {
   @override
   Stream getMetricStream(Metric metric) {
     // TODO: implement getMetricStream
@@ -86,9 +85,9 @@ class MockTestPluginPlatform
 }
 
 void main() {
-  final SDKMethodChannel initialPlatform = SDKMethodChannel.instance;
+  final SDKMethodChannelCore initialPlatform = SDKMethodChannelCore.instance;
 
-  test('$SDKMethodChannelImpl is the default instance', () {
-    expect(initialPlatform, isInstanceOf<SDKMethodChannelImpl>());
+  test('$SDKMethodChannelCore is the default instance', () {
+    expect(initialPlatform, isInstanceOf<SDKMethodChannelCore>());
   });
 }
