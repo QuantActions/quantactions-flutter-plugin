@@ -8,7 +8,7 @@ class QAFlutterPlugin {
   late TrendRepository _trendRepository;
   late MetricRepository _metricRepository;
   late PermissionRepository _permissionRepository;
-  late SDKRepository _sdkRepository;
+  late QARepository _qaRepository;
   late DataCollectionRepository _dataCollectionRepository;
 
   QAFlutterPlugin() {
@@ -17,7 +17,7 @@ class QAFlutterPlugin {
     _trendRepository = appLocator.get<TrendRepository>();
     _metricRepository = appLocator.get<MetricRepository>();
     _permissionRepository = appLocator.get<PermissionRepository>();
-    _sdkRepository = appLocator.get<SDKRepository>();
+    _qaRepository = appLocator.get<QARepository>();
     _dataCollectionRepository = appLocator.get<DataCollectionRepository>();
   }
 
@@ -50,11 +50,11 @@ class QAFlutterPlugin {
   }
 
   Future<bool?> isInit() {
-    return _sdkRepository.isInit();
+    return _qaRepository.isInit();
   }
 
   Future<bool?> isDeviceRegistered() {
-    return _sdkRepository.isDeviceRegistered();
+    return _qaRepository.isDeviceRegistered();
   }
 
   Future<bool?> initAsync({
@@ -62,7 +62,7 @@ class QAFlutterPlugin {
     Gender? gender,
     bool? selfDeclaredHealthy,
   }) {
-    return _sdkRepository.initAsync(
+    return _qaRepository.initAsync(
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
@@ -74,7 +74,7 @@ class QAFlutterPlugin {
     Gender? gender,
     bool? selfDeclaredHealthy,
   }) {
-    return _sdkRepository.init(
+    return _qaRepository.init(
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
@@ -82,6 +82,6 @@ class QAFlutterPlugin {
   }
 
   void savePublicKey() {
-    return _sdkRepository.savePublicKey();
+    return _qaRepository.savePublicKey();
   }
 }

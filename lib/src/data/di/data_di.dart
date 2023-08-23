@@ -1,50 +1,24 @@
 import 'package:qa_flutter_plugin/src/core/core.dart';
-import 'package:qa_flutter_plugin/src/domain/domain.dart';
 
-import '../providers/sdk_method_channel.dart';
-import '../providers/sdk_method_channel_impl.dart';
-import '../repositories/data_collection_repository_impl.dart';
-import '../repositories/metric_repository_impl.dart';
-import '../repositories/permission_repository_impl.dart';
-import '../repositories/sdk_repository_impl.dart';
-import '../repositories/trend_repository_impl.dart';
+import '../core/sdk_method_channel.dart';
+import '../data_collection/di/data_connection_di.dart';
+import '../metric/di/metric_di.dart';
+import '../permission/di/permission_di.dart';
+import '../qa/di/qa_di.dart';
+import '../trend/di/trend_di.dart';
 
 final DataDI dataDI = DataDI();
 
 class DataDI {
   void initDependencies() {
     appLocator.registerSingleton<SDKMethodChannel>(
-      SDKMethodChannelImpl(),
+      SDKMethodChannel(),
     );
 
-    appLocator.registerSingleton<MetricRepository>(
-      MetricRepositoryImpl(
-        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
-      ),
-    );
-
-    appLocator.registerSingleton<TrendRepository>(
-      TrendRepositoryImpl(
-        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
-      ),
-    );
-
-    appLocator.registerSingleton<PermissionRepository>(
-      PermissionRepositoryImpl(
-        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
-      ),
-    );
-
-    appLocator.registerSingleton<SDKRepository>(
-      SDKRepositoryImpl(
-        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
-      ),
-    );
-
-    appLocator.registerSingleton<DataCollectionRepository>(
-      DataCollectionRepositoryImpl(
-        sdkMethodChannel: appLocator.get<SDKMethodChannel>(),
-      ),
-    );
+    dataCollectionDI.initDependencies();
+    metricDI.initDependencies();
+    permissionDI.initDependencies();
+    qanDI.initDependencies();
+    trendDI.initDependencies();
   }
 }

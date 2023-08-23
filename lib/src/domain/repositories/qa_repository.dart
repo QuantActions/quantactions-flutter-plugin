@@ -1,6 +1,6 @@
 import '../models/models.dart';
 
-abstract class SDKRepository {
+abstract class QARepository {
   Future<bool?> isInit();
 
   Future<bool?> isDeviceRegistered();

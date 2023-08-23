@@ -1,18 +1,17 @@
-import 'package:qa_flutter_plugin/src/domain/domain.dart';
-
-import '../mappers/time_series/time_series_stream_mapper.dart';
-import '../providers/sdk_method_channel.dart';
+import '../../../domain/domain.dart';
+import '../../mappers/time_series/time_series_stream_mapper.dart';
+import '../providers/metric_provider.dart';
 
 class MetricRepositoryImpl implements MetricRepository {
-  final SDKMethodChannel _sdkMethodChannel;
+  final MetricProvider _metricProvider;
 
   MetricRepositoryImpl({
-    required SDKMethodChannel sdkMethodChannel,
-  }) : _sdkMethodChannel = sdkMethodChannel;
+    required MetricProvider metricProvider,
+  }) : _metricProvider = metricProvider;
 
   @override
   Stream<TimeSeries<dynamic>> getByMetric(Metric metric) {
-    final Stream<dynamic> stream = _sdkMethodChannel.getMetricStream(metric);
+    final Stream<dynamic> stream = _metricProvider.getMetricStream(metric);
 
     switch (metric) {
       case Metric.sleepSummary:
