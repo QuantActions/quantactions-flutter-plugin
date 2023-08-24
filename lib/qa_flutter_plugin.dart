@@ -75,7 +75,7 @@ class QAFlutterPlugin {
     );
   }
 
-  //TODO check SubscriptionIdResponse
+  // TODO: check SubscriptionIdResponse
   ///Returns an object of type [SubscriptionIdResponse] that contains
   ///the subscription ID of the cohort to which the device is currently
   ///subscribed to, if multiple devices are subscribed using
@@ -106,6 +106,11 @@ class QAFlutterPlugin {
   ///The status of the worker can be observed to check its status of SUCCESS/FAILURE.
   Future<dynamic> syncData() {
     return _deviceRepository.syncData();
+  }
+
+  // TODO: check SubscriptionIdResponse
+  Future<QAResponse<String>> getSubscriptionIdAsync() {
+    return _deviceRepository.getSubscriptionIdAsync();
   }
 
   ///Use this function to retrieve a particular journal entry.
