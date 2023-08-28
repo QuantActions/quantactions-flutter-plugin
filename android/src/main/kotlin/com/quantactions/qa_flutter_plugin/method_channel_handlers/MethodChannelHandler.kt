@@ -1,7 +1,12 @@
-package com.quantactions.qa_flutter_plugin
+package com.quantactions.qa_flutter_plugin.method_channel_handlers
 
 import android.content.Context
+import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
+import com.quantactions.qa_flutter_plugin.QAFlutterPluginMetricMapper
+import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
+import com.quantactions.sdk.data.model.JournalEntryWithEvents
+import com.quantactions.sdk.data.model.ResolvedJournalEvent
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CoroutineScope
@@ -9,60 +14,144 @@ import kotlinx.coroutines.launch
 
 class MethodChannelHandler(
     private var mainScope: CoroutineScope,
+    private var ioScope: CoroutineScope,
     private var qa: QA,
     private var context: Context
 ) : MethodChannel.MethodCallHandler {
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        mainScope.launch {
+        ioScope.launch {
             when (call.method) {
-                "getPlatformVersion" -> {
-                    result.success("Android ${android.os.Build.VERSION.RELEASE}")
-                }
+                "getJournalEntry" -> {
+                    val params = call.arguments as Map<*, *>
 
-                "someOtherMethod" -> {
-                    result.success("Success!")
-                }
+                    val journalEntryId = params["journalEntryId"] as String
 
-                "initAsync" -> {
-                    val age = call.argument<Int>("age") ?: 0
-                    val selfDeclaredHealthy = call.argument<Boolean>("selfDeclaredHealthy") ?: false
-                    val gender = QAFlutterPluginHelper.parseGender(call.argument<String>("gender"))
+                    val response = qa.getJournalEntry(journalEntryId)
 
                     result.success(
-                        qa.initAsync(
-                            context,
-                            QAFlutterPluginHelper.initApiKey,
-                            age = age,
-                            gender = gender,
-                            selfDeclaredHealthy,
-                        )
+                        if (response == null) null
+                        else QAFlutterPluginSerializable.serializeJournalEntry(response)
                     )
                 }
 
-                "canDraw" -> result.success(qa.canDraw(context))
+                else -> mainScope.launch {
+                    when (call.method) {
+                        "getPlatformVersion" -> {
+                            result.success("Android ${android.os.Build.VERSION.RELEASE}")
+                        }
 
-                "canUsage" -> result.success(qa.canUsage(context))
+                        "someOtherMethod" -> {
+                            result.success("Success!")
+                        }
 
-                "isDataCollectionRunning" -> result.success(qa.isDataCollectionRunning(context))
+                        "initAsync" -> {
+                            val params = call.arguments as Map<*, *>
 
-                "pauseDataCollection" -> qa.pauseDataCollection(context)
+                            val apiKey = params["apiKey"] as String
+                            val age = params["age"] as Int
+                            val selfDeclaredHealthy = params["selfDeclaredHealthy"] as Boolean
+                            val gender = QAFlutterPluginHelper.parseGender(
+                                params["gender"] as String
+                            )
 
-                "resumeDataCollection" -> qa.resumeDataCollection(context)
+                            result.success(
+                                qa.initAsync(
+                                    context,
+                                    apiKey,
+                                    age,
+                                    gender,
+                                    selfDeclaredHealthy,
+                                )
+                            )
+                        }
 
-                "isInit" -> result.success(qa.isInit())
+                        "updateBasicInfo" -> {
+                            val params = call.arguments as Map<*, *>
 
-                "isDeviceRegistered" -> result.success(qa.isDeviceRegistered(context))
+                            val newYearOfBirth = params["newYearOfBirth"] as Int
+                            val newSelfDeclaredHealthy = params["age"] as Boolean
+                            val newGender = QAFlutterPluginHelper.parseGender(
+                                params["newGender"] as String
+                            )
 
-                "savePublicKey" -> qa.savePublicKey(context)
+                            qa.updateBasicInfo(
+                                newYearOfBirth,
+                                newGender,
+                                newSelfDeclaredHealthy,
+                            )
+                        }
 
-                "setVerboseLevel" -> {
-                    val verbose = call.argument<Int>("verbose") ?: 0
+                        "canDraw" -> result.success(qa.canDraw(context))
 
-                    qa.setVerboseLevel(context, verbose)
+                        "canUsage" -> result.success(qa.canUsage(context))
+
+                        "requestOverlayPermission" -> result.success(
+                            qa.requestOverlayPermission(context)
+                        )
+
+                        "requestUsagePermission" -> result.success(
+                            qa.requestUsagePermission(context)
+                        )
+
+                        "isDataCollectionRunning" -> result.success(
+                            qa.isDataCollectionRunning(context)
+                        )
+
+                        "pauseDataCollection" -> qa.pauseDataCollection(context)
+
+                        "resumeDataCollection" -> qa.resumeDataCollection(context)
+
+                        "isInit" -> result.success(qa.isInit())
+
+                        "isDeviceRegistered" -> result.success(qa.isDeviceRegistered(context))
+
+                        "savePublicKey" -> qa.savePublicKey(context)
+
+                        "setVerboseLevel" -> {
+                            val params = call.arguments as Map<*, *>
+
+                            val verbose = params["verbose"] as Int
+
+                            qa.setVerboseLevel(context, verbose)
+                        }
+
+                        "getSubscriptionIdAsync" -> result.success(
+                            QAFlutterPluginSerializable.serializeQAResponseString(
+                                qa.getSubscriptionIdAsync()
+                            )
+                        )
+
+                        "getMetricAsync" -> {
+                            val params = call.arguments as Map<*, *>
+
+                            val metric = params["metric"] as String
+                            val metricToAsk = QAFlutterPluginMetricMapper.getMetric(metric);
+
+                            val response = qa.getMetricAsync(metricToAsk)
+                            result.success(
+                                QAFlutterPluginMetricMapper.mapMetricResponse(metric, response)
+                            )
+                        }
+
+                        "getStatSampleAsync" -> {
+                            val params = call.arguments as Map<*, *>
+
+                            val metric = params["metric"] as String
+                            val apiKey = params["apiKey"] as String
+
+                            val metricToAsk = QAFlutterPluginMetricMapper.getMetric(metric);
+
+                            val response = qa.getStatSampleAsync(context, apiKey, metricToAsk)
+                            result.success(
+                                QAFlutterPluginMetricMapper.mapMetricResponse(metric, response)
+                            )
+                        }
+
+                        else -> result.notImplemented()
+                    }
                 }
-
-                else -> result.notImplemented()
             }
         }
+
     }
 }

@@ -3,6 +3,13 @@ package com.quantactions.qa_flutter_plugin
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import com.quantactions.qa_flutter_plugin.event_channel_handlers.CohortStreamHandler
+import com.quantactions.qa_flutter_plugin.event_channel_handlers.DeviceStreamHandler
+import com.quantactions.qa_flutter_plugin.event_channel_handlers.JournalStreamHandler
+import com.quantactions.qa_flutter_plugin.event_channel_handlers.MetricAndTrendStreamHandler
+import com.quantactions.qa_flutter_plugin.event_channel_handlers.QuestionnaireStreamHandler
+import com.quantactions.qa_flutter_plugin.event_channel_handlers.UserStreamHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.MethodChannelHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodChannel
@@ -21,9 +28,12 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
-    private lateinit var eventChannels: List<EventChannel>
-    private lateinit var mainEventChannel: EventChannel
+    private lateinit var metricEventChannels: List<EventChannel>
+    private lateinit var cohortEventChannel: EventChannel
+    private lateinit var userEventChannel: EventChannel
     private lateinit var deviceEventChannel: EventChannel
+    private lateinit var journalEventChannel: EventChannel
+    private lateinit var questionnaireEventChannel: EventChannel
 
     private lateinit var context: Context
     private lateinit var activity: Activity
@@ -64,15 +74,15 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         Log.d("QAFlutterPlugin", "initChannels")
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin")
         channel.setMethodCallHandler(
-            MethodChannelHandler(mainScope, qa, context)
+            MethodChannelHandler(mainScope, ioScope, qa, context)
         )
 
-        eventChannels = QAFlutterPluginHelper.listOfMetricsAndTrends.map {
+        metricEventChannels = QAFlutterPluginHelper.listOfMetricsAndTrends.map {
             Log.d("QAFlutterPlugin", "Creating event channel for ${it.id}")
             EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/${it.id}")
         }
 
-        eventChannels.forEach {
+        metricEventChannels.forEach {
             it.setStreamHandler(
                 MetricAndTrendStreamHandler(mainScope, ioScope, qa, context)
             )
@@ -88,12 +98,39 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         )
 
         Log.d("QAFlutterPlugin", "Creating event channel}")
-        mainEventChannel = EventChannel(
-            flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/main"
+        userEventChannel = EventChannel(
+            flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/user"
         )
 
-        mainEventChannel.setStreamHandler(
-            MainStreamHandler(mainScope, qa, context)
+        userEventChannel.setStreamHandler(
+            UserStreamHandler(mainScope, qa, context)
+        )
+
+        Log.d("QAFlutterPlugin", "Creating event channel}")
+        cohortEventChannel = EventChannel(
+            flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/cohort"
+        )
+
+        cohortEventChannel.setStreamHandler(
+            CohortStreamHandler(mainScope, qa, context)
+        )
+
+        Log.d("QAFlutterPlugin", "Creating event channel}")
+        journalEventChannel = EventChannel(
+            flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/journal"
+        )
+
+        journalEventChannel.setStreamHandler(
+            JournalStreamHandler(mainScope, ioScope, qa, context)
+        )
+
+        Log.d("QAFlutterPlugin", "Creating event channel}")
+        questionnaireEventChannel = EventChannel(
+            flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/questionnaire"
+        )
+
+        questionnaireEventChannel.setStreamHandler(
+            QuestionnaireStreamHandler(mainScope, ioScope, qa, context)
         )
     }
 }
