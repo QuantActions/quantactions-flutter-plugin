@@ -99,19 +99,6 @@ class QAFlutterPlugin {
     return _deviceRepository.isDeviceRegistered();
   }
 
-  ///Some manufacturers kill apps that are running for too long, on those devices
-  ///it is better to ask the user to prevent the OS from killing the app
-  ///running this SDK. Call this function to retrieve the Intent that redirects
-  ///the user to the correct setting for disabling battery optimization
-  ///of the current manufacturer. The functions returns a list,
-  ///choose the first intent, in an empty list is returned,
-  ///the current manufacturer does not have specific battery optimization options,
-  ///thus the request is not needed and the SDk should run safely.
-  Future<String> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
-    return _deviceRepository
-        .retrieveBatteryOptimizationIntentForCurrentManufacturer();
-  }
-
   ///Utility function to sync all the local data with the server.
   ///Due to the complexity of the work, it spawns a Worker and return its UUID.
   ///The status of the worker can be observed to check its status of SUCCESS/FAILURE.
@@ -246,18 +233,6 @@ class QAFlutterPlugin {
   ///Returns whether or not the ```usage``` permission has been granted
   Future<bool> canUsage() {
     return _permissionRepository.canUsage();
-  }
-
-  ///This function checks if the overlay permission has been granted,
-  ///if not opens the corresponding settings activity to prompt the user to grant this permission.
-  Future<int> requestOverlayPermission() {
-    return _permissionRepository.requestOverlayPermission();
-  }
-
-  ///This function checks if the usage permission has been granted,
-  ///if not open the corresponding settings activity to prompt the user to grant this permission.
-  Future<int> requestUsagePermission() {
-    return _permissionRepository.requestUsagePermission();
   }
 
   ///Get a list of all the questionnaires available to complete

@@ -70,12 +70,6 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Future<String> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
-    return _deviceProvider
-        .retrieveBatteryOptimizationIntentForCurrentManufacturer();
-  }
-
-  @override
   Future<String> syncData() {
     return _deviceProvider.syncData();
   }

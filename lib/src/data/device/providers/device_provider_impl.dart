@@ -77,13 +77,6 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Future<String> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
-    return _sdkMethodChannel.callMethodChannel<String>(
-      method: 'retrieveBatteryOptimizationIntentForCurrentManufacturer',
-    );
-  }
-
-  @override
   Future<String> syncData() {
     return _sdkMethodChannel.callMethodChannel<String>(
       method: 'syncData',

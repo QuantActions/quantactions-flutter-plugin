@@ -17,14 +17,4 @@ class PermissionRepositoryImpl implements PermissionRepository {
   Future<bool> canUsage() {
     return _permissionProvider.canUsage();
   }
-
-  @override
-  Future<int> requestOverlayPermission() {
-    return _permissionProvider.requestOverlayPermission();
-  }
-
-  @override
-  Future<int> requestUsagePermission() {
-    return _permissionProvider.requestUsagePermission();
-  }
 }
