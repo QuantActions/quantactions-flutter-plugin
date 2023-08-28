@@ -169,6 +169,10 @@ class MethodChannelHandler(
                             result.success(qa.syncData().toString())
                         }
 
+                        "getFirebaseToken" -> {
+                            result.success(qa.firebaseToken)
+                        }
+
                         else -> result.notImplemented()
                     }
                 }

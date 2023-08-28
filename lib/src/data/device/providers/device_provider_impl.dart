@@ -96,4 +96,11 @@ class DeviceProviderImpl implements DeviceProvider {
       method: 'getDeviceID',
     );
   }
+
+  @override
+  Future<String?> getFirebaseToken() async {
+    return _sdkMethodChannel.callMethodChannel<String?>(
+      method: 'getFirebaseToken',
+    );
+  }
 }

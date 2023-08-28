@@ -33,6 +33,9 @@ class QAFlutterPlugin {
   ///ID of the device
   Future<String?> get deviceId => _deviceRepository.getDeviceID();
 
+  ///Firebase token for communication
+  Future<String?> get firebaseToken => _deviceRepository.getFirebaseToken();
+
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
     return _cohortRepository.getCohortList();
