@@ -11,13 +11,18 @@ class SDKMethodChannel extends SDKMethodChannelCore {
   final _methodChannel =
       const MethodChannel(MethodChannelConsts.mainMethodChannel);
 
-  Future<T?> callMethodChannel<T>({
+  Future<T> callMethodChannel<T>({
     required String method,
     Map<String, dynamic>? params,
-  }) {
-    return _safeRequest(
+  }) async {
+    final response = await _safeRequest(
       request: () => _methodChannel.invokeMethod<T>(method, params),
     );
+    if (response == null) {
+      throw Exception("call $method from methodChannel return null");
+    }
+
+    return response;
   }
 
   Stream<dynamic> callEventChannel({

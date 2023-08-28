@@ -1,5 +1,5 @@
 abstract class DataCollectionRepository {
-  Future<bool?> isDataCollectionRunning();
+  Future<bool> isDataCollectionRunning();
 
   void pauseDataCollection();
 

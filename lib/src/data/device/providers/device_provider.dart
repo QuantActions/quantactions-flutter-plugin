@@ -1,5 +1,5 @@
 abstract class DeviceProvider {
-  Future<bool?> isDeviceRegistered();
+  Future<bool> isDeviceRegistered();
 
   Stream<dynamic> subscribe({
     required String subscriptionIdOrCohortId,
@@ -15,15 +15,15 @@ abstract class DeviceProvider {
 
   Stream<dynamic> getSubscriptionId();
 
-  Future<String?> retrieveBatteryOptimizationIntentForCurrentManufacturer();
+  Future<String> retrieveBatteryOptimizationIntentForCurrentManufacturer();
 
-  Future<String?> syncData();
+  Future<String> syncData();
 
   Future<String?> getSubscriptionIdAsync();
 
-  Future<String?> getDeviceID();
+  Future<String> getDeviceID();
 
   Future<String?> getFirebaseToken();
 
-  Future<bool?> getIsTablet();
+  Future<bool> getIsTablet();
 }

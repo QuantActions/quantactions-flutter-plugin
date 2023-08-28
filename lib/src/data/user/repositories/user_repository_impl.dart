@@ -13,12 +13,12 @@ class UserRepositoryImpl implements UserRepository {
   }) : _userProvider = userProvider;
 
   @override
-  Future<bool?> isInit() {
+  Future<bool> isInit() {
     return _userProvider.isInit();
   }
 
   @override
-  Future<bool?> initAsync({
+  Future<bool> initAsync({
     required String apiKey,
     int? age,
     Gender? gender,
@@ -82,10 +82,8 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<BasicInfo?> getBasicInfo() async {
-    final String? json = await _userProvider.getBasicInfo();
-
-    if (json == null) return null;
+  Future<BasicInfo> getBasicInfo() async {
+    final String json = await _userProvider.getBasicInfo();
 
     return BasicInfoMapper.fromJson(jsonDecode(json));
   }

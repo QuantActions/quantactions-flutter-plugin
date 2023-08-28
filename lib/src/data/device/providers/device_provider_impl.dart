@@ -16,7 +16,7 @@ class DeviceProviderImpl implements DeviceProvider {
   }) : _sdkMethodChannel = sdkMethodChannel;
 
   @override
-  Future<bool?> isDeviceRegistered() {
+  Future<bool> isDeviceRegistered() {
     return _sdkMethodChannel.callMethodChannel<bool>(
       method: 'isDeviceRegistered',
     );
@@ -77,22 +77,22 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Future<String?> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
-    return _sdkMethodChannel.callMethodChannel(
+  Future<String> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
+    return _sdkMethodChannel.callMethodChannel<String>(
       method: 'retrieveBatteryOptimizationIntentForCurrentManufacturer',
     );
   }
 
   @override
-  Future<String?> syncData() {
-    return _sdkMethodChannel.callMethodChannel(
+  Future<String> syncData() {
+    return _sdkMethodChannel.callMethodChannel<String>(
       method: 'syncData',
     );
   }
 
   @override
-  Future<String?> getDeviceID() {
-    return _sdkMethodChannel.callMethodChannel(
+  Future<String> getDeviceID() {
+    return _sdkMethodChannel.callMethodChannel<String>(
       method: 'getDeviceID',
     );
   }
@@ -105,8 +105,8 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Future<bool?> getIsTablet() async {
-    return _sdkMethodChannel.callMethodChannel<bool?>(
+  Future<bool> getIsTablet() async {
+    return _sdkMethodChannel.callMethodChannel<bool>(
       method: 'getIsTablet',
     );
   }

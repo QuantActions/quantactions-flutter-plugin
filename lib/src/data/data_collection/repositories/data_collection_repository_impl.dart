@@ -9,7 +9,7 @@ class DataCollectionRepositoryImpl implements DataCollectionRepository {
   }) : _dataCollectionProvider = dataCollectionProvider;
 
   @override
-  Future<bool?> isDataCollectionRunning() {
+  Future<bool> isDataCollectionRunning() {
     return _dataCollectionProvider.isDataCollectionRunning();
   }
 

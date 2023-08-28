@@ -13,7 +13,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }) : _deviceProvider = deviceProvider;
 
   @override
-  Future<bool?> isDeviceRegistered() {
+  Future<bool> isDeviceRegistered() {
     return _deviceProvider.isDeviceRegistered();
   }
 
@@ -70,18 +70,18 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Future<String?> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
+  Future<String> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
     return _deviceProvider
         .retrieveBatteryOptimizationIntentForCurrentManufacturer();
   }
 
   @override
-  Future<String?> syncData() {
+  Future<String> syncData() {
     return _deviceProvider.syncData();
   }
 
   @override
-  Future<String?> getDeviceID() {
+  Future<String> getDeviceID() {
     return _deviceProvider.getDeviceID();
   }
 
@@ -91,7 +91,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Future<bool?> getIsTablet() {
+  Future<bool> getIsTablet() {
     return _deviceProvider.getIsTablet();
   }
 }

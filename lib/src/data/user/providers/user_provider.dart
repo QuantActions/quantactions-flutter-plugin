@@ -1,9 +1,9 @@
 import '../../../domain/domain.dart';
 
 abstract class UserProvider {
-  Future<bool?> isInit();
+  Future<bool> isInit();
 
-  Future<bool?> initAsync({
+  Future<bool> initAsync({
     required String apiKey,
     int? age,
     Gender? gender,
@@ -31,5 +31,5 @@ abstract class UserProvider {
     required String apiKey,
   });
 
-  Future<String?> getBasicInfo();
+  Future<String> getBasicInfo();
 }

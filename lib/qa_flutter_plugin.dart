@@ -28,16 +28,16 @@ class QAFlutterPlugin {
   }
 
   ///[BasicInfo] for the current user
-  Future<BasicInfo?> get basicInfo => _userRepository.getBasicInfo();
+  Future<BasicInfo> get basicInfo => _userRepository.getBasicInfo();
 
   ///ID of the device
-  Future<String?> get deviceId => _deviceRepository.getDeviceID();
+  Future<String> get deviceId => _deviceRepository.getDeviceID();
 
   ///Firebase token for communication
   Future<String?> get firebaseToken => _deviceRepository.getFirebaseToken();
 
   ///Whether or not this device is considerable a tablet
-  Future<bool?> get isTablet => _deviceRepository.getIsTablet();
+  Future<bool> get isTablet => _deviceRepository.getIsTablet();
 
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
@@ -50,7 +50,7 @@ class QAFlutterPlugin {
   }
 
   ///This function check that the data collection is currently running.
-  Future<bool?> isDataCollectionRunning() {
+  Future<bool> isDataCollectionRunning() {
     return _dataCollectionRepository.isDataCollectionRunning();
   }
 
@@ -95,7 +95,7 @@ class QAFlutterPlugin {
     return _deviceRepository.getSubscriptionId();
   }
 
-  Future<bool?> isDeviceRegistered() {
+  Future<bool> isDeviceRegistered() {
     return _deviceRepository.isDeviceRegistered();
   }
 
@@ -107,7 +107,7 @@ class QAFlutterPlugin {
   ///choose the first intent, in an empty list is returned,
   ///the current manufacturer does not have specific battery optimization options,
   ///thus the request is not needed and the SDk should run safely.
-  Future<dynamic> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
+  Future<String> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
     return _deviceRepository
         .retrieveBatteryOptimizationIntentForCurrentManufacturer();
   }
@@ -115,7 +115,7 @@ class QAFlutterPlugin {
   ///Utility function to sync all the local data with the server.
   ///Due to the complexity of the work, it spawns a Worker and return its UUID.
   ///The status of the worker can be observed to check its status of SUCCESS/FAILURE.
-  Future<String?> syncData() {
+  Future<String> syncData() {
     return _deviceRepository.syncData();
   }
 
@@ -239,24 +239,24 @@ class QAFlutterPlugin {
   }
 
   ///Returns whether or not the ```draw over other apps``` permission has been granted
-  Future<bool?> canDraw() {
+  Future<bool> canDraw() {
     return _permissionRepository.canDraw();
   }
 
   ///Returns whether or not the ```usage``` permission has been granted
-  Future<bool?> canUsage() {
+  Future<bool> canUsage() {
     return _permissionRepository.canUsage();
   }
 
   ///This function checks if the overlay permission has been granted,
   ///if not opens the corresponding settings activity to prompt the user to grant this permission.
-  Future<int?> requestOverlayPermission() {
+  Future<int> requestOverlayPermission() {
     return _permissionRepository.requestOverlayPermission();
   }
 
   ///This function checks if the usage permission has been granted,
   ///if not open the corresponding settings activity to prompt the user to grant this permission.
-  Future<int?> requestUsagePermission() {
+  Future<int> requestUsagePermission() {
     return _permissionRepository.requestUsagePermission();
   }
 
@@ -284,14 +284,14 @@ class QAFlutterPlugin {
   }
 
   ///Checks whether or not the SDK is initialized.
-  Future<bool?> isInit() {
+  Future<bool> isInit() {
     return _userRepository.isInit();
   }
 
   ///The first time you use the QA SDK in the code you should initialize it, this allows the SDK
   ///to create a unique identifier and initiate server transactions and workflows.
   ///Most of the functionality will not work if you have never initialized the singleton before.
-  Future<bool?> initAsync({
+  Future<bool> initAsync({
     required String apiKey,
     int? age,
     Gender? gender,

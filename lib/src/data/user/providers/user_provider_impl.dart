@@ -36,7 +36,7 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  Future<bool?> initAsync({
+  Future<bool> initAsync({
     required String apiKey,
     int? age,
     Gender? gender,
@@ -54,7 +54,7 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  Future<bool?> isInit() async {
+  Future<bool> isInit() async {
     return _sdkMethodChannel.callMethodChannel<bool>(method: 'isInit');
   }
 
@@ -115,7 +115,7 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  Future<String?> getBasicInfo() {
-    return _sdkMethodChannel.callMethodChannel(method: 'getBasicInfo');
+  Future<String> getBasicInfo() {
+    return _sdkMethodChannel.callMethodChannel<String>(method: 'getBasicInfo');
   }
 }

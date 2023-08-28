@@ -1,9 +1,9 @@
 import '../models/models.dart';
 
 abstract class UserRepository {
-  Future<bool?> isInit();
+  Future<bool> isInit();
 
-  Future<bool?> initAsync({
+  Future<bool> initAsync({
     required String apiKey,
     int? age,
     Gender? gender,
@@ -31,5 +31,5 @@ abstract class UserRepository {
     required String apiKey,
   });
 
-  Future<BasicInfo?> getBasicInfo();
+  Future<BasicInfo> getBasicInfo();
 }

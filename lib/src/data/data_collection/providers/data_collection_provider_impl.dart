@@ -9,7 +9,7 @@ class DataCollectionProviderImpl implements DataCollectionProvider {
   }) : _sdkMethodChannel = sdkMethodChannel;
 
   @override
-  Future<bool?> isDataCollectionRunning() {
+  Future<bool> isDataCollectionRunning() {
     return _sdkMethodChannel.callMethodChannel<bool>(
       method: 'isDataCollectionRunning',
     );
