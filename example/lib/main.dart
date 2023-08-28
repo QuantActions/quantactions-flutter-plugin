@@ -17,10 +17,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  static const String tempApiKey = "55b9cf50-dac2-11e6-b535-fd8dff3bf4e9";
   final _qa = QAFlutterPlugin();
-  late HashMap<Metric, Stream<TimeSeries>> _metricStreams;
-  late HashMap<Trend, Stream<TimeSeries>> _trendStreams;
-  late Stream<dynamic> _initStream;
+  late Stream<List<JournalEntryWithEvents>> _stream;
 
   String? errorText;
 
@@ -47,160 +46,35 @@ class _MyAppState extends State<MyApp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder(
-                      stream: _initStream,
-                      builder: (_, AsyncSnapshot<dynamic> snapshot) {
-                        if (snapshot.hasData) {
-                          final response = snapshot.data as QAResponse<String>;
-
-                          return Text('init: ${response.data}, ${response.message}');
-                        }
-
-                        if (snapshot.hasError) {
-                          return Text('init: ${snapshot.error.toString()}');
-                        }
-
-                        return Text('init: ${snapshot.connectionState.name}');
-                      },
-                    ),
-                    FutureBuilder(
-                      future: _qa.initAsync(
-                        age: 1991,
-                        gender: Gender.male,
-                        selfDeclaredHealthy: true,
-                      ),
-                      builder: (_, AsyncSnapshot<bool?> snapshot) {
-                        if (snapshot.hasData) {
-                          return Text('initAsync: ${snapshot.data}');
-                        }
-
-                        if (snapshot.hasError) {
-                          return Text(
-                              'initAsync: ${snapshot.error.toString()}');
-                        }
-
-                        return Text(
-                            'initAsync: ${snapshot.connectionState.name}');
-                      },
-                    ),
-                    FutureBuilder(
-                      future: _qa.isInit(),
-                      builder: (_, AsyncSnapshot<bool?> snapshot) {
-                        if (snapshot.hasData) {
-                          return Text('isInit: ${snapshot.data}');
-                        }
-
-                        if (snapshot.hasError) {
-                          return Text('isInit: ${snapshot.error.toString()}');
-                        }
-
-                        return Text('isInit: ${snapshot.connectionState.name}');
-                      },
-                    ),
-                    FutureBuilder(
-                      future: _qa.isDeviceRegistered(),
-                      builder: (_, AsyncSnapshot<bool?> snapshot) {
-                        if (snapshot.hasData) {
-                          return Text('isDeviceRegistered: ${snapshot.data}');
-                        }
-
-                        if (snapshot.hasError) {
-                          return Text(
-                            'isDeviceRegistered: ${snapshot.error.toString()}',
-                          );
-                        }
-
-                        return Text(
-                          'isDeviceRegistered: ${snapshot.connectionState.name}',
-                        );
-                      },
-                    ),
-                    FutureBuilder(
-                      future: _qa.canDraw(),
-                      builder: (_, AsyncSnapshot<bool?> snapshot) {
-                        if (snapshot.hasData) {
-                          return Text('canDraw: ${snapshot.data}');
-                        }
-
-                        if (snapshot.hasError) {
-                          return Text('canDraw: ${snapshot.error.toString()}');
-                        }
-
-                        return Text(
-                          'canDraw: ${snapshot.connectionState.name}',
-                        );
-                      },
-                    ),
-                    FutureBuilder(
-                      future: _qa.canUsage(),
-                      builder: (_, AsyncSnapshot<bool?> snapshot) {
-                        if (snapshot.hasData) {
-                          return Text('canUsage: ${snapshot.data}');
-                        }
-
-                        if (snapshot.hasError) {
-                          return Text('canUsage: ${snapshot.error.toString()}');
-                        }
-
-                        return Text(
-                          'canUsage: ${snapshot.connectionState.name}',
-                        );
-                      },
-                    ),
-                    FutureBuilder(
-                      future: _qa.isDataCollectionRunning(),
-                      builder: (_, AsyncSnapshot<bool?> snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(
-                            'isDataCollectionRunning: ${snapshot.data}',
-                          );
-                        }
-
-                        if (snapshot.hasError) {
-                          return Text(
-                            'isDataCollectionRunning: ${snapshot.error.toString()}',
-                          );
-                        }
-
-                        return Text(
-                          'isDataCollectionRunning: ${snapshot.connectionState.name}',
-                        );
-                      },
-                    ),
-                    const Divider(),
-                    const Text('metrics'),
-                    for (var stream in _metricStreams.entries)
-                      StreamBuilder(
-                        stream: stream.value,
-                        builder: (_, AsyncSnapshot<dynamic> snapshot) {
+                    SizedBox(
+                      height: 200,
+                      child: StreamBuilder(
+                        stream: _stream,
+                        builder: (_,
+                            AsyncSnapshot<List<JournalEntryWithEvents>>
+                                snapshot) {
                           if (snapshot.hasData) {
-                            TimeSeries data = snapshot.data;
+                            final List<JournalEntryWithEvents> response =
+                                snapshot.data as List<JournalEntryWithEvents>;
 
-                            return Text(
-                                '${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
-                                '${data.values.last.runtimeType}');
-                          } else {
-                            return Text(snapshot.connectionState.name);
+                            return ListView.builder(
+                              itemCount: response.length,
+                              itemBuilder: (_, int index) {
+                                final JournalEntryWithEvents item =
+                                    response[index];
+                                return Text(item.toString());
+                              },
+                            );
                           }
+
+                          if (snapshot.hasError) {
+                            return Text('init: ${snapshot.error.toString()}');
+                          }
+
+                          return Text('init: ${snapshot.connectionState.name}');
                         },
                       ),
-                    const Divider(),
-                    const Text('trends'),
-                    for (var stream in _trendStreams.entries)
-                      StreamBuilder(
-                        stream: stream.value,
-                        builder: (_, AsyncSnapshot<dynamic> snapshot) {
-                          if (snapshot.hasData) {
-                            TimeSeries data = snapshot.data;
-
-                            return Text(
-                                '${stream.key}: ${data.values.last} @ ${data.timestamps.last} & ${data.confidenceIntervalHigh.last}\n'
-                                '${data.values.last.runtimeType}');
-                          } else {
-                            return Text(snapshot.connectionState.name);
-                          }
-                        },
-                      ),
+                    ),
                   ],
                 ),
               ),
@@ -209,39 +83,63 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _initDependencies() {
-    _initStream = _qa.init(
-        age: 1991,
-        gender: Gender.male,
-        selfDeclaredHealthy: true,
-      );
-    
-    _metricStreams = HashMap<Metric, Stream<TimeSeries>>();
-    _metricStreams[Metric.actionSpeed] = _qa.getMetric(Metric.actionSpeed);
-    _metricStreams[Metric.cognitiveFitness] =
-        _qa.getMetric(Metric.cognitiveFitness);
-    _metricStreams[Metric.screenTimeAggregate] =
-        _qa.getMetric(Metric.screenTimeAggregate);
-    _metricStreams[Metric.sleepScore] = _qa.getMetric(Metric.sleepScore);
-    _metricStreams[Metric.sleepSummary] = _qa.getMetric(Metric.sleepSummary);
-    _metricStreams[Metric.socialEngagement] =
-        _qa.getMetric(Metric.socialEngagement);
-    _metricStreams[Metric.socialTaps] = _qa.getMetric(Metric.socialTaps);
-    _metricStreams[Metric.typingSpeed] = _qa.getMetric(Metric.typingSpeed);
-
-    _trendStreams = HashMap<Trend, Stream<TimeSeries>>();
-    _trendStreams[Trend.typingSpeed] = _qa.getTrend(Trend.typingSpeed);
-    _trendStreams[Trend.socialTaps] = _qa.getTrend(Trend.socialTaps);
-    _trendStreams[Trend.socialEngagement] =
-        _qa.getTrend(Trend.socialEngagement);
-    _trendStreams[Trend.sleepScore] = _qa.getTrend(Trend.sleepScore);
-    _trendStreams[Trend.cognitiveFitness] =
-        _qa.getTrend(Trend.cognitiveFitness);
-    _trendStreams[Trend.actionSpeed] = _qa.getTrend(Trend.actionSpeed);
-    _trendStreams[Trend.sleepInterruptions] =
-        _qa.getTrend(Trend.sleepInterruptions);
-    _trendStreams[Trend.sleepLength] = _qa.getTrend(Trend.sleepLength);
-    _trendStreams[Trend.socialScreenTime] =
-        _qa.getTrend(Trend.socialScreenTime);
-    _trendStreams[Trend.theWave] = _qa.getTrend(Trend.theWave);
+    // _qa.firebaseToken;
+    // _qa.deviceId;
+    // _qa.basicInfo;
+    // _qa.isTablet;
+    // _qa.getJournalEntry('journalEntryId');
+    _stream = _qa.getJournal();
+    // _qa.getQuestionnairesList();
+    // _qa.getJournalSample(apiKey: tempApiKey);
+    // _qa.init(
+    //     apiKey: tempApiKey,
+    //     // age: 1991,
+    //     // gender: Gender.other,
+    //     // selfDeclaredHealthy: true,
+    // );
+    // _qa.isInit();
+    // _qa.recordQuestionnaireResponse(
+    //   name: 'name',
+    //   code: 'code',
+    //   date: DateTime.now(),
+    //   fullId: 'fullId',
+    //   response: 'response',
+    // );
+    // _qa.getMetricSample(apiKey: tempApiKey, metric: Metric.actionSpeed);
+    // _qa.getSubscriptionIdAsync();
+    // _qa.getSubscriptionId();
+    // _qa.subscribe(subscriptionIdOrCohortId: 'subscriptionIdOrCohortId');
+    // _qa.getCohortList();
+    // // _qa.getMetricAsync(Metric.actionSpeed);
+    // _qa.createJournalEntry(
+    //   date: DateTime.now(),
+    //   note: 'note',
+    //   events: [],
+    //   ratings: [1, 2],
+    //   oldId: 'oldId',
+    // );
+    // _qa.getStatSampleAsync(apiKey: tempApiKey, metric: Trend.actionSpeed);
+    // _qa.validateToken(apiKey: tempApiKey);
+    // _qa.savePublicKey();
+    // _qa.updateBasicInfo(
+    //   newYearOfBirth: 1881,
+    //   newGender: Gender.male,
+    //   newSelfDeclaredHealthy: false,
+    // );
+    // _qa.initAsync(apiKey: tempApiKey);
+    // _qa.canUsage();
+    // _qa.sendNote('text');
+    // _qa.deleteJournalEntry(id: 'id');
+    // _qa.isDeviceRegistered();
+    // _qa.subscribeWithGooglePurchaseToken(purchaseToken: 'purchaseToken');
+    // _qa.redeemVoucher(voucher: 'voucher');
+    // _qa.pauseDataCollection();
+    // _qa.resumeDataCollection();
+    // _qa.isDataCollectionRunning();
+    // _qa.leaveCohort('cohortId');
+    // _qa.setVerboseLevel(1);
+    // _qa.canDraw();
+    // _qa.getJournalEvents();
+    // _qa.syncData();
   }
 }
