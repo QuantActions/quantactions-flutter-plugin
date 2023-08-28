@@ -1,25 +1,27 @@
-import '../models/journal_entry/journal_entry.dart';
-import '../models/journal_entry/journal_event.dart';
-import '../models/qa_response/qa_response.dart';
+import '../domain.dart';
 
 abstract class JournalRepository {
   Stream<QAResponse<String>> createJournalEntry({
-    required JournalEntry journalEntry,
+    required DateTime date,
+    required String note,
+    required List<JournalEvent> events,
+    required List<int> ratings,
+    required String oldId,
   });
 
   Stream<QAResponse<String>> deleteJournalEntry({
     required String id,
   });
 
-  Stream<List<JournalEntry>> getJournal();
+  Stream<List<JournalEntryWithEvents>> getJournal();
 
-  Stream<List<JournalEntry>> getJournalSample({
+  Stream<List<JournalEntryWithEvents>> getJournalSample({
     required String apiKey,
   });
 
-  Future<JournalEntry?> getJournalEntry();
+  Future<JournalEntryWithEvents?> getJournalEntry(String journalEntryId);
 
-  Future<List<JournalEvent>> getJournalEvents();
+  Stream<List<JournalEvent>> getJournalEvents();
 
   Stream<QAResponse<String>> sendNote(String text);
 }

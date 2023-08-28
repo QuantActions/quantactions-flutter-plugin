@@ -33,8 +33,8 @@ class QAFlutterPlugin {
   }
 
   ///Use this to withdraw the device from a particular cohort.
-  Stream<QAResponse<String>> leaveCohort() {
-    return _cohortRepository.leaveCohort();
+  Stream<QAResponse<String>> leaveCohort(String cohortId) {
+    return _cohortRepository.leaveCohort(cohortId);
   }
 
   ///This function check that the data collection is currently running.
@@ -75,12 +75,11 @@ class QAFlutterPlugin {
     );
   }
 
-  // TODO: check SubscriptionIdResponse
   ///Returns an object of type [SubscriptionIdResponse] that contains
   ///the subscription ID of the cohort to which the device is currently
   ///subscribed to, if multiple devices are subscribed using
   ///the same subscriptionId it returns all the device IDs.
-  Stream<QAResponse<String>> getSubscriptionId() {
+  Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId() {
     return _deviceRepository.getSubscriptionId();
   }
 
@@ -108,8 +107,7 @@ class QAFlutterPlugin {
     return _deviceRepository.syncData();
   }
 
-  // TODO: check SubscriptionIdResponse
-  Future<QAResponse<String>> getSubscriptionIdAsync() {
+  Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync() {
     return _deviceRepository.getSubscriptionIdAsync();
   }
 
@@ -117,8 +115,8 @@ class QAFlutterPlugin {
   ///You need to provide the id of the entry you want to retrieve,
   ///checkout [getJournal] and JournalEntryWithEvents to see
   ///how to retrieve the id of the entry.
-  Future<JournalEntry?> getJournalEntry() {
-    return _journalRepository.getJournalEntry();
+  Future<JournalEntryWithEvents?> getJournalEntry(String journalEntryId) {
+    return _journalRepository.getJournalEntry(journalEntryId);
   }
 
   ///Use this utility function to create or edit a journal entry.
@@ -127,9 +125,19 @@ class QAFlutterPlugin {
   ///The response is mostly to trigger UI/UX events,
   ///in case of failure the SDK will take care internally of retrying.
   Stream<QAResponse<String>> createJournalEntry({
-    required JournalEntry journalEntry,
+    required DateTime date,
+    required String note,
+    required List<JournalEvent> events,
+    required List<int> ratings,
+    required String oldId,
   }) {
-    return _journalRepository.createJournalEntry(journalEntry: journalEntry);
+    return _journalRepository.createJournalEntry(
+      date: date,
+      note: note,
+      events: events,
+      ratings: ratings,
+      oldId: oldId,
+    );
   }
 
   ///Use this function to delete a journal entry.
@@ -151,14 +159,14 @@ class QAFlutterPlugin {
   ///meaning all entries with the corresponding events.
   ///Checkout JournalEntryWithEvents for a complete description of
   ///how the journal entries are organized.
-  Stream<List<JournalEntry>> getJournal() {
+  Stream<List<JournalEntryWithEvents>> getJournal() {
     return _journalRepository.getJournal();
   }
 
   ///This functions returns a fictitious journal and can be used for
   ///test/display purposes, Checkout JournalEntryWithEvents for a complete
   ///description of how the journal entries are organized.
-  Stream<List<JournalEntry>> getJournalSample({
+  Stream<List<JournalEntryWithEvents>> getJournalSample({
     required String apiKey,
   }) {
     return _journalRepository.getJournalSample(apiKey: apiKey);
@@ -167,7 +175,7 @@ class QAFlutterPlugin {
   ///Retrieves the Journal events, meaning the events that one can log together
   ///with a journal entry. The events come from a fixed set which may be
   ///updated in the future, this function return the latest update to the [JournalEvent].
-  Future<List<JournalEvent>> getJournalEvents() {
+  Stream<List<JournalEvent>> getJournalEvents() {
     return _journalRepository.getJournalEvents();
   }
 
@@ -176,7 +184,7 @@ class QAFlutterPlugin {
   ///it with a coroutine logic instead of a flow logic.
   ///Can be used in cases where coroutines can be executed and
   ///flow are not necessary, e.g. background update tasks.
-  Future<TimeSeries<dynamic>> getMetricAsync<T>(T metric) {
+  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric) {
     return _metricRepository.getMetricAsync(metric);
   }
 
@@ -184,7 +192,7 @@ class QAFlutterPlugin {
   ///Check the the list of available metrics from [Metric] or [Trend].
   ///The function returns an object of type [TimeSeries] which contains timestamps
   ///and values of the requested metric. The call is asynchronous ans returns a flow.
-  Stream<TimeSeries<dynamic>> getMetric<T>(T metric) {
+  Stream<TimeSeries<dynamic>> getMetric(MetricType metric) {
     return _metricRepository.getMetric(metric);
   }
 
@@ -193,9 +201,9 @@ class QAFlutterPlugin {
   ///The function returns an object of type [TimeSeries] which contains timestamps
   ///and values of the requested metric. The call is asynchronous ans returns a flow.
   ///You can use this function to test your data workflow and visualization.
-  Stream<TimeSeries<dynamic>> getMetricSample<T>({
+  Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
-    required T metric,
+    required MetricType metric,
   }) {
     return _metricRepository.getMetricSample(
       apiKey: apiKey,
@@ -208,9 +216,9 @@ class QAFlutterPlugin {
   ///with a coroutine logic instead of a flow logic. Can be used in cases
   ///where coroutines can be executed and flow are not necessary, e.g.
   ///background update tasks.
-  Future<TimeSeries<dynamic>> getStatSampleAsync<T>({
+  Future<TimeSeries<dynamic>?> getStatSampleAsync({
     required String apiKey,
-    required T metric,
+    required MetricType metric,
   }) {
     return _metricRepository.getStatSampleAsync(
       apiKey: apiKey,
@@ -242,17 +250,17 @@ class QAFlutterPlugin {
 
   ///Get a list of all the questionnaires available to complete
   ///(across all the studies to which a device is subscribed to).
-  Stream<List<Cohort>> getQuestionnairesList() {
+  Stream<List<Questionnaire>> getQuestionnairesList() {
     return _questionnaireRepository.getQuestionnairesList();
   }
 
   ///Saves a questionnaire response.
   Stream<QAResponse<String>> recordQuestionnaireResponse({
-    required String? name,
-    required String? code,
-    required DateTime? date,
-    required String? fullId,
-    required String? response,
+    String? name,
+    String? code,
+    DateTime? date,
+    String? fullId,
+    String? response,
   }) {
     return _questionnaireRepository.recordQuestionnaireResponse(
       name: name,
@@ -272,11 +280,13 @@ class QAFlutterPlugin {
   ///to create a unique identifier and initiate server transactions and workflows.
   ///Most of the functionality will not work if you have never initialized the singleton before.
   Future<bool?> initAsync({
+    required String apiKey,
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
   }) {
     return _userRepository.initAsync(
+      apiKey: apiKey,
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
@@ -288,11 +298,13 @@ class QAFlutterPlugin {
   ///transactions and workflows. Most of the functionality will not work
   ///if you have never initialized the singleton before.
   Stream<QAResponse<String>> init({
+    required String apiKey,
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
   }) {
     return _userRepository.init(
+      apiKey: apiKey,
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
@@ -303,9 +315,9 @@ class QAFlutterPlugin {
   ///You can call the function with one or parameters,
   ///the missing ones will be considered unaltered.
   void updateBasicInfo({
-    int? newYearOfBirth,
-    Gender? newGender,
-    bool? newSelfDeclaredHealthy,
+    required int newYearOfBirth,
+    required Gender newGender,
+    required bool newSelfDeclaredHealthy,
   }) {
     return _userRepository.updateBasicInfo(
       newYearOfBirth: newYearOfBirth,

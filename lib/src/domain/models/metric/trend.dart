@@ -1,4 +1,6 @@
-enum Trend {
+import 'metric_type.dart';
+
+enum Trend implements MetricType {
   sleepScore(id: 'sleep_trend'),
   cognitiveFitness(id: 'cognitive_trend'),
   socialEngagement(id: 'social_engagement_trend'),
@@ -10,6 +12,7 @@ enum Trend {
   socialTaps(id: 'social_taps_trend'),
   theWave(id: 'the_wave_trend');
 
+  @override
   final String id;
 
   const Trend({

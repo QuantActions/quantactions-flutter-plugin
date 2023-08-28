@@ -1,4 +1,6 @@
-enum Metric {
+import 'metric_type.dart';
+
+enum Metric implements MetricType{
   sleepScore(id: 'sleep'),
   cognitiveFitness(id: 'cognitive'),
   socialEngagement(id: 'social'),
@@ -12,5 +14,6 @@ enum Metric {
     required this.id,
   });
 
+  @override
   final String id;
 }

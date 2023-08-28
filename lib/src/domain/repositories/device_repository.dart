@@ -1,4 +1,5 @@
 import '../models/qa_response/qa_response.dart';
+import '../models/qa_response/subscription_id_response.dart';
 
 abstract class DeviceRepository {
   Future<bool?> isDeviceRegistered();
@@ -15,11 +16,11 @@ abstract class DeviceRepository {
     required String voucher,
   });
 
-  Stream<QAResponse<String>> getSubscriptionId();
+  Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId();
+
+  Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync();
 
   Future<dynamic> retrieveBatteryOptimizationIntentForCurrentManufacturer();
 
   Future<dynamic> syncData();
-
-  Future<QAResponse<String>> getSubscriptionIdAsync();
 }
