@@ -24,4 +24,6 @@ abstract class DeviceProvider {
   Future<String?> getDeviceID();
 
   Future<String?> getFirebaseToken();
+
+  Future<bool?> getIsTablet();
 }

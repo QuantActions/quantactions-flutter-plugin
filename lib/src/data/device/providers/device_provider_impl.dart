@@ -103,4 +103,11 @@ class DeviceProviderImpl implements DeviceProvider {
       method: 'getFirebaseToken',
     );
   }
+
+  @override
+  Future<bool?> getIsTablet() async {
+    return _sdkMethodChannel.callMethodChannel<bool?>(
+      method: 'getIsTablet',
+    );
+  }
 }

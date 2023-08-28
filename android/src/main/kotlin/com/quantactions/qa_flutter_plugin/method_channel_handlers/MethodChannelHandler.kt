@@ -173,6 +173,10 @@ class MethodChannelHandler(
                             result.success(qa.firebaseToken)
                         }
 
+                        "getIsTablet" -> {
+                            result.success(qa.isTablet)
+                        }
+
                         else -> result.notImplemented()
                     }
                 }

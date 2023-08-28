@@ -89,4 +89,9 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Future<String?> getFirebaseToken() {
     return _deviceProvider.getFirebaseToken();
   }
+
+  @override
+  Future<bool?> getIsTablet() {
+    return _deviceProvider.getIsTablet();
+  }
 }
