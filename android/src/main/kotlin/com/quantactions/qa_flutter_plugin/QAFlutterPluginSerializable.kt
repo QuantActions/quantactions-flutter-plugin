@@ -1,6 +1,7 @@
 package com.quantactions.qa_flutter_plugin
 
 import com.quantactions.sdk.TimeSeries
+import com.quantactions.sdk.QAResponse
 import com.squareup.moshi.JsonClass
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -25,7 +26,16 @@ class QAFlutterPluginSerializable {
     )
 
     companion object {
-        fun serializeDouble(timeSeries: TimeSeries.DoubleTimeSeries): String {
+        fun <T> serializeQAResponseString(response: QAResponse<T>): String {
+            return Json.encodeToString(
+                SerializableQAResponse(
+                    response.data.toString(),
+                    response.message.toString(),
+                )
+            )
+        }
+
+        fun serializeTimeSeriesDouble(timeSeries: TimeSeries.DoubleTimeSeries): String {
             return Json.encodeToString(
                 SerializableTimeSeries(
                     timeSeries.timestamps.map { v -> v.toString() },

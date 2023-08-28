@@ -1,9 +1,7 @@
 import '../models/models.dart';
 
-abstract class QARepository {
+abstract class UserRepository {
   Future<bool?> isInit();
-
-  Future<bool?> isDeviceRegistered();
 
   Future<bool?> initAsync({
     int? age,
@@ -17,5 +15,17 @@ abstract class QARepository {
     bool? selfDeclaredHealthy,
   });
 
+  void updateBasicInfo({
+    int? newYearOfBirth,
+    Gender? newGender,
+    bool? newSelfDeclaredHealthy,
+  });
+
   void savePublicKey();
+
+  void setVerboseLevel(int verbose);
+
+  Stream<QAResponse<String>> validateToken({
+    required String apiKey,
+  });
 }
