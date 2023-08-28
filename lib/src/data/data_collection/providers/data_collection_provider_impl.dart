@@ -1,4 +1,3 @@
-
 import '../../core/sdk_method_channel.dart';
 import 'data_collection_provider.dart';
 
