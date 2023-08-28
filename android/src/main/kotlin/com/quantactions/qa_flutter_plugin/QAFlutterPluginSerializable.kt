@@ -1,5 +1,7 @@
 package com.quantactions.qa_flutter_plugin
 
+import com.quantactions.sdk.BasicInfo
+import com.quantactions.sdk.QA
 import com.quantactions.sdk.TimeSeries
 import com.quantactions.sdk.QAResponse
 import com.quantactions.sdk.data.entity.Cohort
@@ -83,6 +85,14 @@ class QAFlutterPluginSerializable {
         val iconName: String,
         val created: String,
         val modified: String,
+    )
+
+    @JsonClass(generateAdapter = true)
+    @Serializable
+    data class SerializableBasicInfo(
+        val yearOfBirth: Int,
+        val gender: String,
+        val selfDeclaredHealthy: Boolean,
     )
 
     companion object {
@@ -228,9 +238,18 @@ class QAFlutterPluginSerializable {
                         event.icon_name,
                         event.created,
                         event.modified
-
                     )
                 }
+            )
+        }
+
+        fun serializeBasicInfo(basicInfo: BasicInfo): String {
+            return Json.encodeToString(
+                SerializableBasicInfo(
+                    basicInfo.yearOfBirth,
+                    basicInfo.gender.name,
+                    basicInfo.selfDeclaredHealthy,
+                )
             )
         }
     }

@@ -147,6 +147,14 @@ class MethodChannelHandler(
                             )
                         }
 
+                        "getBasicInfo" -> {
+                            val basicInfo = qa.basicInfo;
+
+                            result.success(
+                                QAFlutterPluginSerializable.serializeBasicInfo(basicInfo)
+                            )
+                        }
+
                         else -> result.notImplemented()
                     }
                 }

@@ -1,6 +1,7 @@
 library models;
 
 export 'cohort/cohort.dart';
+export 'basic_info/basic_info.dart';
 export 'metric/metric_type.dart';
 export 'metric/metric.dart';
 export 'metric/trend.dart';

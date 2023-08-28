@@ -30,4 +30,6 @@ abstract class UserRepository {
   Stream<QAResponse<String>> validateToken({
     required String apiKey,
   });
+
+  Future<BasicInfo?> getBasicInfo();
 }

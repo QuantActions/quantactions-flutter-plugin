@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import '../../../domain/domain.dart';
+import '../../mappers/basic_info/basic_info_mapper.dart';
 import '../../mappers/qa_response/qa_response_stream_mapper.dart';
 import '../providers/user_provider.dart';
 
@@ -76,5 +79,14 @@ class UserRepositoryImpl implements UserRepository {
       newGender: newGender,
       newSelfDeclaredHealthy: newSelfDeclaredHealthy,
     );
+  }
+
+  @override
+  Future<BasicInfo?> getBasicInfo() async {
+    final String? json = await _userProvider.getBasicInfo();
+
+    if (json == null) return null;
+
+    return BasicInfoMapper.fromJson(jsonDecode(json));
   }
 }

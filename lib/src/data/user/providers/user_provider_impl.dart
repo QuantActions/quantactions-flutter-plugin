@@ -113,4 +113,9 @@ class UserProviderImpl implements UserProvider {
       "selfDeclaredHealthy": selfDeclaredHealthy,
     };
   }
+
+  @override
+  Future<String?> getBasicInfo() {
+    return _sdkMethodChannel.callMethodChannel(method: 'getBasicInfo');
+  }
 }

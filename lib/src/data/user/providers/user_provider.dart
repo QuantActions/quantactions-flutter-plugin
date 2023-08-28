@@ -30,4 +30,6 @@ abstract class UserProvider {
   Stream<dynamic> validateToken({
     required String apiKey,
   });
+
+  Future<String?> getBasicInfo();
 }

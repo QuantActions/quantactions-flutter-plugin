@@ -27,6 +27,9 @@ class QAFlutterPlugin {
     _userRepository = appLocator.get<UserRepository>();
   }
 
+  ///[BasicInfo] for the current user
+  Future<BasicInfo?> get basicInfo => _userRepository.getBasicInfo();
+
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
     return _cohortRepository.getCohortList();
