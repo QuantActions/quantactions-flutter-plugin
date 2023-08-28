@@ -1,12 +1,22 @@
 import 'dart:convert';
 
-import 'package:qa_flutter_plugin/src/data/mappers/qa_response/qa_response_mapper.dart';
-import 'package:qa_flutter_plugin/src/domain/models/qa_response/qa_response.dart';
+import '../../../domain/domain.dart';
+import 'qa_response_mapper.dart';
 
 class QAResponseStreamMapper {
   static Stream<QAResponse<String>> getString(Stream<dynamic> stream) {
     return stream.map(
       (event) => QAResponseMapper.fromJsonString(jsonDecode(event)),
+    );
+  }
+
+  static Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionIdResponse(
+    Stream<dynamic> stream,
+  ) {
+    return stream.map(
+      (event) => QAResponseMapper.fromJsonSubscriptionIdResponse(
+        jsonDecode(event),
+      ),
     );
   }
 }
