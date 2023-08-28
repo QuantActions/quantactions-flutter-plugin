@@ -30,6 +30,9 @@ class QAFlutterPlugin {
   ///[BasicInfo] for the current user
   Future<BasicInfo?> get basicInfo => _userRepository.getBasicInfo();
 
+  ///ID of the device
+  Future<String?> get deviceId => _deviceRepository.getDeviceID();
+
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
     return _cohortRepository.getCohortList();
@@ -106,7 +109,7 @@ class QAFlutterPlugin {
   ///Utility function to sync all the local data with the server.
   ///Due to the complexity of the work, it spawns a Worker and return its UUID.
   ///The status of the worker can be observed to check its status of SUCCESS/FAILURE.
-  Future<dynamic> syncData() {
+  Future<String?> syncData() {
     return _deviceRepository.syncData();
   }
 

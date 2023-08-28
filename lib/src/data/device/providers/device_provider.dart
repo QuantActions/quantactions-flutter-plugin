@@ -15,9 +15,11 @@ abstract class DeviceProvider {
 
   Stream<dynamic> getSubscriptionId();
 
-  Future<dynamic> retrieveBatteryOptimizationIntentForCurrentManufacturer();
+  Future<String?> retrieveBatteryOptimizationIntentForCurrentManufacturer();
 
-  Future<dynamic> syncData();
+  Future<String?> syncData();
 
   Future<String?> getSubscriptionIdAsync();
+
+  Future<String?> getDeviceID();
 }

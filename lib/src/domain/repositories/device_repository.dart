@@ -20,7 +20,9 @@ abstract class DeviceRepository {
 
   Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync();
 
-  Future<dynamic> retrieveBatteryOptimizationIntentForCurrentManufacturer();
+  Future<String?> retrieveBatteryOptimizationIntentForCurrentManufacturer();
 
-  Future<dynamic> syncData();
+  Future<String?> syncData();
+
+  Future<String?> getDeviceID();
 }

@@ -62,7 +62,7 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Stream getSubscriptionId() {
+  Stream<dynamic> getSubscriptionId() {
     return _sdkMethodChannel.callEventChannel(
       eventChannel: _eventChannel,
       method: 'getSubscriptionId',
@@ -71,22 +71,29 @@ class DeviceProviderImpl implements DeviceProvider {
 
   @override
   Future<String?> getSubscriptionIdAsync() {
-    return _sdkMethodChannel.callMethodChannel<String>(
+    return _sdkMethodChannel.callMethodChannel(
       method: 'getSubscriptionIdAsync',
     );
   }
 
   @override
-  Future retrieveBatteryOptimizationIntentForCurrentManufacturer() {
+  Future<String?> retrieveBatteryOptimizationIntentForCurrentManufacturer() {
     return _sdkMethodChannel.callMethodChannel(
       method: 'retrieveBatteryOptimizationIntentForCurrentManufacturer',
     );
   }
 
   @override
-  Future syncData() {
+  Future<String?> syncData() {
     return _sdkMethodChannel.callMethodChannel(
       method: 'syncData',
+    );
+  }
+
+  @override
+  Future<String?> getDeviceID() {
+    return _sdkMethodChannel.callMethodChannel(
+      method: 'getDeviceID',
     );
   }
 }

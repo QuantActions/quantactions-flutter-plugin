@@ -148,11 +148,25 @@ class MethodChannelHandler(
                         }
 
                         "getBasicInfo" -> {
-                            val basicInfo = qa.basicInfo;
+                            val basicInfo = qa.basicInfo
 
                             result.success(
                                 QAFlutterPluginSerializable.serializeBasicInfo(basicInfo)
                             )
+                        }
+
+                        "getDeviceID" -> {
+                            result.success(qa.deviceID)
+                        }
+
+                        "retrieveBatteryOptimizationIntentForCurrentManufacturer" -> {
+                            result.success(
+                                qa.retrieveBatteryOptimizationIntentForCurrentManufacturer(context).action
+                            )
+                        }
+
+                        "syncData" -> {
+                            result.success(qa.syncData().toString())
                         }
 
                         else -> result.notImplemented()
@@ -160,6 +174,5 @@ class MethodChannelHandler(
                 }
             }
         }
-
     }
 }
