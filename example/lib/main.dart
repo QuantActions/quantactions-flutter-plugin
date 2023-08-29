@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -88,9 +86,9 @@ class _MyAppState extends State<MyApp> {
     // _qa.basicInfo;
     // _qa.isTablet;
     // _qa.getJournalEntry('journalEntryId');
-    _stream = _qa.getJournal();
+    // _qa.getJournal();
     // _qa.getQuestionnairesList();
-    // _qa.getJournalSample(apiKey: tempApiKey);
+    _stream = _qa.getJournalSample(apiKey: tempApiKey);
     // _qa.init(
     //     apiKey: tempApiKey,
     //     // age: 1991,
@@ -121,11 +119,7 @@ class _MyAppState extends State<MyApp> {
     // _qa.getStatSampleAsync(apiKey: tempApiKey, metric: Trend.actionSpeed);
     // _qa.validateToken(apiKey: tempApiKey);
     // _qa.savePublicKey();
-    // _qa.updateBasicInfo(
-    //   newYearOfBirth: 1881,
-    //   newGender: Gender.male,
-    //   newSelfDeclaredHealthy: false,
-    // );
+    // _qa.updateBasicInfo();
     // _qa.initAsync(apiKey: tempApiKey);
     // _qa.canUsage();
     // _qa.sendNote('text');

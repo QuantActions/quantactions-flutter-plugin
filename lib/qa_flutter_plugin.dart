@@ -302,9 +302,9 @@ class QAFlutterPlugin {
   ///You can call the function with one or parameters,
   ///the missing ones will be considered unaltered.
   void updateBasicInfo({
-    required int newYearOfBirth,
-    required Gender newGender,
-    required bool newSelfDeclaredHealthy,
+    int? newYearOfBirth,
+    Gender? newGender,
+    bool? newSelfDeclaredHealthy,
   }) {
     return _userRepository.updateBasicInfo(
       newYearOfBirth: newYearOfBirth,

@@ -1,7 +1,7 @@
 package com.quantactions.qa_flutter_plugin.event_channel_handlers
 
 import android.content.Context
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
+import com.google.gson.reflect.TypeToken
 import com.google.gson.Gson
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
@@ -138,7 +138,7 @@ class JournalStreamHandler(
             params["ratings"] as String, ListIntType
         )
 
-        val oldId = params["oldId"] as String? ?: "default"
+        val oldId = params["oldId"] as String
 
         return qa.createJournalEntry(
             localDate,

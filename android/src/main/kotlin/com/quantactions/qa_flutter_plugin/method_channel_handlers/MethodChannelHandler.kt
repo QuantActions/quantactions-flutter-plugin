@@ -48,10 +48,11 @@ class MethodChannelHandler(
                             val params = call.arguments as Map<*, *>
 
                             val apiKey = params["apiKey"] as String
-                            val age = params["age"] as Int
-                            val selfDeclaredHealthy = params["selfDeclaredHealthy"] as Boolean
+                            val age = params["age"] as Int? ?: 0
+                            val selfDeclaredHealthy =
+                                params["selfDeclaredHealthy"] as Boolean? ?: false
                             val gender = QAFlutterPluginHelper.parseGender(
-                                params["gender"] as String
+                                params["gender"] as String?
                             )
 
                             result.success(
@@ -68,11 +69,15 @@ class MethodChannelHandler(
                         "updateBasicInfo" -> {
                             val params = call.arguments as Map<*, *>
 
-                            val newYearOfBirth = params["newYearOfBirth"] as Int
-                            val newSelfDeclaredHealthy = params["age"] as Boolean
-                            val newGender = QAFlutterPluginHelper.parseGender(
-                                params["newGender"] as String
-                            )
+                            val newYearOfBirth =
+                                params["newYearOfBirth"] as Int? ?: qa.basicInfo.yearOfBirth
+                            val newSelfDeclaredHealthy =
+                                params["age"] as Boolean? ?: qa.basicInfo.selfDeclaredHealthy
+
+                            val newGenderString = params["newGender"] as String?
+                            val newGender: QA.Gender =
+                                if (newGenderString == null) qa.basicInfo.gender
+                                else QAFlutterPluginHelper.parseGender(newGenderString)
 
                             qa.updateBasicInfo(
                                 newYearOfBirth,

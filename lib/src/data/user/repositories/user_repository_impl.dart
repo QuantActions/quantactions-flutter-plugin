@@ -70,9 +70,9 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   void updateBasicInfo({
-    required int newYearOfBirth,
-    required Gender newGender,
-    required bool newSelfDeclaredHealthy,
+    int? newYearOfBirth,
+    Gender? newGender,
+    bool? newSelfDeclaredHealthy,
   }) {
     _userProvider.updateBasicInfo(
       newYearOfBirth: newYearOfBirth,

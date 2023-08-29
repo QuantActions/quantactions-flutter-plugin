@@ -86,15 +86,15 @@ class UserProviderImpl implements UserProvider {
 
   @override
   void updateBasicInfo({
-    required int newYearOfBirth,
-    required Gender newGender,
-    required bool newSelfDeclaredHealthy,
+    int? newYearOfBirth,
+    Gender? newGender,
+    bool? newSelfDeclaredHealthy,
   }) {
     _sdkMethodChannel.callMethodChannel(
       method: 'updateBasicInfo',
       params: <String, dynamic>{
         'newYearOfBirth': newYearOfBirth,
-        'newGender': newGender.id,
+        'newGender': newGender?.id,
         'newSelfDeclaredHealthy': newSelfDeclaredHealthy,
       },
     );

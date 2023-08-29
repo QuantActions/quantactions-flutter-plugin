@@ -18,9 +18,9 @@ abstract class UserRepository {
   });
 
   void updateBasicInfo({
-    required int newYearOfBirth,
-    required Gender newGender,
-    required bool newSelfDeclaredHealthy,
+    int? newYearOfBirth,
+    Gender? newGender,
+    bool? newSelfDeclaredHealthy,
   });
 
   void savePublicKey();
