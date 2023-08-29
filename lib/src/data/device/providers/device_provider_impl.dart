@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 
 import '../../consts/method_channel_consts.dart';
+import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'device_provider.dart';
 
@@ -18,7 +19,7 @@ class DeviceProviderImpl implements DeviceProvider {
   @override
   Future<bool> isDeviceRegistered() {
     return _sdkMethodChannel.callMethodChannel<bool>(
-      method: 'isDeviceRegistered',
+      method: SupportedMethods.isDeviceRegistered,
     );
   }
 
@@ -27,7 +28,7 @@ class DeviceProviderImpl implements DeviceProvider {
     required String voucher,
   }) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'redeemVoucher',
+      method: SupportedMethods.redeemVoucher,
       eventChannel: _eventChannel,
       params: <String, dynamic>{
         'voucher': voucher,
@@ -40,7 +41,7 @@ class DeviceProviderImpl implements DeviceProvider {
     required String purchaseToken,
   }) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'subscribeWithGooglePurchaseToken',
+      method: SupportedMethods.subscribeWithGooglePurchaseToken,
       eventChannel: _eventChannel,
       params: <String, dynamic>{
         'purchaseToken': purchaseToken,
@@ -54,7 +55,7 @@ class DeviceProviderImpl implements DeviceProvider {
   }) {
     return _sdkMethodChannel.callEventChannel(
       eventChannel: _eventChannel,
-      method: 'subscribe',
+      method: SupportedMethods.subscribe,
       params: <String, dynamic>{
         'subscriptionIdOrCohortId': subscriptionIdOrCohortId,
       },
@@ -64,43 +65,43 @@ class DeviceProviderImpl implements DeviceProvider {
   @override
   Stream<dynamic> getSubscriptionId() {
     return _sdkMethodChannel.callEventChannel(
+      method: SupportedMethods.getSubscriptionId,
       eventChannel: _eventChannel,
-      method: 'getSubscriptionId',
     );
   }
 
   @override
   Future<String?> getSubscriptionIdAsync() {
     return _sdkMethodChannel.callMethodChannel(
-      method: 'getSubscriptionIdAsync',
+      method: SupportedMethods.getSubscriptionIdAsync,
     );
   }
 
   @override
   Future<String> syncData() {
     return _sdkMethodChannel.callMethodChannel<String>(
-      method: 'syncData',
+      method: SupportedMethods.syncData,
     );
   }
 
   @override
   Future<String> getDeviceID() {
     return _sdkMethodChannel.callMethodChannel<String>(
-      method: 'getDeviceID',
+      method: SupportedMethods.getDeviceID,
     );
   }
 
   @override
   Future<String?> getFirebaseToken() async {
     return _sdkMethodChannel.callMethodChannel<String?>(
-      method: 'getFirebaseToken',
+      method: SupportedMethods.getFirebaseToken,
     );
   }
 
   @override
   Future<bool> getIsTablet() async {
     return _sdkMethodChannel.callMethodChannel<bool>(
-      method: 'getIsTablet',
+      method: SupportedMethods.getIsTablet,
     );
   }
 }

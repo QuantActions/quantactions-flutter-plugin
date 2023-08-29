@@ -14,6 +14,7 @@ dependencies:
   time_machine: ^0.9.17
   get_it: ^7.2.0
   collection: 1.17.2
+  faker: ^2.0.0
 
 dev_dependencies:
   flutter_test:

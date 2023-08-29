@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 import '../consts/method_channel_consts.dart';
+import '../mock/mock_data_provider.dart';
 import 'sdk_method_channel_core.dart';
 
 /// An implementation of [SDKMethodChannelCore] that uses method channels.
@@ -16,8 +17,10 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     Map<String, dynamic>? params,
   }) async {
     final response = await _safeRequest(
+      method: method,
       request: () => _methodChannel.invokeMethod<T>(method, params),
     );
+
     if (response == null) {
       throw Exception("call $method from methodChannel return null");
     }
@@ -39,19 +42,23 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     }
 
     return _safeRequest(
+      method: method,
       request: () => eventChannel.receiveBroadcastStream(data),
     );
   }
 
   dynamic _safeRequest({
     required Function() request,
+    required String method,
   }) {
-    if (!Platform.isAndroid) {
-      throw Exception(
-        'QAFlutterPlugin for ${Platform.operatingSystem} platform not yet implemented',
-      );
-    } else {
+    if (Platform.isAndroid) {
       return request();
+    } else if (Platform.isIOS) {
+      MockDataProvider.callMockMethod(method);
+    } else {
+      throw Exception(
+        'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
+      );
     }
   }
 }
