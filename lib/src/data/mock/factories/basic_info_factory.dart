@@ -5,7 +5,10 @@ class BasicInfoFactory extends MockModelFactory<BasicInfo> {
   @override
   BasicInfo generateFake() {
     return BasicInfo(
-      yearOfBirth: faker.randomGenerator.integer(2023, min: 1990),
+      yearOfBirth: faker.randomGenerator.integer(
+        DateTime.now().year,
+        min: 1990,
+      ),
       gender: Gender.values[faker.randomGenerator.integer(4)],
       selfDeclaredHealthy: faker.randomGenerator.boolean(),
     );

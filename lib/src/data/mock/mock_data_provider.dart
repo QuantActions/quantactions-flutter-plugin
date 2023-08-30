@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:qa_flutter_plugin/src/data/mock/factories/journal_event_factory.dart';
+
 import '../consts/supported_methods.dart';
 import 'factories/basic_info_factory.dart';
 import 'factories/cohort_factory.dart';
@@ -83,7 +85,14 @@ class MockDataProvider {
       case SupportedMethods.getJournalSample:
       // TODO: Handle this case.
       case SupportedMethods.getJournalEvents:
-      // TODO: Handle this case.
+        return Stream.value(
+          jsonEncode(
+            JournalEventFactory()
+                .generateListFake(length: 10)
+                .map((cohort) => cohort.toJson())
+                .toList(),
+          ),
+        );
       case SupportedMethods.getMetric:
       // TODO: Handle this case.
       case SupportedMethods.getMetricSample:
