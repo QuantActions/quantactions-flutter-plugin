@@ -1,13 +1,19 @@
 import '../gender/gender.dart';
 
-class BasicInfo {
-  final int yearOfBirth;
-  final Gender gender;
-  final bool selfDeclaredHealthy;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  BasicInfo({
-    required this.yearOfBirth,
-    required this.gender,
-    required this.selfDeclaredHealthy,
-  });
+part 'basic_info.g.dart';
+
+part 'basic_info.freezed.dart';
+
+@freezed
+class BasicInfo with _$BasicInfo {
+  factory BasicInfo({
+    required int yearOfBirth,
+    required Gender gender,
+    required bool selfDeclaredHealthy,
+  }) = _BasicInfo;
+
+  factory BasicInfo.fromJson(Map<String, dynamic> json) =>
+      _$BasicInfoFromJson(json);
 }

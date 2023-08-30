@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import '../consts/supported_methods.dart';
+import 'factories/basic_info_factory.dart';
 import 'factories/cohort_factory.dart';
 
 class MockDataProvider {
@@ -9,7 +10,9 @@ class MockDataProvider {
     switch (method) {
       //methods for method channel
       case SupportedMethods.getBasicInfo:
-      // TODO: Handle this case.
+        return jsonEncode(
+          BasicInfoFactory().generateFake(),
+        );
       case SupportedMethods.getDeviceID:
       // TODO: Handle this case.
       case SupportedMethods.getFirebaseToken:
