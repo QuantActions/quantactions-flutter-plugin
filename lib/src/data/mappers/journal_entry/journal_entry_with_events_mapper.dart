@@ -1,7 +1,5 @@
 import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 
-import 'resolved_journal_event_mapper.dart';
-
 class JournalEntryWithEventsMapper {
   static List<JournalEntryWithEvents> fromList(List<dynamic> list) {
     return list.map((map) => fromJson(map)).toList();
@@ -13,7 +11,7 @@ class JournalEntryWithEventsMapper {
       timestamp: DateTime.fromMillisecondsSinceEpoch(map["timestamp"] as int),
       note: map["note"] as String,
       events: (map["events"] as List<dynamic>)
-          .map((event) => ResolvedJournalEventMapper.fromJson(event))
+          .map((event) => ResolvedJournalEvent.fromJson(event))
           .toList(),
       ratings: (map["ratings"] as List<dynamic>)
           .map((rating) => rating as int)

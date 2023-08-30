@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'resolved_journal_event.dart';
 
 class JournalEntryWithEvents {
@@ -16,4 +18,17 @@ class JournalEntryWithEvents {
     required this.ratings,
     required this.scores,
   });
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      "id": id,
+      "timestamp": timestamp.millisecondsSinceEpoch,
+      "note": note,
+      "events": jsonEncode(
+        events.map((event) => event.toJson()).toList(),
+      ),
+      "ratings": jsonEncode(ratings),
+      "scores": jsonEncode(scores),
+    };
+  }
 }

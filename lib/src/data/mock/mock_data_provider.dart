@@ -81,9 +81,9 @@ class MockDataProvider {
       case SupportedMethods.sendNote:
       // TODO: Handle this case.
       case SupportedMethods.getJournal:
-      // TODO: Handle this case.
+        return _getJournalEntryWithEventsList(length: 10);
       case SupportedMethods.getJournalSample:
-      // TODO: Handle this case.
+        return _getJournalEntryWithEventsList(length: 10);
       case SupportedMethods.getJournalEvents:
         return Stream.value(
           jsonEncode(
@@ -108,5 +108,18 @@ class MockDataProvider {
       default:
         throw Exception('$method mock method is not implemented');
     }
+  }
+
+  static Stream<String> _getJournalEntryWithEventsList({
+    required int length,
+  }) {
+    return Stream.value(
+      jsonEncode(
+        JournalEventFactory()
+            .generateListFake(length: 10)
+            .map((cohort) => cohort.toJson())
+            .toList(),
+      ),
+    );
   }
 }

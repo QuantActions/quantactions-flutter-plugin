@@ -5,7 +5,7 @@ class CohortFactory extends MockModelFactory<Cohort> {
   @override
   Cohort generateFake() {
     return Cohort(
-      cohortId: faker.randomGenerator.fromCharSet('-1234567890', 10),
+      cohortId: generateId,
       privacyPolicy: faker.lorem.word(),
       cohortName: faker.conference.name(),
       dataPattern: faker.randomGenerator.string(10),
