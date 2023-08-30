@@ -1,29 +1,24 @@
-class Cohort {
-  final String cohortId;
-  final String? privacyPolicy;
-  final String? cohortName;
-  final String? dataPattern;
-  final int gpsResolution;
-  final int canWithdraw;
-  final int? syncOnScreenOff;
-  final int? perimeterCheck;
-  final int? permAppId;
-  final int? permDrawOver;
-  final int? permLocation;
-  final int? permContact;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Cohort({
-    required this.cohortId,
-    required this.privacyPolicy,
-    required this.cohortName,
-    required this.dataPattern,
-    required this.gpsResolution,
-    required this.canWithdraw,
-    required this.syncOnScreenOff,
-    required this.perimeterCheck,
-    required this.permAppId,
-    required this.permDrawOver,
-    required this.permLocation,
-    required this.permContact,
-  });
+part 'cohort.g.dart';
+
+part 'cohort.freezed.dart';
+
+@freezed
+class Cohort with _$Cohort {
+  factory Cohort({
+    required String cohortId,
+    required String? privacyPolicy,
+    required String? cohortName,
+    required String? dataPattern,
+    //It is 1 if the device is allowed to withdraw,
+    // if 0 only the cohort manager can withdraw the device
+    required int canWithdraw,
+    //Is app id permission necessary for this cohort
+    required int? permAppId,
+    //Is app id permission necessary for this cohort
+    required int? permDrawOver,
+  }) = _Cohort;
+
+  factory Cohort.fromJson(Map<String, dynamic> json) => _$CohortFromJson(json);
 }

@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+
 import '../consts/supported_methods.dart';
+import 'factories/cohort_factory.dart';
 
 class MockDataProvider {
   static dynamic callMockMethod(String method) {
@@ -47,7 +51,14 @@ class MockDataProvider {
 
       //methods for event channel
       case SupportedMethods.getCohortList:
-      // TODO: Handle this case.
+        return Stream.value(
+          jsonEncode(
+            CohortFactory()
+                .generateListFake(length: 10)
+                .map((cohort) => cohort.toJson())
+                .toList(),
+          ),
+        );
       case SupportedMethods.leaveCohort:
       // TODO: Handle this case.
       case SupportedMethods.redeemVoucher:

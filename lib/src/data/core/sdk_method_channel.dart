@@ -54,7 +54,7 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     if (Platform.isAndroid) {
       return request();
     } else if (Platform.isIOS) {
-      MockDataProvider.callMockMethod(method);
+      return MockDataProvider.callMockMethod(method);
     } else {
       throw Exception(
         'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
