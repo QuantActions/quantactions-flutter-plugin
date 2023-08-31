@@ -1,5 +1,4 @@
 import '../../../domain/domain.dart';
-import 'subscription_id_response_mapper.dart';
 
 class QAResponseMapper {
   static const String _data = 'data';
@@ -24,7 +23,7 @@ class QAResponseMapper {
     return QAResponse<SubscriptionIdResponse>(
       data: (data == null)
           ? null
-          : SubscriptionIdResponseMapper.fromJson(json[_data]),
+          : SubscriptionIdResponse.fromJson(json[_data]),
       message: json[_message] as String?,
     );
   }

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../domain.dart';
+
 part 'qa_response.g.dart';
 
 @JsonSerializable()
@@ -33,8 +35,23 @@ class _QAResponseConverter<T> implements JsonConverter<T?, dynamic> {
   _QAResponseConverter();
 
   @override
-  T? fromJson(dynamic json) => json as T?;
+  T? fromJson(dynamic json) {
+    if (T is SubscriptionIdResponse) {
+      return SubscriptionIdResponse.fromJson(json) as T?;
+    }
+    if (T is String) {
+      return json as T?;
+    }
+
+    return null;
+  }
 
   @override
-  String toJson(T? object) => jsonEncode(object);
+  dynamic toJson(T? object) {
+    if (T is SubscriptionIdResponse) {
+      return (object as SubscriptionIdResponse).toJson();
+    } else {
+      return object;
+    }
+  }
 }

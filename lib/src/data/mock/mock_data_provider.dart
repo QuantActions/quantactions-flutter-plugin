@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:qa_flutter_plugin/src/data/mock/factories/qa_response_subscription_factory.dart';
+
 import '../consts/supported_methods.dart';
 import 'factories/basic_info_factory.dart';
 import 'factories/cohort_factory.dart';
@@ -32,7 +34,7 @@ class MockDataProvider {
       case SupportedMethods.syncData:
       // TODO: Handle this case.
       case SupportedMethods.getSubscriptionIdAsync:
-      // TODO: Handle this case.
+        return Future(() => _getQAResponseSubscriptionIdResponse());
       case SupportedMethods.getJournalEntry:
       // TODO: Handle this case.
       case SupportedMethods.getMetricAsync:
@@ -73,7 +75,7 @@ class MockDataProvider {
       case SupportedMethods.subscribe:
         return _getQAResponseString();
       case SupportedMethods.getSubscriptionId:
-      // TODO: Handle this case.
+        return Stream.value(_getQAResponseSubscriptionIdResponse());
       case SupportedMethods.createJournalEntry:
         return _getQAResponseString();
       case SupportedMethods.deleteJournalEntry:
@@ -129,5 +131,10 @@ class MockDataProvider {
         QAResponseStringFactory().generateFake(),
       ),
     );
+  }
+
+  static String _getQAResponseSubscriptionIdResponse() {
+    final x = QAResponseSubscriptionFactory().generateFake();
+    return jsonEncode(x);
   }
 }
