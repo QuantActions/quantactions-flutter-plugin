@@ -26,7 +26,9 @@ class DeviceStreamHandler(
 
                     qa.redeemVoucher(voucher).collect {
                         eventSink.success(
-                            QAFlutterPluginSerializable.serializeQAResponseString(it)
+                            QAFlutterPluginSerializable.serializeQAResponseSubscriptionWithQuestionnaires(
+                                it
+                            )
                         )
                     }
                 }
@@ -37,7 +39,9 @@ class DeviceStreamHandler(
 
                     qa.subscribe(subscriptionIdOrCohortId).collect {
                         eventSink.success(
-                            QAFlutterPluginSerializable.serializeQAResponseString(it)
+                            QAFlutterPluginSerializable.serializeQAResponseSubscriptionWithQuestionnaires(
+                                it
+                            )
                         )
                     }
                 }
@@ -47,7 +51,9 @@ class DeviceStreamHandler(
 
                     qa.subscribeWithGooglePurchaseToken(purchaseToken).collect {
                         eventSink.success(
-                            QAFlutterPluginSerializable.serializeQAResponseString(it)
+                            QAFlutterPluginSerializable.serializeQAResponseSubscriptionWithQuestionnaires(
+                                it
+                            )
                         )
                     }
                 }
@@ -55,7 +61,7 @@ class DeviceStreamHandler(
                 "getSubscriptionId" -> {
                     qa.getSubscriptionId().collect {
                         eventSink.success(
-                            QAFlutterPluginSerializable.serializeQAResponseString(it)
+                            QAFlutterPluginSerializable.serializeQAResponseSubscriptionIdResponse(it)
                         )
                     }
                 }
