@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../../../domain/domain.dart';
-import '../../mappers/journal_entry/journal_entry_with_events_mapper.dart';
 import '../../mappers/journal_entry/journal_stream_mapper.dart';
 import '../../mappers/qa_response/qa_response_stream_mapper.dart';
 import '../providers/journal_provider.dart';
@@ -56,7 +55,7 @@ class JournalRepositoryImpl implements JournalRepository {
 
     if (json == null) return null;
 
-    return JournalEntryWithEventsMapper.fromJson(jsonDecode(json));
+    return JournalEntryWithEvents.fromJson(jsonDecode(json));
   }
 
   @override
