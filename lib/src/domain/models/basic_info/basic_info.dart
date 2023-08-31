@@ -1,19 +1,23 @@
-import '../gender/gender.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../domain.dart';
 
 part 'basic_info.g.dart';
 
-part 'basic_info.freezed.dart';
+@JsonSerializable()
+class BasicInfo {
+  final int yearOfBirth;
+  final Gender gender;
+  final bool selfDeclaredHealthy;
 
-@freezed
-class BasicInfo with _$BasicInfo {
-  factory BasicInfo({
-    required int yearOfBirth,
-    required Gender gender,
-    required bool selfDeclaredHealthy,
-  }) = _BasicInfo;
+  BasicInfo({
+    required this.yearOfBirth,
+    required this.gender,
+    required this.selfDeclaredHealthy,
+  });
 
   factory BasicInfo.fromJson(Map<String, dynamic> json) =>
       _$BasicInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BasicInfoToJson(this);
 }
