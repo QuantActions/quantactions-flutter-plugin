@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:qa_flutter_plugin/src/data/mock/factories/journal_event_factory.dart';
-
 import '../consts/supported_methods.dart';
 import 'factories/basic_info_factory.dart';
 import 'factories/cohort_factory.dart';
+import 'factories/journal_event_factory.dart';
+import 'factories/qa_response_string_factory.dart';
 
 class MockDataProvider {
   static dynamic callMockMethod(String method) {
@@ -65,21 +65,21 @@ class MockDataProvider {
           ),
         );
       case SupportedMethods.leaveCohort:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.redeemVoucher:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.subscribeWithGooglePurchaseToken:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.subscribe:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.getSubscriptionId:
       // TODO: Handle this case.
       case SupportedMethods.createJournalEntry:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.deleteJournalEntry:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.sendNote:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.getJournal:
         return _getJournalEntryWithEventsList(length: 10);
       case SupportedMethods.getJournalSample:
@@ -100,11 +100,11 @@ class MockDataProvider {
       case SupportedMethods.getQuestionnairesList:
       // TODO: Handle this case.
       case SupportedMethods.recordQuestionnaireResponse:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.init:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       case SupportedMethods.validateToken:
-      // TODO: Handle this case.
+        return _getQAResponseString();
       default:
         throw Exception('$method mock method is not implemented');
     }
@@ -119,6 +119,14 @@ class MockDataProvider {
             .generateListFake(length: 10)
             .map((cohort) => cohort.toJson())
             .toList(),
+      ),
+    );
+  }
+
+  static Stream<String> _getQAResponseString() {
+    return Stream.value(
+      jsonEncode(
+        QAResponseStringFactory().generateFake(),
       ),
     );
   }
