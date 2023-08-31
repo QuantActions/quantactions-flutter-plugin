@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:qa_flutter_plugin/src/data/mock/factories/qa_response_subscription_factory.dart';
-
 import '../consts/supported_methods.dart';
 import 'factories/basic_info_factory.dart';
 import 'factories/cohort_factory.dart';
 import 'factories/journal_event_factory.dart';
 import 'factories/qa_response_string_factory.dart';
+import 'factories/qa_response_subscription_factory.dart';
+import 'factories/subscription_with_questionnaires_factory.dart';
 
 class MockDataProvider {
   static dynamic callMockMethod(String method) {
@@ -69,11 +69,11 @@ class MockDataProvider {
       case SupportedMethods.leaveCohort:
         return _getQAResponseString();
       case SupportedMethods.redeemVoucher:
-        return _getQAResponseString();
+        return _getQAResponseSubscriptionWithQuestionnaires();
       case SupportedMethods.subscribeWithGooglePurchaseToken:
-        return _getQAResponseString();
+        return _getQAResponseSubscriptionWithQuestionnaires();
       case SupportedMethods.subscribe:
-        return _getQAResponseString();
+        return _getQAResponseSubscriptionWithQuestionnaires();
       case SupportedMethods.getSubscriptionId:
         return Stream.value(_getQAResponseSubscriptionIdResponse());
       case SupportedMethods.createJournalEntry:
@@ -134,7 +134,16 @@ class MockDataProvider {
   }
 
   static String _getQAResponseSubscriptionIdResponse() {
-    final x = QAResponseSubscriptionFactory().generateFake();
-    return jsonEncode(x);
+    return jsonEncode(
+      QAResponseSubscriptionFactory().generateFake(),
+    );
+  }
+
+  static Stream<String> _getQAResponseSubscriptionWithQuestionnaires() {
+    return Stream.value(
+      jsonEncode(
+        SubscriptionWithQuestionnairesFactory().generateFake(),
+      ),
+    );
   }
 }

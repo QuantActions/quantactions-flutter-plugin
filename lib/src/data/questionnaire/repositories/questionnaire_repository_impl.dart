@@ -33,6 +33,6 @@ class QuestionnaireRepositoryImpl implements QuestionnaireRepository {
       response: response,
     );
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<String>(stream);
   }
 }

@@ -12,6 +12,7 @@ export 'trend_holder/trend_holder.dart';
 export 'gender/gender.dart';
 export 'qa_response/qa_response.dart';
 export 'qa_response/subscription_id_response.dart';
+export 'qa_response/subscription_with_questionnaires.dart';
 export 'journal/journal_event.dart';
 export 'journal/journal_entry_with_events.dart';
 export 'journal/resolved_journal_event.dart';

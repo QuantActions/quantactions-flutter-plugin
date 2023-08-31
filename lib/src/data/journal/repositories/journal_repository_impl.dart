@@ -29,7 +29,7 @@ class JournalRepositoryImpl implements JournalRepository {
       oldId: oldId,
     );
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<String>(stream);
   }
 
   @override
@@ -38,7 +38,7 @@ class JournalRepositoryImpl implements JournalRepository {
   }) {
     final stream = _journalProvider.deleteJournalEntry(id: id);
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<String>(stream);
   }
 
   @override
@@ -79,6 +79,6 @@ class JournalRepositoryImpl implements JournalRepository {
   Stream<QAResponse<String>> sendNote(String text) {
     final stream = _journalProvider.sendNote(text);
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<String>(stream);
   }
 }

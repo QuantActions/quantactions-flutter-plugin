@@ -1,5 +1,5 @@
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
-import 'package:qa_flutter_plugin/src/data/mock/factories/mock_model_factory.dart';
+import '../../../domain/models/models.dart';
+import 'mock_model_factory.dart';
 
 class ResolvedJournalEventFactory
     extends MockModelFactory<ResolvedJournalEvent> {

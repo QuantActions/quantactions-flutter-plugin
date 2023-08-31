@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain.dart';
@@ -36,10 +34,13 @@ class _QAResponseConverter<T> implements JsonConverter<T?, dynamic> {
 
   @override
   T? fromJson(dynamic json) {
-    if (T is SubscriptionIdResponse) {
+    if (json == null) {
+      return null;
+    } else if (T == SubscriptionIdResponse) {
       return SubscriptionIdResponse.fromJson(json) as T?;
-    }
-    if (T is String) {
+    } else if (T == SubscriptionWithQuestionnaires) {
+      return SubscriptionWithQuestionnaires.fromJson(json) as T?;
+    } else if (T == String) {
       return json as T?;
     }
 
@@ -50,6 +51,8 @@ class _QAResponseConverter<T> implements JsonConverter<T?, dynamic> {
   dynamic toJson(T? object) {
     if (T is SubscriptionIdResponse) {
       return (object as SubscriptionIdResponse).toJson();
+    } else if (T is SubscriptionWithQuestionnaires) {
+      return (object as SubscriptionWithQuestionnaires).toJson();
     } else {
       return object;
     }

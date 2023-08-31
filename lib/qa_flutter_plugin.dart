@@ -64,13 +64,14 @@ class QAFlutterPlugin {
     _dataCollectionRepository.pauseDataCollection();
   }
 
-  Stream<QAResponse<String>> redeemVoucher({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
     required String voucher,
   }) {
     return _deviceRepository.redeemVoucher(voucher: voucher);
   }
 
-  Stream<QAResponse<String>> subscribeWithGooglePurchaseToken({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>>
+      subscribeWithGooglePurchaseToken({
     required String purchaseToken,
   }) {
     return _deviceRepository.subscribeWithGooglePurchaseToken(
@@ -79,7 +80,7 @@ class QAFlutterPlugin {
   }
 
   ///Use this function to subscribe the device to your(one of your) cohort(s).
-  Stream<QAResponse<String>> subscribe({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
     required String subscriptionIdOrCohortId,
   }) {
     return _deviceRepository.subscribe(

@@ -45,7 +45,7 @@ class UserRepositoryImpl implements UserRepository {
       selfDeclaredHealthy: selfDeclaredHealthy,
     );
 
-    return QAResponseStreamMapper.getString(initStream);
+    return QAResponseStreamMapper.fromStream<String>(initStream);
   }
 
   @override
@@ -64,7 +64,7 @@ class UserRepositoryImpl implements UserRepository {
   }) {
     final stream = _userProvider.validateToken(apiKey: apiKey);
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<String>(stream);
   }
 
   @override

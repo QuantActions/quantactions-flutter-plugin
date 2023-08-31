@@ -1,18 +1,17 @@
-import '../models/qa_response/qa_response.dart';
-import '../models/qa_response/subscription_id_response.dart';
+import '../models/models.dart';
 
 abstract class DeviceRepository {
   Future<bool> isDeviceRegistered();
 
-  Stream<QAResponse<String>> subscribe({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
     required String subscriptionIdOrCohortId,
   });
 
-  Stream<QAResponse<String>> subscribeWithGooglePurchaseToken({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribeWithGooglePurchaseToken({
     required String purchaseToken,
   });
 
-  Stream<QAResponse<String>> redeemVoucher({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
     required String voucher,
   });
 

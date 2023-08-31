@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import '../../../domain/domain.dart';
-import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../../mappers/qa_response/qa_response_stream_mapper.dart';
 import '../providers/device_provider.dart';
 
@@ -18,41 +15,46 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Stream<QAResponse<String>> redeemVoucher({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
     required String voucher,
   }) {
     final stream = _deviceProvider.redeemVoucher(voucher: voucher);
-
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<SubscriptionWithQuestionnaires>(
+      stream,
+    );
   }
 
   @override
-  Stream<QAResponse<String>> subscribeWithGooglePurchaseToken({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>>
+      subscribeWithGooglePurchaseToken({
     required String purchaseToken,
   }) {
     final stream = _deviceProvider.subscribeWithGooglePurchaseToken(
       purchaseToken: purchaseToken,
     );
-
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<SubscriptionWithQuestionnaires>(
+      stream,
+    );
   }
 
   @override
-  Stream<QAResponse<String>> subscribe({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
     required String subscriptionIdOrCohortId,
   }) {
     final stream = _deviceProvider.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<SubscriptionWithQuestionnaires>(
+      stream,
+    );
   }
 
   @override
   Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId() {
     final stream = _deviceProvider.getSubscriptionId();
 
-    return QAResponseStreamMapper.getSubscriptionIdResponse(stream);
+    return QAResponseStreamMapper.fromStream<SubscriptionIdResponse>(stream);
   }
 
   @override
@@ -64,8 +66,8 @@ class DeviceRepositoryImpl implements DeviceRepository {
           'QAFlutterPlugin.getSubscriptionIdAsync() returned no data');
     }
 
-    return QAResponseMapper.fromJsonSubscriptionIdResponse(
-      jsonDecode(json),
+    return QAResponse<SubscriptionIdResponse>.fromJson(
+      json as Map<String, dynamic>,
     );
   }
 

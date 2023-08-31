@@ -21,6 +21,6 @@ class CohortRepositoryImpl implements CohortRepository {
   Stream<QAResponse<String>> leaveCohort(String cohortId) {
     final stream = _cohortProvider.leaveCohort(cohortId);
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseStreamMapper.fromStream<String>(stream);
   }
 }
