@@ -1,5 +1,5 @@
 import '../../../domain/domain.dart';
-import '../../mappers/qa_response/qa_response_stream_mapper.dart';
+import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/device_provider.dart';
 
 class DeviceRepositoryImpl implements DeviceRepository {
@@ -19,9 +19,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
     required String voucher,
   }) {
     final stream = _deviceProvider.redeemVoucher(voucher: voucher);
-    return QAResponseStreamMapper.fromStream<SubscriptionWithQuestionnaires>(
-      stream,
-    );
+    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
   }
 
   @override
@@ -32,9 +30,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
     final stream = _deviceProvider.subscribeWithGooglePurchaseToken(
       purchaseToken: purchaseToken,
     );
-    return QAResponseStreamMapper.fromStream<SubscriptionWithQuestionnaires>(
-      stream,
-    );
+    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
   }
 
   @override
@@ -45,16 +41,14 @@ class DeviceRepositoryImpl implements DeviceRepository {
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
 
-    return QAResponseStreamMapper.fromStream<SubscriptionWithQuestionnaires>(
-      stream,
-    );
+    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
   }
 
   @override
   Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId() {
     final stream = _deviceProvider.getSubscriptionId();
 
-    return QAResponseStreamMapper.fromStream<SubscriptionIdResponse>(stream);
+    return QAResponseMapper.fromStream<SubscriptionIdResponse>(stream);
   }
 
   @override

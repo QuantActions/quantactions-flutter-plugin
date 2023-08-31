@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../../../domain/domain.dart';
-import '../../mappers/qa_response/qa_response_stream_mapper.dart';
+import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/user_provider.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -45,7 +45,7 @@ class UserRepositoryImpl implements UserRepository {
       selfDeclaredHealthy: selfDeclaredHealthy,
     );
 
-    return QAResponseStreamMapper.fromStream<String>(initStream);
+    return QAResponseMapper.fromStream<String>(initStream);
   }
 
   @override
@@ -64,7 +64,7 @@ class UserRepositoryImpl implements UserRepository {
   }) {
     final stream = _userProvider.validateToken(apiKey: apiKey);
 
-    return QAResponseStreamMapper.fromStream<String>(stream);
+    return QAResponseMapper.fromStream<String>(stream);
   }
 
   @override
