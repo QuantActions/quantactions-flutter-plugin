@@ -1,12 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:faker/faker.dart';
+
 import '../consts/supported_methods.dart';
 import 'factories/basic_info_factory.dart';
 import 'factories/cohort_factory.dart';
+import 'factories/journal_entry_with_events_factory.dart';
 import 'factories/journal_event_factory.dart';
 import 'factories/qa_response_string_factory.dart';
 import 'factories/qa_response_subscription_factory.dart';
+import 'factories/questionnaire_factory.dart';
 import 'factories/subscription_with_questionnaires_factory.dart';
 
 class MockDataProvider {
@@ -18,43 +22,45 @@ class MockDataProvider {
           BasicInfoFactory().generateFake(),
         );
       case SupportedMethods.getDeviceID:
-      // TODO: Handle this case.
+        return faker.randomGenerator.fromCharSet('1234567890', 10);
       case SupportedMethods.getFirebaseToken:
-      // TODO: Handle this case.
+        return faker.randomGenerator.fromCharSet('1234567890', 25);
       case SupportedMethods.getIsTablet:
-      // TODO: Handle this case.
+        return faker.randomGenerator.boolean();
       case SupportedMethods.isDataCollectionRunning:
-      // TODO: Handle this case.
+        return faker.randomGenerator.boolean();
       case SupportedMethods.resumeDataCollection:
-      // TODO: Handle this case.
+        return;
       case SupportedMethods.pauseDataCollection:
-      // TODO: Handle this case.
+        return;
       case SupportedMethods.isDeviceRegistered:
-      // TODO: Handle this case.
+        return faker.randomGenerator.boolean();
       case SupportedMethods.syncData:
-      // TODO: Handle this case.
+        return faker.lorem.sentence();
       case SupportedMethods.getSubscriptionIdAsync:
         return _getQAResponseSubscriptionIdResponse();
       case SupportedMethods.getJournalEntry:
-      // TODO: Handle this case.
+        return jsonEncode(
+          JournalEntryWithEventsFactory().generateFake(),
+        );
       case SupportedMethods.getMetricAsync:
       // TODO: Handle this case.
       case SupportedMethods.getStatSampleAsync:
       // TODO: Handle this case.
       case SupportedMethods.canDraw:
-      // TODO: Handle this case.
+        return faker.randomGenerator.boolean();
       case SupportedMethods.canUsage:
-      // TODO: Handle this case.
+        return faker.randomGenerator.boolean();
       case SupportedMethods.isInit:
-      // TODO: Handle this case.
+        return faker.randomGenerator.boolean();
       case SupportedMethods.initAsync:
-      // TODO: Handle this case.
+        return faker.randomGenerator.boolean();
       case SupportedMethods.updateBasicInfo:
-      // TODO: Handle this case.
+        return;
       case SupportedMethods.savePublicKey:
-      // TODO: Handle this case.
+        return;
       case SupportedMethods.setVerboseLevel:
-      // TODO: Handle this case.
+        return;
 
       //methods for event channel
       case SupportedMethods.getCohortList:
@@ -100,7 +106,11 @@ class MockDataProvider {
       case SupportedMethods.getMetricSample:
       // TODO: Handle this case.
       case SupportedMethods.getQuestionnairesList:
-      // TODO: Handle this case.
+        return Stream.value(
+          jsonEncode(
+            QuestionnaireFactory().generateListFake(length: 10),
+          ),
+        );
       case SupportedMethods.recordQuestionnaireResponse:
         return _getQAResponseString();
       case SupportedMethods.init:
