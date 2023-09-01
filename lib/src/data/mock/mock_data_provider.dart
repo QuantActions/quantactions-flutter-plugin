@@ -34,7 +34,7 @@ class MockDataProvider {
       case SupportedMethods.syncData:
       // TODO: Handle this case.
       case SupportedMethods.getSubscriptionIdAsync:
-        return Future(() => _getQAResponseSubscriptionIdResponse());
+        return _getQAResponseSubscriptionIdResponse();
       case SupportedMethods.getJournalEntry:
       // TODO: Handle this case.
       case SupportedMethods.getMetricAsync:

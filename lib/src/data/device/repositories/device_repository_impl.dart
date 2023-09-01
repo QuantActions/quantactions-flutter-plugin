@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../domain/domain.dart';
 import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/device_provider.dart';
@@ -61,7 +63,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     return QAResponse<SubscriptionIdResponse>.fromJson(
-      json as Map<String, dynamic>,
+      jsonDecode(json),
     );
   }
 
