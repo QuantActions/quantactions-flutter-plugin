@@ -18,9 +18,7 @@ class MockDataProvider {
     switch (method) {
       //methods for method channel
       case SupportedMethods.getBasicInfo:
-        return jsonEncode(
-          BasicInfoFactory().generateFake(),
-        );
+        return _getBasicInfo();
       case SupportedMethods.getDeviceID:
         return faker.randomGenerator.fromCharSet('1234567890', 10);
       case SupportedMethods.getFirebaseToken:
@@ -40,9 +38,7 @@ class MockDataProvider {
       case SupportedMethods.getSubscriptionIdAsync:
         return _getQAResponseSubscriptionIdResponse();
       case SupportedMethods.getJournalEntry:
-        return jsonEncode(
-          JournalEntryWithEventsFactory().generateFake(),
-        );
+        return _getJournalEntry();
       case SupportedMethods.getMetricAsync:
       // TODO: Handle this case.
       case SupportedMethods.getStatSampleAsync:
@@ -64,14 +60,7 @@ class MockDataProvider {
 
       //methods for event channel
       case SupportedMethods.getCohortList:
-        return Stream.value(
-          jsonEncode(
-            CohortFactory()
-                .generateListFake(length: 10)
-                .map((cohort) => cohort.toJson())
-                .toList(),
-          ),
-        );
+        return _getCohortList();
       case SupportedMethods.leaveCohort:
         return _getQAResponseString();
       case SupportedMethods.redeemVoucher:
@@ -93,24 +82,13 @@ class MockDataProvider {
       case SupportedMethods.getJournalSample:
         return _getJournalEntryWithEventsList(length: 10);
       case SupportedMethods.getJournalEvents:
-        return Stream.value(
-          jsonEncode(
-            JournalEventFactory()
-                .generateListFake(length: 10)
-                .map((cohort) => cohort.toJson())
-                .toList(),
-          ),
-        );
+        return _getJournalEventList();
       case SupportedMethods.getMetric:
       // TODO: Handle this case.
       case SupportedMethods.getMetricSample:
       // TODO: Handle this case.
       case SupportedMethods.getQuestionnairesList:
-        return Stream.value(
-          jsonEncode(
-            QuestionnaireFactory().generateListFake(length: 10),
-          ),
-        );
+        return _getQuestionnairesList();
       case SupportedMethods.recordQuestionnaireResponse:
         return _getQAResponseString();
       case SupportedMethods.init:
@@ -154,6 +132,48 @@ class MockDataProvider {
       jsonEncode(
         SubscriptionWithQuestionnairesFactory().generateFake(),
       ),
+    );
+  }
+
+  static Stream<String> _getQuestionnairesList() {
+    return Stream.value(
+      jsonEncode(
+        QuestionnaireFactory().generateListFake(length: 10),
+      ),
+    );
+  }
+
+  static Stream<String> _getJournalEventList() {
+    return Stream.value(
+      jsonEncode(
+        JournalEventFactory()
+            .generateListFake(length: 10)
+            .map((cohort) => cohort.toJson())
+            .toList(),
+      ),
+    );
+  }
+
+  static Stream<String> _getCohortList() {
+    return Stream.value(
+      jsonEncode(
+        CohortFactory()
+            .generateListFake(length: 10)
+            .map((cohort) => cohort.toJson())
+            .toList(),
+      ),
+    );
+  }
+
+  static String _getJournalEntry() {
+    return jsonEncode(
+      JournalEntryWithEventsFactory().generateFake(),
+    );
+  }
+
+  static String _getBasicInfo() {
+    return jsonEncode(
+      BasicInfoFactory().generateFake(),
     );
   }
 }
