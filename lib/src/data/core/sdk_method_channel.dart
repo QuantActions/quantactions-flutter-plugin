@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../../domain/domain.dart';
@@ -60,9 +61,9 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     //param for mock data
     MetricType? metricType,
   }) {
-    if (Platform.isAndroid) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
       return request();
-    } else if (Platform.isIOS) {
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return MockDataProvider.callMockMethod(
         method: method,
         metricType: metricType,
