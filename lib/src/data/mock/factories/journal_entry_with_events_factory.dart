@@ -8,10 +8,7 @@ class JournalEntryWithEventsFactory
   JournalEntryWithEvents generateFake() {
     return JournalEntryWithEvents(
       id: generateId,
-      timestamp: faker.date.dateTime(
-        minYear: 1990,
-        maxYear: DateTime.now().year,
-      ),
+      timestamp: generateDateTime,
       note: faker.lorem.sentences(3).join(),
       events: ResolvedJournalEventFactory().generateListFake(length: 5),
       ratings: faker.randomGenerator.numbers(5, 5),

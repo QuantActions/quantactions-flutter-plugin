@@ -40,6 +40,7 @@ class MetricProviderImpl implements MetricProvider {
       params: <String, dynamic>{
         'metric': metric.id,
       },
+      metricType: metric,
     );
   }
 

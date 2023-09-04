@@ -3,18 +3,23 @@ import 'dart:convert';
 
 import 'package:faker/faker.dart';
 
+import '../../domain/domain.dart';
 import '../consts/supported_methods.dart';
 import 'factories/basic_info_factory.dart';
 import 'factories/cohort_factory.dart';
 import 'factories/journal_entry_with_events_factory.dart';
 import 'factories/journal_event_factory.dart';
+import 'factories/metric_factory.dart';
 import 'factories/qa_response_string_factory.dart';
 import 'factories/qa_response_subscription_factory.dart';
 import 'factories/questionnaire_factory.dart';
 import 'factories/subscription_with_questionnaires_factory.dart';
 
 class MockDataProvider {
-  static dynamic callMockMethod(String method) {
+  static dynamic callMockMethod({
+    required String method,
+    required MetricType? metricType,
+  }) {
     switch (method) {
       //methods for method channel
       case SupportedMethods.getBasicInfo:
@@ -23,78 +28,61 @@ class MockDataProvider {
         return faker.randomGenerator.fromCharSet('1234567890', 10);
       case SupportedMethods.getFirebaseToken:
         return faker.randomGenerator.fromCharSet('1234567890', 25);
-      case SupportedMethods.getIsTablet:
+      case SupportedMethods.getIsTablet ||
+            SupportedMethods.isDataCollectionRunning ||
+            SupportedMethods.isDeviceRegistered ||
+            SupportedMethods.canDraw ||
+            SupportedMethods.canUsage ||
+            SupportedMethods.isInit ||
+            SupportedMethods.initAsync:
         return faker.randomGenerator.boolean();
-      case SupportedMethods.isDataCollectionRunning:
-        return faker.randomGenerator.boolean();
-      case SupportedMethods.resumeDataCollection:
+      case SupportedMethods.resumeDataCollection ||
+            SupportedMethods.pauseDataCollection ||
+            SupportedMethods.updateBasicInfo ||
+            SupportedMethods.savePublicKey ||
+            SupportedMethods.setVerboseLevel:
         return;
-      case SupportedMethods.pauseDataCollection:
-        return;
-      case SupportedMethods.isDeviceRegistered:
-        return faker.randomGenerator.boolean();
       case SupportedMethods.syncData:
         return faker.lorem.sentence();
       case SupportedMethods.getSubscriptionIdAsync:
         return _getQAResponseSubscriptionIdResponse();
       case SupportedMethods.getJournalEntry:
         return _getJournalEntry();
-      case SupportedMethods.getMetricAsync:
-      // TODO: Handle this case.
-      case SupportedMethods.getStatSampleAsync:
-      // TODO: Handle this case.
-      case SupportedMethods.canDraw:
-        return faker.randomGenerator.boolean();
-      case SupportedMethods.canUsage:
-        return faker.randomGenerator.boolean();
-      case SupportedMethods.isInit:
-        return faker.randomGenerator.boolean();
-      case SupportedMethods.initAsync:
-        return faker.randomGenerator.boolean();
-      case SupportedMethods.updateBasicInfo:
-        return;
-      case SupportedMethods.savePublicKey:
-        return;
-      case SupportedMethods.setVerboseLevel:
-        return;
+      case SupportedMethods.getMetricAsync ||
+            SupportedMethods.getStatSampleAsync:
+        if (metricType == null) return;
+
+        return jsonEncode(_getMetric(metricType));
 
       //methods for event channel
       case SupportedMethods.getCohortList:
         return _getCohortList();
-      case SupportedMethods.leaveCohort:
+      case SupportedMethods.leaveCohort ||
+            SupportedMethods.createJournalEntry ||
+            SupportedMethods.deleteJournalEntry ||
+            SupportedMethods.sendNote ||
+            SupportedMethods.recordQuestionnaireResponse ||
+            SupportedMethods.init ||
+            SupportedMethods.validateToken:
         return _getQAResponseString();
-      case SupportedMethods.redeemVoucher:
-        return _getQAResponseSubscriptionWithQuestionnaires();
-      case SupportedMethods.subscribeWithGooglePurchaseToken:
-        return _getQAResponseSubscriptionWithQuestionnaires();
-      case SupportedMethods.subscribe:
+      case SupportedMethods.redeemVoucher ||
+            SupportedMethods.subscribeWithGooglePurchaseToken ||
+            SupportedMethods.subscribe:
         return _getQAResponseSubscriptionWithQuestionnaires();
       case SupportedMethods.getSubscriptionId:
         return Stream.value(_getQAResponseSubscriptionIdResponse());
-      case SupportedMethods.createJournalEntry:
-        return _getQAResponseString();
-      case SupportedMethods.deleteJournalEntry:
-        return _getQAResponseString();
-      case SupportedMethods.sendNote:
-        return _getQAResponseString();
-      case SupportedMethods.getJournal:
-        return _getJournalEntryWithEventsList(length: 10);
-      case SupportedMethods.getJournalSample:
+      case SupportedMethods.getJournal || SupportedMethods.getJournalSample:
         return _getJournalEntryWithEventsList(length: 10);
       case SupportedMethods.getJournalEvents:
         return _getJournalEventList();
-      case SupportedMethods.getMetric:
-      // TODO: Handle this case.
-      case SupportedMethods.getMetricSample:
-      // TODO: Handle this case.
+      case SupportedMethods.getMetric || SupportedMethods.getMetricSample:
+        if (metricType == null) return;
+
+        return Stream.value(
+          jsonEncode(_getMetric(metricType)),
+        );
       case SupportedMethods.getQuestionnairesList:
         return _getQuestionnairesList();
-      case SupportedMethods.recordQuestionnaireResponse:
-        return _getQAResponseString();
-      case SupportedMethods.init:
-        return _getQAResponseString();
-      case SupportedMethods.validateToken:
-        return _getQAResponseString();
       default:
         throw Exception('$method mock method is not implemented');
     }
@@ -175,5 +163,20 @@ class MockDataProvider {
     return jsonEncode(
       BasicInfoFactory().generateFake(),
     );
+  }
+
+  static dynamic _getMetric(MetricType metricType) {
+    if (metricType is Trend) {
+      return MetricFactory<TrendHolder>().generateFake();
+    } else {
+      switch (metricType) {
+        case Metric.sleepSummary:
+          return MetricFactory<SleepSummary>().generateFake();
+        case Metric.screenTimeAggregate:
+          return MetricFactory<ScreenTimeAggregate>().generateFake();
+        default:
+          return MetricFactory<double>().generateFake();
+      }
+    }
   }
 }

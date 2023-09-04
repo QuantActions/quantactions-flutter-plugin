@@ -5,17 +5,11 @@ class JournalEventFactory extends MockModelFactory<JournalEvent> {
   @override
   JournalEvent generateFake() {
     return JournalEvent(
-      id: faker.randomGenerator.fromCharSet('-1234567890', 10),
+      id: generateId,
       publicName: faker.conference.name(),
       iconName: faker.lorem.word(),
-      created: faker.date.dateTime(
-        minYear: 1990,
-        maxYear: DateTime.now().year,
-      ),
-      modified: faker.date.dateTime(
-        minYear: 1990,
-        maxYear: DateTime.now().year,
-      ),
+      created: generateDateTime,
+      modified: generateDateTime,
     );
   }
 

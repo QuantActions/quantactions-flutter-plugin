@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
+import '../../domain/domain.dart';
 import '../consts/method_channel_consts.dart';
 import '../mock/mock_data_provider.dart';
 import 'sdk_method_channel_core.dart';
@@ -32,6 +33,8 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     required String method,
     required EventChannel eventChannel,
     Map<String, dynamic>? params,
+    //param for mock data
+    MetricType? metricType,
   }) {
     final Map<String, dynamic> data = <String, dynamic>{
       'method': method,
@@ -44,17 +47,23 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     return _safeRequest(
       method: method,
       request: () => eventChannel.receiveBroadcastStream(data),
+      metricType: metricType,
     );
   }
 
   dynamic _safeRequest({
     required Function() request,
     required String method,
+    //param for mock data
+    MetricType? metricType,
   }) {
     if (Platform.isAndroid) {
       return request();
     } else if (Platform.isIOS) {
-      return MockDataProvider.callMockMethod(method);
+      return MockDataProvider.callMockMethod(
+        method: method,
+        metricType: metricType,
+      );
     } else {
       throw Exception(
         'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',

@@ -36,16 +36,3 @@ class JournalEntryWithEvents {
   static DateTime _dateTimeFromJson(int milliseconds) =>
       DateTime.fromMillisecondsSinceEpoch(milliseconds);
 }
-
-// Map<String, dynamic> toJson() {
-//   return <String, dynamic>{
-//     "id": id,
-//     "timestamp": timestamp.millisecondsSinceEpoch,
-//     "note": note,
-//     "events": jsonEncode(
-//       events.map((event) => event.toJson()).toList(),
-//     ),
-//     "ratings": jsonEncode(ratings),
-//     "scores": jsonEncode(scores),
-//   };
-// }

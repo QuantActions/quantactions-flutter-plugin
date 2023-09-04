@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import '../../../domain/domain.dart';
 
-
 class QuestionnaireMapper {
   static Stream<List<Questionnaire>> fromStream(Stream<dynamic> stream) {
     return stream.map(

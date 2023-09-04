@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import '../../../domain/domain.dart';
 import '../../mappers/time_series/time_series_mapper.dart';
-import '../../mappers/time_series/time_series_stream_mapper.dart';
 import '../providers/metric_provider.dart';
 
 class MetricRepositoryImpl implements MetricRepository {
@@ -56,22 +55,22 @@ class MetricRepositoryImpl implements MetricRepository {
     );
   }
 
-  Stream<TimeSeries> _mapStream({
+  Stream<TimeSeries<dynamic>> _mapStream({
     required Stream stream,
     required MetricType metric,
   }) {
     if (metric is Trend) {
-      return TimeSeriesStreamMapper.getTrendHolder(stream);
+      return TimeSeriesMapper.fromStream<TrendHolder>(stream);
     }
 
     switch (metric) {
       case Metric.sleepSummary:
-        return TimeSeriesStreamMapper.getSleepSummary(stream);
+        return TimeSeriesMapper.fromStream<SleepSummary>(stream);
       case Metric.screenTimeAggregate:
-        return TimeSeriesStreamMapper.getScreenTimeAggregate(stream);
+        return TimeSeriesMapper.fromStream<ScreenTimeAggregate>(stream);
 
       default:
-        return TimeSeriesStreamMapper.getDouble(stream);
+        return TimeSeriesMapper.fromStream<double>(stream);
     }
   }
 
@@ -84,16 +83,16 @@ class MetricRepositoryImpl implements MetricRepository {
     final json = jsonDecode(response);
 
     if (metric is Trend) {
-      return TimeSeriesMapper.fromJsonTrendHolderTimeSeries(json);
+      return TimeSeries<TrendHolder>.fromJson(json);
     }
 
     switch (metric) {
       case Metric.sleepSummary:
-        return TimeSeriesMapper.fromJsonSleepSummaryTimeSeries(json);
+        return TimeSeries<SleepSummary>.fromJson(json);
       case Metric.screenTimeAggregate:
-        return TimeSeriesMapper.fromJsonScreenTimeAggregateTimeSeries(json);
+        return TimeSeries<ScreenTimeAggregate>.fromJson(json);
       default:
-        return TimeSeriesMapper.fromJsonDouble(json);
+        return TimeSeries<double>.fromJson(json);
     }
   }
 }
