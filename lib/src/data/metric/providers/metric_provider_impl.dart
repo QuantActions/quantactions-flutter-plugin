@@ -51,6 +51,7 @@ class MetricProviderImpl implements MetricProvider {
       params: <String, dynamic>{
         'metric': metric.id,
       },
+      metricType: metric,
     );
   }
 
@@ -66,6 +67,7 @@ class MetricProviderImpl implements MetricProvider {
         'apiKey': apiKey,
         'metric': metric.id,
       },
+      metricType: metric,
     );
   }
 
@@ -80,6 +82,7 @@ class MetricProviderImpl implements MetricProvider {
         'apiKey': apiKey,
         'metric': metric.id,
       },
+      metricType: metric,
     );
   }
 }
