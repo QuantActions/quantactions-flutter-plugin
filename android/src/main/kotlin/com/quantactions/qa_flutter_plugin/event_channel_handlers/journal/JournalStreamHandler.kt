@@ -1,4 +1,4 @@
-package com.quantactions.qa_flutter_plugin.event_channel_handlers
+package com.quantactions.qa_flutter_plugin.event_channel_handlers.journal
 
 import android.content.Context
 import com.google.gson.reflect.TypeToken
@@ -18,7 +18,6 @@ import java.time.format.DateTimeFormatter
 
 class JournalStreamHandler(
     private var mainScope: CoroutineScope,
-    private var ioScope: CoroutineScope,
     private var qa: QA,
     private var context: Context
 ) : EventChannel.StreamHandler {
@@ -61,53 +60,6 @@ class JournalStreamHandler(
                     }.collect {
                         eventSink.success(
                             QAFlutterPluginSerializable.serializeQAResponseString(it)
-                        )
-                    }
-                }
-
-                "getJournal" -> {
-                    withContext(Dispatchers.IO) {
-                        qa.getJournal()
-                    }.collect {
-                        eventSink.success(
-                            QAFlutterPluginSerializable.serializeJournalEntryWithEvents(it)
-                        )
-                    }
-                }
-
-                "getJournalEvents" -> {
-                    withContext(Dispatchers.IO) {
-                        qa.getJournalEvents()
-                    }.collect {
-                        val list = listOf(
-                            JournalEvent(
-                                "id",
-                                "public_name",
-                                "icon_name",
-                                "created",
-                                "modified"
-                            ),
-                            JournalEvent(
-                                "id",
-                                "public_name",
-                                "icon_name",
-                                "created",
-                                "modified"
-                            ),
-                        )
-
-                        eventSink.success(QAFlutterPluginSerializable.serializeJournalEvents(list))
-                    }
-                }
-
-                "getJournalSample" -> {
-                    withContext(Dispatchers.IO) {
-                        val apiKey = params["apiKey"] as String
-
-                        qa.getJournalSample(context, apiKey)
-                    }.collect {
-                        eventSink.success(
-                            QAFlutterPluginSerializable.serializeJournalEntryWithEvents(it)
                         )
                     }
                 }
@@ -155,7 +107,7 @@ class JournalStreamHandler(
         return qa.deleteJournalEntry(id)
     }
 
-    private suspend fun sendNote(params: Map<*, *>): Flow<QAResponse<String>> {
+    private fun sendNote(params: Map<*, *>): Flow<QAResponse<String>> {
         val text = params["text"] as String
 
         return qa.sendNote(text)

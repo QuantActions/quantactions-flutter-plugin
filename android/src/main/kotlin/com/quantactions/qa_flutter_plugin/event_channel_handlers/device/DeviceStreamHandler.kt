@@ -1,6 +1,5 @@
-package com.quantactions.qa_flutter_plugin.event_channel_handlers
+package com.quantactions.qa_flutter_plugin.event_channel_handlers.device
 
-import android.content.Context
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
 import io.flutter.plugin.common.EventChannel
@@ -10,7 +9,6 @@ import kotlinx.coroutines.launch
 class DeviceStreamHandler(
     private var mainScope: CoroutineScope,
     private var qa: QA,
-    private var context: Context
 ) : EventChannel.StreamHandler {
     private var eventSink: EventChannel.EventSink? = null
 
@@ -54,14 +52,6 @@ class DeviceStreamHandler(
                             QAFlutterPluginSerializable.serializeQAResponseSubscriptionWithQuestionnaires(
                                 it
                             )
-                        )
-                    }
-                }
-
-                "getSubscriptionId" -> {
-                    qa.getSubscriptionId().collect {
-                        eventSink.success(
-                            QAFlutterPluginSerializable.serializeQAResponseSubscriptionIdResponse(it)
                         )
                     }
                 }

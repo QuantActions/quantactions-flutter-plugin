@@ -6,6 +6,9 @@ import '../../core/sdk_method_channel.dart';
 import 'device_provider.dart';
 
 class DeviceProviderImpl implements DeviceProvider {
+  final _getSubscriptionIdEventChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/get_subscription_id',
+  );
   final _eventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/device',
   );
@@ -66,7 +69,7 @@ class DeviceProviderImpl implements DeviceProvider {
   Stream<dynamic> getSubscriptionId() {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getSubscriptionId,
-      eventChannel: _eventChannel,
+      eventChannel: _getSubscriptionIdEventChannel,
     );
   }
 

@@ -9,6 +9,12 @@ import '../../core/sdk_method_channel.dart';
 import 'journal_provider.dart';
 
 class JournalProviderImpl implements JournalProvider {
+  final _getJournalEventsEventChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/get_journal_events',
+  );
+  final _getJournalEventChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/get_journal',
+  );
   final _eventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/journal',
   );
@@ -59,7 +65,7 @@ class JournalProviderImpl implements JournalProvider {
   Stream getJournal() {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getJournal,
-      eventChannel: _eventChannel,
+      eventChannel: _getJournalEventChannel,
     );
   }
 
@@ -77,7 +83,7 @@ class JournalProviderImpl implements JournalProvider {
   Stream getJournalEvents() {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getJournalEvents,
-      eventChannel: _eventChannel,
+      eventChannel: _getJournalEventsEventChannel,
     );
   }
 
@@ -87,7 +93,7 @@ class JournalProviderImpl implements JournalProvider {
   }) {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getJournalSample,
-      eventChannel: _eventChannel,
+      eventChannel: _getJournalEventChannel,
       params: <String, dynamic>{
         'apiKey': apiKey,
       },
