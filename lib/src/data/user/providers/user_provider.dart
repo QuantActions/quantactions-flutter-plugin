@@ -17,15 +17,15 @@ abstract class UserProvider {
     bool? selfDeclaredHealthy,
   });
 
-  void updateBasicInfo({
+  Future<void> updateBasicInfo({
     int? newYearOfBirth,
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
   });
 
-  void savePublicKey();
+  Future<void> savePublicKey();
 
-  void setVerboseLevel(int verbose);
+  Future<void> setVerboseLevel(int verbose);
 
   Stream<dynamic> validateToken({
     required String apiKey,

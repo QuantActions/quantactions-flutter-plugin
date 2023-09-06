@@ -49,12 +49,12 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  void savePublicKey() {
+  Future<void> savePublicKey() async {
     _userProvider.savePublicKey();
   }
 
   @override
-  void setVerboseLevel(int verbose) {
+  Future<void> setVerboseLevel(int verbose) async {
     _userProvider.setVerboseLevel(verbose);
   }
 
@@ -68,11 +68,11 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  void updateBasicInfo({
+  Future<void> updateBasicInfo({
     int? newYearOfBirth,
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
-  }) {
+  }) async {
     _userProvider.updateBasicInfo(
       newYearOfBirth: newYearOfBirth,
       newGender: newGender,
