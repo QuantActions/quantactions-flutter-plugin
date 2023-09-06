@@ -1,7 +1,7 @@
 abstract class DataCollectionProvider {
   Future<bool> isDataCollectionRunning();
 
-  void pauseDataCollection();
+  Future<void> pauseDataCollection();
 
-  void resumeDataCollection();
+  Future<void> resumeDataCollection();
 }
