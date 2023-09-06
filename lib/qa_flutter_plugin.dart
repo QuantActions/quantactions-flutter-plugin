@@ -55,12 +55,12 @@ class QAFlutterPlugin {
   }
 
   ///Restart the data collection after it has been purposely paused.
-  void resumeDataCollection() {
+  Future<void> resumeDataCollection() async {
     _dataCollectionRepository.resumeDataCollection();
   }
 
   ///Pause the data collection.
-  void pauseDataCollection() {
+  Future<void> pauseDataCollection() async {
     _dataCollectionRepository.pauseDataCollection();
   }
 
@@ -301,7 +301,7 @@ class QAFlutterPlugin {
   ///Use this function to update the basic info of a user.
   ///You can call the function with one or parameters,
   ///the missing ones will be considered unaltered.
-  void updateBasicInfo({
+  Future<void> updateBasicInfo({
     int? newYearOfBirth,
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
@@ -313,11 +313,11 @@ class QAFlutterPlugin {
     );
   }
 
-  void savePublicKey() {
+  Future<void> savePublicKey() async {
     _userRepository.savePublicKey();
   }
 
-  void setVerboseLevel(int verbose) {
+  Future<void> setVerboseLevel(int verbose) async {
     _userRepository.setVerboseLevel(verbose);
   }
 

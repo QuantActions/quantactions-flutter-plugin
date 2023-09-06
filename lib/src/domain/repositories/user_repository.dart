@@ -17,15 +17,15 @@ abstract class UserRepository {
     bool? selfDeclaredHealthy,
   });
 
-  void updateBasicInfo({
+  Future<void> updateBasicInfo({
     int? newYearOfBirth,
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
   });
 
-  void savePublicKey();
+  Future<void> savePublicKey();
 
-  void setVerboseLevel(int verbose);
+  Future<void> setVerboseLevel(int verbose);
 
   Stream<QAResponse<String>> validateToken({
     required String apiKey,

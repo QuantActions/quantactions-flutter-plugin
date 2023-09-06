@@ -14,12 +14,12 @@ class DataCollectionRepositoryImpl implements DataCollectionRepository {
   }
 
   @override
-  void pauseDataCollection() {
-    _dataCollectionProvider.pauseDataCollection();
+  Future<void> pauseDataCollection() async {
+    await _dataCollectionProvider.pauseDataCollection();
   }
 
   @override
-  void resumeDataCollection() {
+  Future<void> resumeDataCollection() async {
     _dataCollectionProvider.resumeDataCollection();
   }
 }

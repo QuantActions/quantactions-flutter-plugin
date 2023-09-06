@@ -59,12 +59,12 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  void savePublicKey() {
+  Future<void> savePublicKey() async {
     _sdkMethodChannel.callMethodChannel(method: 'savePublicKey');
   }
 
   @override
-  void setVerboseLevel(int verbose) {
+  Future<void> setVerboseLevel(int verbose) async {
     _sdkMethodChannel.callMethodChannel(
       method: 'setVerboseLevel',
       params: <String, dynamic>{
@@ -85,11 +85,11 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  void updateBasicInfo({
+  Future<void> updateBasicInfo({
     int? newYearOfBirth,
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
-  }) {
+  }) async {
     _sdkMethodChannel.callMethodChannel(
       method: 'updateBasicInfo',
       params: <String, dynamic>{
