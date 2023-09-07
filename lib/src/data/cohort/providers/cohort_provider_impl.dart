@@ -6,7 +6,7 @@ import '../../core/sdk_method_channel.dart';
 import 'cohort_provider.dart';
 
 class CohortProviderImpl implements CohortProvider {
-  final _eventChannel = const EventChannel(
+  final EventChannel _eventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/cohort',
   );
 

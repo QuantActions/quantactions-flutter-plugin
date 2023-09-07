@@ -12,7 +12,7 @@ class MetricRepositoryImpl implements MetricRepository {
   }) : _metricProvider = metricProvider;
 
   @override
-  Stream<TimeSeries> getMetric(MetricType metric) {
+  Stream<TimeSeries<dynamic>> getMetric(MetricType metric) {
     return _mapStream(
       stream: _metricProvider.getMetric(metric),
       metric: metric,
@@ -20,7 +20,7 @@ class MetricRepositoryImpl implements MetricRepository {
   }
 
   @override
-  Future<TimeSeries?> getMetricAsync(MetricType metric) async {
+  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric) async {
     return _mapFuture(
       response: await _metricProvider.getMetricAsync(metric),
       metric: metric,
@@ -28,7 +28,7 @@ class MetricRepositoryImpl implements MetricRepository {
   }
 
   @override
-  Stream<TimeSeries> getMetricSample({
+  Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
     required MetricType metric,
   }) {
@@ -42,7 +42,7 @@ class MetricRepositoryImpl implements MetricRepository {
   }
 
   @override
-  Future<TimeSeries?> getStatSampleAsync({
+  Future<TimeSeries<dynamic>?> getStatSampleAsync({
     required String apiKey,
     required MetricType metric,
   }) async {
@@ -56,7 +56,7 @@ class MetricRepositoryImpl implements MetricRepository {
   }
 
   Stream<TimeSeries<dynamic>> _mapStream({
-    required Stream stream,
+    required Stream<dynamic> stream,
     required MetricType metric,
   }) {
     if (metric is Trend) {
@@ -80,7 +80,7 @@ class MetricRepositoryImpl implements MetricRepository {
   }) {
     if (response == null) return null;
 
-    final json = jsonDecode(response);
+    final dynamic json = jsonDecode(response);
 
     if (metric is Trend) {
       return TimeSeries<TrendHolder>.fromJson(json);

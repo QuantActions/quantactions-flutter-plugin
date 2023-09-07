@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../domain.dart';
 
 part 'time_series.g.dart';
+part 'time_series_extension.dart';
 
 @JsonSerializable()
 class TimeSeries<T> {
@@ -49,11 +50,11 @@ class TimeSeries<T> {
 
   factory TimeSeries.empty() {
     return TimeSeries<T>(
-      values: List.empty(),
-      timestamps: List.empty(),
-      confidenceIntervalLow: List.empty(),
-      confidenceIntervalHigh: List.empty(),
-      confidence: List.empty(),
+      values: List<T>.empty(),
+      timestamps: List<DateTime>.empty(),
+      confidenceIntervalLow: List<T>.empty(),
+      confidenceIntervalHigh: List<T>.empty(),
+      confidence: List<double>.empty(),
     );
   }
 }

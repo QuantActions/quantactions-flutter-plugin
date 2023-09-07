@@ -6,7 +6,7 @@ import '../../core/sdk_method_channel.dart';
 import 'device_provider.dart';
 
 class DeviceProviderImpl implements DeviceProvider {
-  final _eventChannel = const EventChannel(
+  final EventChannel _eventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/device',
   );
 

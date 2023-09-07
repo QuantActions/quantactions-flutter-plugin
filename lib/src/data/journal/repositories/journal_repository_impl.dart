@@ -20,7 +20,7 @@ class JournalRepositoryImpl implements JournalRepository {
     required List<int> ratings,
     required String oldId,
   }) {
-    final stream = _journalProvider.createJournalEntry(
+    final Stream<dynamic> stream = _journalProvider.createJournalEntry(
       date: date,
       note: note,
       events: events,
@@ -35,14 +35,14 @@ class JournalRepositoryImpl implements JournalRepository {
   Stream<QAResponse<String>> deleteJournalEntry({
     required String id,
   }) {
-    final stream = _journalProvider.deleteJournalEntry(id: id);
+    final Stream<dynamic> stream = _journalProvider.deleteJournalEntry(id: id);
 
     return QAResponseMapper.fromStream<String>(stream);
   }
 
   @override
   Stream<List<JournalEntryWithEvents>> getJournal() {
-    final stream = _journalProvider.getJournal();
+    final Stream<dynamic> stream = _journalProvider.getJournal();
 
     return JournalStreamMapper.getListEntryWithEvents(stream);
   }
@@ -60,7 +60,7 @@ class JournalRepositoryImpl implements JournalRepository {
 
   @override
   Stream<List<JournalEvent>> getJournalEvents() {
-    final stream = _journalProvider.getJournalEvents();
+    final Stream<dynamic> stream = _journalProvider.getJournalEvents();
 
     return JournalStreamMapper.getListEvent(stream);
   }
@@ -69,14 +69,14 @@ class JournalRepositoryImpl implements JournalRepository {
   Stream<List<JournalEntryWithEvents>> getJournalSample({
     required String apiKey,
   }) {
-    final stream = _journalProvider.getJournalSample(apiKey: apiKey);
+    final Stream<dynamic> stream = _journalProvider.getJournalSample(apiKey: apiKey);
 
     return JournalStreamMapper.getListEntryWithEvents(stream);
   }
 
   @override
   Stream<QAResponse<String>> sendNote(String text) {
-    final stream = _journalProvider.sendNote(text);
+    final Stream<dynamic> stream = _journalProvider.sendNote(text);
 
     return QAResponseMapper.fromStream<String>(stream);
   }

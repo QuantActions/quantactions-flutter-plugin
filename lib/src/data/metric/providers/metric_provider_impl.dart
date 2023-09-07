@@ -8,21 +8,21 @@ import '../../core/sdk_method_channel.dart';
 import 'metric_provider.dart';
 
 class MetricProviderImpl implements MetricProvider {
-  final _eventChannels = HashMap<MetricType, EventChannel>.fromIterables(
+  final HashMap<MetricType, EventChannel> _eventChannels =
+      HashMap<MetricType, EventChannel>.fromIterables(
     List<MetricType>.generate(
       Metric.values.length + Trend.values.length,
-      (index) => ((index < Metric.values.length)
+      (int index) => ((index < Metric.values.length)
           ? Metric.values[index]
           : Trend.values[index - Metric.values.length] as MetricType),
     ),
     List<MetricType>.generate(
       Metric.values.length + Trend.values.length,
-      (index) => ((index < Metric.values.length)
+      (int index) => ((index < Metric.values.length)
           ? Metric.values[index]
           : Trend.values[index - Metric.values.length] as MetricType),
     )
-        .map((metricOrTrend) =>
-            EventChannel('qa_flutter_plugin_stream/${metricOrTrend.id}'))
+        .map((MetricType metricType) => EventChannel('qa_flutter_plugin_stream/${metricType.id}'))
         .toList(),
   );
 

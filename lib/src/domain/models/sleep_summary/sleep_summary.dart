@@ -44,10 +44,10 @@ class SleepSummary {
       sleepStart: DateTime.fromMicrosecondsSinceEpoch(0),
       sleepEnd: DateTime.fromMicrosecondsSinceEpoch(0),
       interruptionsStart:
-          List.generate(1, (index) => DateTime.fromMicrosecondsSinceEpoch(0)),
+          List<DateTime>.generate(1, (int index) => DateTime.fromMicrosecondsSinceEpoch(0)),
       interruptionsEnd:
-          List.generate(1, (index) => DateTime.fromMicrosecondsSinceEpoch(0)),
-      interruptionsNumberOfTaps: List.generate(1, (index) => 0),
+          List<DateTime>.generate(1, (int index) => DateTime.fromMicrosecondsSinceEpoch(0)),
+      interruptionsNumberOfTaps: List<int>.generate(1, (int index) => 0),
     );
   }
 

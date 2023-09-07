@@ -7,7 +7,7 @@ import '../../core/sdk_method_channel.dart';
 import 'user_provider.dart';
 
 class UserProviderImpl implements UserProvider {
-  final _eventChannel = const EventChannel(
+  final EventChannel _eventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/user',
   );
 
@@ -63,14 +63,14 @@ class UserProviderImpl implements UserProvider {
 
   @override
   Future<void> savePublicKey() async {
-    _sdkMethodChannel.callMethodChannel(
+    await _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.savePublicKey,
     );
   }
 
   @override
   Future<void> setVerboseLevel(int verbose) async {
-    _sdkMethodChannel.callMethodChannel(
+    await _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.setVerboseLevel,
       params: <String, dynamic>{
         'verbose': verbose,
@@ -97,7 +97,7 @@ class UserProviderImpl implements UserProvider {
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
   }) async {
-    _sdkMethodChannel.callMethodChannel(
+    await _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.updateBasicInfo,
       params: <String, dynamic>{
         'newYearOfBirth': newYearOfBirth,
@@ -121,10 +121,10 @@ class UserProviderImpl implements UserProvider {
     required bool? selfDeclaredHealthy,
   }) {
     return <String, dynamic>{
-      "apiKey": apiKey,
-      "age": age,
-      "gender": gender?.id,
-      "selfDeclaredHealthy": selfDeclaredHealthy,
+      'apiKey': apiKey,
+      'age': age,
+      'gender': gender?.id,
+      'selfDeclaredHealthy': selfDeclaredHealthy,
     };
   }
 }
