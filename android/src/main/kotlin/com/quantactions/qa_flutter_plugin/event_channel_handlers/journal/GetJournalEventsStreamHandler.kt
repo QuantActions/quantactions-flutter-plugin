@@ -27,24 +27,7 @@ class GetJournalEventsStreamHandler(
                     withContext(Dispatchers.IO) {
                         qa.getJournalEvents()
                     }.collect {
-                        val list = listOf(
-                            JournalEvent(
-                                "id",
-                                "public_name",
-                                "icon_name",
-                                "created",
-                                "modified"
-                            ),
-                            JournalEvent(
-                                "id",
-                                "public_name",
-                                "icon_name",
-                                "created",
-                                "modified"
-                            ),
-                        )
-
-                        eventSink.success(QAFlutterPluginSerializable.serializeJournalEvents(list))
+                        eventSink.success(QAFlutterPluginSerializable.serializeJournalEvents(it))
                     }
                 }
             }
