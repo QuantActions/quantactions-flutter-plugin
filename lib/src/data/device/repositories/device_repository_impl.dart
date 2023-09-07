@@ -21,7 +21,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Stream<QAResponse<String>> redeemVoucher({
     required String voucher,
   }) {
-    final stream = _deviceProvider.redeemVoucher(voucher: voucher);
+    final Stream<dynamic> stream = _deviceProvider.redeemVoucher(voucher: voucher);
 
     return QAResponseStreamMapper.getString(stream);
   }
@@ -30,7 +30,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Stream<QAResponse<String>> subscribeWithGooglePurchaseToken({
     required String purchaseToken,
   }) {
-    final stream = _deviceProvider.subscribeWithGooglePurchaseToken(
+    final Stream<dynamic> stream = _deviceProvider.subscribeWithGooglePurchaseToken(
       purchaseToken: purchaseToken,
     );
 
@@ -41,7 +41,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Stream<QAResponse<String>> subscribe({
     required String subscriptionIdOrCohortId,
   }) {
-    final stream = _deviceProvider.subscribe(
+    final Stream<dynamic> stream = _deviceProvider.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
 
@@ -50,7 +50,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
 
   @override
   Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId() {
-    final stream = _deviceProvider.getSubscriptionId();
+    final Stream<dynamic> stream = _deviceProvider.getSubscriptionId();
 
     return QAResponseStreamMapper.getSubscriptionIdResponse(stream);
   }

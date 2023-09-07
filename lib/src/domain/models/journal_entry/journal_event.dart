@@ -29,11 +29,11 @@ class JournalEvent {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      "id": id,
-      "publicName": publicName,
-      "iconName": iconName,
-      "created": created.millisecondsSinceEpoch.toString(),
-      "modified": modified.millisecondsSinceEpoch.toString(),
+      'id': id,
+      'publicName': publicName,
+      'iconName': iconName,
+      'created': created.millisecondsSinceEpoch.toString(),
+      'modified': modified.millisecondsSinceEpoch.toString(),
     };
   }
 }

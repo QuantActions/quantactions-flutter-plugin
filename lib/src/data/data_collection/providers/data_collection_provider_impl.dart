@@ -17,11 +17,11 @@ class DataCollectionProviderImpl implements DataCollectionProvider {
 
   @override
   Future<void> pauseDataCollection() async {
-    _sdkMethodChannel.callMethodChannel(method: 'pauseDataCollection');
+    await _sdkMethodChannel.callMethodChannel(method: 'pauseDataCollection');
   }
 
   @override
   Future<void> resumeDataCollection() async {
-    _sdkMethodChannel.callMethodChannel(method: 'resumeDataCollection');
+    await _sdkMethodChannel.callMethodChannel(method: 'resumeDataCollection');
   }
 }

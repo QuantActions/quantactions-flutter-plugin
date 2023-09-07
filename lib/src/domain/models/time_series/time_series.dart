@@ -1,3 +1,5 @@
+part 'time_series_extension.dart';
+
 class TimeSeries<T> {
   final List<T> values;
   final List<DateTime> timestamps;
@@ -15,11 +17,11 @@ class TimeSeries<T> {
 
   factory TimeSeries.empty() {
     return TimeSeries<T>(
-      values: List.empty(),
-      timestamps: List.empty(),
-      confidenceIntervalLow: List.empty(),
-      confidenceIntervalHigh: List.empty(),
-      confidence: List.empty(),
+      values: List<T>.empty(),
+      timestamps: List<DateTime>.empty(),
+      confidenceIntervalLow: List<T>.empty(),
+      confidenceIntervalHigh: List<T>.empty(),
+      confidence: List<double>.empty(),
     );
   }
 }

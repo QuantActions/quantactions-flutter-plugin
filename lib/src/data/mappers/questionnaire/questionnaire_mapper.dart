@@ -1,8 +1,8 @@
-import 'package:qa_flutter_plugin/src/domain/domain.dart';
+import '../../../domain/domain.dart';
 
 class QuestionnaireMapper {
   static List<Questionnaire> fromList(List<dynamic> list) {
-    return list.map((map) => fromJson(map)).toList();
+    return list.map((dynamic map) => fromJson(map as Map<String, dynamic>)).toList();
   }
 
   static Questionnaire fromJson(Map<String, dynamic> map) {

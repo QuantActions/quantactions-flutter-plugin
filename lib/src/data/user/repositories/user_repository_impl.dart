@@ -51,19 +51,19 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> savePublicKey() async {
-    _userProvider.savePublicKey();
+    await _userProvider.savePublicKey();
   }
 
   @override
   Future<void> setVerboseLevel(int verbose) async {
-    _userProvider.setVerboseLevel(verbose);
+    await _userProvider.setVerboseLevel(verbose);
   }
 
   @override
   Stream<QAResponse<String>> validateToken({
     required String apiKey,
   }) {
-    final stream = _userProvider.validateToken(apiKey: apiKey);
+    final Stream<dynamic> stream = _userProvider.validateToken(apiKey: apiKey);
 
     return QAResponseStreamMapper.getString(stream);
   }
@@ -74,7 +74,7 @@ class UserRepositoryImpl implements UserRepository {
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
   }) async {
-    _userProvider.updateBasicInfo(
+    await _userProvider.updateBasicInfo(
       newYearOfBirth: newYearOfBirth,
       newGender: newGender,
       newSelfDeclaredHealthy: newSelfDeclaredHealthy,

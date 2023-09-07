@@ -2,7 +2,7 @@ import '../../../domain/domain.dart';
 
 class CohortMapper {
   static List<Cohort> fromList(List<dynamic> list) {
-    return list.map((map) => fromJson(map)).toList();
+    return list.map((dynamic map) => fromJson(map as Map<String, dynamic>)).toList();
   }
 
   static Cohort fromJson(Map<String, dynamic> map) {

@@ -6,7 +6,7 @@ class QAResponseMapper {
   static const String _message = 'message';
 
   static List<QAResponse<String>> fromList(List<dynamic> list) {
-    return list.map((map) => fromJsonString(map)).toList();
+    return list.map((dynamic map) => fromJsonString(map as Map<String, dynamic>)).toList();
   }
 
   static QAResponse<String> fromJsonString(Map<String, dynamic> json) {
@@ -19,12 +19,10 @@ class QAResponseMapper {
   static QAResponse<SubscriptionIdResponse> fromJsonSubscriptionIdResponse(
     Map<String, dynamic> json,
   ) {
-    Map<String, dynamic>? data = json[_data];
+    final Map<String, dynamic>? data = json[_data];
 
     return QAResponse<SubscriptionIdResponse>(
-      data: (data == null)
-          ? null
-          : SubscriptionIdResponseMapper.fromJson(json[_data]),
+      data: (data == null) ? null : SubscriptionIdResponseMapper.fromJson(json[_data]),
       message: json[_message] as String?,
     );
   }

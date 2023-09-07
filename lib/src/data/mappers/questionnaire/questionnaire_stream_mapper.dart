@@ -6,7 +6,7 @@ import 'questionnaire_mapper.dart';
 class QuestionnaireStreamMapper {
   static Stream<List<Questionnaire>> getList(Stream<dynamic> stream) {
     return stream.map(
-      (event) => QuestionnaireMapper.fromList(jsonDecode(event)),
+      (dynamic event) => QuestionnaireMapper.fromList(jsonDecode(event)),
     );
   }
 }

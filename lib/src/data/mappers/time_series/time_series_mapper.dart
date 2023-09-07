@@ -1,8 +1,7 @@
-import 'package:qa_flutter_plugin/src/data/mappers/screen_time_aggregate/screen_time_aggregate_mapper.dart';
-import 'package:qa_flutter_plugin/src/data/mappers/trend_holder/tremd_holder_mapper.dart';
-
 import '../../../domain/domain.dart';
+import '../screen_time_aggregate/screen_time_aggregate_mapper.dart';
 import '../sleep_summary/sleep_summary_mapper.dart';
+import '../trend_holder/trend_holder_mapper.dart';
 
 class TimeSeriesMapper {
   static const String _timestamps = 'timestamps';
@@ -16,13 +15,13 @@ class TimeSeriesMapper {
       timestamps: _getTimestamps(json[_timestamps]),
       values: json[_values]
           .cast<double>()
-          .map<double>((e) => e == null ? double.nan : e as double)
+          .map<double>((dynamic item) => item == null ? double.nan : item as double)
           .toList(),
       confidenceIntervalLow: json[_confidenceIntervalLow]
-          .map<double>((e) => e == null ? double.nan : e as double)
+          .map<double>((dynamic item) => item == null ? double.nan : item as double)
           .toList(),
       confidenceIntervalHigh: json[_confidenceIntervalHigh]
-          .map<double>((e) => e == null ? double.nan : e as double)
+          .map<double>((dynamic item) => item == null ? double.nan : item as double)
           .toList(),
       confidence: json[_confidence].cast<double>(),
     );
@@ -33,15 +32,11 @@ class TimeSeriesMapper {
   ) {
     return TimeSeries<TrendHolder>(
       timestamps: _getTimestamps(json[_timestamps]),
-      values: json[_values]
-          .map<TrendHolder>((e) => TrendHolderMapper.fromJson(e))
-          .toList(),
-      confidenceIntervalLow: json[_confidenceIntervalLow]
-          .map<TrendHolder>((e) => TrendHolderMapper.fromJson(e))
-          .toList(),
-      confidenceIntervalHigh: json[_confidenceIntervalHigh]
-          .map<TrendHolder>((e) => TrendHolderMapper.fromJson(e))
-          .toList(),
+      values: json[_values].map<TrendHolder>(TrendHolderMapper.fromJson).toList(),
+      confidenceIntervalLow:
+          json[_confidenceIntervalLow].map<TrendHolder>(TrendHolderMapper.fromJson).toList(),
+      confidenceIntervalHigh:
+          json[_confidenceIntervalHigh].map<TrendHolder>(TrendHolderMapper.fromJson).toList(),
       confidence: json[_confidence].cast<double>(),
     );
   }
@@ -51,15 +46,11 @@ class TimeSeriesMapper {
   ) {
     return TimeSeries<SleepSummary>(
       timestamps: _getTimestamps(json[_timestamps]),
-      values: json[_values]
-          .map<SleepSummary>((e) => SleepSummaryMapper.fromJson(e))
-          .toList(),
-      confidenceIntervalLow: json[_confidenceIntervalLow]
-          .map<SleepSummary>((e) => SleepSummaryMapper.fromJson(e))
-          .toList(),
-      confidenceIntervalHigh: json[_confidenceIntervalHigh]
-          .map<SleepSummary>((e) => SleepSummaryMapper.fromJson(e))
-          .toList(),
+      values: json[_values].map<SleepSummary>(SleepSummaryMapper.fromJson).toList(),
+      confidenceIntervalLow:
+          json[_confidenceIntervalLow].map<SleepSummary>(SleepSummaryMapper.fromJson).toList(),
+      confidenceIntervalHigh:
+          json[_confidenceIntervalHigh].map<SleepSummary>(SleepSummaryMapper.fromJson).toList(),
       confidence: json[_confidence].cast<double>(),
     );
   }
@@ -69,17 +60,12 @@ class TimeSeriesMapper {
   ) {
     return TimeSeries<ScreenTimeAggregate>(
       timestamps: _getTimestamps(json[_timestamps]),
-      values: json[_values]
-          .map<ScreenTimeAggregate>(
-              (e) => ScreenTimeAggregateMapper.fromJson(e))
-          .toList(),
+      values: json[_values].map<ScreenTimeAggregate>(ScreenTimeAggregateMapper.fromJson).toList(),
       confidenceIntervalLow: json[_confidenceIntervalLow]
-          .map<ScreenTimeAggregate>(
-              (e) => ScreenTimeAggregateMapper.fromJson(e))
+          .map<ScreenTimeAggregate>(ScreenTimeAggregateMapper.fromJson)
           .toList(),
       confidenceIntervalHigh: json[_confidenceIntervalHigh]
-          .map<ScreenTimeAggregate>(
-              (e) => ScreenTimeAggregateMapper.fromJson(e))
+          .map<ScreenTimeAggregate>(ScreenTimeAggregateMapper.fromJson)
           .toList(),
       confidence: json[_confidence].cast<double>(),
     );
@@ -88,7 +74,7 @@ class TimeSeriesMapper {
   static List<DateTime> _getTimestamps(dynamic data) {
     return data
         .map<DateTime>(
-          (e) => DateTime.parse((e as String).split('[').first).toLocal(),
+          (dynamic item) => DateTime.parse((item as String).split('[').first).toLocal(),
         )
         .toList();
   }

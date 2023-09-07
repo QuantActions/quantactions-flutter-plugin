@@ -6,7 +6,7 @@ class BasicInfoMapper {
     return BasicInfo(
       yearOfBirth: map['yearOfBirth'] as int,
       gender: Gender.values.firstWhereOrNull(
-            (element) => element.id == (map['gender'] as String).toLowerCase(),
+            (Gender element) => element.id == (map['gender'] as String).toLowerCase(),
           ) ??
           Gender.unknown,
       selfDeclaredHealthy: map['selfDeclaredHealthy'] as bool,

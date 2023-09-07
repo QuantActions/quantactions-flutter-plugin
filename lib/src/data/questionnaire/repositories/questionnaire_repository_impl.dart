@@ -12,7 +12,7 @@ class QuestionnaireRepositoryImpl implements QuestionnaireRepository {
 
   @override
   Stream<List<Questionnaire>> getQuestionnairesList() {
-    final stream = _questionnaireProvider.getQuestionnairesList();
+    final Stream<dynamic> stream = _questionnaireProvider.getQuestionnairesList();
 
     return QuestionnaireStreamMapper.getList(stream);
   }
@@ -25,7 +25,7 @@ class QuestionnaireRepositoryImpl implements QuestionnaireRepository {
     required String? fullId,
     required String? response,
   }) {
-    final stream = _questionnaireProvider.recordQuestionnaireResponse(
+    final Stream<dynamic> stream = _questionnaireProvider.recordQuestionnaireResponse(
       name: name,
       code: code,
       date: date,

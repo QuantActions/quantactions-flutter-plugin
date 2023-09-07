@@ -1,6 +1,6 @@
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
+part of 'time_series.dart';
 
-extension TimeSeriesExtention<T> on TimeSeries<T> {
+extension TimeSeriesExtension<T> on TimeSeries<T> {
   TimeSeries<T> takeLast(int n) {
     return TimeSeries<T>(
       values: values.sublist(values.length - n),

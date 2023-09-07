@@ -20,6 +20,6 @@ class DataCollectionRepositoryImpl implements DataCollectionRepository {
 
   @override
   Future<void> resumeDataCollection() async {
-    _dataCollectionProvider.resumeDataCollection();
+    await _dataCollectionProvider.resumeDataCollection();
   }
 }

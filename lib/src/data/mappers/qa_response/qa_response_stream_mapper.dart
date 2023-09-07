@@ -6,7 +6,7 @@ import 'qa_response_mapper.dart';
 class QAResponseStreamMapper {
   static Stream<QAResponse<String>> getString(Stream<dynamic> stream) {
     return stream.map(
-      (event) => QAResponseMapper.fromJsonString(jsonDecode(event)),
+      (dynamic event) => QAResponseMapper.fromJsonString(jsonDecode(event)),
     );
   }
 
@@ -14,7 +14,7 @@ class QAResponseStreamMapper {
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => QAResponseMapper.fromJsonSubscriptionIdResponse(
+      (dynamic event) => QAResponseMapper.fromJsonSubscriptionIdResponse(
         jsonDecode(event),
       ),
     );
