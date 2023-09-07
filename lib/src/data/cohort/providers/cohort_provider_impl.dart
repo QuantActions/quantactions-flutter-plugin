@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 
 import '../../consts/method_channel_consts.dart';
+import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'cohort_provider.dart';
 
@@ -18,7 +19,7 @@ class CohortProviderImpl implements CohortProvider {
   @override
   Stream<dynamic> getCohortList() {
     return _sdkMethodChannel.callEventChannel(
-      method: 'getCohortList',
+      method: SupportedMethods.getCohortList,
       eventChannel: _eventChannel,
     );
   }
@@ -26,7 +27,7 @@ class CohortProviderImpl implements CohortProvider {
   @override
   Stream<dynamic> leaveCohort(String cohortId) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'leaveCohort',
+      method: SupportedMethods.leaveCohort,
       eventChannel: _eventChannel,
       params: <String, dynamic>{
         'cohortId': cohortId,

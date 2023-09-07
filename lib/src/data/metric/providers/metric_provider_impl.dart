@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/services.dart';
 
 import '../../../domain/domain.dart';
+import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'metric_provider.dart';
 
@@ -34,21 +35,23 @@ class MetricProviderImpl implements MetricProvider {
   @override
   Stream<dynamic> getMetric(MetricType metric) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'getMetric',
+      method: SupportedMethods.getMetric,
       eventChannel: _eventChannels[metric]!,
       params: <String, dynamic>{
         'metric': metric.id,
       },
+      metricType: metric,
     );
   }
 
   @override
   Future<String?> getMetricAsync(MetricType metric) {
     return _sdkMethodChannel.callMethodChannel(
-      method: 'getMetricAsync',
+      method: SupportedMethods.getMetricAsync,
       params: <String, dynamic>{
         'metric': metric.id,
       },
+      metricType: metric,
     );
   }
 
@@ -58,12 +61,13 @@ class MetricProviderImpl implements MetricProvider {
     required MetricType metric,
   }) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'getMetricSample',
+      method: SupportedMethods.getMetricSample,
       eventChannel: _eventChannels[metric]!,
       params: <String, dynamic>{
         'apiKey': apiKey,
         'metric': metric.id,
       },
+      metricType: metric,
     );
   }
 
@@ -73,11 +77,12 @@ class MetricProviderImpl implements MetricProvider {
     required MetricType metric,
   }) {
     return _sdkMethodChannel.callMethodChannel(
-      method: 'getStatSampleAsync',
+      method: SupportedMethods.getStatSampleAsync,
       params: <String, dynamic>{
         'apiKey': apiKey,
         'metric': metric.id,
       },
+      metricType: metric,
     );
   }
 }

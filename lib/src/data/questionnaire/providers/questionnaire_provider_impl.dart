@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 
 import '../../consts/method_channel_consts.dart';
+import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'questionnaire_provider.dart';
 
@@ -18,7 +19,7 @@ class QuestionnaireProviderImpl implements QuestionnaireProvider {
   @override
   Stream<dynamic> getQuestionnairesList() {
     return _sdkMethodChannel.callEventChannel(
-      method: 'getQuestionnairesList',
+      method: SupportedMethods.getQuestionnairesList,
       eventChannel: _eventChannel,
     );
   }
@@ -32,7 +33,7 @@ class QuestionnaireProviderImpl implements QuestionnaireProvider {
     required String? response,
   }) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'recordQuestionnaireResponse',
+      method: SupportedMethods.recordQuestionnaireResponse,
       eventChannel: _eventChannel,
       params: <String, dynamic>{
         'name': name,
