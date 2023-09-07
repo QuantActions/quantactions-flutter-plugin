@@ -1,5 +1,4 @@
-import 'package:qa_flutter_plugin/src/core/core.dart';
-
+import '../../core/core.dart';
 import '../cohort/di/cohort_di.dart';
 import '../core/sdk_method_channel.dart';
 import '../data_collection/di/data_connection_di.dart';

@@ -48,8 +48,7 @@ class MockDataProvider {
         return _getQAResponseSubscriptionIdResponse();
       case SupportedMethods.getJournalEntry:
         return _getJournalEntry();
-      case SupportedMethods.getMetricAsync ||
-            SupportedMethods.getStatSampleAsync:
+      case SupportedMethods.getMetricAsync || SupportedMethods.getStatSampleAsync:
         if (metricType == null) return;
 
         return jsonEncode(_getMetric(metricType));
@@ -70,7 +69,7 @@ class MockDataProvider {
             SupportedMethods.subscribe:
         return _getQAResponseSubscriptionWithQuestionnaires();
       case SupportedMethods.getSubscriptionId:
-        return Stream.value(_getQAResponseSubscriptionIdResponse());
+        return Stream<String>.value(_getQAResponseSubscriptionIdResponse());
       case SupportedMethods.getJournal || SupportedMethods.getJournalSample:
         return _getJournalEntryWithEventsList(length: 10);
       case SupportedMethods.getJournalEvents:
@@ -78,7 +77,7 @@ class MockDataProvider {
       case SupportedMethods.getMetric || SupportedMethods.getMetricSample:
         if (metricType == null) return;
 
-        return Stream.value(
+        return Stream<String>.value(
           jsonEncode(_getMetric(metricType)),
         );
       case SupportedMethods.getQuestionnairesList:
@@ -88,21 +87,19 @@ class MockDataProvider {
     }
   }
 
-  static Stream<String> _getJournalEntryWithEventsList({
-    required int length,
-  }) {
-    return Stream.value(
+  static Stream<String> _getJournalEntryWithEventsList({required int length}) {
+    return Stream<String>.value(
       jsonEncode(
         JournalEventFactory()
             .generateListFake(length: 10)
-            .map((cohort) => cohort.toJson())
+            .map((JournalEvent event) => event.toJson())
             .toList(),
       ),
     );
   }
 
   static Stream<String> _getQAResponseString() {
-    return Stream.value(
+    return Stream<String>.value(
       jsonEncode(
         QAResponseStringFactory().generateFake(),
       ),
@@ -116,7 +113,7 @@ class MockDataProvider {
   }
 
   static Stream<String> _getQAResponseSubscriptionWithQuestionnaires() {
-    return Stream.value(
+    return Stream<String>.value(
       jsonEncode(
         SubscriptionWithQuestionnairesFactory().generateFake(),
       ),
@@ -124,7 +121,7 @@ class MockDataProvider {
   }
 
   static Stream<String> _getQuestionnairesList() {
-    return Stream.value(
+    return Stream<String>.value(
       jsonEncode(
         QuestionnaireFactory().generateListFake(length: 10),
       ),
@@ -132,22 +129,22 @@ class MockDataProvider {
   }
 
   static Stream<String> _getJournalEventList() {
-    return Stream.value(
+    return Stream<String>.value(
       jsonEncode(
         JournalEventFactory()
             .generateListFake(length: 10)
-            .map((cohort) => cohort.toJson())
+            .map((JournalEvent event) => event.toJson())
             .toList(),
       ),
     );
   }
 
   static Stream<String> _getCohortList() {
-    return Stream.value(
+    return Stream<String>.value(
       jsonEncode(
         CohortFactory()
             .generateListFake(length: 10)
-            .map((cohort) => cohort.toJson())
+            .map((Cohort cohort) => cohort.toJson())
             .toList(),
       ),
     );

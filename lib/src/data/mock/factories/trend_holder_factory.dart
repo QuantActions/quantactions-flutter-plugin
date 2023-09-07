@@ -18,9 +18,7 @@ class TrendHolderFactory extends MockModelFactory<TrendHolder> {
   }
 
   @override
-  List<TrendHolder> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<TrendHolder> generateListFake({required int length}) {
+    return List<TrendHolder>.generate(length, (int index) => generateFake());
   }
 }

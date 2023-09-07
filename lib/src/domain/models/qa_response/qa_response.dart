@@ -49,6 +49,8 @@ class _QAResponseConverter<T> implements JsonConverter<T?, dynamic> {
 
   @override
   dynamic toJson(T? object) {
+    if (object == null) return null;
+
     if (T is SubscriptionIdResponse) {
       return (object as SubscriptionIdResponse).toJson();
     } else if (T is SubscriptionWithQuestionnaires) {

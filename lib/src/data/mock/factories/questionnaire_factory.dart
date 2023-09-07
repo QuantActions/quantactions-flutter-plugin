@@ -15,9 +15,7 @@ class QuestionnaireFactory extends MockModelFactory<Questionnaire> {
   }
 
   @override
-  List<Questionnaire> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<Questionnaire> generateListFake({required int length}) {
+    return List<Questionnaire>.generate(length, (int index) => generateFake());
   }
 }

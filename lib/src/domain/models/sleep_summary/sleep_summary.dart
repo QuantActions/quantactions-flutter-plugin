@@ -34,8 +34,7 @@ class SleepSummary {
     required this.interruptionsNumberOfTaps,
   });
 
-  factory SleepSummary.fromJson(Map<String, dynamic> json) =>
-      _$SleepSummaryFromJson(json);
+  factory SleepSummary.fromJson(Map<String, dynamic> json) => _$SleepSummaryFromJson(json);
 
   Map<String, dynamic> toJson() => _$SleepSummaryToJson(this);
 
@@ -44,18 +43,18 @@ class SleepSummary {
       sleepStart: DateTime.fromMicrosecondsSinceEpoch(0),
       sleepEnd: DateTime.fromMicrosecondsSinceEpoch(0),
       interruptionsStart:
-          List.generate(1, (index) => DateTime.fromMicrosecondsSinceEpoch(0)),
+          List<DateTime>.generate(1, (int index) => DateTime.fromMicrosecondsSinceEpoch(0)),
       interruptionsEnd:
-          List.generate(1, (index) => DateTime.fromMicrosecondsSinceEpoch(0)),
-      interruptionsNumberOfTaps: List.generate(1, (index) => 0),
+          List<DateTime>.generate(1, (int index) => DateTime.fromMicrosecondsSinceEpoch(0)),
+      interruptionsNumberOfTaps: List<int>.generate(1, (int index) => 0),
     );
   }
 
   static List<String> _dateTimeListToJson(List<DateTime> dateTime) =>
-      dateTime.map((e) => e.toString()).toList();
+      dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
 
   static List<DateTime> _dateTimeListFromJson(List<dynamic> data) => data
-      .map<DateTime>((e) => DateTime.parse((e).split('[').first).toLocal())
+      .map<DateTime>((dynamic item) => DateTime.parse(item.split('[').first).toLocal())
       .toList();
 
   static String _dateTimeToJson(DateTime dateTime) => dateTime.toString();
@@ -63,6 +62,6 @@ class SleepSummary {
   static DateTime _dateTimeFromJson(String? data) {
     if (data == null) return DateTime.fromMicrosecondsSinceEpoch(0);
 
-    return DateTime.parse((data).split('[').first).toLocal();
+    return DateTime.parse(data.split('[').first).toLocal();
   }
 }

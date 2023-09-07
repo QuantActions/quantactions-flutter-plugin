@@ -1,16 +1,16 @@
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 
-class QAResponseStringFactory extends MockModelFactory<QAResponse> {
+class QAResponseStringFactory extends MockModelFactory<QAResponse<String>> {
   @override
-  QAResponse generateFake() {
+  QAResponse<String> generateFake() {
     if (faker.randomGenerator.boolean()) {
-      return QAResponse(
+      return QAResponse<String>(
         data: faker.lorem.sentence(),
         message: null,
       );
     } else {
-      return QAResponse(
+      return QAResponse<String>(
         data: null,
         message: faker.lorem.sentence(),
       );
@@ -18,9 +18,7 @@ class QAResponseStringFactory extends MockModelFactory<QAResponse> {
   }
 
   @override
-  List<QAResponse> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<QAResponse<String>> generateListFake({required int length}) {
+    return List<QAResponse<String>>.generate(length, (int index) => generateFake());
   }
 }

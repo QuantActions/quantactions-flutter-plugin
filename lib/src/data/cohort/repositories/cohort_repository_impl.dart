@@ -12,14 +12,14 @@ class CohortRepositoryImpl implements CohortRepository {
 
   @override
   Stream<List<Cohort>> getCohortList() {
-    final stream = _cohortProvider.getCohortList();
+    final Stream<dynamic> stream = _cohortProvider.getCohortList();
 
     return CohortMapper.listFromStream(stream);
   }
 
   @override
   Stream<QAResponse<String>> leaveCohort(String cohortId) {
-    final stream = _cohortProvider.leaveCohort(cohortId);
+    final Stream<dynamic> stream = _cohortProvider.leaveCohort(cohortId);
 
     return QAResponseMapper.fromStream<String>(stream);
   }

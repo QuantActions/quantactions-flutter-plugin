@@ -11,7 +11,7 @@ import 'sdk_method_channel_core.dart';
 /// An implementation of [SDKMethodChannelCore] that uses method channels.
 class SDKMethodChannel extends SDKMethodChannelCore {
   /// The method channel used to interact with the native platform.
-  final _methodChannel =
+  final MethodChannel _methodChannel =
       const MethodChannel(MethodChannelConsts.mainMethodChannel);
 
   Future<T> callMethodChannel<T>({
@@ -20,14 +20,14 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     //param for mock data
     MetricType? metricType,
   }) async {
-    final response = await _safeRequest(
-      method: method,
+    final T response = await _safeRequest(
       request: () => _methodChannel.invokeMethod<T>(method, params),
+      method: method,
       metricType: metricType,
     );
 
     if (response == null) {
-      throw Exception("call $method from methodChannel return null");
+      throw Exception('call $method from methodChannel return null');
     }
 
     return response;
@@ -57,8 +57,8 @@ class SDKMethodChannel extends SDKMethodChannelCore {
 
   dynamic _safeRequest({
     required Function() request,
+    //params for mock data
     required String method,
-    //param for mock data
     MetricType? metricType,
   }) {
     if (defaultTargetPlatform == TargetPlatform.android) {

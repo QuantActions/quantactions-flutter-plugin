@@ -4,6 +4,8 @@ import '../../domain.dart';
 
 part 'time_series.g.dart';
 
+part 'time_series_extension.dart';
+
 @JsonSerializable()
 class TimeSeries<T> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
@@ -25,8 +27,7 @@ class TimeSeries<T> {
     required this.confidence,
   });
 
-  factory TimeSeries.fromJson(Map<String, dynamic> json) =>
-      _$TimeSeriesFromJson<T>(json);
+  factory TimeSeries.fromJson(Map<String, dynamic> json) => _$TimeSeriesFromJson<T>(json);
 
   Map<String, dynamic> toJson() {
     return _$TimeSeriesToJson<T>(this);
@@ -41,19 +42,19 @@ class TimeSeries<T> {
   }
 
   static List<String> _dateTimeToJson(List<DateTime> dateTime) =>
-      dateTime.map((e) => e.toString()).toList();
+      dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
 
   static List<DateTime> _dateTimeFromJson(List<dynamic> data) => data
-      .map<DateTime>((e) => DateTime.parse((e).split('[').first).toLocal())
+      .map<DateTime>((dynamic item) => DateTime.parse(item.split('[').first).toLocal())
       .toList();
 
   factory TimeSeries.empty() {
     return TimeSeries<T>(
-      values: List.empty(),
-      timestamps: List.empty(),
-      confidenceIntervalLow: List.empty(),
-      confidenceIntervalHigh: List.empty(),
-      confidence: List.empty(),
+      values: List<T>.empty(),
+      timestamps: List<DateTime>.empty(),
+      confidenceIntervalLow: List<T>.empty(),
+      confidenceIntervalHigh: List<T>.empty(),
+      confidence: List<double>.empty(),
     );
   }
 }
@@ -64,19 +65,18 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
   @override
   T fromJson(dynamic json) {
     if (T == List<TrendHolder>) {
-      return json.map<TrendHolder>((e) => TrendHolder.fromJson(e)).toList();
+      return json.map<TrendHolder>(TrendHolder.fromJson).toList();
     } else if (T == List<SleepSummary>) {
-      return json.map<SleepSummary>((e) => SleepSummary.fromJson(e)).toList();
+      return json.map<SleepSummary>(SleepSummary.fromJson).toList();
     } else if (T == List<ScreenTimeAggregate>) {
-      return json
-          .map<ScreenTimeAggregate>((e) => ScreenTimeAggregate.fromJson(e))
-          .toList();
+      return json.map<ScreenTimeAggregate>(ScreenTimeAggregate.fromJson).toList();
     } else {
       if (json == null) {
         return double.nan as T;
       } else {
         return json
-            .map<double?>((e) => e == null ? double.nan : e as double).cast<double>()
+            .map<double?>((dynamic item) => item == null ? double.nan : item as double)
+            .cast<double>()
             .toList();
       }
     }
@@ -85,16 +85,16 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
   @override
   dynamic toJson(T object) {
     if (T == List<TrendHolder>) {
-      return (object as List)
-          .map((element) => (element as TrendHolder).toJson())
+      return (object as List<dynamic>)
+          .map((dynamic item) => (item as TrendHolder).toJson())
           .toList();
     } else if (T == List<SleepSummary>) {
-      return (object as List)
-          .map((element) => (element as SleepSummary).toJson())
+      return (object as List<dynamic>)
+          .map((dynamic item) => (item as SleepSummary).toJson())
           .toList();
     } else if (T == List<ScreenTimeAggregate>) {
-      return (object as List)
-          .map((element) => (element as ScreenTimeAggregate).toJson())
+      return (object as List<dynamic>)
+          .map((dynamic item) => (item as ScreenTimeAggregate).toJson())
           .toList();
     } else {
       return object;

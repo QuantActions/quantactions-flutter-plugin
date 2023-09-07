@@ -16,9 +16,7 @@ class CohortFactory extends MockModelFactory<Cohort> {
   }
 
   @override
-  List<Cohort> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<Cohort> generateListFake({required int length}) {
+    return List<Cohort>.generate(length, (int index) => generateFake());
   }
 }

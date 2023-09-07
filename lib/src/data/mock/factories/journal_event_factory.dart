@@ -14,9 +14,7 @@ class JournalEventFactory extends MockModelFactory<JournalEvent> {
   }
 
   @override
-  List<JournalEvent> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<JournalEvent> generateListFake({required int length}) {
+    return List<JournalEvent>.generate(length, (int index) => generateFake());
   }
 }

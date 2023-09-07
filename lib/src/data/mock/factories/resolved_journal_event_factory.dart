@@ -1,8 +1,7 @@
 import '../../../domain/models/models.dart';
 import 'mock_model_factory.dart';
 
-class ResolvedJournalEventFactory
-    extends MockModelFactory<ResolvedJournalEvent> {
+class ResolvedJournalEventFactory extends MockModelFactory<ResolvedJournalEvent> {
   @override
   ResolvedJournalEvent generateFake() {
     return ResolvedJournalEvent(
@@ -13,9 +12,7 @@ class ResolvedJournalEventFactory
   }
 
   @override
-  List<ResolvedJournalEvent> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<ResolvedJournalEvent> generateListFake({required int length}) {
+    return List<ResolvedJournalEvent>.generate(length, (int index) => generateFake());
   }
 }
