@@ -8,10 +8,12 @@ import 'package:qa_flutter_plugin/src/data/consts/method_channel_consts.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const eventChannel = EventChannel(
+  const EventChannel eventChannel = EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/questionnaire',
   );
-  final binaryMessenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+
+  final TestDefaultBinaryMessenger binaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   final QAFlutterPlugin qaFlutterPlugin = QAFlutterPlugin();
 
@@ -32,13 +34,7 @@ void main() {
 
   test('recordQuestionnaireResponse', () {
     expect(
-      qaFlutterPlugin.recordQuestionnaireResponse(
-        name: null,
-        code: null,
-        date: null,
-        fullId: null,
-        response: null,
-      ),
+      qaFlutterPlugin.recordQuestionnaireResponse(),
       const TypeMatcher<Stream<QAResponse<String>>>(),
     );
   });
@@ -56,15 +52,17 @@ class CohortHandler implements MockStreamHandler {
   void onListen(Object? arguments, MockStreamHandlerEventSink events) {
     eventSink = events;
 
-    final params = arguments as Map<String, dynamic>;
+    if(arguments != null) {
+      final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
-    switch (params['method']) {
-      case 'getQuestionnairesList':
-        eventSink?.success(<Questionnaire>[]);
-      case 'recordQuestionnaireResponse':
-        eventSink?.success(
-          QAResponse<String>(data: null, message: null),
-        );
+      switch (params['method']) {
+        case 'getQuestionnairesList':
+          eventSink?.success(<Questionnaire>[]);
+        case 'recordQuestionnaireResponse':
+          eventSink?.success(
+            QAResponse<String>(data: null, message: null),
+          );
+      }
     }
   }
 }

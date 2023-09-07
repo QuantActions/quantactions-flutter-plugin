@@ -65,11 +65,19 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
   @override
   T fromJson(dynamic json) {
     if (T == List<TrendHolder>) {
-      return json.map<TrendHolder>(TrendHolder.fromJson).toList();
+      return json
+          .map<TrendHolder>((dynamic item) => TrendHolder.fromJson(item as Map<String, dynamic>))
+          .toList();
     } else if (T == List<SleepSummary>) {
-      return json.map<SleepSummary>(SleepSummary.fromJson).toList();
+      return json
+          .map<SleepSummary>((dynamic item) => SleepSummary.fromJson(item as Map<String, dynamic>))
+          .toList();
     } else if (T == List<ScreenTimeAggregate>) {
-      return json.map<ScreenTimeAggregate>(ScreenTimeAggregate.fromJson).toList();
+      return json
+          .map<ScreenTimeAggregate>(
+            (dynamic item) => ScreenTimeAggregate.fromJson(item as Map<String, dynamic>),
+          )
+          .toList();
     } else {
       if (json == null) {
         return double.nan as T;
