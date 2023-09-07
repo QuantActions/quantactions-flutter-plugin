@@ -1,11 +1,13 @@
-import 'package:qa_flutter_plugin/src/core/core.dart';
-
+import '../../core/core.dart';
+import '../cohort/di/cohort_di.dart';
 import '../core/sdk_method_channel.dart';
 import '../data_collection/di/data_connection_di.dart';
+import '../device/di/device_di.dart';
+import '../journal/di/journal_di.dart';
 import '../metric/di/metric_di.dart';
 import '../permission/di/permission_di.dart';
-import '../qa/di/qa_di.dart';
-import '../trend/di/trend_di.dart';
+import '../questionnaire/di/questionnaire_di.dart';
+import '../user/di/user_di.dart';
 
 final DataDI dataDI = DataDI();
 
@@ -18,7 +20,10 @@ class DataDI {
     dataCollectionDI.initDependencies();
     metricDI.initDependencies();
     permissionDI.initDependencies();
-    qanDI.initDependencies();
-    trendDI.initDependencies();
+    userDI.initDependencies();
+    deviceDI.initDependencies();
+    cohortDI.initDependencies();
+    journalDI.initDependencies();
+    questionnaireDI.initDependencies();
   }
 }

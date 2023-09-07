@@ -2,8 +2,8 @@ class JournalEvent {
   final String id;
   final String publicName;
   final String iconName;
-  final String created;
-  final String modified;
+  final DateTime created;
+  final DateTime modified;
 
   JournalEvent({
     required this.id,
@@ -12,4 +12,28 @@ class JournalEvent {
     required this.created,
     required this.modified,
   });
+
+  factory JournalEvent.create({
+    required String id,
+    required String publicName,
+    required String iconName,
+  }) {
+    return JournalEvent(
+      id: id,
+      publicName: publicName,
+      iconName: iconName,
+      created: DateTime.now(),
+      modified: DateTime.now(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'publicName': publicName,
+      'iconName': iconName,
+      'created': created.millisecondsSinceEpoch.toString(),
+      'modified': modified.millisecondsSinceEpoch.toString(),
+    };
+  }
 }

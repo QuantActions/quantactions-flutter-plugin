@@ -7,8 +7,6 @@ import com.quantactions.sdk.QA.Gender
 
 class QAFlutterPluginHelper {
     companion object {
-        const val initApiKey = "55b9cf50-dac2-11e6-b535-fd8dff3bf4e9"
-
         val listOfMetricsAndTrends = listOf(
             Metric.COGNITIVE_FITNESS,
             Metric.ACTION_SPEED,

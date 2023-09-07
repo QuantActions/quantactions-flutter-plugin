@@ -6,7 +6,7 @@ import 'time_series_mapper.dart';
 class TimeSeriesStreamMapper {
   static Stream<TimeSeries<dynamic>> getDouble(Stream<dynamic> stream) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonDouble(jsonDecode(event)),
+      (dynamic event) => TimeSeriesMapper.fromJsonDouble(jsonDecode(event)),
     );
   }
 
@@ -14,7 +14,7 @@ class TimeSeriesStreamMapper {
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonSleepSummaryTimeSeries(
+      (dynamic event) => TimeSeriesMapper.fromJsonSleepSummaryTimeSeries(
         jsonDecode(event),
       ),
     );
@@ -24,7 +24,7 @@ class TimeSeriesStreamMapper {
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonScreenTimeAggregateTimeSeries(
+      (dynamic event) => TimeSeriesMapper.fromJsonScreenTimeAggregateTimeSeries(
         jsonDecode(event),
       ),
     );
@@ -34,7 +34,7 @@ class TimeSeriesStreamMapper {
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (event) => TimeSeriesMapper.fromJsonTrendHolderTimeSeries(
+      (dynamic event) => TimeSeriesMapper.fromJsonTrendHolderTimeSeries(
         jsonDecode(event),
       ),
     );

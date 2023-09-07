@@ -7,7 +7,7 @@ import 'package:qa_flutter_plugin/src/data/core/sdk_method_channel_core.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  SDKMethodChannelCore platform = SDKMethodChannel();
+  final SDKMethodChannelCore platform = SDKMethodChannel();
   const MethodChannel channel = MethodChannel(
     MethodChannelConsts.mainMethodChannel,
   );

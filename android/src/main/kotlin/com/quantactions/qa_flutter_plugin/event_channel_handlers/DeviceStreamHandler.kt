@@ -1,6 +1,7 @@
-package com.quantactions.qa_flutter_plugin
+package com.quantactions.qa_flutter_plugin.event_channel_handlers
 
 import android.content.Context
+import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +20,7 @@ class DeviceStreamHandler(
         mainScope.launch {
             val params = arguments as? Map<*, *>
 
-            when (params?.get("event") as? String) {
+            when (params?.get("method") as? String) {
                 "redeemVoucher" -> {
                     val voucher = params["voucher"] as? String ?: ""
 
@@ -45,6 +46,14 @@ class DeviceStreamHandler(
                     val purchaseToken = params["purchaseToken"] as? String ?: ""
 
                     qa.subscribeWithGooglePurchaseToken(purchaseToken).collect {
+                        eventSink.success(
+                            QAFlutterPluginSerializable.serializeQAResponseString(it)
+                        )
+                    }
+                }
+
+                "getSubscriptionId" -> {
+                    qa.getSubscriptionId().collect {
                         eventSink.success(
                             QAFlutterPluginSerializable.serializeQAResponseString(it)
                         )

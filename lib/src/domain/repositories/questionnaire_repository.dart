@@ -1,8 +1,7 @@
-import '../models/cohort/cohort.dart';
-import '../models/qa_response/qa_response.dart';
+import '../models/models.dart';
 
 abstract class QuestionnaireRepository {
-  Stream<List<Cohort>> getQuestionnairesList();
+  Stream<List<Questionnaire>> getQuestionnairesList();
 
   Stream<QAResponse<String>> recordQuestionnaireResponse({
     required String? name,

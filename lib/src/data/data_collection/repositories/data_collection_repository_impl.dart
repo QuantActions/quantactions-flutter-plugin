@@ -9,17 +9,17 @@ class DataCollectionRepositoryImpl implements DataCollectionRepository {
   }) : _dataCollectionProvider = dataCollectionProvider;
 
   @override
-  Future<bool?> isDataCollectionRunning() {
+  Future<bool> isDataCollectionRunning() {
     return _dataCollectionProvider.isDataCollectionRunning();
   }
 
   @override
-  void pauseDataCollection() {
-    _dataCollectionProvider.pauseDataCollection();
+  Future<void> pauseDataCollection() async {
+    await _dataCollectionProvider.pauseDataCollection();
   }
 
   @override
-  void resumeDataCollection() {
-    _dataCollectionProvider.resumeDataCollection();
+  Future<void> resumeDataCollection() async {
+    await _dataCollectionProvider.resumeDataCollection();
   }
 }

@@ -9,12 +9,12 @@ class PermissionProviderImpl implements PermissionProvider {
   }) : _sdkMethodChannel = sdkMethodChannel;
 
   @override
-  Future<bool?> canDraw() async {
+  Future<bool> canDraw() async {
     return _sdkMethodChannel.callMethodChannel<bool>(method: 'canDraw');
   }
 
   @override
-  Future<bool?> canUsage() async {
+  Future<bool> canUsage() async {
     return _sdkMethodChannel.callMethodChannel<bool>(method: 'canUsage');
   }
 }
