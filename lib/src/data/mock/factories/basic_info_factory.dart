@@ -15,9 +15,7 @@ class BasicInfoFactory extends MockModelFactory<BasicInfo> {
   }
 
   @override
-  List<BasicInfo> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<BasicInfo> generateListFake({required int length}) {
+    return List<BasicInfo>.generate(length, (int index) => generateFake());
   }
 }

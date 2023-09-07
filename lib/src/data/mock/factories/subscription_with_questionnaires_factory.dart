@@ -4,24 +4,24 @@ import 'mock_model_factory.dart';
 import 'questionnaire_factory.dart';
 
 class SubscriptionWithQuestionnairesFactory
-    extends MockModelFactory<QAResponse> {
+    extends MockModelFactory<QAResponse<SubscriptionWithQuestionnaires>> {
   @override
-  QAResponse generateFake() {
+  QAResponse<SubscriptionWithQuestionnaires> generateFake() {
     if (faker.randomGenerator.boolean()) {
-      return QAResponse(
+      return QAResponse<SubscriptionWithQuestionnaires>(
         data: SubscriptionWithQuestionnaires(
           cohort: CohortFactory().generateFake(),
           listOfQuestionnaires: QuestionnaireFactory().generateListFake(
             length: 3,
           ),
           subscriptionId: generateId,
-          tapDeviceIds: List.generate(3, (index) => generateId),
+          tapDeviceIds: List<String>.generate(3, (int index) => generateId),
           premiumFeaturesTTL: faker.randomGenerator.integer(999999),
         ),
         message: null,
       );
     } else {
-      return QAResponse(
+      return QAResponse<SubscriptionWithQuestionnaires>(
         data: null,
         message: faker.lorem.sentence(),
       );
@@ -29,9 +29,10 @@ class SubscriptionWithQuestionnairesFactory
   }
 
   @override
-  List<QAResponse> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<QAResponse<SubscriptionWithQuestionnaires>> generateListFake({required int length}) {
+    return List<QAResponse<SubscriptionWithQuestionnaires>>.generate(
+      length,
+      (int index) => generateFake(),
+    );
   }
 }

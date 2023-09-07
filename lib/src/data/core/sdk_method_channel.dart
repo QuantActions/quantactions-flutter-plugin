@@ -22,6 +22,7 @@ class SDKMethodChannel extends SDKMethodChannelCore {
   }) async {
     final T response = await _safeRequest(
       request: () => _methodChannel.invokeMethod<T>(method, params),
+      method: method,
       metricType: metricType,
     );
 
@@ -56,8 +57,8 @@ class SDKMethodChannel extends SDKMethodChannelCore {
 
   dynamic _safeRequest({
     required Function() request,
+    //params for mock data
     required String method,
-    //param for mock data
     MetricType? metricType,
   }) {
     if (defaultTargetPlatform == TargetPlatform.android) {
