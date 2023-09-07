@@ -6,10 +6,10 @@ import '../../core/sdk_method_channel.dart';
 import 'cohort_provider.dart';
 
 class CohortProviderImpl implements CohortProvider {
-  final _getCohortListEventChannel = const EventChannel(
+  final EventChannel _getCohortListEventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/get_cohort_list',
   );
-  final _leaveCohortEventChannel = const EventChannel(
+  final EventChannel _leaveCohortEventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/leave_cohort',
   );
 

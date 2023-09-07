@@ -8,10 +8,12 @@ import 'package:qa_flutter_plugin/src/data/consts/method_channel_consts.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const eventChannel = EventChannel(
+  const EventChannel eventChannel = EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/cohort',
   );
-  final binaryMessenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+
+  final TestDefaultBinaryMessenger binaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   final QAFlutterPlugin qaFlutterPlugin = QAFlutterPlugin();
 
@@ -50,15 +52,17 @@ class CohortHandler implements MockStreamHandler {
   void onListen(Object? arguments, MockStreamHandlerEventSink events) {
     eventSink = events;
 
-    final params = arguments as Map<String, dynamic>;
+    if(arguments != null) {
+      final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
-    switch (params['method']) {
-      case 'getCohortList':
-        eventSink?.success(<Cohort>[]);
-      case 'leaveCohort':
-        eventSink?.success(
-          QAResponse<String>(data: null, message: null),
-        );
+      switch (params['method']) {
+        case 'getCohortList':
+          eventSink?.success(<Cohort>[]);
+        case 'leaveCohort':
+          eventSink?.success(
+            QAResponse<String>(data: null, message: null),
+          );
+      }
     }
   }
 }

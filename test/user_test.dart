@@ -9,11 +9,13 @@ import 'package:qa_flutter_plugin/src/data/consts/method_channel_consts.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const eventChannel = EventChannel(
+  const EventChannel eventChannel = EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/user',
   );
-  const methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
-  final binaryMessenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const MethodChannel methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
+
+  final TestDefaultBinaryMessenger binaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   final QAFlutterPlugin qaFlutterPlugin = QAFlutterPlugin();
 
@@ -22,9 +24,9 @@ void main() {
     binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall methodCall) {
       switch (methodCall.method) {
         case 'isInit' || 'initAsync':
-          return Future(() => false);
+          return Future<bool>(() => false);
         case 'getBasicInfo':
-          return Future(
+          return Future<String>(
             () => jsonEncode(
               BasicInfo(
                 yearOfBirth: 1991,
@@ -66,7 +68,7 @@ void main() {
 
   test('savePublicKey', () {
     expect(
-      () => qaFlutterPlugin.savePublicKey(),
+      qaFlutterPlugin.savePublicKey,
       isA<void>(),
     );
   });
@@ -87,7 +89,7 @@ void main() {
 
   test('updateBasicInfo', () {
     expect(
-      () => qaFlutterPlugin.updateBasicInfo(),
+      qaFlutterPlugin.updateBasicInfo,
       isA<void>(),
     );
   });
@@ -112,13 +114,15 @@ class UserHandler implements MockStreamHandler {
   void onListen(Object? arguments, MockStreamHandlerEventSink events) {
     eventSink = events;
 
-    final params = arguments as Map<String, dynamic>;
+    if (arguments != null) {
+      final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
-    switch (params['method']) {
-      case 'init' || 'validateToken':
-        eventSink?.success(
-          QAResponse<String>(data: null, message: null),
-        );
+      switch (params['method']) {
+        case 'init' || 'validateToken':
+          eventSink?.success(
+            QAResponse<String>(data: null, message: null),
+          );
+      }
     }
   }
 }

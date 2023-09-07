@@ -9,11 +9,13 @@ import 'package:qa_flutter_plugin/src/data/consts/method_channel_consts.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const eventChannel = EventChannel(
+  const EventChannel eventChannel = EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/journal',
   );
-  const methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
-  final binaryMessenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const MethodChannel methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
+
+  final TestDefaultBinaryMessenger binaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   final QAFlutterPlugin qaFlutterPlugin = QAFlutterPlugin();
 
@@ -22,15 +24,15 @@ void main() {
     binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall methodCall) {
       switch (methodCall.method) {
         case 'getJournalEntry':
-          return Future(
+          return Future<String>(
             () => jsonEncode(
               JournalEntryWithEvents(
                 id: '',
                 timestamp: DateTime.now(),
                 note: '',
-                events: [],
-                ratings: [],
-                scores: {},
+                events: <ResolvedJournalEvent>[],
+                ratings: <int>[],
+                scores: <String, int>{},
               ),
             ),
           );
@@ -80,7 +82,7 @@ void main() {
   });
 
   test('getJournalEvents', () {
-    qaFlutterPlugin.getJournalEvents().listen((event) {
+    qaFlutterPlugin.getJournalEvents().listen((List<JournalEvent> event) {
       expect(
         event,
         const TypeMatcher<List<JournalEvent>>(),
@@ -89,7 +91,7 @@ void main() {
   });
 
   test('getJournalSample', () {
-    qaFlutterPlugin.getJournalSample(apiKey: '').listen((event) {
+    qaFlutterPlugin.getJournalSample(apiKey: '').listen((List<JournalEntryWithEvents> event) {
       expect(
         event,
         const TypeMatcher<List<JournalEntryWithEvents>>(),
@@ -98,7 +100,7 @@ void main() {
   });
 
   test('sendNote', () {
-    qaFlutterPlugin.sendNote('').listen((event) {
+    qaFlutterPlugin.sendNote('').listen((QAResponse<String> event) {
       expect(
         event,
         const TypeMatcher<QAResponse<String>>(),
@@ -119,21 +121,23 @@ class JournalHandler implements MockStreamHandler {
   void onListen(Object? arguments, MockStreamHandlerEventSink events) {
     eventSink = events;
 
-    final params = arguments as Map<String, dynamic>;
+    if (arguments != null) {
+      final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
-    switch (params['method']) {
-      case 'createJournalEntry':
-        eventSink?.success(
-          QAResponse<String>(data: null, message: null),
-        );
-      case 'deleteJournalEntry' || 'sendNote':
-        eventSink?.success(
-          QAResponse<String>(data: null, message: null),
-        );
-      case 'getJournal' || 'getJournalSample':
-        eventSink?.success(<JournalEntryWithEvents>[]);
-      case 'getJournalEvents':
-        eventSink?.success(<JournalEvent>[]);
+      switch (params['method']) {
+        case 'createJournalEntry':
+          eventSink?.success(
+            QAResponse<String>(data: null, message: null),
+          );
+        case 'deleteJournalEntry' || 'sendNote':
+          eventSink?.success(
+            QAResponse<String>(data: null, message: null),
+          );
+        case 'getJournal' || 'getJournalSample':
+          eventSink?.success(<JournalEntryWithEvents>[]);
+        case 'getJournalEvents':
+          eventSink?.success(<JournalEvent>[]);
+      }
     }
   }
 }

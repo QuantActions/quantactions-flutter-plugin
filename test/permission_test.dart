@@ -6,19 +6,21 @@ import 'package:qa_flutter_plugin/src/data/consts/method_channel_consts.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
-  final binaryMessenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const MethodChannel methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
+
+  final TestDefaultBinaryMessenger binaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   final QAFlutterPlugin qaFlutterPlugin = QAFlutterPlugin();
 
   setUp(() {
     binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall methodCall) {
-      return Future(() => false);
+      return Future<bool>(() => false);
     });
   });
 
   tearDown(() {
-    binaryMessenger.setMockMethodCallHandler(methodChannel, (message) => null);
+    binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall message) => null);
   });
 
   test('canDraw', () async {

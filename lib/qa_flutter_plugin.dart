@@ -1,6 +1,6 @@
-import 'package:qa_flutter_plugin/src/core/core.dart';
-import 'package:qa_flutter_plugin/src/data/data.dart';
-import 'package:qa_flutter_plugin/src/domain/domain.dart';
+import 'src/core/core.dart';
+import 'src/data/data.dart';
+import 'src/domain/domain.dart';
 
 export 'package:qa_flutter_plugin/src/domain/models/models.dart';
 
@@ -56,12 +56,12 @@ class QAFlutterPlugin {
 
   ///Restart the data collection after it has been purposely paused.
   Future<void> resumeDataCollection() async {
-    _dataCollectionRepository.resumeDataCollection();
+    await _dataCollectionRepository.resumeDataCollection();
   }
 
   ///Pause the data collection.
   Future<void> pauseDataCollection() async {
-    _dataCollectionRepository.pauseDataCollection();
+    await _dataCollectionRepository.pauseDataCollection();
   }
 
   Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
@@ -306,7 +306,7 @@ class QAFlutterPlugin {
     int? newYearOfBirth,
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
-  }) {
+  }) async {
     return _userRepository.updateBasicInfo(
       newYearOfBirth: newYearOfBirth,
       newGender: newGender,
@@ -315,11 +315,11 @@ class QAFlutterPlugin {
   }
 
   Future<void> savePublicKey() async {
-    _userRepository.savePublicKey();
+    await _userRepository.savePublicKey();
   }
 
   Future<void> setVerboseLevel(int verbose) async {
-    _userRepository.setVerboseLevel(verbose);
+    await _userRepository.setVerboseLevel(verbose);
   }
 
   ///Use this function to double check that your API key is correct and valid,

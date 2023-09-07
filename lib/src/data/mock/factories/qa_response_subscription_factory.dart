@@ -1,20 +1,20 @@
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 
-class QAResponseSubscriptionFactory extends MockModelFactory<QAResponse> {
+class QAResponseSubscriptionFactory extends MockModelFactory<QAResponse<SubscriptionIdResponse>> {
   @override
-  QAResponse generateFake() {
+  QAResponse<SubscriptionIdResponse> generateFake() {
     if (faker.randomGenerator.boolean()) {
-      return QAResponse(
+      return QAResponse<SubscriptionIdResponse>(
         data: SubscriptionIdResponse(
           subscriptionId: generateId,
-          deviceIds: List.generate(3, (index) => generateId),
+          deviceIds: List<String>.generate(3, (int index) => generateId),
           cohortId: generateId,
         ),
         message: null,
       );
     } else {
-      return QAResponse(
+      return QAResponse<SubscriptionIdResponse>(
         data: null,
         message: faker.lorem.sentence(),
       );
@@ -22,9 +22,7 @@ class QAResponseSubscriptionFactory extends MockModelFactory<QAResponse> {
   }
 
   @override
-  List<QAResponse> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<QAResponse<SubscriptionIdResponse>> generateListFake({required int length}) {
+    return List<QAResponse<SubscriptionIdResponse>>.generate(length, (int index) => generateFake());
   }
 }

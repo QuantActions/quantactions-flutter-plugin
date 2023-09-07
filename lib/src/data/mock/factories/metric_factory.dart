@@ -7,12 +7,12 @@ import 'trend_holder_factory.dart';
 class MetricFactory<T> extends MockModelFactory<TimeSeries<T>> {
   @override
   TimeSeries<T> generateFake() {
-    return TimeSeries(
-      values: List.generate(10, (index) => generateData()),
-      timestamps: List.generate(10, (index) => generateDateTime),
-      confidenceIntervalLow: List.generate(10, (index) => generateData()),
-      confidenceIntervalHigh: List.generate(10, (index) => generateData()),
-      confidence: List.generate(10, (index) => generateDouble),
+    return TimeSeries<T>(
+      values: List<T>.generate(10, (int index) => generateData()),
+      timestamps: List<DateTime>.generate(10, (int index) => generateDateTime),
+      confidenceIntervalLow: List<T>.generate(10, (int index) => generateData()),
+      confidenceIntervalHigh: List<T>.generate(10, (int index) => generateData()),
+      confidence: List<double>.generate(10, (int index) => generateDouble),
     );
   }
 
@@ -29,9 +29,7 @@ class MetricFactory<T> extends MockModelFactory<TimeSeries<T>> {
   }
 
   @override
-  List<TimeSeries<T>> generateListFake({
-    required int length,
-  }) {
-    return List.generate(length, (index) => generateFake());
+  List<TimeSeries<T>> generateListFake({required int length}) {
+    return List<TimeSeries<T>>.generate(length, (int index) => generateFake());
   }
 }

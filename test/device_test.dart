@@ -9,11 +9,13 @@ import 'package:qa_flutter_plugin/src/data/consts/method_channel_consts.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const eventChannel = EventChannel(
+  const EventChannel eventChannel = EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/device',
   );
-  const methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
-  final binaryMessenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const MethodChannel methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
+
+  final TestDefaultBinaryMessenger binaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   final QAFlutterPlugin qaFlutterPlugin = QAFlutterPlugin();
 
@@ -22,15 +24,15 @@ void main() {
     binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall methodCall) {
       switch (methodCall.method) {
         case 'isDeviceRegistered' || 'getIsTablet':
-          return Future(() => false);
+          return Future<bool>(() => false);
         case 'getSubscriptionIdAsync':
-          return Future(
+          return Future<String>(
             () => jsonEncode(
               QAResponse<SubscriptionIdResponse>(data: null, message: ''),
             ),
           );
         case 'syncData' || 'getDeviceID' || 'getFirebaseToken':
-          return Future(() => '');
+          return Future<String>(() => '');
       }
 
       return null;
@@ -132,17 +134,19 @@ class CohortHandler implements MockStreamHandler {
   void onListen(Object? arguments, MockStreamHandlerEventSink events) {
     eventSink = events;
 
-    final params = arguments as Map<String, dynamic>;
+    if (arguments != null) {
+      final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
-    switch (params['method']) {
-      case 'redeemVoucher' || 'subscribeWithGooglePurchaseToken' || 'subscribe':
-        eventSink?.success(
-          QAResponse<SubscriptionWithQuestionnaires>(data: null, message: null),
-        );
-      case 'getSubscriptionId':
-        eventSink?.success(
-          QAResponse<SubscriptionIdResponse>(data: null, message: null),
-        );
+      switch (params['method']) {
+        case 'redeemVoucher' || 'subscribeWithGooglePurchaseToken' || 'subscribe':
+          eventSink?.success(
+            QAResponse<SubscriptionWithQuestionnaires>(data: null, message: null),
+          );
+        case 'getSubscriptionId':
+          eventSink?.success(
+            QAResponse<SubscriptionIdResponse>(data: null, message: null),
+          );
+      }
     }
   }
 }

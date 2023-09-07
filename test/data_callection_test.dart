@@ -6,8 +6,10 @@ import 'package:qa_flutter_plugin/src/data/consts/method_channel_consts.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
-  final binaryMessenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const MethodChannel methodChannel = MethodChannel(MethodChannelConsts.mainMethodChannel);
+
+  final TestDefaultBinaryMessenger binaryMessenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
   final QAFlutterPlugin qaFlutterPlugin = QAFlutterPlugin();
 
@@ -15,7 +17,7 @@ void main() {
     binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall methodCall) {
       switch (methodCall.method) {
         case 'isDataCollectionRunning':
-          return Future(() => false);
+          return Future<bool>(() => false);
       }
 
       return null;
@@ -23,7 +25,7 @@ void main() {
   });
 
   tearDown(() {
-    binaryMessenger.setMockMethodCallHandler(methodChannel, (message) => null);
+    binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall message) => null);
   });
 
   test('isDataCollectionRunning', () async {
@@ -35,14 +37,14 @@ void main() {
 
   test('pauseDataCollection', () async {
     expect(
-      () => qaFlutterPlugin.pauseDataCollection(),
+      qaFlutterPlugin.pauseDataCollection,
       isA<void>(),
     );
   });
 
   test('resumeDataCollection', () {
     expect(
-      () => qaFlutterPlugin.resumeDataCollection(),
+      qaFlutterPlugin.resumeDataCollection,
       isA<void>(),
     );
   });
