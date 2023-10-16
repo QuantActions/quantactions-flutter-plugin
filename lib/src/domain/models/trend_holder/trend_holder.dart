@@ -35,6 +35,20 @@ class TrendHolder {
     required this.significance1Year,
   });
 
+  factory TrendHolder.empty() {
+    return TrendHolder(
+      difference2Weeks: 0.0,
+      statistic2Weeks: 0.0,
+      significance2Weeks: 0.0,
+      difference6Weeks: 0.0,
+      statistic6Weeks: 0.0,
+      significance6Weeks: 0.0,
+      difference1Year: 0.0,
+      statistic1Year: 0.0,
+      significance1Year: 0.0,
+    );
+  }
+
   factory TrendHolder.fromJson(Map<String, dynamic> json) =>
       _$TrendHolderFromJson(json);
 

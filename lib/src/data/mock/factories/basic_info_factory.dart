@@ -3,7 +3,7 @@ import 'mock_model_factory.dart';
 
 class BasicInfoFactory extends MockModelFactory<BasicInfo> {
   @override
-  BasicInfo generateFake() {
+  BasicInfo generateFake([dynamic data]) {
     return BasicInfo(
       yearOfBirth: faker.randomGenerator.integer(
         DateTime.now().year,

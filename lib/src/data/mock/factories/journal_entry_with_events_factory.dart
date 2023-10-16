@@ -4,7 +4,7 @@ import 'resolved_journal_event_factory.dart';
 
 class JournalEntryWithEventsFactory extends MockModelFactory<JournalEntryWithEvents> {
   @override
-  JournalEntryWithEvents generateFake() {
+  JournalEntryWithEvents generateFake([dynamic data]) {
     return JournalEntryWithEvents(
       id: generateId,
       timestamp: generateDateTime,

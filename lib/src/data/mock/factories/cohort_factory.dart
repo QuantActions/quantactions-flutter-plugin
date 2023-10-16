@@ -3,7 +3,7 @@ import 'mock_model_factory.dart';
 
 class CohortFactory extends MockModelFactory<Cohort> {
   @override
-  Cohort generateFake() {
+  Cohort generateFake([dynamic data]) {
     return Cohort(
       cohortId: generateId,
       privacyPolicy: faker.lorem.word(),

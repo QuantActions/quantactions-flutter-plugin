@@ -3,7 +3,7 @@ import 'package:faker/faker.dart';
 abstract class MockModelFactory<T> {
   Faker get faker => Faker();
 
-  T generateFake();
+  T generateFake([dynamic data]);
 
   List<T> generateListFake({required int length});
 
@@ -14,5 +14,5 @@ abstract class MockModelFactory<T> {
         maxYear: DateTime.now().year,
       );
 
-  double get generateDouble => faker.randomGenerator.decimal();
+  double get generateDouble => faker.randomGenerator.decimal(scale: 100);
 }

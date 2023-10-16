@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 import 'screen_time_aggregate_factory.dart';
@@ -6,21 +8,33 @@ import 'trend_holder_factory.dart';
 
 class MetricFactory<T> extends MockModelFactory<TimeSeries<T>> {
   @override
-  TimeSeries<T> generateFake() {
+  TimeSeries<T> generateFake([dynamic data]) {
+    final DateTime now = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    final List<T> values = List<T>.generate(
+      365,
+      (int index) => generateData(now.subtract(Duration(days: index))),
+    ).reversed.toList();
+
     return TimeSeries<T>(
-      values: List<T>.generate(10, (int index) => generateData()),
-      timestamps: List<DateTime>.generate(10, (int index) => generateDateTime),
-      confidenceIntervalLow: List<T>.generate(10, (int index) => generateData()),
-      confidenceIntervalHigh: List<T>.generate(10, (int index) => generateData()),
-      confidence: List<double>.generate(10, (int index) => generateDouble),
+      values: values,
+      timestamps: List<DateTime>.generate(365, (int index) => now.subtract(Duration(days: index)))
+          .reversed
+          .toList(),
+      confidenceIntervalLow: (T == double)
+          ? values.map((T e) => (e as double) - Random().nextInt(10)).cast<T>().toList()
+          : values,
+      confidenceIntervalHigh: (T == double)
+          ? values.map((T e) => (e as double) + Random().nextInt(10)).cast<T>().toList()
+          : values,
+      confidence: List<double>.generate(365, (int index) => generateDouble),
     );
   }
 
-  T generateData() {
+  T generateData(DateTime dateTime) {
     if (T == TrendHolder) {
       return TrendHolderFactory().generateFake() as T;
     } else if (T == SleepSummary) {
-      return SleepSummaryFactory().generateFake() as T;
+      return SleepSummaryFactory().generateFake(dateTime) as T;
     } else if (T == ScreenTimeAggregate) {
       return ScreenTimeAggregateFactory().generateFake() as T;
     } else {

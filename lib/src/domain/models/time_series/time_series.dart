@@ -44,9 +44,13 @@ class TimeSeries<T> {
   static List<String> _dateTimeToJson(List<DateTime> dateTime) =>
       dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
 
-  static List<DateTime> _dateTimeFromJson(List<dynamic> data) => data
-      .map<DateTime>((dynamic item) => DateTime.parse(item.split('[').first).toLocal())
-      .toList();
+  static List<DateTime> _dateTimeFromJson(List<dynamic> data) =>
+      data
+          .map<DateTime>((dynamic item) =>
+          DateTime.parse(item
+              .split('[')
+              .first).toLocal())
+          .toList();
 
   factory TimeSeries.empty() {
     return TimeSeries<T>(
@@ -69,7 +73,11 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
     } else if (T == List<SleepSummary>) {
       return json.map<SleepSummary>(SleepSummary.fromJson).toList();
     } else if (T == List<ScreenTimeAggregate>) {
-      return json.map<ScreenTimeAggregate>(ScreenTimeAggregate.fromJson).toList();
+      return json
+          .map<ScreenTimeAggregate>(
+            (dynamic item) => ScreenTimeAggregate.fromJson(item as Map<String, dynamic>),
+      )
+          .toList();
     } else {
       if (json == null) {
         return double.nan as T;
