@@ -1,20 +1,16 @@
-package com.quantactions.qa_flutter_plugin.event_channel_handlers
+package com.quantactions.qa_flutter_plugin.event_channel_handlers.questionnaire
 
-import android.content.Context
 import com.google.gson.reflect.TypeToken
 import com.google.gson.Gson
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
-import com.quantactions.sdk.data.entity.Questionnaire
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class QuestionnaireStreamHandler(
+class RecordQuestionnaireResponseStreamHandler(
     private var mainScope: CoroutineScope,
-    private var ioScope: CoroutineScope,
     private var qa: QA,
-    private var context: Context
 ) : EventChannel.StreamHandler {
     private var eventSink: EventChannel.EventSink? = null
 
@@ -27,12 +23,6 @@ class QuestionnaireStreamHandler(
             val params = arguments as? Map<*, *>
 
             when (params?.get("method") as? String) {
-                "getQuestionnairesList" -> {
-                    qa.getQuestionnairesList().collect {
-                        eventSink.success(QAFlutterPluginSerializable.serializeQuestionnaireList(it))
-                    }
-                }
-
                 "recordQuestionnaireResponse" -> {
                     val name = params["name"] as String?
                     val code = params["code"] as String?

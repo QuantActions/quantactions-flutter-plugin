@@ -6,8 +6,11 @@ import '../../core/sdk_method_channel.dart';
 import 'cohort_provider.dart';
 
 class CohortProviderImpl implements CohortProvider {
-  final EventChannel _eventChannel = const EventChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/cohort',
+  final EventChannel _getCohortListEventChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/get_cohort_list',
+  );
+  final EventChannel _leaveCohortEventChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/leave_cohort',
   );
 
   final SDKMethodChannel _sdkMethodChannel;
@@ -20,7 +23,7 @@ class CohortProviderImpl implements CohortProvider {
   Stream<dynamic> getCohortList() {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getCohortList,
-      eventChannel: _eventChannel,
+      eventChannel: _getCohortListEventChannel,
     );
   }
 
@@ -28,7 +31,7 @@ class CohortProviderImpl implements CohortProvider {
   Stream<dynamic> leaveCohort(String cohortId) {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.leaveCohort,
-      eventChannel: _eventChannel,
+      eventChannel: _leaveCohortEventChannel,
       params: <String, dynamic>{
         'cohortId': cohortId,
       },
