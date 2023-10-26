@@ -2,11 +2,14 @@ import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 
 class ScreenTimeAggregateFactory extends MockModelFactory<ScreenTimeAggregate> {
+  final int h24 = 86400000;
+
   @override
-  ScreenTimeAggregate generateFake() {
+  ScreenTimeAggregate generateFake([dynamic data]) {
+    final double totalScreenTime = faker.randomGenerator.decimal(scale: h24);
     return ScreenTimeAggregate(
-      totalScreenTime: generateDouble,
-      socialScreenTime: generateDouble,
+      totalScreenTime: totalScreenTime,
+      socialScreenTime: faker.randomGenerator.decimal(scale: totalScreenTime),
     );
   }
 

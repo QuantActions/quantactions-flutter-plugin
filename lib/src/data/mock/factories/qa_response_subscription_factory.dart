@@ -3,7 +3,7 @@ import 'mock_model_factory.dart';
 
 class QAResponseSubscriptionFactory extends MockModelFactory<QAResponse<SubscriptionIdResponse>> {
   @override
-  QAResponse<SubscriptionIdResponse> generateFake() {
+  QAResponse<SubscriptionIdResponse> generateFake([dynamic data]) {
     if (faker.randomGenerator.boolean()) {
       return QAResponse<SubscriptionIdResponse>(
         data: SubscriptionIdResponse(

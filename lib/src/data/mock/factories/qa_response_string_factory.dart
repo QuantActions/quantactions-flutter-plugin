@@ -3,7 +3,7 @@ import 'mock_model_factory.dart';
 
 class QAResponseStringFactory extends MockModelFactory<QAResponse<String>> {
   @override
-  QAResponse<String> generateFake() {
+  QAResponse<String> generateFake([dynamic data]) {
     if (faker.randomGenerator.boolean()) {
       return QAResponse<String>(
         data: faker.lorem.sentence(),

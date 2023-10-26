@@ -3,7 +3,7 @@ import 'mock_model_factory.dart';
 
 class ResolvedJournalEventFactory extends MockModelFactory<ResolvedJournalEvent> {
   @override
-  ResolvedJournalEvent generateFake() {
+  ResolvedJournalEvent generateFake([dynamic data]) {
     return ResolvedJournalEvent(
       id: generateId,
       publicName: faker.conference.name(),

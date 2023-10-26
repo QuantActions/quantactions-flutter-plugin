@@ -31,7 +31,8 @@ class JournalEntryWithEvents {
 
   Map<String, dynamic> toJson() => _$JournalEntryWithEventsToJson(this);
 
-  static int _dateTimeToJson(DateTime dateTime) => dateTime.millisecondsSinceEpoch;
+  static int _dateTimeToJson(DateTime dateTime) =>
+      dateTime.millisecondsSinceEpoch;
 
   static DateTime _dateTimeFromJson(int milliseconds) =>
       DateTime.fromMillisecondsSinceEpoch(milliseconds);

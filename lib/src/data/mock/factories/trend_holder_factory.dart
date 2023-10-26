@@ -3,7 +3,7 @@ import 'mock_model_factory.dart';
 
 class TrendHolderFactory extends MockModelFactory<TrendHolder> {
   @override
-  TrendHolder generateFake() {
+  TrendHolder generateFake([dynamic data]) {
     return TrendHolder(
       difference2Weeks: generateDouble,
       statistic2Weeks: generateDouble,

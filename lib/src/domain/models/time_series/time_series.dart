@@ -44,9 +44,13 @@ class TimeSeries<T> {
   static List<String> _dateTimeToJson(List<DateTime> dateTime) =>
       dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
 
-  static List<DateTime> _dateTimeFromJson(List<dynamic> data) => data
-      .map<DateTime>((dynamic item) => DateTime.parse(item.split('[').first).toLocal())
-      .toList();
+  static List<DateTime> _dateTimeFromJson(List<dynamic> data) =>
+      data
+          .map<DateTime>((dynamic item) =>
+          DateTime.parse(item
+              .split('[')
+              .first).toLocal())
+          .toList();
 
   factory TimeSeries.empty() {
     return TimeSeries<T>(

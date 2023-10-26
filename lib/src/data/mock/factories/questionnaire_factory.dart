@@ -3,7 +3,7 @@ import 'mock_model_factory.dart';
 
 class QuestionnaireFactory extends MockModelFactory<Questionnaire> {
   @override
-  Questionnaire generateFake() {
+  Questionnaire generateFake([dynamic data]) {
     return Questionnaire(
       id: generateId,
       questionnaireName: faker.conference.name(),
