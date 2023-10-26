@@ -7,14 +7,6 @@ abstract class DeviceRepository {
     required String subscriptionIdOrCohortId,
   });
 
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribeWithGooglePurchaseToken({
-    required String purchaseToken,
-  });
-
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
-    required String voucher,
-  });
-
   Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId();
 
   Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync();
@@ -22,8 +14,4 @@ abstract class DeviceRepository {
   Future<String> syncData();
 
   Future<String> getDeviceID();
-
-  Future<String?> getFirebaseToken();
-
-  Future<bool> getIsTablet();
 }

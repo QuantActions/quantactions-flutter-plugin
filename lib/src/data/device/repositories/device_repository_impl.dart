@@ -17,25 +17,6 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
-    required String voucher,
-  }) {
-    final Stream<dynamic> stream = _deviceProvider.redeemVoucher(voucher: voucher);
-    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
-  }
-
-  @override
-  Stream<QAResponse<SubscriptionWithQuestionnaires>>
-      subscribeWithGooglePurchaseToken({
-    required String purchaseToken,
-  }) {
-    final Stream<dynamic> stream = _deviceProvider.subscribeWithGooglePurchaseToken(
-      purchaseToken: purchaseToken,
-    );
-    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
-  }
-
-  @override
   Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
     required String subscriptionIdOrCohortId,
   }) {
@@ -75,15 +56,5 @@ class DeviceRepositoryImpl implements DeviceRepository {
   @override
   Future<String> getDeviceID() {
     return _deviceProvider.getDeviceID();
-  }
-
-  @override
-  Future<String?> getFirebaseToken() {
-    return _deviceProvider.getFirebaseToken();
-  }
-
-  @override
-  Future<bool> getIsTablet() {
-    return _deviceProvider.getIsTablet();
   }
 }

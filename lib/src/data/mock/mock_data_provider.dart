@@ -26,21 +26,15 @@ class MockDataProvider {
         return _getBasicInfo();
       case SupportedMethods.getDeviceID:
         return faker.randomGenerator.fromCharSet('1234567890', 10);
-      case SupportedMethods.getFirebaseToken:
-        return faker.randomGenerator.fromCharSet('1234567890', 25);
-      case SupportedMethods.getIsTablet ||
-            SupportedMethods.isDataCollectionRunning ||
+      case SupportedMethods.isDataCollectionRunning ||
             SupportedMethods.isDeviceRegistered ||
             SupportedMethods.canDraw ||
-            SupportedMethods.canUsage ||
-            SupportedMethods.isInit ||
-            SupportedMethods.initAsync:
+            SupportedMethods.canUsage:
         return faker.randomGenerator.boolean();
       case SupportedMethods.resumeDataCollection ||
             SupportedMethods.pauseDataCollection ||
             SupportedMethods.updateBasicInfo ||
-            SupportedMethods.savePublicKey ||
-            SupportedMethods.setVerboseLevel:
+            SupportedMethods.savePublicKey:
         return;
       case SupportedMethods.syncData:
         return faker.lorem.sentence();
@@ -61,12 +55,9 @@ class MockDataProvider {
             SupportedMethods.deleteJournalEntry ||
             SupportedMethods.sendNote ||
             SupportedMethods.recordQuestionnaireResponse ||
-            SupportedMethods.init ||
-            SupportedMethods.validateToken:
+            SupportedMethods.init:
         return _getQAResponseString();
-      case SupportedMethods.redeemVoucher ||
-            SupportedMethods.subscribeWithGooglePurchaseToken ||
-            SupportedMethods.subscribe:
+      case SupportedMethods.subscribe:
         return _getQAResponseSubscriptionWithQuestionnaires();
       case SupportedMethods.getSubscriptionId:
         return Stream<String>.value(_getQAResponseSubscriptionIdResponse());

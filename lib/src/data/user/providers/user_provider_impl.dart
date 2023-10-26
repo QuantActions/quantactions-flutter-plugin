@@ -37,57 +37,9 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  Future<bool> initAsync({
-    required String apiKey,
-    int? age,
-    Gender? gender,
-    bool? selfDeclaredHealthy,
-  }) {
-    return _sdkMethodChannel.callMethodChannel<bool>(
-      method: SupportedMethods.initAsync,
-      params: _buildInitParams(
-        apiKey: apiKey,
-        age: age,
-        gender: gender,
-        selfDeclaredHealthy: selfDeclaredHealthy,
-      ),
-    );
-  }
-
-  @override
-  Future<bool> isInit() async {
-    return _sdkMethodChannel.callMethodChannel<bool>(
-      method: SupportedMethods.isInit,
-    );
-  }
-
-  @override
   Future<void> savePublicKey() async {
     await _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.savePublicKey,
-    );
-  }
-
-  @override
-  Future<void> setVerboseLevel(int verbose) async {
-    await _sdkMethodChannel.callMethodChannel(
-      method: SupportedMethods.setVerboseLevel,
-      params: <String, dynamic>{
-        'verbose': verbose,
-      },
-    );
-  }
-
-  @override
-  Stream<dynamic> validateToken({
-    required String apiKey,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.validateToken,
-      eventChannel: _eventChannel,
-      params: <String, dynamic>{
-        'apiKey': apiKey,
-      },
     );
   }
 

@@ -33,12 +33,6 @@ class QAFlutterPlugin {
   ///ID of the device
   Future<String> get deviceId => _deviceRepository.getDeviceID();
 
-  ///Firebase token for communication
-  Future<String?> get firebaseToken => _deviceRepository.getFirebaseToken();
-
-  ///Whether or not this device is considerable a tablet
-  Future<bool> get isTablet => _deviceRepository.getIsTablet();
-
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
     return _cohortRepository.getCohortList();
@@ -62,21 +56,6 @@ class QAFlutterPlugin {
   ///Pause the data collection.
   Future<void> pauseDataCollection() async {
     await _dataCollectionRepository.pauseDataCollection();
-  }
-
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
-    required String voucher,
-  }) {
-    return _deviceRepository.redeemVoucher(voucher: voucher);
-  }
-
-  Stream<QAResponse<SubscriptionWithQuestionnaires>>
-      subscribeWithGooglePurchaseToken({
-    required String purchaseToken,
-  }) {
-    return _deviceRepository.subscribeWithGooglePurchaseToken(
-      purchaseToken: purchaseToken,
-    );
   }
 
   ///Use this function to subscribe the device to your(one of your) cohort(s).
@@ -259,28 +238,6 @@ class QAFlutterPlugin {
     );
   }
 
-  ///Checks whether or not the SDK is initialized.
-  Future<bool> isInit() {
-    return _userRepository.isInit();
-  }
-
-  ///The first time you use the QA SDK in the code you should initialize it, this allows the SDK
-  ///to create a unique identifier and initiate server transactions and workflows.
-  ///Most of the functionality will not work if you have never initialized the singleton before.
-  Future<bool> initAsync({
-    required String apiKey,
-    int? age,
-    Gender? gender,
-    bool? selfDeclaredHealthy,
-  }) {
-    return _userRepository.initAsync(
-      apiKey: apiKey,
-      age: age,
-      gender: gender,
-      selfDeclaredHealthy: selfDeclaredHealthy,
-    );
-  }
-
   ///The first time you use the QA SDK in the code you should initialize it,
   ///this allows the SDK to create a unique identifier and initiate server
   ///transactions and workflows. Most of the functionality will not work
@@ -316,17 +273,5 @@ class QAFlutterPlugin {
 
   Future<void> savePublicKey() async {
     await _userRepository.savePublicKey();
-  }
-
-  Future<void> setVerboseLevel(int verbose) async {
-    await _userRepository.setVerboseLevel(verbose);
-  }
-
-  ///Use this function to double check that your API key is correct and valid,
-  ///this is just for testing purposes.
-  Stream<QAResponse<String>> validateToken({
-    required String apiKey,
-  }) {
-    return _userRepository.validateToken(apiKey: apiKey);
   }
 }

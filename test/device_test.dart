@@ -23,7 +23,7 @@ void main() {
     binaryMessenger.setMockStreamHandler(eventChannel, CohortHandler());
     binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall methodCall) {
       switch (methodCall.method) {
-        case 'isDeviceRegistered' || 'getIsTablet':
+        case 'isDeviceRegistered':
           return Future<bool>(() => false);
         case 'getSubscriptionIdAsync':
           return Future<String>(
@@ -31,7 +31,7 @@ void main() {
               QAResponse<SubscriptionIdResponse>(data: null, message: ''),
             ),
           );
-        case 'syncData' || 'getDeviceID' || 'getFirebaseToken':
+        case 'syncData' || 'getDeviceID':
           return Future<String>(() => '');
       }
 
@@ -44,31 +44,10 @@ void main() {
     binaryMessenger.setMockMethodCallHandler(methodChannel, null);
   });
 
-  test('redeemVoucher', () {
-    expect(
-      qaFlutterPlugin.redeemVoucher(voucher: ''),
-      const TypeMatcher<Stream<QAResponse<SubscriptionWithQuestionnaires>>>(),
-    );
-  });
-
   test('isDeviceRegistered', () async {
     expect(
       await qaFlutterPlugin.isDeviceRegistered(),
       const TypeMatcher<bool>(),
-    );
-  });
-
-  test('redeemVoucher', () {
-    expect(
-      qaFlutterPlugin.redeemVoucher(voucher: ''),
-      const TypeMatcher<Stream<QAResponse<SubscriptionWithQuestionnaires>>>(),
-    );
-  });
-
-  test('subscribeWithGooglePurchaseToken', () {
-    expect(
-      qaFlutterPlugin.subscribeWithGooglePurchaseToken(purchaseToken: ''),
-      const TypeMatcher<Stream<QAResponse<SubscriptionWithQuestionnaires>>>(),
     );
   });
 
@@ -106,20 +85,6 @@ void main() {
       const TypeMatcher<String>(),
     );
   });
-
-  test('getFirebaseToken', () async {
-    expect(
-      await qaFlutterPlugin.firebaseToken,
-      const TypeMatcher<String?>(),
-    );
-  });
-
-  test('getIsTablet', () async {
-    expect(
-      await qaFlutterPlugin.isTablet,
-      const TypeMatcher<bool>(),
-    );
-  });
 }
 
 class CohortHandler implements MockStreamHandler {
@@ -138,7 +103,7 @@ class CohortHandler implements MockStreamHandler {
       final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
       switch (params['method']) {
-        case 'redeemVoucher' || 'subscribeWithGooglePurchaseToken' || 'subscribe':
+        case 'subscribe':
           eventSink?.success(
             QAResponse<SubscriptionWithQuestionnaires>(data: null, message: null),
           );

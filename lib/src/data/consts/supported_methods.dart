@@ -2,8 +2,6 @@ class SupportedMethods {
   //method channel
   static const String getBasicInfo = 'getBasicInfo';
   static const String getDeviceID = 'getDeviceID';
-  static const String getFirebaseToken = 'getFirebaseToken';
-  static const String getIsTablet = 'getIsTablet';
   static const String isDataCollectionRunning = 'isDataCollectionRunning';
   static const String resumeDataCollection = 'resumeDataCollection';
   static const String pauseDataCollection = 'pauseDataCollection';
@@ -15,17 +13,12 @@ class SupportedMethods {
   static const String getStatSampleAsync = 'getStatSampleAsync';
   static const String canDraw = 'canDraw';
   static const String canUsage = 'canUsage';
-  static const String isInit = 'isInit';
-  static const String initAsync = 'initAsync';
   static const String updateBasicInfo = 'updateBasicInfo';
   static const String savePublicKey = 'savePublicKey';
-  static const String setVerboseLevel = 'setVerboseLevel';
 
   //event channel
   static const String getCohortList = 'getCohortList';
   static const String leaveCohort = 'leaveCohort';
-  static const String redeemVoucher = 'redeemVoucher';
-  static const String subscribeWithGooglePurchaseToken = 'subscribeWithGooglePurchaseToken';
   static const String subscribe = 'subscribe';
   static const String getSubscriptionId = 'getSubscriptionId';
   static const String createJournalEntry = 'createJournalEntry';
@@ -39,5 +32,4 @@ class SupportedMethods {
   static const String getQuestionnairesList = 'getQuestionnairesList';
   static const String recordQuestionnaireResponse = 'recordQuestionnaireResponse';
   static const String init = 'init';
-  static const String validateToken = 'validateToken';
 }

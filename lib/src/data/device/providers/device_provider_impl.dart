@@ -27,32 +27,6 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Stream<dynamic> redeemVoucher({
-    required String voucher,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.redeemVoucher,
-      eventChannel: _eventChannel,
-      params: <String, dynamic>{
-        'voucher': voucher,
-      },
-    );
-  }
-
-  @override
-  Stream<dynamic> subscribeWithGooglePurchaseToken({
-    required String purchaseToken,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.subscribeWithGooglePurchaseToken,
-      eventChannel: _eventChannel,
-      params: <String, dynamic>{
-        'purchaseToken': purchaseToken,
-      },
-    );
-  }
-
-  @override
   Stream<dynamic> subscribe({
     required String subscriptionIdOrCohortId,
   }) {
@@ -91,20 +65,6 @@ class DeviceProviderImpl implements DeviceProvider {
   Future<String> getDeviceID() {
     return _sdkMethodChannel.callMethodChannel<String>(
       method: SupportedMethods.getDeviceID,
-    );
-  }
-
-  @override
-  Future<String?> getFirebaseToken() async {
-    return _sdkMethodChannel.callMethodChannel<String?>(
-      method: SupportedMethods.getFirebaseToken,
-    );
-  }
-
-  @override
-  Future<bool> getIsTablet() async {
-    return _sdkMethodChannel.callMethodChannel<bool>(
-      method: SupportedMethods.getIsTablet,
     );
   }
 }

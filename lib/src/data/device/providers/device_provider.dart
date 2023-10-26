@@ -5,14 +5,6 @@ abstract class DeviceProvider {
     required String subscriptionIdOrCohortId,
   });
 
-  Stream<dynamic> subscribeWithGooglePurchaseToken({
-    required String purchaseToken,
-  });
-
-  Stream<dynamic> redeemVoucher({
-    required String voucher,
-  });
-
   Stream<dynamic> getSubscriptionId();
 
   Future<String> syncData();
@@ -20,8 +12,4 @@ abstract class DeviceProvider {
   Future<String?> getSubscriptionIdAsync();
 
   Future<String> getDeviceID();
-
-  Future<String?> getFirebaseToken();
-
-  Future<bool> getIsTablet();
 }
