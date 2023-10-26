@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import '../../../domain/domain.dart';
-import '../../mappers/journal_entry/journal_entry_with_events_mapper.dart';
 import '../../mappers/journal_entry/journal_stream_mapper.dart';
-import '../../mappers/qa_response/qa_response_stream_mapper.dart';
+import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/journal_provider.dart';
 
 class JournalRepositoryImpl implements JournalRepository {
@@ -29,7 +28,7 @@ class JournalRepositoryImpl implements JournalRepository {
       oldId: oldId,
     );
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseMapper.fromStream<String>(stream);
   }
 
   @override
@@ -38,7 +37,7 @@ class JournalRepositoryImpl implements JournalRepository {
   }) {
     final Stream<dynamic> stream = _journalProvider.deleteJournalEntry(id: id);
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseMapper.fromStream<String>(stream);
   }
 
   @override
@@ -56,7 +55,7 @@ class JournalRepositoryImpl implements JournalRepository {
 
     if (json == null) return null;
 
-    return JournalEntryWithEventsMapper.fromJson(jsonDecode(json));
+    return JournalEntryWithEvents.fromJson(jsonDecode(json));
   }
 
   @override
@@ -79,6 +78,6 @@ class JournalRepositoryImpl implements JournalRepository {
   Stream<QAResponse<String>> sendNote(String text) {
     final Stream<dynamic> stream = _journalProvider.sendNote(text);
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseMapper.fromStream<String>(stream);
   }
 }

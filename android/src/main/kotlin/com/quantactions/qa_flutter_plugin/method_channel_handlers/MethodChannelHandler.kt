@@ -5,6 +5,8 @@ import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginMetricMapper
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
+import com.quantactions.sdk.QAResponse
+import com.quantactions.sdk.SubscriptionIdResponse
 import com.quantactions.sdk.data.model.JournalEntryWithEvents
 import com.quantactions.sdk.data.model.ResolvedJournalEvent
 import io.flutter.plugin.common.MethodCall
@@ -120,11 +122,14 @@ class MethodChannelHandler(
                             qa.setVerboseLevel(context, verbose)
                         }
 
-                        "getSubscriptionIdAsync" -> result.success(
-                            QAFlutterPluginSerializable.serializeQAResponseString(
-                                qa.getSubscriptionIdAsync()
+
+                        "getSubscriptionIdAsync" -> {
+                            result.success(
+                                QAFlutterPluginSerializable.serializeQAResponseSubscriptionIdResponse(
+                                    qa.getSubscriptionIdAsync()
+                                )
                             )
-                        )
+                        }
 
                         "getMetricAsync" -> {
                             val params = call.arguments as Map<*, *>

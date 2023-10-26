@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 
 import '../../../domain/domain.dart';
 import '../../consts/method_channel_consts.dart';
+import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'user_provider.dart';
 
@@ -24,7 +25,7 @@ class UserProviderImpl implements UserProvider {
     bool? selfDeclaredHealthy,
   }) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'init',
+      method: SupportedMethods.init,
       eventChannel: _eventChannel,
       params: _buildInitParams(
         apiKey: apiKey,
@@ -43,7 +44,7 @@ class UserProviderImpl implements UserProvider {
     bool? selfDeclaredHealthy,
   }) {
     return _sdkMethodChannel.callMethodChannel<bool>(
-      method: 'initAsync',
+      method: SupportedMethods.initAsync,
       params: _buildInitParams(
         apiKey: apiKey,
         age: age,
@@ -55,18 +56,22 @@ class UserProviderImpl implements UserProvider {
 
   @override
   Future<bool> isInit() async {
-    return _sdkMethodChannel.callMethodChannel<bool>(method: 'isInit');
+    return _sdkMethodChannel.callMethodChannel<bool>(
+      method: SupportedMethods.isInit,
+    );
   }
 
   @override
   Future<void> savePublicKey() async {
-    await _sdkMethodChannel.callMethodChannel(method: 'savePublicKey');
+    await _sdkMethodChannel.callMethodChannel(
+      method: SupportedMethods.savePublicKey,
+    );
   }
 
   @override
   Future<void> setVerboseLevel(int verbose) async {
     await _sdkMethodChannel.callMethodChannel(
-      method: 'setVerboseLevel',
+      method: SupportedMethods.setVerboseLevel,
       params: <String, dynamic>{
         'verbose': verbose,
       },
@@ -74,9 +79,11 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  Stream<dynamic> validateToken({required String apiKey}) {
+  Stream<dynamic> validateToken({
+    required String apiKey,
+  }) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'validateToken',
+      method: SupportedMethods.validateToken,
       eventChannel: _eventChannel,
       params: <String, dynamic>{
         'apiKey': apiKey,
@@ -91,12 +98,19 @@ class UserProviderImpl implements UserProvider {
     bool? newSelfDeclaredHealthy,
   }) async {
     await _sdkMethodChannel.callMethodChannel(
-      method: 'updateBasicInfo',
+      method: SupportedMethods.updateBasicInfo,
       params: <String, dynamic>{
         'newYearOfBirth': newYearOfBirth,
         'newGender': newGender?.id,
         'newSelfDeclaredHealthy': newSelfDeclaredHealthy,
       },
+    );
+  }
+
+  @override
+  Future<String> getBasicInfo() {
+    return _sdkMethodChannel.callMethodChannel<String>(
+      method: SupportedMethods.getBasicInfo,
     );
   }
 
@@ -112,10 +126,5 @@ class UserProviderImpl implements UserProvider {
       'gender': gender?.id,
       'selfDeclaredHealthy': selfDeclaredHealthy,
     };
-  }
-
-  @override
-  Future<String> getBasicInfo() {
-    return _sdkMethodChannel.callMethodChannel<String>(method: 'getBasicInfo');
   }
 }

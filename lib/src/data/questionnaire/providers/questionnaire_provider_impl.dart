@@ -1,12 +1,16 @@
 import 'package:flutter/services.dart';
 
 import '../../consts/method_channel_consts.dart';
+import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'questionnaire_provider.dart';
 
 class QuestionnaireProviderImpl implements QuestionnaireProvider {
-  final EventChannel _eventChannel = const EventChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/questionnaire',
+  final EventChannel _getQuestionnairesListChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/get_questionnaires_list',
+  );
+  final EventChannel _recordQuestionnaireResponseChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/record_questionnaire_response',
   );
 
   final SDKMethodChannel _sdkMethodChannel;
@@ -18,8 +22,8 @@ class QuestionnaireProviderImpl implements QuestionnaireProvider {
   @override
   Stream<dynamic> getQuestionnairesList() {
     return _sdkMethodChannel.callEventChannel(
-      method: 'getQuestionnairesList',
-      eventChannel: _eventChannel,
+      method: SupportedMethods.getQuestionnairesList,
+      eventChannel: _getQuestionnairesListChannel,
     );
   }
 
@@ -32,8 +36,8 @@ class QuestionnaireProviderImpl implements QuestionnaireProvider {
     required String? response,
   }) {
     return _sdkMethodChannel.callEventChannel(
-      method: 'recordQuestionnaireResponse',
-      eventChannel: _eventChannel,
+      method: SupportedMethods.recordQuestionnaireResponse,
+      eventChannel: _recordQuestionnaireResponseChannel,
       params: <String, dynamic>{
         'name': name,
         'code': code,

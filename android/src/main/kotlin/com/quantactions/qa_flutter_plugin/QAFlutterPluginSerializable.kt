@@ -4,6 +4,8 @@ import com.quantactions.sdk.BasicInfo
 import com.quantactions.sdk.QA
 import com.quantactions.sdk.TimeSeries
 import com.quantactions.sdk.QAResponse
+import com.quantactions.sdk.SubscriptionIdResponse
+import com.quantactions.sdk.data.api.adapters.SubscriptionWithQuestionnaires
 import com.quantactions.sdk.data.entity.Cohort
 import com.quantactions.sdk.data.entity.JournalEvent
 import com.quantactions.sdk.data.entity.Questionnaire
@@ -33,18 +35,34 @@ class QAFlutterPluginSerializable {
 
     @JsonClass(generateAdapter = true)
     @Serializable
+    data class SerializableSubscriptionIdResponse(
+        val subscriptionId: String,
+        val deviceIds: List<String>,
+        val cohortId: String,
+        val cohortName: String,
+        val premiumFeaturesTTL: Long,
+    )
+
+    @JsonClass(generateAdapter = true)
+    @Serializable
+    data class SerializableSubscriptionWithQuestionnaires(
+        val cohort: SerializableCohort,
+        val listOfQuestionnaires: List<SerializableQuestionnaire>,
+        val subscriptionId: String,
+        val tapDeviceIds: List<String>,
+        val premiumFeaturesTTL: Long,
+    )
+
+    @JsonClass(generateAdapter = true)
+    @Serializable
     data class SerializableCohort(
         val cohortId: String,
         val privacyPolicy: String?,
         val cohortName: String?,
         val dataPattern: String?,
-        val gpsResolution: Int,
         val canWithdraw: Int,
-        val syncOnScreenOff: Int?,
-        val perimeterCheck: Int?,
         val permAppId: Int?,
-        val permLocation: Int?,
-        val permContact: Int?,
+        val permDrawOver: Int?,
     )
 
     @JsonClass(generateAdapter = true)
@@ -96,11 +114,63 @@ class QAFlutterPluginSerializable {
     )
 
     companion object {
-        fun <T> serializeQAResponseString(response: QAResponse<T>): String {
+        fun serializeQAResponseString(response: QAResponse<String>): String {
+            val data = response.data
+                ?: return Json.encodeToString(
+                    SerializableQAResponse<String>(null, response.message)
+                )
+            return Json.encodeToString(
+                SerializableQAResponse(data, null)
+            )
+        }
+
+        fun serializeQAResponseSubscriptionIdResponse(
+            response: QAResponse<SubscriptionIdResponse>
+        ): String {
+            val data = response.data
+                ?: return Json.encodeToString(
+                    SerializableQAResponse<SerializableSubscriptionIdResponse>(
+                        null,
+                        response.message.toString()
+                    )
+                )
+
             return Json.encodeToString(
                 SerializableQAResponse(
-                    if (response.data == null) null else response.data.toString(),
-                    response.message.toString(),
+                    SerializableSubscriptionIdResponse(
+                        data.subscriptionId,
+                        data.deviceIds,
+                        data.cohortId,
+                        data.cohortName,
+                        data.premiumFeaturesTTL,
+                    ),
+                    null,
+                )
+            )
+        }
+
+        fun serializeQAResponseSubscriptionWithQuestionnaires(
+            response: QAResponse<SubscriptionWithQuestionnaires>
+        ): String {
+            val data = response.data
+                ?: return Json.encodeToString(
+                    SerializableQAResponse<SerializableSubscriptionWithQuestionnaires>(
+                        null, response.message
+                    )
+                )
+
+            return Json.encodeToString(
+                SerializableQAResponse(
+                    SerializableSubscriptionWithQuestionnaires(
+                        cohortToSerializableCohort(data.cohort),
+                        data.listOfQuestionnaires.map { questionnaire ->
+                            questionnaireToSerializableQuestionnaire(questionnaire)
+                        },
+                        data.subscriptionId,
+                        data.tapDeviceIds,
+                        data.premiumFeaturesTTL
+                    ),
+                    null,
                 )
             )
         }
@@ -156,37 +226,40 @@ class QAFlutterPluginSerializable {
 
         fun serializeCohortList(cohorts: List<Cohort>): String {
             return Json.encodeToString(
-                cohorts.map { cohort ->
-                    SerializableCohort(
-                        cohort.cohortId,
-                        cohort.privacyPolicy,
-                        cohort.cohortName,
-                        cohort.dataPattern,
-                        cohort.gpsResolution,
-                        cohort.canWithdraw,
-                        cohort.syncOnScreenOff,
-                        cohort.perimeterCheck,
-                        cohort.permAppId,
-                        cohort.permLocation,
-                        cohort.permContact,
-                    )
-                }
+                cohorts.map { cohort -> cohortToSerializableCohort(cohort) }
+            )
+        }
+
+        private fun cohortToSerializableCohort(cohort: Cohort): SerializableCohort {
+            return SerializableCohort(
+                cohort.cohortId,
+                cohort.privacyPolicy,
+                cohort.cohortName,
+                cohort.dataPattern,
+                cohort.canWithdraw,
+                cohort.permAppId,
+                cohort.permDrawOver,
             )
         }
 
         fun serializeQuestionnaireList(questionnaires: List<Questionnaire>): String {
             return Json.encodeToString(
                 questionnaires.map { questionnaire ->
-                    SerializableQuestionnaire(
-                        questionnaire.id,
-                        questionnaire.questionnaireName,
-                        questionnaire.questionnaireDescription,
-                        questionnaire.questionnaireCode,
-                        questionnaire.questionnaireCohort,
-                        questionnaire.questionnaireBody,
-                    )
+                    questionnaireToSerializableQuestionnaire(questionnaire)
                 }
             )
+        }
+
+        private fun questionnaireToSerializableQuestionnaire(questionnaire: Questionnaire): SerializableQuestionnaire {
+            return SerializableQuestionnaire(
+                questionnaire.id,
+                questionnaire.questionnaireName,
+                questionnaire.questionnaireDescription,
+                questionnaire.questionnaireCode,
+                questionnaire.questionnaireCohort,
+                questionnaire.questionnaireBody,
+
+                )
         }
 
         fun serializeJournalEntryWithEvents(journalEntries: List<JournalEntryWithEvents>): String {
