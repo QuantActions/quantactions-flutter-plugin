@@ -83,7 +83,9 @@ class MockDataProvider {
       case SupportedMethods.getQuestionnairesList:
         return _getQuestionnairesList();
       default:
-        throw Exception('$method mock method is not implemented');
+        throw QAError(
+          description: '$method mock method is not implemented',
+        );
     }
   }
 

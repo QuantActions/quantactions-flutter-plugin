@@ -11,8 +11,7 @@ import 'sdk_method_channel_core.dart';
 /// An implementation of [SDKMethodChannelCore] that uses method channels.
 class SDKMethodChannel extends SDKMethodChannelCore {
   /// The method channel used to interact with the native platform.
-  final MethodChannel _methodChannel =
-      const MethodChannel(MethodChannelConsts.mainMethodChannel);
+  final MethodChannel _methodChannel = const MethodChannel(MethodChannelConsts.mainMethodChannel);
 
   Future<T> callMethodChannel<T>({
     required String method,
@@ -27,7 +26,9 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     );
 
     if (response == null) {
-      throw Exception('call $method from methodChannel return null');
+      throw QAError(
+        description: 'call $method from methodChannel return null',
+      );
     }
 
     return response;
@@ -69,8 +70,8 @@ class SDKMethodChannel extends SDKMethodChannelCore {
         metricType: metricType,
       );
     } else {
-      throw Exception(
-        'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
+      throw QAError(
+        description: 'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
       );
     }
   }

@@ -2,6 +2,7 @@ library models;
 
 export 'basic_info/basic_info.dart';
 export 'cohort/cohort.dart';
+export 'error/qa_error.dart';
 export 'gender/gender.dart';
 export 'journal/journal_entry_with_events.dart';
 export 'journal/journal_event.dart';
