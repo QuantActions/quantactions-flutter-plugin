@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../consts/method_channel_consts.dart';
@@ -8,8 +9,7 @@ import 'sdk_method_channel_core.dart';
 /// An implementation of [SDKMethodChannelCore] that uses method channels.
 class SDKMethodChannel extends SDKMethodChannelCore {
   /// The method channel used to interact with the native platform.
-  final MethodChannel _methodChannel =
-      const MethodChannel(MethodChannelConsts.mainMethodChannel);
+  final MethodChannel _methodChannel = const MethodChannel(MethodChannelConsts.mainMethodChannel);
 
   Future<T> callMethodChannel<T>({
     required String method,
@@ -17,6 +17,7 @@ class SDKMethodChannel extends SDKMethodChannelCore {
   }) async {
     final T response = await _safeRequest(
       request: () => _methodChannel.invokeMethod<T>(method, params),
+      method: method,
     );
 
     if (response == null) {
@@ -40,19 +41,22 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     }
 
     return _safeRequest(
+      method: method,
       request: () => eventChannel.receiveBroadcastStream(data),
     );
   }
 
   dynamic _safeRequest({
     required Function() request,
+    required String method,
   }) {
-    if (!Platform.isAndroid) {
-      throw Exception(
-        'QAFlutterPlugin for ${Platform.operatingSystem} platform not yet implemented',
-      );
-    } else {
+    if (defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS) {
       return request();
+    } else {
+      throw Exception(
+        'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
+      );
     }
   }
 }

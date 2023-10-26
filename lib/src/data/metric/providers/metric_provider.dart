@@ -1,7 +1,10 @@
 import '../../../domain/domain.dart';
 
 abstract class MetricProvider {
-  Stream<dynamic> getMetric(MetricType metric);
+  Stream<dynamic> getMetric({
+    required MetricType metric,
+    required MetricInterval interval,
+  });
 
   Stream<dynamic> getMetricSample({
     required String apiKey,
