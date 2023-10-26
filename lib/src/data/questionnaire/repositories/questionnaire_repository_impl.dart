@@ -1,6 +1,6 @@
 import '../../../domain/domain.dart';
-import '../../mappers/qa_response/qa_response_stream_mapper.dart';
-import '../../mappers/questionnaire/questionnaire_stream_mapper.dart';
+import '../../mappers/qa_response/qa_response_mapper.dart';
+import '../../mappers/questionnaire/questionnaire_mapper.dart';
 import '../providers/questionnaire_provider.dart';
 
 class QuestionnaireRepositoryImpl implements QuestionnaireRepository {
@@ -14,7 +14,7 @@ class QuestionnaireRepositoryImpl implements QuestionnaireRepository {
   Stream<List<Questionnaire>> getQuestionnairesList() {
     final Stream<dynamic> stream = _questionnaireProvider.getQuestionnairesList();
 
-    return QuestionnaireStreamMapper.getList(stream);
+    return QuestionnaireMapper.fromStream(stream);
   }
 
   @override
@@ -33,6 +33,6 @@ class QuestionnaireRepositoryImpl implements QuestionnaireRepository {
       response: response,
     );
 
-    return QAResponseStreamMapper.getString(stream);
+    return QAResponseMapper.fromStream<String>(stream);
   }
 }

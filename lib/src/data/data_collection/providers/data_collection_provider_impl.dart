@@ -1,3 +1,4 @@
+import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'data_collection_provider.dart';
 
@@ -11,17 +12,21 @@ class DataCollectionProviderImpl implements DataCollectionProvider {
   @override
   Future<bool> isDataCollectionRunning() {
     return _sdkMethodChannel.callMethodChannel<bool>(
-      method: 'isDataCollectionRunning',
+      method: SupportedMethods.isDataCollectionRunning,
     );
   }
 
   @override
   Future<void> pauseDataCollection() async {
-    await _sdkMethodChannel.callMethodChannel(method: 'pauseDataCollection');
+    await _sdkMethodChannel.callMethodChannel(
+      method: SupportedMethods.pauseDataCollection,
+    );
   }
 
   @override
   Future<void> resumeDataCollection() async {
-    await _sdkMethodChannel.callMethodChannel(method: 'resumeDataCollection');
+    await _sdkMethodChannel.callMethodChannel(
+      method: SupportedMethods.resumeDataCollection,
+    );
   }
 }
