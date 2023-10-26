@@ -33,6 +33,13 @@ class QAFlutterPlugin {
   ///ID of the device
   Future<String> get deviceId => _deviceRepository.getDeviceID();
 
+  ///The method is only relevant for iOS
+  ///A boolean indicating if the keyboard is added in the system Keyboards settings.
+  ///It determines whether the keyboard is added or not based on KEYBOARD_EXTENSION_BUNDLE_ID field
+  ///from Info.plist file of the keyboard companion app.
+  ///Returns nil if the KEYBOARD_EXTENSION_BUNDLE_ID is not added to the Info.plist file properly.
+  Future<bool?> get isKeyboardAdded => _deviceRepository.getIsKeyboardAdded();
+
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
     return _cohortRepository.getCohortList();
@@ -205,11 +212,13 @@ class QAFlutterPlugin {
     );
   }
 
+  ///The method is only relevant for Android
   ///Returns whether or not the ```draw over other apps``` permission has been granted
   Future<bool> canDraw() {
     return _permissionRepository.canDraw();
   }
 
+  ///The method is only relevant for Android
   ///Returns whether or not the ```usage``` permission has been granted
   Future<bool> canUsage() {
     return _permissionRepository.canUsage();

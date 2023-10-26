@@ -67,4 +67,11 @@ class DeviceProviderImpl implements DeviceProvider {
       method: SupportedMethods.getDeviceID,
     );
   }
+
+  @override
+  Future<bool?> getIsKeyboardAdded() {
+    return _sdkMethodChannel.callMethodChannel<bool?>(
+      method: SupportedMethods.getDeviceID,
+    );
+  }
 }

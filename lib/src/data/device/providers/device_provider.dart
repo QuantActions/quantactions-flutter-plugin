@@ -12,4 +12,6 @@ abstract class DeviceProvider {
   Future<String?> getSubscriptionIdAsync();
 
   Future<String> getDeviceID();
+
+  Future<bool?> getIsKeyboardAdded();
 }

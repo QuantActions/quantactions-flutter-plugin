@@ -57,4 +57,8 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Future<String> getDeviceID() {
     return _deviceProvider.getDeviceID();
   }
+  @override
+  Future<bool?> getIsKeyboardAdded() {
+    return _deviceProvider.getIsKeyboardAdded();
+  }
 }

@@ -14,4 +14,6 @@ abstract class DeviceRepository {
   Future<String> syncData();
 
   Future<String> getDeviceID();
+
+  Future<bool?> getIsKeyboardAdded();
 }
