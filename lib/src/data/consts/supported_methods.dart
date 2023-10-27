@@ -8,7 +8,6 @@ class SupportedMethods {
   static const String pauseDataCollection = 'pauseDataCollection';
   static const String isDeviceRegistered = 'isDeviceRegistered';
   static const String syncData = 'syncData';
-  static const String getSubscriptionIdAsync = 'getSubscriptionIdAsync';
   static const String getJournalEntry = 'getJournalEntry';
   static const String getMetricAsync = 'getMetricAsync';
   static const String getStatSampleAsync = 'getStatSampleAsync';
@@ -16,21 +15,21 @@ class SupportedMethods {
   static const String canUsage = 'canUsage';
   static const String updateBasicInfo = 'updateBasicInfo';
   static const String savePublicKey = 'savePublicKey';
+  static const String leaveCohort = 'leaveCohort';
+  static const String saveJournalEntry = 'saveJournalEntry';
+  static const String deleteJournalEntry = 'deleteJournalEntry';
+  static const String sendNote = 'sendNote';
+  static const String recordQuestionnaireResponse = 'recordQuestionnaireResponse';
+  static const String init = 'init';
 
   //event channel
   static const String getCohortList = 'getCohortList';
-  static const String leaveCohort = 'leaveCohort';
   static const String subscribe = 'subscribe';
-  static const String getSubscriptionId = 'getSubscriptionId';
-  static const String createJournalEntry = 'createJournalEntry';
-  static const String deleteJournalEntry = 'deleteJournalEntry';
-  static const String sendNote = 'sendNote';
+  static const String subscription = 'subscription';
   static const String getJournal = 'getJournal';
   static const String getJournalSample = 'getJournalSample';
-  static const String getJournalEvents = 'getJournalEvents';
+  static const String journalEventKinds = 'journalEventKinds';
   static const String getMetric = 'getMetric';
   static const String getMetricSample = 'getMetricSample';
   static const String getQuestionnairesList = 'getQuestionnairesList';
-  static const String recordQuestionnaireResponse = 'recordQuestionnaireResponse';
-  static const String init = 'init';
 }

@@ -11,20 +11,30 @@ import 'sdk_method_channel_core.dart';
 /// An implementation of [SDKMethodChannelCore] that uses method channels.
 class SDKMethodChannel extends SDKMethodChannelCore {
   /// The method channel used to interact with the native platform.
-  final MethodChannel _methodChannel =
-      const MethodChannel(MethodChannelConsts.mainMethodChannel);
+  final MethodChannel _methodChannel = const MethodChannel(MethodChannelConsts.mainMethodChannel);
 
   Future<T> callMethodChannel<T>({
     required String method,
     Map<String, dynamic>? params,
+    MethodChannel? methodChannel,
     //param for mock data
     MetricType? metricType,
   }) async {
-    final T response = await _safeRequest(
-      request: () => _methodChannel.invokeMethod<T>(method, params),
-      method: method,
-      metricType: metricType,
-    );
+    final T response;
+
+    if (methodChannel != null) {
+      response = await _safeRequest(
+        request: () => methodChannel.invokeMethod<T>(method, params),
+        method: method,
+        metricType: metricType,
+      );
+    } else {
+      response = await _safeRequest(
+        request: () => _methodChannel.invokeMethod<T>(method, params),
+        method: method,
+        metricType: metricType,
+      );
+    }
 
     if (response == null) {
       throw Exception('call $method from methodChannel return null');

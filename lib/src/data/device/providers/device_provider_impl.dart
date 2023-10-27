@@ -40,17 +40,10 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Stream<dynamic> getSubscriptionId() {
+  Stream<dynamic> subscription() {
     return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.getSubscriptionId,
+      method: SupportedMethods.subscription,
       eventChannel: _getSubscriptionIdEventChannel,
-    );
-  }
-
-  @override
-  Future<String?> getSubscriptionIdAsync() {
-    return _sdkMethodChannel.callMethodChannel(
-      method: SupportedMethods.getSubscriptionIdAsync,
     );
   }
 

@@ -7,12 +7,11 @@ import '../../domain/domain.dart';
 import '../consts/supported_methods.dart';
 import 'factories/basic_info_factory.dart';
 import 'factories/cohort_factory.dart';
-import 'factories/journal_entry_with_events_factory.dart';
+import 'factories/journal_entry.dart';
 import 'factories/journal_event_factory.dart';
 import 'factories/metric_factory.dart';
-import 'factories/qa_response_string_factory.dart';
-import 'factories/qa_response_subscription_factory.dart';
 import 'factories/questionnaire_factory.dart';
+import 'factories/subscription_factory.dart';
 import 'factories/subscription_with_questionnaires_factory.dart';
 
 class MockDataProvider {
@@ -38,8 +37,6 @@ class MockDataProvider {
         return;
       case SupportedMethods.syncData:
         return faker.lorem.sentence();
-      case SupportedMethods.getSubscriptionIdAsync:
-        return _getQAResponseSubscriptionIdResponse();
       case SupportedMethods.getJournalEntry:
         return _getJournalEntry();
       case SupportedMethods.getMetricAsync || SupportedMethods.getStatSampleAsync:
@@ -50,20 +47,13 @@ class MockDataProvider {
       //methods for event channel
       case SupportedMethods.getCohortList:
         return _getCohortList();
-      case SupportedMethods.leaveCohort ||
-            SupportedMethods.createJournalEntry ||
-            SupportedMethods.deleteJournalEntry ||
-            SupportedMethods.sendNote ||
-            SupportedMethods.recordQuestionnaireResponse ||
-            SupportedMethods.init:
-        return _getQAResponseString();
       case SupportedMethods.subscribe:
         return _getQAResponseSubscriptionWithQuestionnaires();
-      case SupportedMethods.getSubscriptionId:
+      case SupportedMethods.subscription:
         return Stream<String>.value(_getQAResponseSubscriptionIdResponse());
       case SupportedMethods.getJournal || SupportedMethods.getJournalSample:
         return _getJournalEntryWithEventsList(length: 10);
-      case SupportedMethods.getJournalEvents:
+      case SupportedMethods.journalEventKinds:
         return _getJournalEventList();
       case SupportedMethods.getMetric || SupportedMethods.getMetricSample:
         if (metricType == null) return;
@@ -89,17 +79,9 @@ class MockDataProvider {
     );
   }
 
-  static Stream<String> _getQAResponseString() {
-    return Stream<String>.value(
-      jsonEncode(
-        QAResponseStringFactory().generateFake(),
-      ),
-    );
-  }
-
   static String _getQAResponseSubscriptionIdResponse() {
     return jsonEncode(
-      QAResponseSubscriptionFactory().generateFake(),
+      SubscriptionFactory().generateFake(),
     );
   }
 
@@ -143,7 +125,7 @@ class MockDataProvider {
 
   static String _getJournalEntry() {
     return jsonEncode(
-      JournalEntryWithEventsFactory().generateFake(),
+      JournalEntryFactory().generateFake(),
     );
   }
 

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../../../domain/domain.dart';
-import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/device_provider.dart';
 
 class DeviceRepositoryImpl implements DeviceRepository {
@@ -17,34 +16,26 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
+  Stream<SubscriptionWithQuestionnaires> subscribe({
     required String subscriptionIdOrCohortId,
   }) {
     final Stream<dynamic> stream = _deviceProvider.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
 
-    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
+    return stream.map(
+      (dynamic event) => SubscriptionWithQuestionnaires.fromJson(
+        jsonDecode(event),
+      ),
+    );
   }
 
   @override
-  Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId() {
-    final Stream<dynamic> stream = _deviceProvider.getSubscriptionId();
+  Stream<Subscription?> subscription() {
+    final Stream<dynamic> stream = _deviceProvider.subscription();
 
-    return QAResponseMapper.fromStream<SubscriptionIdResponse>(stream);
-  }
-
-  @override
-  Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync() async {
-    final String? json = await _deviceProvider.getSubscriptionIdAsync();
-
-    if (json == null) {
-      throw Exception(
-          'QAFlutterPlugin.getSubscriptionIdAsync() returned no data');
-    }
-
-    return QAResponse<SubscriptionIdResponse>.fromJson(
-      jsonDecode(json),
+    return stream.map(
+      (dynamic event) => Subscription.fromJson(jsonDecode(event)),
     );
   }
 
@@ -57,6 +48,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Future<String> getDeviceID() {
     return _deviceProvider.getDeviceID();
   }
+
   @override
   Future<bool?> getIsKeyboardAdded() {
     return _deviceProvider.getIsKeyboardAdded();

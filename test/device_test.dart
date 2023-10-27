@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 import 'package:qa_flutter_plugin/src/data/consts/method_channel_consts.dart';
+import 'package:qa_flutter_plugin/src/data/mock/factories/subscription_factory.dart';
+import 'package:qa_flutter_plugin/src/data/mock/factories/subscription_with_questionnaires_factory.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +26,6 @@ void main() {
       switch (methodCall.method) {
         case 'isDeviceRegistered':
           return Future<bool>(() => false);
-        case 'getSubscriptionIdAsync':
-          return Future<String>(
-            () => jsonEncode(
-              QAResponse<SubscriptionIdResponse>(data: null, message: ''),
-            ),
-          );
         case 'syncData' || 'getDeviceID':
           return Future<String>(() => '');
       }
@@ -54,21 +49,14 @@ void main() {
   test('subscribe', () {
     expect(
       qaFlutterPlugin.subscribe(subscriptionIdOrCohortId: ''),
-      const TypeMatcher<Stream<QAResponse<SubscriptionWithQuestionnaires>>>(),
+      const TypeMatcher<Stream<SubscriptionWithQuestionnaires>>(),
     );
   });
 
   test('getSubscriptionId', () {
     expect(
-      qaFlutterPlugin.getSubscriptionId(),
-      const TypeMatcher<Stream<QAResponse<SubscriptionIdResponse>>>(),
-    );
-  });
-
-  test('getSubscriptionIdAsync', () async {
-    expect(
-      await qaFlutterPlugin.getSubscriptionIdAsync(),
-      const TypeMatcher<QAResponse<SubscriptionIdResponse>>(),
+      qaFlutterPlugin.subscription(),
+      const TypeMatcher<Stream<Subscription>>(),
     );
   });
 
@@ -105,11 +93,11 @@ class CohortHandler implements MockStreamHandler {
       switch (params['method']) {
         case 'subscribe':
           eventSink?.success(
-            QAResponse<SubscriptionWithQuestionnaires>(data: null, message: null),
+            SubscriptionWithQuestionnairesFactory().generateFake(),
           );
         case 'getSubscriptionId':
           eventSink?.success(
-            QAResponse<SubscriptionIdResponse>(data: null, message: null),
+            SubscriptionFactory().generateFake(),
           );
       }
     }

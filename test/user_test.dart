@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -46,7 +45,7 @@ void main() {
   test('init', () {
     expect(
       qaFlutterPlugin.init(apiKey: ''),
-      const TypeMatcher<Stream<QAResponse<String>>>(),
+      const TypeMatcher<bool>(),
     );
   });
 
@@ -89,9 +88,7 @@ class UserHandler implements MockStreamHandler {
 
       switch (params['method']) {
         case 'init':
-          eventSink?.success(
-            QAResponse<String>(data: null, message: null),
-          );
+          eventSink?.success(true);
       }
     }
   }

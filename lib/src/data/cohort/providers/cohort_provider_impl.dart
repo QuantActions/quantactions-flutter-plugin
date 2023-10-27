@@ -9,7 +9,7 @@ class CohortProviderImpl implements CohortProvider {
   final EventChannel _getCohortListEventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/get_cohort_list',
   );
-  final EventChannel _leaveCohortEventChannel = const EventChannel(
+  final MethodChannel _leaveCohortMethodChannel = const MethodChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/leave_cohort',
   );
 
@@ -28,10 +28,10 @@ class CohortProviderImpl implements CohortProvider {
   }
 
   @override
-  Stream<dynamic> leaveCohort(String cohortId) {
-    return _sdkMethodChannel.callEventChannel(
+  Future<void> leaveCohort(String cohortId) async {
+    await _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.leaveCohort,
-      eventChannel: _leaveCohortEventChannel,
+      methodChannel: _leaveCohortMethodChannel,
       params: <String, dynamic>{
         'cohortId': cohortId,
       },

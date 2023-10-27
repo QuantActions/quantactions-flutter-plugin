@@ -1,5 +1,5 @@
 abstract class CohortProvider {
   Stream<dynamic> getCohortList();
 
-  Stream<dynamic> leaveCohort(String cohortId);
+  Future<void> leaveCohort(String cohortId);
 }

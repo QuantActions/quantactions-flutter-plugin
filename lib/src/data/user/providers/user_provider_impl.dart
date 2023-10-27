@@ -7,7 +7,7 @@ import '../../core/sdk_method_channel.dart';
 import 'user_provider.dart';
 
 class UserProviderImpl implements UserProvider {
-  final EventChannel _eventChannel = const EventChannel(
+  final MethodChannel _methodChannel = const MethodChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/user',
   );
 
@@ -18,15 +18,15 @@ class UserProviderImpl implements UserProvider {
   }) : _sdkMethodChannel = sdkMethodChannel;
 
   @override
-  Stream<dynamic> init({
+  Future<bool> init({
     required String apiKey,
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
+  }) async {
+    return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.init,
-      eventChannel: _eventChannel,
+      methodChannel: _methodChannel,
       params: _buildInitParams(
         apiKey: apiKey,
         age: age,

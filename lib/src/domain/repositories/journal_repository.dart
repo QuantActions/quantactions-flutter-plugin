@@ -1,27 +1,26 @@
 import '../domain.dart';
 
 abstract class JournalRepository {
-  Stream<QAResponse<String>> createJournalEntry({
+  Future<JournalEntry> saveJournalEntry({
+    String? id,
     required DateTime date,
     required String note,
     required List<JournalEvent> events,
-    required List<int> ratings,
-    required String oldId,
   });
 
-  Stream<QAResponse<String>> deleteJournalEntry({
+  Future<void> deleteJournalEntry({
     required String id,
   });
 
-  Stream<List<JournalEntryWithEvents>> getJournal();
+  Stream<List<JournalEntry>> journalEntries();
 
-  Stream<List<JournalEntryWithEvents>> getJournalSample({
+  Stream<List<JournalEntry>> getJournalSample({
     required String apiKey,
   });
 
-  Future<JournalEntryWithEvents?> getJournalEntry(String journalEntryId);
+  Future<JournalEntry?> getJournalEntry(String journalEntryId);
 
-  Stream<List<JournalEvent>> getJournalEvents();
+  Stream<List<JournalEvent>> journalEventKinds();
 
-  Stream<QAResponse<String>> sendNote(String text);
+  Future<void> sendNote(String text);
 }

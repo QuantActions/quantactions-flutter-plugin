@@ -26,11 +26,11 @@ void main() {
         case 'getJournalEntry':
           return Future<String>(
             () => jsonEncode(
-              JournalEntryWithEvents(
+              JournalEntry(
                 id: '',
                 timestamp: DateTime.now(),
                 note: '',
-                events: <ResolvedJournalEvent>[],
+                events: <JournalEvent>[],
                 ratings: <int>[],
                 scores: <String, int>{},
               ),
@@ -47,42 +47,40 @@ void main() {
     binaryMessenger.setMockStreamHandler(eventChannel, null);
   });
 
-  test('createJournalEntry', () {
+  test('saveJournalEntry', () {
     expect(
-      qaFlutterPlugin.createJournalEntry(
+      qaFlutterPlugin.saveJournalEntry(
         date: DateTime.now(),
         note: '',
         events: <JournalEvent>[],
-        ratings: <int>[],
-        oldId: '',
       ),
-      const TypeMatcher<Stream<QAResponse<String>>>(),
+      isA<void>(),
     );
   });
 
   test('deleteJournalEntry', () {
     expect(
       qaFlutterPlugin.deleteJournalEntry(id: ''),
-      const TypeMatcher<Stream<QAResponse<String>>>(),
+      isA<void>(),
     );
   });
 
   test('getJournal', () {
     expect(
-      qaFlutterPlugin.getJournal(),
-      const TypeMatcher<Stream<List<JournalEntryWithEvents>>>(),
+      qaFlutterPlugin.journalEntries(),
+      const TypeMatcher<Stream<List<JournalEntry>>>(),
     );
   });
 
   test('getJournalEntry', () async {
     expect(
       await qaFlutterPlugin.getJournalEntry(''),
-      const TypeMatcher<JournalEntryWithEvents?>(),
+      const TypeMatcher<JournalEntry?>(),
     );
   });
 
   test('getJournalEvents', () {
-    qaFlutterPlugin.getJournalEvents().listen((List<JournalEvent> event) {
+    qaFlutterPlugin.journalEventKinds().listen((List<JournalEvent> event) {
       expect(
         event,
         const TypeMatcher<List<JournalEvent>>(),
@@ -91,21 +89,19 @@ void main() {
   });
 
   test('getJournalSample', () {
-    qaFlutterPlugin.getJournalSample(apiKey: '').listen((List<JournalEntryWithEvents> event) {
+    qaFlutterPlugin.getJournalSample(apiKey: '').listen((List<JournalEntry> event) {
       expect(
         event,
-        const TypeMatcher<List<JournalEntryWithEvents>>(),
+        const TypeMatcher<List<JournalEntry>>(),
       );
     });
   });
 
-  test('sendNote', () {
-    qaFlutterPlugin.sendNote('').listen((QAResponse<String> event) {
-      expect(
-        event,
-        const TypeMatcher<QAResponse<String>>(),
-      );
-    });
+  test('sendNote', () async {
+    expect(
+      qaFlutterPlugin.sendNote,
+      isA<void>(),
+    );
   });
 }
 
@@ -125,16 +121,8 @@ class JournalHandler implements MockStreamHandler {
       final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
       switch (params['method']) {
-        case 'createJournalEntry':
-          eventSink?.success(
-            QAResponse<String>(data: null, message: null),
-          );
-        case 'deleteJournalEntry' || 'sendNote':
-          eventSink?.success(
-            QAResponse<String>(data: null, message: null),
-          );
         case 'getJournal' || 'getJournalSample':
-          eventSink?.success(<JournalEntryWithEvents>[]);
+          eventSink?.success(<JournalEntry>[]);
         case 'getJournalEvents':
           eventSink?.success(<JournalEvent>[]);
       }
