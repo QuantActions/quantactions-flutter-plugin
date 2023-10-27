@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../../../domain/domain.dart';
-import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/user_provider.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -12,20 +11,18 @@ class UserRepositoryImpl implements UserRepository {
   }) : _userProvider = userProvider;
 
   @override
-  Stream<QAResponse<String>> init({
+  Future<bool> init({
     required String apiKey,
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
-  }) {
-    final Stream<dynamic> initStream = _userProvider.init(
+  }) async {
+    return _userProvider.init(
       apiKey: apiKey,
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
     );
-
-    return QAResponseMapper.fromStream<String>(initStream);
   }
 
   @override

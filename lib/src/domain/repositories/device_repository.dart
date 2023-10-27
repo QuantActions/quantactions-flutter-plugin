@@ -3,13 +3,11 @@ import '../models/models.dart';
 abstract class DeviceRepository {
   Future<bool> isDeviceRegistered();
 
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
+  Stream<SubscriptionWithQuestionnaires> subscribe({
     required String subscriptionIdOrCohortId,
   });
 
-  Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId();
-
-  Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync();
+  Stream<Subscription?> subscription();
 
   Future<String> syncData();
 

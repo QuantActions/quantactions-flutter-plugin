@@ -1,7 +1,7 @@
 import '../../../domain/domain.dart';
 
 abstract class UserProvider {
-  Stream<dynamic> init({
+  Future<bool> init({
     required String apiKey,
     int? age,
     Gender? gender,

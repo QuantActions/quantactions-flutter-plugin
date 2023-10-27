@@ -9,9 +9,6 @@ class QuestionnaireProviderImpl implements QuestionnaireProvider {
   final EventChannel _getQuestionnairesListChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/get_questionnaires_list',
   );
-  final EventChannel _recordQuestionnaireResponseChannel = const EventChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/record_questionnaire_response',
-  );
 
   final SDKMethodChannel _sdkMethodChannel;
 
@@ -28,16 +25,15 @@ class QuestionnaireProviderImpl implements QuestionnaireProvider {
   }
 
   @override
-  Stream<dynamic> recordQuestionnaireResponse({
+  Future<void> recordQuestionnaireResponse({
     required String? name,
     required String? code,
     required DateTime? date,
     required String? fullId,
     required String? response,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
+  }) async {
+    await _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.recordQuestionnaireResponse,
-      eventChannel: _recordQuestionnaireResponseChannel,
       params: <String, dynamic>{
         'name': name,
         'code': code,

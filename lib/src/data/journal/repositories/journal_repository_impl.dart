@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import '../../../domain/domain.dart';
 import '../../mappers/journal_entry/journal_stream_mapper.dart';
-import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/journal_provider.dart';
 
 class JournalRepositoryImpl implements JournalRepository {
@@ -13,60 +12,56 @@ class JournalRepositoryImpl implements JournalRepository {
   }) : _journalProvider = journalProvider;
 
   @override
-  Stream<QAResponse<String>> createJournalEntry({
+  Future<JournalEntry> saveJournalEntry({
+    String? id,
     required DateTime date,
     required String note,
     required List<JournalEvent> events,
-    required List<int> ratings,
-    required String oldId,
-  }) {
-    final Stream<dynamic> stream = _journalProvider.createJournalEntry(
+  }) async {
+    final Map<String, dynamic> map = await _journalProvider.saveJournalEntry(
+      id: id,
       date: date,
       note: note,
       events: events,
-      ratings: ratings,
-      oldId: oldId,
     );
 
-    return QAResponseMapper.fromStream<String>(stream);
+    return JournalEntry.fromJson(map);
   }
 
   @override
-  Stream<QAResponse<String>> deleteJournalEntry({
+  Future<void> deleteJournalEntry({
     required String id,
-  }) {
-    final Stream<dynamic> stream = _journalProvider.deleteJournalEntry(id: id);
-
-    return QAResponseMapper.fromStream<String>(stream);
+  }) async {
+    await _journalProvider.deleteJournalEntry(id: id);
   }
 
   @override
-  Stream<List<JournalEntryWithEvents>> getJournal() {
+  Stream<List<JournalEntry>> journalEntries() {
     final Stream<dynamic> stream = _journalProvider.getJournal();
 
     return JournalStreamMapper.getListEntryWithEvents(stream);
   }
 
   @override
-  Future<JournalEntryWithEvents?> getJournalEntry(String journalEntryId) async {
+  Future<JournalEntry?> getJournalEntry(String journalEntryId) async {
     final String? json = await _journalProvider.getJournalEntry(
       journalEntryId,
     );
 
     if (json == null) return null;
 
-    return JournalEntryWithEvents.fromJson(jsonDecode(json));
+    return JournalEntry.fromJson(jsonDecode(json));
   }
 
   @override
-  Stream<List<JournalEvent>> getJournalEvents() {
-    final Stream<dynamic> stream = _journalProvider.getJournalEvents();
+  Stream<List<JournalEvent>> journalEventKinds() {
+    final Stream<dynamic> stream = _journalProvider.journalEventKinds();
 
     return JournalStreamMapper.getListEvent(stream);
   }
 
   @override
-  Stream<List<JournalEntryWithEvents>> getJournalSample({
+  Stream<List<JournalEntry>> getJournalSample({
     required String apiKey,
   }) {
     final Stream<dynamic> stream = _journalProvider.getJournalSample(apiKey: apiKey);
@@ -75,9 +70,7 @@ class JournalRepositoryImpl implements JournalRepository {
   }
 
   @override
-  Stream<QAResponse<String>> sendNote(String text) {
-    final Stream<dynamic> stream = _journalProvider.sendNote(text);
-
-    return QAResponseMapper.fromStream<String>(stream);
+  Future<void> sendNote(String text) async {
+    await _journalProvider.sendNote(text);
   }
 }

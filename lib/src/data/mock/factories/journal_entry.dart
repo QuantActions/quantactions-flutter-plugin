@@ -1,15 +1,15 @@
 import '../../../domain/models/models.dart';
+import 'journal_event_factory.dart';
 import 'mock_model_factory.dart';
-import 'resolved_journal_event_factory.dart';
 
-class JournalEntryWithEventsFactory extends MockModelFactory<JournalEntryWithEvents> {
+class JournalEntryFactory extends MockModelFactory<JournalEntry> {
   @override
-  JournalEntryWithEvents generateFake([dynamic data]) {
-    return JournalEntryWithEvents(
+  JournalEntry generateFake([dynamic data]) {
+    return JournalEntry(
       id: generateId,
       timestamp: generateDateTime,
       note: faker.lorem.sentences(3).join(),
-      events: ResolvedJournalEventFactory().generateListFake(length: 5),
+      events: JournalEventFactory().generateListFake(length: 5),
       ratings: faker.randomGenerator.numbers(5, 5),
       scores: faker.lorem.words(5).fold<Map<String, int>>(
         <String, int>{},
@@ -19,7 +19,7 @@ class JournalEntryWithEventsFactory extends MockModelFactory<JournalEntryWithEve
   }
 
   @override
-  List<JournalEntryWithEvents> generateListFake({required int length}) {
-    return List<JournalEntryWithEvents>.generate(length, (int index) => generateFake());
+  List<JournalEntry> generateListFake({required int length}) {
+    return List<JournalEntry>.generate(length, (int index) => generateFake());
   }
 }

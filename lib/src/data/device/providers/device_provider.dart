@@ -5,11 +5,9 @@ abstract class DeviceProvider {
     required String subscriptionIdOrCohortId,
   });
 
-  Stream<dynamic> getSubscriptionId();
+  Stream<dynamic> subscription();
 
   Future<String> syncData();
-
-  Future<String?> getSubscriptionIdAsync();
 
   Future<String> getDeviceID();
 

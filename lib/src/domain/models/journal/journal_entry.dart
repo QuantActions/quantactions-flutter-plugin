@@ -2,10 +2,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain.dart';
 
-part 'journal_entry_with_events.g.dart';
+part 'journal_entry.g.dart';
 
 @JsonSerializable()
-class JournalEntryWithEvents {
+class JournalEntry {
   final String id;
   @JsonKey(
     fromJson: _dateTimeFromJson,
@@ -13,11 +13,11 @@ class JournalEntryWithEvents {
   )
   final DateTime timestamp;
   final String note;
-  final List<ResolvedJournalEvent> events;
+  final List<JournalEvent> events;
   final List<int> ratings;
   final Map<String, int> scores;
 
-  JournalEntryWithEvents({
+  JournalEntry({
     required this.id,
     required this.timestamp,
     required this.note,
@@ -26,10 +26,10 @@ class JournalEntryWithEvents {
     required this.scores,
   });
 
-  factory JournalEntryWithEvents.fromJson(Map<String, dynamic> json) =>
-      _$JournalEntryWithEventsFromJson(json);
+  factory JournalEntry.fromJson(Map<String, dynamic> json) =>
+      _$JournalEntryFromJson(json);
 
-  Map<String, dynamic> toJson() => _$JournalEntryWithEventsToJson(this);
+  Map<String, dynamic> toJson() => _$JournalEntryToJson(this);
 
   static int _dateTimeToJson(DateTime dateTime) =>
       dateTime.millisecondsSinceEpoch;

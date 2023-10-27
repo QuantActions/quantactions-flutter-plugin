@@ -1,7 +1,7 @@
 import '../models/models.dart';
 
 abstract class UserRepository {
-  Stream<QAResponse<String>> init({
+  Future<bool> init({
     required String apiKey,
     int? age,
     Gender? gender,

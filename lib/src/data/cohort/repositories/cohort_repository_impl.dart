@@ -1,6 +1,5 @@
 import '../../../domain/domain.dart';
 import '../../mappers/cohort/cohort_mapper.dart';
-import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/cohort_provider.dart';
 
 class CohortRepositoryImpl implements CohortRepository {
@@ -18,9 +17,7 @@ class CohortRepositoryImpl implements CohortRepository {
   }
 
   @override
-  Stream<QAResponse<String>> leaveCohort(String cohortId) {
-    final Stream<dynamic> stream = _cohortProvider.leaveCohort(cohortId);
-
-    return QAResponseMapper.fromStream<String>(stream);
+  Future<void> leaveCohort(String cohortId) async {
+    await _cohortProvider.leaveCohort(cohortId);
   }
 }

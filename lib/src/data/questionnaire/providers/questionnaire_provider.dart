@@ -1,7 +1,7 @@
 abstract class QuestionnaireProvider {
   Stream<dynamic> getQuestionnairesList();
 
-  Stream<dynamic> recordQuestionnaireResponse({
+  Future<void> recordQuestionnaireResponse({
     required String? name,
     required String? code,
     required DateTime? date,

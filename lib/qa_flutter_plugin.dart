@@ -46,8 +46,8 @@ class QAFlutterPlugin {
   }
 
   ///Use this to withdraw the device from a particular cohort.
-  Stream<QAResponse<String>> leaveCohort(String cohortId) {
-    return _cohortRepository.leaveCohort(cohortId);
+  Future<void> leaveCohort(String cohortId) async {
+    await _cohortRepository.leaveCohort(cohortId);
   }
 
   ///This function check that the data collection is currently running.
@@ -66,7 +66,7 @@ class QAFlutterPlugin {
   }
 
   ///Use this function to subscribe the device to your(one of your) cohort(s).
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
+  Stream<SubscriptionWithQuestionnaires> subscribe({
     required String subscriptionIdOrCohortId,
   }) {
     return _deviceRepository.subscribe(
@@ -74,12 +74,12 @@ class QAFlutterPlugin {
     );
   }
 
-  ///Returns an object of type [SubscriptionIdResponse] that contains
+  ///Returns an object of type [Subscription] that contains
   ///the subscription ID of the cohort to which the device is currently
   ///subscribed to, if multiple devices are subscribed using
   ///the same subscriptionId it returns all the device IDs.
-  Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId() {
-    return _deviceRepository.getSubscriptionId();
+  Stream<Subscription?> subscription() {
+    return _deviceRepository.subscription();
   }
 
   Future<bool> isDeviceRegistered() {
@@ -93,15 +93,11 @@ class QAFlutterPlugin {
     return _deviceRepository.syncData();
   }
 
-  Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync() {
-    return _deviceRepository.getSubscriptionIdAsync();
-  }
-
   ///Use this function to retrieve a particular journal entry.
   ///You need to provide the id of the entry you want to retrieve,
-  ///checkout [getJournal] and JournalEntryWithEvents to see
+  ///checkout [journalEntries] and JournalEntryWithEvents to see
   ///how to retrieve the id of the entry.
-  Future<JournalEntryWithEvents?> getJournalEntry(String journalEntryId) {
+  Future<JournalEntry?> getJournalEntry(String journalEntryId) {
     return _journalRepository.getJournalEntry(journalEntryId);
   }
 
@@ -110,49 +106,45 @@ class QAFlutterPlugin {
   ///The function returns an asynchronous flow with the response of the action.
   ///The response is mostly to trigger UI/UX events,
   ///in case of failure the SDK will take care internally of retrying.
-  Stream<QAResponse<String>> createJournalEntry({
+  Future<JournalEntry> saveJournalEntry({
+    String? id,
     required DateTime date,
     required String note,
     required List<JournalEvent> events,
-    required List<int> ratings,
-    required String oldId,
   }) {
-    return _journalRepository.createJournalEntry(
+    return _journalRepository.saveJournalEntry(
+      id: id,
       date: date,
       note: note,
       events: events,
-      ratings: ratings,
-      oldId: oldId,
     );
   }
 
   ///Use this function to delete a journal entry.
   ///You need to provide the id of the entry you want to delete,
-  ///checkout [getJournal] and JournalEntryWithEvents
+  ///checkout [journalEntries] and JournalEntryWithEvents
   ///to see how to retrieve the id of the entry to delete.
-  Stream<QAResponse<String>> deleteJournalEntry({
-    required String id,
-  }) {
-    return _journalRepository.deleteJournalEntry(id: id);
+  Future<void> deleteJournalEntry({required String id}) async {
+    await _journalRepository.deleteJournalEntry(id: id);
   }
 
   ///Saves simple text note.
-  Stream<QAResponse<String>> sendNote(String text) {
-    return _journalRepository.sendNote(text);
+  Future<void> sendNote(String text) async {
+    await _journalRepository.sendNote(text);
   }
 
   ///This functions returns the full journal of the device,
   ///meaning all entries with the corresponding events.
   ///Checkout JournalEntryWithEvents for a complete description of
   ///how the journal entries are organized.
-  Stream<List<JournalEntryWithEvents>> getJournal() {
-    return _journalRepository.getJournal();
+  Stream<List<JournalEntry>> journalEntries() {
+    return _journalRepository.journalEntries();
   }
 
   ///This functions returns a fictitious journal and can be used for
   ///test/display purposes, Checkout JournalEntryWithEvents for a complete
   ///description of how the journal entries are organized.
-  Stream<List<JournalEntryWithEvents>> getJournalSample({
+  Stream<List<JournalEntry>> getJournalSample({
     required String apiKey,
   }) {
     return _journalRepository.getJournalSample(apiKey: apiKey);
@@ -161,8 +153,8 @@ class QAFlutterPlugin {
   ///Retrieves the Journal events, meaning the events that one can log together
   ///with a journal entry. The events come from a fixed set which may be
   ///updated in the future, this function return the latest update to the [JournalEvent].
-  Stream<List<JournalEvent>> getJournalEvents() {
-    return _journalRepository.getJournalEvents();
+  Stream<List<JournalEvent>> journalEventKinds() {
+    return _journalRepository.journalEventKinds();
   }
 
   ///Asynchronous version of [getMetric].
@@ -231,14 +223,14 @@ class QAFlutterPlugin {
   }
 
   ///Saves a questionnaire response.
-  Stream<QAResponse<String>> recordQuestionnaireResponse({
+  Future<void> recordQuestionnaireResponse({
     String? name,
     String? code,
     DateTime? date,
     String? fullId,
     String? response,
-  }) {
-    return _questionnaireRepository.recordQuestionnaireResponse(
+  }) async {
+    await _questionnaireRepository.recordQuestionnaireResponse(
       name: name,
       code: code,
       date: date,
@@ -251,13 +243,13 @@ class QAFlutterPlugin {
   ///this allows the SDK to create a unique identifier and initiate server
   ///transactions and workflows. Most of the functionality will not work
   ///if you have never initialized the singleton before.
-  Stream<QAResponse<String>> init({
+  Future<bool> init({
     required String apiKey,
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
-  }) {
-    return _userRepository.init(
+  }) async {
+    return await _userRepository.init(
       apiKey: apiKey,
       age: age,
       gender: gender,
