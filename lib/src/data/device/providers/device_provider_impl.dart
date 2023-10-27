@@ -48,13 +48,6 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Future<String> syncData() {
-    return _sdkMethodChannel.callMethodChannel<String>(
-      method: SupportedMethods.syncData,
-    );
-  }
-
-  @override
   Future<String> getDeviceID() {
     return _sdkMethodChannel.callMethodChannel<String>(
       method: SupportedMethods.getDeviceID,

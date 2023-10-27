@@ -7,8 +7,6 @@ abstract class DeviceProvider {
 
   Stream<dynamic> subscription();
 
-  Future<String> syncData();
-
   Future<String> getDeviceID();
 
   Future<bool?> getIsKeyboardAdded();

@@ -7,7 +7,6 @@ class SupportedMethods {
   static const String resumeDataCollection = 'resumeDataCollection';
   static const String pauseDataCollection = 'pauseDataCollection';
   static const String isDeviceRegistered = 'isDeviceRegistered';
-  static const String syncData = 'syncData';
   static const String getJournalEntry = 'getJournalEntry';
   static const String getMetricAsync = 'getMetricAsync';
   static const String getStatSampleAsync = 'getStatSampleAsync';

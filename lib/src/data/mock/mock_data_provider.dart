@@ -34,8 +34,6 @@ class MockDataProvider {
             SupportedMethods.pauseDataCollection ||
             SupportedMethods.updateBasicInfo:
         return;
-      case SupportedMethods.syncData:
-        return faker.lorem.sentence();
       case SupportedMethods.getJournalEntry:
         return _getJournalEntry();
       case SupportedMethods.getMetricAsync || SupportedMethods.getStatSampleAsync:

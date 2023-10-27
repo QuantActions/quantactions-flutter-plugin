@@ -86,13 +86,6 @@ class QAFlutterPlugin {
     return _deviceRepository.isDeviceRegistered();
   }
 
-  ///Utility function to sync all the local data with the server.
-  ///Due to the complexity of the work, it spawns a Worker and return its UUID.
-  ///The status of the worker can be observed to check its status of SUCCESS/FAILURE.
-  Future<String> syncData() {
-    return _deviceRepository.syncData();
-  }
-
   ///Use this function to retrieve a particular journal entry.
   ///You need to provide the id of the entry you want to retrieve,
   ///checkout [journalEntries] and JournalEntryWithEvents to see

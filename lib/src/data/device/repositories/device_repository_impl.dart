@@ -40,11 +40,6 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Future<String> syncData() {
-    return _deviceProvider.syncData();
-  }
-
-  @override
   Future<String> getDeviceID() {
     return _deviceProvider.getDeviceID();
   }

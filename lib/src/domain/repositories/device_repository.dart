@@ -9,8 +9,6 @@ abstract class DeviceRepository {
 
   Stream<Subscription?> subscription();
 
-  Future<String> syncData();
-
   Future<String> getDeviceID();
 
   Future<bool?> getIsKeyboardAdded();

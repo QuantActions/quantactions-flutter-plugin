@@ -26,7 +26,7 @@ void main() {
       switch (methodCall.method) {
         case 'isDeviceRegistered':
           return Future<bool>(() => false);
-        case 'syncData' || 'getDeviceID':
+        case 'getDeviceID':
           return Future<String>(() => '');
       }
 
@@ -57,13 +57,6 @@ void main() {
     expect(
       qaFlutterPlugin.subscription(),
       const TypeMatcher<Stream<Subscription>>(),
-    );
-  });
-
-  test('syncData', () async {
-    expect(
-      await qaFlutterPlugin.syncData(),
-      const TypeMatcher<String>(),
     );
   });
 
