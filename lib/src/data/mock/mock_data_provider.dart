@@ -32,8 +32,7 @@ class MockDataProvider {
         return faker.randomGenerator.boolean();
       case SupportedMethods.resumeDataCollection ||
             SupportedMethods.pauseDataCollection ||
-            SupportedMethods.updateBasicInfo ||
-            SupportedMethods.savePublicKey:
+            SupportedMethods.updateBasicInfo:
         return;
       case SupportedMethods.syncData:
         return faker.lorem.sentence();

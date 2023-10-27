@@ -14,7 +14,6 @@ class SupportedMethods {
   static const String canDraw = 'canDraw';
   static const String canUsage = 'canUsage';
   static const String updateBasicInfo = 'updateBasicInfo';
-  static const String savePublicKey = 'savePublicKey';
   static const String leaveCohort = 'leaveCohort';
   static const String saveJournalEntry = 'saveJournalEntry';
   static const String deleteJournalEntry = 'deleteJournalEntry';

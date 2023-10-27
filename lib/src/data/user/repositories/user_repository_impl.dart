@@ -26,11 +26,6 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<void> savePublicKey() async {
-    await _userProvider.savePublicKey();
-  }
-
-  @override
   Future<void> updateBasicInfo({
     int? newYearOfBirth,
     Gender? newGender,

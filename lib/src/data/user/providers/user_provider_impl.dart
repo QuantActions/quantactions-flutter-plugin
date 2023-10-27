@@ -37,13 +37,6 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  Future<void> savePublicKey() async {
-    await _sdkMethodChannel.callMethodChannel(
-      method: SupportedMethods.savePublicKey,
-    );
-  }
-
-  @override
   Future<void> updateBasicInfo({
     int? newYearOfBirth,
     Gender? newGender,

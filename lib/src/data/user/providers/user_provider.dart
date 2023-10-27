@@ -14,7 +14,5 @@ abstract class UserProvider {
     bool? newSelfDeclaredHealthy,
   });
 
-  Future<void> savePublicKey();
-
   Future<String> getBasicInfo();
 }

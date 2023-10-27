@@ -14,7 +14,5 @@ abstract class UserRepository {
     bool? newSelfDeclaredHealthy,
   });
 
-  Future<void> savePublicKey();
-
   Future<BasicInfo> getBasicInfo();
 }

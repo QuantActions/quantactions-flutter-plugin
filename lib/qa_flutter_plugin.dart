@@ -271,8 +271,4 @@ class QAFlutterPlugin {
       newSelfDeclaredHealthy: newSelfDeclaredHealthy,
     );
   }
-
-  Future<void> savePublicKey() async {
-    await _userRepository.savePublicKey();
-  }
 }

@@ -49,13 +49,6 @@ void main() {
     );
   });
 
-  test('savePublicKey', () {
-    expect(
-      qaFlutterPlugin.savePublicKey,
-      isA<void>(),
-    );
-  });
-
   test('updateBasicInfo', () {
     expect(
       qaFlutterPlugin.updateBasicInfo,
