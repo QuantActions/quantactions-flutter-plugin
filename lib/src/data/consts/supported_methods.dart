@@ -24,8 +24,8 @@ class SupportedMethods {
   static const String getCohortList = 'getCohortList';
   static const String subscribe = 'subscribe';
   static const String subscription = 'subscription';
-  static const String getJournal = 'getJournal';
-  static const String getJournalSample = 'getJournalSample';
+  static const String journalEntries = 'journalEntries';
+  static const String journalEntriesSample = 'journalEntriesSample';
   static const String journalEventKinds = 'journalEventKinds';
   static const String getMetric = 'getMetric';
   static const String getMetricSample = 'getMetricSample';

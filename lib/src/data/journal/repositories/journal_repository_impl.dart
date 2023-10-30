@@ -36,17 +36,15 @@ class JournalRepositoryImpl implements JournalRepository {
   }
 
   @override
-  Stream<List<JournalEntry>> journalEntries() {
-    final Stream<dynamic> stream = _journalProvider.getJournal();
+  Stream<List<JournalEntry>> getJournalEntries() {
+    final Stream<dynamic> stream = _journalProvider.getJournalEntries();
 
     return JournalStreamMapper.getListEntryWithEvents(stream);
   }
 
   @override
   Future<JournalEntry?> getJournalEntry(String journalEntryId) async {
-    final String? json = await _journalProvider.getJournalEntry(
-      journalEntryId,
-    );
+    final String? json = await _journalProvider.getJournalEntry(journalEntryId);
 
     if (json == null) return null;
 
@@ -54,17 +52,17 @@ class JournalRepositoryImpl implements JournalRepository {
   }
 
   @override
-  Stream<List<JournalEvent>> journalEventKinds() {
-    final Stream<dynamic> stream = _journalProvider.journalEventKinds();
+  Stream<List<JournalEvent>> getJournalEventKinds() {
+    final Stream<dynamic> stream = _journalProvider.getJournalEventKinds();
 
     return JournalStreamMapper.getListEvent(stream);
   }
 
   @override
-  Stream<List<JournalEntry>> getJournalSample({
+  Stream<List<JournalEntry>> getJournalEntriesSample({
     required String apiKey,
   }) {
-    final Stream<dynamic> stream = _journalProvider.getJournalSample(apiKey: apiKey);
+    final Stream<dynamic> stream = _journalProvider.getJournalEntriesSample(apiKey: apiKey);
 
     return JournalStreamMapper.getListEntryWithEvents(stream);
   }

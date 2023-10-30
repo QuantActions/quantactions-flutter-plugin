@@ -48,7 +48,7 @@ class MockDataProvider {
         return _getQAResponseSubscriptionWithQuestionnaires();
       case SupportedMethods.subscription:
         return Stream<String>.value(_getQAResponseSubscriptionIdResponse());
-      case SupportedMethods.getJournal || SupportedMethods.getJournalSample:
+      case SupportedMethods.journalEntries || SupportedMethods.journalEntriesSample:
         return _getJournalEntryWithEventsList(length: 10);
       case SupportedMethods.journalEventKinds:
         return _getJournalEventList();

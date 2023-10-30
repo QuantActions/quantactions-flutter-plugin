@@ -12,15 +12,15 @@ abstract class JournalRepository {
     required String id,
   });
 
-  Stream<List<JournalEntry>> journalEntries();
+  Stream<List<JournalEntry>> getJournalEntries();
 
-  Stream<List<JournalEntry>> getJournalSample({
+  Stream<List<JournalEntry>> getJournalEntriesSample({
     required String apiKey,
   });
 
   Future<JournalEntry?> getJournalEntry(String journalEntryId);
 
-  Stream<List<JournalEvent>> journalEventKinds();
+  Stream<List<JournalEvent>> getJournalEventKinds();
 
   Future<void> sendNote(String text);
 }

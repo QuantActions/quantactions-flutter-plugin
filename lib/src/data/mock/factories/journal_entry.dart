@@ -10,7 +10,6 @@ class JournalEntryFactory extends MockModelFactory<JournalEntry> {
       timestamp: generateDateTime,
       note: faker.lorem.sentences(3).join(),
       events: JournalEventFactory().generateListFake(length: 5),
-      ratings: faker.randomGenerator.numbers(5, 5),
       scores: faker.lorem.words(5).fold<Map<String, int>>(
         <String, int>{},
         (Map<String, int> map, String word) => map..[word] = faker.randomGenerator.integer(5),

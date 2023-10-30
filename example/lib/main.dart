@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   static const String tempApiKey = "55b9cf50-dac2-11e6-b535-fd8dff3bf4e9";
   final _qa = QAFlutterPlugin();
-  late Stream<List<JournalEntryWithEvents>> _stream;
+  late Stream<Subscription?> _stream;
 
   String? errorText;
 
@@ -46,32 +46,56 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     SizedBox(
                       height: 200,
-                      child: StreamBuilder(
-                        stream: _stream,
-                        builder: (_,
-                            AsyncSnapshot<List<JournalEntryWithEvents>>
-                                snapshot) {
-                          if (snapshot.hasData) {
-                            final List<JournalEntryWithEvents> response =
-                                snapshot.data as List<JournalEntryWithEvents>;
-
-                            return ListView.builder(
-                              itemCount: response.length,
-                              itemBuilder: (_, int index) {
-                                final JournalEntryWithEvents item =
-                                    response[index];
-                                return Text(item.toString());
-                              },
-                            );
-                          }
-
+                      child: FutureBuilder(
+                        // future: _qa.updateBasicInfo(
+                        //   // apiKey: tempApiKey,
+                        //   newYearOfBirth: 2000,
+                        //   newGender: Gender.male,
+                        //   newSelfDeclaredHealthy: false,
+                        // ),
+                        future: _qa.isDeviceRegistered(),
+                        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                           if (snapshot.hasError) {
-                            return Text('init: ${snapshot.error.toString()}');
+                            return Text('error: ${snapshot.error}');
                           }
-
-                          return Text('init: ${snapshot.connectionState.name}');
+                          if (snapshot.hasData) {
+                            return Text('result: ${snapshot.data}');
+                          } else {
+                            return Text('status: ${snapshot.connectionState}');
+                          }
                         },
                       ),
+                      // child: StreamBuilder(
+                      //   stream: _stream,
+                      //   builder: (_, AsyncSnapshot<Subscription?> snapshot) {
+                      //     if (snapshot.hasData) {
+                      //       if (snapshot.hasError) {
+                      //         return Text('error: ${snapshot.error}');
+                      //       }
+                      //       if (snapshot.hasData) {
+                      //         // return Text('result: ${snapshot.data}');
+                      //         final List<JournalEntry> response =
+                      //             snapshot.data as List<JournalEntry>;
+                      //
+                      //         return ListView.builder(
+                      //           itemCount: response.length,
+                      //           itemBuilder: (_, int index) {
+                      //             final JournalEntry item = response[index];
+                      //             return Text(item.toString());
+                      //           },
+                      //         );
+                      //       } else {
+                      //         return Text('status: ${snapshot.connectionState}');
+                      //       }
+                      //     }
+                      //
+                      //     if (snapshot.hasError) {
+                      //       return Text('init: ${snapshot.error.toString()}');
+                      //     }
+                      //
+                      //     return Text('init: ${snapshot.connectionState.name}');
+                      //   },
+                      // ),
                     ),
                   ],
                 ),
@@ -80,7 +104,13 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _initDependencies() {
+  void _initDependencies() async {
+    // _qa.updateBasicInfo(
+    //   // apiKey: tempApiKey,
+    //   newYearOfBirth: 2000,
+    //   newGender: Gender.male,
+    //   newSelfDeclaredHealthy: false,
+    // );
     // _qa.firebaseToken;
     // _qa.deviceId;
     // _qa.basicInfo;
@@ -88,7 +118,7 @@ class _MyAppState extends State<MyApp> {
     // _qa.getJournalEntry('journalEntryId');
     // _qa.getJournal();
     // _qa.getQuestionnairesList();
-    _stream = _qa.getJournalSample(apiKey: tempApiKey);
+    // _stream = _qa.getJournalEntriesSample(apiKey: tempApiKey);
     // _qa.init(
     //     apiKey: tempApiKey,
     //     // age: 1991,
@@ -103,6 +133,7 @@ class _MyAppState extends State<MyApp> {
     //   fullId: 'fullId',
     //   response: 'response',
     // );
+    // _stream = _qa.getSubscription();
     // _qa.getMetricSample(apiKey: tempApiKey, metric: Metric.actionSpeed);
     // _qa.getSubscriptionIdAsync();
     // _qa.getSubscriptionId();

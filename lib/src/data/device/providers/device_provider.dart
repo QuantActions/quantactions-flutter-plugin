@@ -1,11 +1,11 @@
 abstract class DeviceProvider {
   Future<bool> isDeviceRegistered();
 
-  Stream<dynamic> subscribe({
+  Future<dynamic> subscribe({
     required String subscriptionIdOrCohortId,
   });
 
-  Stream<dynamic> subscription();
+  Future<dynamic> getSubscription();
 
   Future<String> getDeviceID();
 

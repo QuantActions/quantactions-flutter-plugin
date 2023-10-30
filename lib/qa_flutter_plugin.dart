@@ -51,7 +51,7 @@ class QAFlutterPlugin {
   }
 
   ///This function check that the data collection is currently running.
-  Future<bool> isDataCollectionRunning() {
+  Future<bool> isDataCollectionRunning() async {
     return _dataCollectionRepository.isDataCollectionRunning();
   }
 
@@ -66,9 +66,9 @@ class QAFlutterPlugin {
   }
 
   ///Use this function to subscribe the device to your(one of your) cohort(s).
-  Stream<SubscriptionWithQuestionnaires> subscribe({
+  Future<SubscriptionWithQuestionnaires> subscribe({
     required String subscriptionIdOrCohortId,
-  }) {
+  }) async {
     return _deviceRepository.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
@@ -78,19 +78,19 @@ class QAFlutterPlugin {
   ///the subscription ID of the cohort to which the device is currently
   ///subscribed to, if multiple devices are subscribed using
   ///the same subscriptionId it returns all the device IDs.
-  Stream<Subscription?> subscription() {
-    return _deviceRepository.subscription();
+  Future<Subscription?> getSubscription() async {
+    return _deviceRepository.getSubscription();
   }
 
-  Future<bool> isDeviceRegistered() {
+  Future<bool> isDeviceRegistered() async {
     return _deviceRepository.isDeviceRegistered();
   }
 
   ///Use this function to retrieve a particular journal entry.
   ///You need to provide the id of the entry you want to retrieve,
-  ///checkout [journalEntries] and JournalEntryWithEvents to see
+  ///checkout [getJournalEntries] and JournalEntryWithEvents to see
   ///how to retrieve the id of the entry.
-  Future<JournalEntry?> getJournalEntry(String journalEntryId) {
+  Future<JournalEntry?> getJournalEntry(String journalEntryId) async {
     return _journalRepository.getJournalEntry(journalEntryId);
   }
 
@@ -104,7 +104,7 @@ class QAFlutterPlugin {
     required DateTime date,
     required String note,
     required List<JournalEvent> events,
-  }) {
+  }) async {
     return _journalRepository.saveJournalEntry(
       id: id,
       date: date,
@@ -115,7 +115,7 @@ class QAFlutterPlugin {
 
   ///Use this function to delete a journal entry.
   ///You need to provide the id of the entry you want to delete,
-  ///checkout [journalEntries] and JournalEntryWithEvents
+  ///checkout [getJournalEntries] and JournalEntryWithEvents
   ///to see how to retrieve the id of the entry to delete.
   Future<void> deleteJournalEntry({required String id}) async {
     await _journalRepository.deleteJournalEntry(id: id);
@@ -130,24 +130,24 @@ class QAFlutterPlugin {
   ///meaning all entries with the corresponding events.
   ///Checkout JournalEntryWithEvents for a complete description of
   ///how the journal entries are organized.
-  Stream<List<JournalEntry>> journalEntries() {
-    return _journalRepository.journalEntries();
+  Stream<List<JournalEntry>> getJournalEntries() {
+    return _journalRepository.getJournalEntries();
   }
 
   ///This functions returns a fictitious journal and can be used for
   ///test/display purposes, Checkout JournalEntryWithEvents for a complete
   ///description of how the journal entries are organized.
-  Stream<List<JournalEntry>> getJournalSample({
+  Stream<List<JournalEntry>> getJournalEntriesSample({
     required String apiKey,
   }) {
-    return _journalRepository.getJournalSample(apiKey: apiKey);
+    return _journalRepository.getJournalEntriesSample(apiKey: apiKey);
   }
 
   ///Retrieves the Journal events, meaning the events that one can log together
   ///with a journal entry. The events come from a fixed set which may be
   ///updated in the future, this function return the latest update to the [JournalEvent].
-  Stream<List<JournalEvent>> journalEventKinds() {
-    return _journalRepository.journalEventKinds();
+  Stream<List<JournalEvent>> getJournalEventKinds() {
+    return _journalRepository.getJournalEventKinds();
   }
 
   ///Asynchronous version of [getMetric].
@@ -155,7 +155,7 @@ class QAFlutterPlugin {
   ///it with a coroutine logic instead of a flow logic.
   ///Can be used in cases where coroutines can be executed and
   ///flow are not necessary, e.g. background update tasks.
-  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric) {
+  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric) async {
     return _metricRepository.getMetricAsync(metric);
   }
 
@@ -190,7 +190,7 @@ class QAFlutterPlugin {
   Future<TimeSeries<dynamic>?> getStatSampleAsync({
     required String apiKey,
     required MetricType metric,
-  }) {
+  }) async {
     return _metricRepository.getStatSampleAsync(
       apiKey: apiKey,
       metric: metric,
@@ -199,13 +199,13 @@ class QAFlutterPlugin {
 
   ///The method is only relevant for Android
   ///Returns whether or not the ```draw over other apps``` permission has been granted
-  Future<bool> canDraw() {
+  Future<bool> canDraw() async {
     return _permissionRepository.canDraw();
   }
 
   ///The method is only relevant for Android
   ///Returns whether or not the ```usage``` permission has been granted
-  Future<bool> canUsage() {
+  Future<bool> canUsage() async {
     return _permissionRepository.canUsage();
   }
 
@@ -242,7 +242,7 @@ class QAFlutterPlugin {
     Gender? gender,
     bool? selfDeclaredHealthy,
   }) async {
-    return await _userRepository.init(
+    return _userRepository.init(
       apiKey: apiKey,
       age: age,
       gender: gender,

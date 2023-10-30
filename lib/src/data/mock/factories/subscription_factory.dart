@@ -5,7 +5,7 @@ class SubscriptionFactory extends MockModelFactory<Subscription> {
   @override
   Subscription generateFake([dynamic data]) {
     return Subscription(
-      id: generateId,
+      subscriptionId: generateId,
       deviceIds: List<String>.generate(3, (int index) => generateId),
       cohortId: generateId,
       cohortName: faker.conference.name(),

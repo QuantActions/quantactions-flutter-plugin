@@ -9,14 +9,17 @@ import '../../core/sdk_method_channel.dart';
 import 'journal_provider.dart';
 
 class JournalProviderImpl implements JournalProvider {
-  final EventChannel _getJournalEventsEventChannel = const EventChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/get_journal_events',
+  final EventChannel _getJournalEventKindsEventChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/get_journal_event_kinds',
   );
-  final EventChannel _getJournalEventChannel = const EventChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/get_journal',
+  final EventChannel _getJournalEntriesChannel = const EventChannel(
+    '${MethodChannelConsts.eventMethodChannelPrefix}/get_journal_entries',
   );
-  final MethodChannel _methodChannel = const MethodChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/journal',
+  final MethodChannel _getJournalEntryMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/get_journal_entry',
+  );
+  final MethodChannel _saveJournalEntryMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/save_journal_entry',
   );
 
   final SDKMethodChannel _sdkMethodChannel;
@@ -34,7 +37,7 @@ class JournalProviderImpl implements JournalProvider {
   }) {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.saveJournalEntry,
-      methodChannel: _methodChannel,
+      methodChannel: _saveJournalEntryMethodChannel,
       params: <String, dynamic>{
         'id': id,
         'date': date.toUtc().toString(),
@@ -59,18 +62,18 @@ class JournalProviderImpl implements JournalProvider {
   }
 
   @override
-  Stream<dynamic> getJournal() {
+  Stream<dynamic> getJournalEntries() {
     return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.getJournal,
-      eventChannel: _getJournalEventChannel,
+      method: SupportedMethods.journalEntries,
+      eventChannel: _getJournalEntriesChannel,
     );
   }
 
   @override
-  Future<String?> getJournalEntry(String journalEntryId) {
+  Future<String?> getJournalEntry(String journalEntryId) async {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.getJournalEntry,
-      methodChannel: _methodChannel,
+      methodChannel: _getJournalEntryMethodChannel,
       params: <String, dynamic>{
         'journalEntryId': journalEntryId,
       },
@@ -78,20 +81,20 @@ class JournalProviderImpl implements JournalProvider {
   }
 
   @override
-  Stream<dynamic> journalEventKinds() {
+  Stream<dynamic> getJournalEventKinds() {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.journalEventKinds,
-      eventChannel: _getJournalEventsEventChannel,
+      eventChannel: _getJournalEventKindsEventChannel,
     );
   }
 
   @override
-  Stream<dynamic> getJournalSample({
+  Stream<dynamic> getJournalEntriesSample({
     required String apiKey,
   }) {
     return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.getJournalSample,
-      eventChannel: _getJournalEventChannel,
+      method: SupportedMethods.journalEntriesSample,
+      eventChannel: _getJournalEntriesChannel,
       params: <String, dynamic>{
         'apiKey': apiKey,
       },

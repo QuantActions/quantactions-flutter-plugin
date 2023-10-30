@@ -16,6 +16,7 @@ dependencies:
   collection: 1.17.2
   faker: ^2.0.0
   json_annotation: ^4.8.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

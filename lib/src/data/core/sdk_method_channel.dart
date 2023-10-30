@@ -36,10 +36,6 @@ class SDKMethodChannel extends SDKMethodChannelCore {
       );
     }
 
-    if (response == null) {
-      throw Exception('call $method from methodChannel return null');
-    }
-
     return response;
   }
 
@@ -72,7 +68,11 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     MetricType? metricType,
   }) {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return request();
+      try {
+        return request();
+      } catch (e) {
+        //TODO (karatysh): throw QAError
+      }
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return MockDataProvider.callMockMethod(
         method: method,

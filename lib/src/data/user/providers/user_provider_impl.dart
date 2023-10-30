@@ -7,8 +7,11 @@ import '../../core/sdk_method_channel.dart';
 import 'user_provider.dart';
 
 class UserProviderImpl implements UserProvider {
-  final MethodChannel _methodChannel = const MethodChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/user',
+  final MethodChannel _initMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/init',
+  );
+  final MethodChannel _basicInfoMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/basic_info',
   );
 
   final SDKMethodChannel _sdkMethodChannel;
@@ -26,7 +29,7 @@ class UserProviderImpl implements UserProvider {
   }) async {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.init,
-      methodChannel: _methodChannel,
+      methodChannel: _initMethodChannel,
       params: _buildInitParams(
         apiKey: apiKey,
         age: age,
@@ -44,6 +47,7 @@ class UserProviderImpl implements UserProvider {
   }) async {
     await _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.updateBasicInfo,
+      methodChannel: _basicInfoMethodChannel,
       params: <String, dynamic>{
         'newYearOfBirth': newYearOfBirth,
         'newGender': newGender?.id,
@@ -56,6 +60,7 @@ class UserProviderImpl implements UserProvider {
   Future<String> getBasicInfo() {
     return _sdkMethodChannel.callMethodChannel<String>(
       method: SupportedMethods.getBasicInfo,
+      methodChannel: _basicInfoMethodChannel
     );
   }
 

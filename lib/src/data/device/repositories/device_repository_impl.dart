@@ -16,27 +16,23 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Stream<SubscriptionWithQuestionnaires> subscribe({
+  Future<SubscriptionWithQuestionnaires> subscribe({
     required String subscriptionIdOrCohortId,
-  }) {
-    final Stream<dynamic> stream = _deviceProvider.subscribe(
+  }) async {
+    final Map<String, dynamic> map = await _deviceProvider.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
 
-    return stream.map(
-      (dynamic event) => SubscriptionWithQuestionnaires.fromJson(
-        jsonDecode(event),
-      ),
-    );
+    return SubscriptionWithQuestionnaires.fromJson(map);
   }
 
   @override
-  Stream<Subscription?> subscription() {
-    final Stream<dynamic> stream = _deviceProvider.subscription();
+  Future<Subscription?> getSubscription() async {
+    final String? json = await _deviceProvider.getSubscription();
 
-    return stream.map(
-      (dynamic event) => Subscription.fromJson(jsonDecode(event)),
-    );
+    if (json == null) return null;
+
+    return Subscription.fromJson(jsonDecode(json));
   }
 
   @override

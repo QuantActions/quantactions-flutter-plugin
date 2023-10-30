@@ -31,7 +31,6 @@ void main() {
                 timestamp: DateTime.now(),
                 note: '',
                 events: <JournalEvent>[],
-                ratings: <int>[],
                 scores: <String, int>{},
               ),
             ),
@@ -67,7 +66,7 @@ void main() {
 
   test('getJournal', () {
     expect(
-      qaFlutterPlugin.journalEntries(),
+      qaFlutterPlugin.getJournalEntries(),
       const TypeMatcher<Stream<List<JournalEntry>>>(),
     );
   });
@@ -80,7 +79,7 @@ void main() {
   });
 
   test('getJournalEvents', () {
-    qaFlutterPlugin.journalEventKinds().listen((List<JournalEvent> event) {
+    qaFlutterPlugin.getJournalEventKinds().listen((List<JournalEvent> event) {
       expect(
         event,
         const TypeMatcher<List<JournalEvent>>(),
@@ -89,7 +88,7 @@ void main() {
   });
 
   test('getJournalSample', () {
-    qaFlutterPlugin.getJournalSample(apiKey: '').listen((List<JournalEntry> event) {
+    qaFlutterPlugin.getJournalEntriesSample(apiKey: '').listen((List<JournalEntry> event) {
       expect(
         event,
         const TypeMatcher<List<JournalEntry>>(),
