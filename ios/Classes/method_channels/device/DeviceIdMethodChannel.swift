@@ -13,7 +13,7 @@ class DeviceMethodChannel : NSObject, FlutterPlugin {
     
     static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "qa_flutter_plugin/device_id", binaryMessenger: registrar.messenger())
-        let instance = DataCollectionRunningMethodChannel()
+        let instance = DeviceMethodChannel()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     

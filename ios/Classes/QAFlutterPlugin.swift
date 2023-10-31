@@ -6,7 +6,6 @@ public class QAFlutterPlugin: NSObject, FlutterPlugin {
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         VoidMethodChannel.register(with: registrar)
-        DataCollectionRunningMethodChannel.register(with: registrar)
         DeviceMethodChannel.register(with: registrar)
         IsDeviceRegisteredMethodChannel.register(with: registrar)
         SubscribeMethodChannel.register(with: registrar)
