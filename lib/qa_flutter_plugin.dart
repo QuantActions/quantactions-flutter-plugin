@@ -50,6 +50,7 @@ class QAFlutterPlugin {
     await _cohortRepository.leaveCohort(cohortId);
   }
 
+  ///The method is only relevant for Android
   ///This function check that the data collection is currently running.
   Future<bool> isDataCollectionRunning() async {
     return _dataCollectionRepository.isDataCollectionRunning();

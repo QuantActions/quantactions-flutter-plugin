@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 
 import '../../domain/domain.dart';
 import '../consts/method_channel_consts.dart';
-import '../mock/mock_data_provider.dart';
 import 'sdk_method_channel_core.dart';
 
 /// An implementation of [SDKMethodChannelCore] that uses method channels.
@@ -17,22 +16,16 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     required String method,
     Map<String, dynamic>? params,
     MethodChannel? methodChannel,
-    //param for mock data
-    MetricType? metricType,
   }) async {
     final T response;
 
     if (methodChannel != null) {
       response = await _safeRequest(
         request: () => methodChannel.invokeMethod<T>(method, params),
-        method: method,
-        metricType: metricType,
       );
     } else {
       response = await _safeRequest(
         request: () => _methodChannel.invokeMethod<T>(method, params),
-        method: method,
-        metricType: metricType,
       );
     }
 
@@ -43,8 +36,6 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     required String method,
     required EventChannel eventChannel,
     Map<String, dynamic>? params,
-    //param for mock data
-    MetricType? metricType,
   }) {
     final Map<String, dynamic> data = <String, dynamic>{
       'method': method,
@@ -55,32 +46,26 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     }
 
     return _safeRequest(
-      method: method,
       request: () => eventChannel.receiveBroadcastStream(data),
-      metricType: metricType,
     );
   }
 
   dynamic _safeRequest({
     required Function() request,
-    //params for mock data
-    required String method,
-    MetricType? metricType,
-  }) {
-    if (defaultTargetPlatform == TargetPlatform.android) {
+  }) async {
+    if (defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS) {
       try {
-        return request();
-      } catch (e) {
-        //TODO (karatysh): throw QAError
+        return await request();
+      } on PlatformException catch (e) {
+        throw QAError(
+          description: e.message.toString(),
+          reason: e.details.toString(),
+        );
       }
-    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return MockDataProvider.callMockMethod(
-        method: method,
-        metricType: metricType,
-      );
     } else {
-      throw Exception(
-        'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
+      throw QAError(
+        description: 'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
       );
     }
   }

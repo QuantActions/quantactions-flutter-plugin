@@ -45,9 +45,9 @@ class MockDataProvider {
       case SupportedMethods.getCohortList:
         return _getCohortList();
       case SupportedMethods.subscribe:
-        return _getQAResponseSubscriptionWithQuestionnaires();
+        return _getSubscriptionWithQuestionnaires();
       case SupportedMethods.subscription:
-        return Stream<String>.value(_getQAResponseSubscriptionIdResponse());
+        return Stream<String>.value(_getSubscriptionResponse());
       case SupportedMethods.journalEntries || SupportedMethods.journalEntriesSample:
         return _getJournalEntryWithEventsList(length: 10);
       case SupportedMethods.journalEventKinds:
@@ -76,13 +76,13 @@ class MockDataProvider {
     );
   }
 
-  static String _getQAResponseSubscriptionIdResponse() {
+  static String _getSubscriptionResponse() {
     return jsonEncode(
       SubscriptionFactory().generateFake(),
     );
   }
 
-  static Stream<String> _getQAResponseSubscriptionWithQuestionnaires() {
+  static Stream<String> _getSubscriptionWithQuestionnaires() {
     return Stream<String>.value(
       jsonEncode(
         SubscriptionWithQuestionnairesFactory().generateFake(),
