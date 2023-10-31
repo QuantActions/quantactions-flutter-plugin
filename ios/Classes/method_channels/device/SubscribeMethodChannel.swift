@@ -20,22 +20,22 @@ class SubscribeMethodChannel : NSObject, FlutterPlugin {
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "subscribe":
-            
             let params = call.arguments as? Dictionary<String, Any>
             
             let subscriptionIdOrCohortId = params?["subscriptionIdOrCohortId"] as? String
             
             if (subscriptionIdOrCohortId != nil) {
-                Task {
-                    do {
+                QAFlutterPluginHelper.safeMethodChannel(
+                    result: result,
+                    methodName: "subscribe"
+                ) {
+                    Task {
                         let response = try await QA.shared.subscribe(participationID: subscriptionIdOrCohortId!)
                         result(QAFlutterPluginSerializable.serializeSubscriptionWithQuestionnaires(data: response))
-                    } catch {
-                        // TODO: return error
                     }
                 }
             } else {
-                //TODO: return error
+                QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "subscribe")
             }
         default: break
         }

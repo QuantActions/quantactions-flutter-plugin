@@ -20,18 +20,17 @@ class BasicInfoMethodChannel : NSObject, FlutterPlugin {
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "getBasicInfo":
-            do {
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "getBasicInfo"
+            ) {
                 result(
-                    try QAFlutterPluginSerializable.serializeBasicInfo(
+                    QAFlutterPluginSerializable.serializeBasicInfo(
                         basicInfo: QuantActionsSDK.BasicInfo()
                     )
                 )
-            } catch{
-                //TODO: return error
             }
-            
-        default:
-            result(nil)
+        default: break
         }
     }
 }

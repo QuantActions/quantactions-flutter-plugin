@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Flutter
 import QuantActionsSDK
 
 class QAFlutterPluginHelper{
@@ -52,5 +53,67 @@ class QAFlutterPluginHelper{
             return TrendKind.wave
         default: return nil
         }
+    }
+    
+    public static func safeMethodChannel(
+        result: FlutterResult,
+        methodName: String,
+        method: () -> Void
+    ) {
+        do {
+            method()
+        } catch {
+            result(
+                FlutterError(
+                    code: "0",
+                    message: "\(methodName) methos failed",
+                    details: error.localizedDescription
+                )
+            )
+        }
+    }
+    
+    public static func returnInvalidParamsMethodChannelError(
+        result: FlutterResult,
+        methodName: String
+    ) {
+        result(
+            FlutterError(
+                code: "0",
+                message: "\(methodName) methos failed",
+                details: "invalids params"
+            )
+        )
+    }
+    
+    public static func safeEventChannel(
+        eventSink: FlutterEventSink,
+        methodName: String,
+        method: () -> Void
+    ) {
+        do {
+            method()
+        } catch {
+            eventSink(
+                FlutterError(
+                    code: "0",
+                    message: "\(methodName) methos failed",
+                    details: error.localizedDescription
+                )
+            )
+        }
+    }
+    
+    public static func returnInvalidParamsEventChannelError(
+        eventSink: FlutterEventSink,
+        methodName: String
+    ) {
+        eventSink(
+            FlutterError(
+                code: "0",
+                message: "\(methodName) methos failed",
+                details: "invalids params"
+            )
+        )
     }
 }

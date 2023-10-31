@@ -20,7 +20,12 @@ class DeviceMethodChannel : NSObject, FlutterPlugin {
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "getDeviceID":
-            result(QA.shared.deviceID)
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "getDeviceID"
+            ) {
+                result(QA.shared.deviceID)
+            }
         default: break
         }
     }

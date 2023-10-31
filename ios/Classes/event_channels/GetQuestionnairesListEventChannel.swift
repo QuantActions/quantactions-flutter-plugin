@@ -26,12 +26,14 @@ class GetQuestionnairesListEventChannel : NSObject, FlutterStreamHandler {
         
         let method = params?["method"] as? String
         
-        if (method != nil) {
+        if let method = method {
             switch method {
             case "getQuestionnairesList": break
-                //TODO (Karatysh): implement when will be ready
+                //TODO: (Karatysh) implement when will be ready
             default: break
             }
+        } else {
+            QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: "getQuestionnairesList")
         }
         
         return nil

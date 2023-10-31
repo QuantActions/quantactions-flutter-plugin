@@ -30,8 +30,11 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
             let newGenderString  = params?["newGender"] as? String
             let gender: Gender = (newGenderString == nil) ? QuantActionsSDK.BasicInfo().gender : QAFlutterPluginHelper.parseGender(gender: newGenderString)
             
-            Task {
-                do {
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "updateBasicInfo"
+            ) {
+                Task {
                     let basicInfo = BasicInfo(
                         yearOfBirth: yearOfBirth,
                         gender: gender,
@@ -39,25 +42,25 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
                     )
                     
                     try await QA.shared.update(basicInfo: basicInfo)
-                } catch {
-                    //TODO: error
                 }
             }
+            
         case "leaveCohort":
             let params = call.arguments as? Dictionary<String, Any>
             
             let participationID = params?["participationID"] as? String
             
             if let participationID = participationID {
-                Task {
-                    do {
+                QAFlutterPluginHelper.safeMethodChannel(
+                    result: result,
+                    methodName: "leaveCohort"
+                ) {
+                    Task {
                         try await QA.shared.leaveCohort(participationID: participationID)
-                    } catch {
-                        //TODO: error
                     }
                 }
             } else {
-                //TODO: error
+                QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "leaveCohort")
             }
         case "sendNote":
             let params = call.arguments as? Dictionary<String, Any>
@@ -65,15 +68,17 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
             let text = params?["text"] as? String
             
             if let text = text {
-                Task {
-                    do {
+                QAFlutterPluginHelper.safeMethodChannel(
+                    result: result,
+                    methodName: "sendNote"
+                ) {
+                    Task {
                         try await QA.shared.sendNote(text: text)
-                    } catch {
-                        //TODO: error
                     }
                 }
+                
             } else {
-                //TODO: error
+                QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "sendNote")
             }
         case "deleteJournalEntry":
             let params = call.arguments as? Dictionary<String, Any>
@@ -81,18 +86,31 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
             let id = params?["id"] as? String
             
             if let id = id {
-                do {
-                    try QA.shared.deleteJournalEntry(byID: id)
-                } catch {
-                    //TODO: error
+                QAFlutterPluginHelper.safeMethodChannel(
+                    result: result,
+                    methodName: "deleteJournalEntry"
+                ) {
+                    Task {
+                        try QA.shared.deleteJournalEntry(byID: id)
+                    }
                 }
             } else {
-                //TODO: error
+                QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "deleteJournalEntry")
             }
         case "pauseDataCollection":
-            result(QA.shared.pauseDataCollection)
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "pauseDataCollection"
+            ) {
+                result(QA.shared.pauseDataCollection)
+            }
         case "resumeDataCollection":
-            result(QA.shared.resumeDataCollection)
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "resumeDataCollection"
+            ) {
+                result(QA.shared.resumeDataCollection)
+            }
         case "recordQuestionnaireResponse": break
             //TODO: implement when will be ready
         default: break

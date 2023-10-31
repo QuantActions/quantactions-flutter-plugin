@@ -11,12 +11,12 @@ public class QAFlutterPlugin: NSObject, FlutterPlugin {
         IsDeviceRegisteredMethodChannel.register(with: registrar)
         SubscribeMethodChannel.register(with: registrar)
         SubscriptionMethodChannel.register(with: registrar)
+        IsKeyboardAddedMethodChannel.register(with: registrar)
         GetJournalEntryMethodChannel.register(with: registrar)
         SaveJournalEntryMethodChannel.register(with: registrar)
         BasicInfoMethodChannel.register(with: registrar)
         InitMethodChannel.register(with: registrar)
         
-        UserEventChannel.register(with: registrar)
         MetricAndTrendEventChannel.register(with: registrar)
         GetCohortListEventChannel.register(with: registrar)
         GetQuestionnairesListEventChannel.register(with: registrar)

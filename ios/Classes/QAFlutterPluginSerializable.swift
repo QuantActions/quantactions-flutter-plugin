@@ -100,7 +100,7 @@ struct SerializableJournalEventKind : Encodable {
 
 class QAFlutterPluginSerializable : NSObject {
     
-    public static func serializeBasicInfo(basicInfo: BasicInfo) throws -> String {
+    public static func serializeBasicInfo(basicInfo: BasicInfo) -> String {
         let serializableBasicInfo = SerializableBasicInfo(
             yearOfBirth: basicInfo.yearOfBirth,
             gender: String(describing: basicInfo.gender),

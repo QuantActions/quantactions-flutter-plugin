@@ -20,8 +20,11 @@ class SubscriptionMethodChannel : NSObject, FlutterPlugin {
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "subscription":
-            Task {
-                do {
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "subscription"
+            ) {
+                Task {
                     let response = try await QA.shared.subscription()
                     
                     if (response == nil){
@@ -29,11 +32,8 @@ class SubscriptionMethodChannel : NSObject, FlutterPlugin {
                     } else {
                         result(QAFlutterPluginSerializable.serializeSubscription(data: response!))
                     }
-                } catch {
-                    // TODO: return error
                 }
             }
-    
         default: break
         }
     }

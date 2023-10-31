@@ -20,9 +20,13 @@ class DataCollectionRunningMethodChannel : NSObject, FlutterPlugin {
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "isDataCollectionRunning":
-            result(QA.shared.isDataCollectionRunning)
-        default:
-            result(nil)
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "isDataCollectionRunning"
+            ) {
+                result(QA.shared.isDataCollectionRunning)
+            }
+        default: break
         }
     }
 }

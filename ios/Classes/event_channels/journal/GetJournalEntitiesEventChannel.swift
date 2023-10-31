@@ -26,13 +26,23 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
         
         let method = params?["method"] as? String
         
-        if (method != nil) {
+        if let method = method {
             switch method {
             case "journalEntries":
-                let response = QA.shared.journalEntries()
-                eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response))
+                QAFlutterPluginHelper.safeEventChannel(
+                    eventSink: eventSink,
+                    methodName: "journalEntries"
+                ) {
+                    let response = QA.shared.journalEntries()
+                    eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response))
+                }
             default: break
             }
+        } else {
+            QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
+                eventSink: eventSink,
+                methodName: "journalEntries"
+            )
         }
         
         return nil

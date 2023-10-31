@@ -29,20 +29,21 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
             let events = params?["events"] as? String
             
             if let id = id, let dateString = dateString, let note = note, let events = events {
-                Task {
-                    do {
+                QAFlutterPluginHelper.safeMethodChannel(
+                    result: result,
+                    methodName: "getJournalEntry"
+                ) {
+                    Task {
                         let journalEntry = JournalEntry(
                             date: dateFormatter.date(from: dateString) ?? Date.now,
                             note: note,
                             events: QAFlutterPluginSerializable.journalEntryEventFromJson(json: events)
                         )
                         let response = try QA.shared.saveJournalEntry(journalEntry: journalEntry)
-                    } catch {
-                        // TODO: return error
                     }
                 }
             } else {
-                //TODO: return error
+                QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "getJournalEntry")
             }
         default: break
         }

@@ -25,15 +25,14 @@ class GetJournalEntryMethodChannel : NSObject, FlutterPlugin {
             let journalEntryId = params?["journalEntryId"] as? String
             
             if (journalEntryId != nil) {
-                Task {
-                    do {
-                        //TODO (Karatysh): implement when will be ready
-                    } catch {
-                        // TODO: return error
-                    }
+                QAFlutterPluginHelper.safeMethodChannel(
+                    result: result,
+                    methodName: "getJournalEntry"
+                ) {
+                    // TODO: (karatysh) implement when will be ready
                 }
             } else {
-                //TODO: return error
+                QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "getJournalEntry")
             }
         default: break
         }

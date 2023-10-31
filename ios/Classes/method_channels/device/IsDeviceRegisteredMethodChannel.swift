@@ -20,7 +20,12 @@ class IsDeviceRegisteredMethodChannel : NSObject, FlutterPlugin {
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "isDeviceRegistered":
-            result(QA.shared.isDeviceRegistered)
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "isDeviceRegistered"
+            ) {
+                result(QA.shared.isDeviceRegistered)
+            }
         default: break
         }
     }

@@ -26,15 +26,18 @@ class UserEventChannel : NSObject, FlutterStreamHandler {
         
         let method = params?["method"] as? String
         
-        if (method != nil) {
+        if let method = method {
             switch method {
             case "init":
                 let age = params?["age"] as? Int ?? 0
                 let selfDeclaredHealthy = params?["age"] as? Bool ?? false
                 let gender = QAFlutterPluginHelper.parseGender(gender: params?["gender"] as? String)
                 
-                Task {
-                    do {
+                QAFlutterPluginHelper.safeEventChannel(
+                    eventSink: eventSink,
+                    methodName: "leaveCohort"
+                ) {
+                    Task {
                         let basicInfo = BasicInfo(
                             yearOfBirth: age,
                             gender: gender,
@@ -43,19 +46,12 @@ class UserEventChannel : NSObject, FlutterStreamHandler {
                         eventSink(
                             try await QA.shared.setup(basicInfo: basicInfo)
                         )
-                    } catch {
-                        //TODO: error
-                        let jsonEncoder = JSONEncoder()
-                        let jsonData = try! jsonEncoder.encode(error.localizedDescription)
-                        let jsonString = String(data: jsonData, encoding: .utf8)!
-                        
-                        print(error)
-                        eventSink(jsonString)
                     }
                 }
-                
             default: break
             }
+        } else {
+            QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: "init")
         }
         
         return nil

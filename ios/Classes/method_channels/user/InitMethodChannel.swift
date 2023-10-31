@@ -28,8 +28,12 @@ class InitMethodChannel : NSObject, FlutterPlugin {
             let newGenderString  = params?["newGender"] as? String
             let gender: Gender = (newGenderString == nil) ? QuantActionsSDK.BasicInfo().gender : QAFlutterPluginHelper.parseGender(gender: newGenderString)
             
-            Task {
-                do {
+            
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "init"
+            ) {
+                Task {
                     let basicInfo = BasicInfo(
                         yearOfBirth: yearOfBirth,
                         gender: gender,
@@ -37,9 +41,6 @@ class InitMethodChannel : NSObject, FlutterPlugin {
                     )
                     
                     result(try await QA.shared.setup(basicInfo: basicInfo))
-                    
-                } catch {
-                    //TODO: error
                 }
             }
         default: break
