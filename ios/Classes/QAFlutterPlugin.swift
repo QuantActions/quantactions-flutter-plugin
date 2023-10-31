@@ -2,30 +2,26 @@ import Flutter
 import UIKit
 import QuantActionsSDK
 
-@globalActor
-enum PushActor {
-    actor ActorType {}
-
-    static let shared: ActorType = .init()
-}
-
 public class QAFlutterPlugin: NSObject, FlutterPlugin {
     
     public static func register(with registrar: FlutterPluginRegistrar) {
-        MainMethodChannel.register(with: registrar)
+        VoidMethodChannel.register(with: registrar)
+        DataCollectionRunningMethodChannel.register(with: registrar)
+        DeviceMethodChannel.register(with: registrar)
+        IsDeviceRegisteredMethodChannel.register(with: registrar)
+        SubscribeMethodChannel.register(with: registrar)
+        SubscriptionMethodChannel.register(with: registrar)
+        GetJournalEntryMethodChannel.register(with: registrar)
+        SaveJournalEntryMethodChannel.register(with: registrar)
+        BasicInfoMethodChannel.register(with: registrar)
+        InitMethodChannel.register(with: registrar)
         
         UserEventChannel.register(with: registrar)
-        LeaveCohortEventChannel.register(with: registrar)
-        GetCohortListEventChannel.register(with: registrar)
-        GetSubscriptionIdEventChannel.register(with: registrar)
-        DeviceEventChannel.register(with: registrar)
         MetricAndTrendEventChannel.register(with: registrar)
-        GetJournalEventsEventChannel.register(with: registrar)
-        GetJournalEventChannel.register(with: registrar)
-        JournalEventChannel.register(with: registrar)
         GetCohortListEventChannel.register(with: registrar)
         GetQuestionnairesListEventChannel.register(with: registrar)
-        RecordQuestionnaireResponseEventChannel.register(with: registrar)
+        GetJournalEntitiesEventChannel.register(with: registrar)
+        GetJournalEventKindsEventChannel.register(with: registrar)
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {}

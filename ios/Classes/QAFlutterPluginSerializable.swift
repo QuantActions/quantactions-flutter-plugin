@@ -55,6 +55,14 @@ struct SerializableSubscriptionWithQuestionnaires : Encodable {
     public var premiumFeaturesTTL: Int
 }
 
+struct SerializableSubscription : Encodable {
+    public var subscriptionId: String
+    public var deviceIds: [String]
+    public var cohortId: String
+    public var cohortName: String
+    public var premiumFeaturesTTL: Int
+}
+
 struct SerializableCohort : Encodable {
     public var id: String
     public var name: String
@@ -238,6 +246,18 @@ class QAFlutterPluginSerializable : NSObject {
             questionnaires: serializeQuestionnaireList(questionnaires: data.questionnaires),
             subscriptionID: data.subscriptionID,
             tapDeviceIDs: data.tapDeviceIDs,
+            premiumFeaturesTTL: data.premiumFeaturesTTL
+        )
+        
+        return encodeObject(object: serializableObject)
+    }
+    
+    public static func serializeSubscription(data: Subscription) -> String {
+        let serializableObject = SerializableSubscription(
+            subscriptionId:  data.id,
+            deviceIds: data.deviceIDs,
+            cohortId: data.cohortID,
+            cohortName: data.cohortName,
             premiumFeaturesTTL: data.premiumFeaturesTTL
         )
         

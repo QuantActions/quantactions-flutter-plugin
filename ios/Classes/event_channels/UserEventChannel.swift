@@ -33,16 +33,18 @@ class UserEventChannel : NSObject, FlutterStreamHandler {
                 let selfDeclaredHealthy = params?["age"] as? Bool ?? false
                 let gender = QAFlutterPluginHelper.parseGender(gender: params?["gender"] as? String)
                 
-                Task {@PushActor in
+                Task {
                     do {
-                        try await QA.shared.setup(
-                            basicInfo: BasicInfo(
-                                yearOfBirth: age,
-                                gender: gender,
-                                selfDeclaredHealthy: selfDeclaredHealthy
-                            )
+                        let basicInfo = BasicInfo(
+                            yearOfBirth: age,
+                            gender: gender,
+                            selfDeclaredHealthy: selfDeclaredHealthy
+                        )
+                        eventSink(
+                            try await QA.shared.setup(basicInfo: basicInfo)
                         )
                     } catch {
+                        //TODO: error
                         let jsonEncoder = JSONEncoder()
                         let jsonData = try! jsonEncoder.encode(error.localizedDescription)
                         let jsonString = String(data: jsonData, encoding: .utf8)!

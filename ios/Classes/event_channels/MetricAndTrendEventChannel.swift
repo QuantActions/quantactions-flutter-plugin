@@ -38,16 +38,8 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
             let metricToAsk : TrendKind? = QAFlutterPluginHelper.getTrendKind(metric: metric)
             
             if let metricToAsk = metricToAsk {
-                Task { @PushActor in
+                Task {
                     do {
-//                        try await QA.shared.setup()
-                        try await QA.shared.setup(
-                            basicInfo: BasicInfo(
-                                yearOfBirth: 1997,
-                                gender: .male,
-                                selfDeclaredHealthy: true
-                            )
-                        )
                         //participationID has getSubscriptionId value
                         var result = try await QA.shared.trend(
                             participationID: "",
