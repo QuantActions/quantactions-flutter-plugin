@@ -47,14 +47,16 @@ class BasicInfoMethodChannelHandler(
                 }
 
                 "getBasicInfo" -> {
-                    QAFlutterPluginHelper.safeMethodChannel(result = result,
+                    QAFlutterPluginHelper.safeMethodChannel(
+                        result = result,
                         methodName = "getBasicInfo",
                         method = {
                             val basicInfo = qa.basicInfo
                             result.success(
                                 QAFlutterPluginSerializable.serializeBasicInfo(basicInfo)
                             )
-                        })
+                        }
+                    )
                 }
             }
         }

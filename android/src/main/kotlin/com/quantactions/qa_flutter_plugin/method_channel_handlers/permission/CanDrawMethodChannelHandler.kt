@@ -23,9 +23,11 @@ class CanDrawMethodChannelHandler(
         mainScope.launch {
             when (call.method) {
                 "canDraw" -> {
-                    QAFlutterPluginHelper.safeMethodChannel(result = result,
+                    QAFlutterPluginHelper.safeMethodChannel(
+                        result = result,
                         methodName = "canDraw",
-                        method = { result.success(qa.canDraw(context)) })
+                        method = { result.success(qa.canDraw(context)) }
+                    )
                 }
             }
         }

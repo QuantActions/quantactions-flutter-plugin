@@ -33,15 +33,7 @@ class SubscriptionMethodChannelHandler(
                         methodName = "subscription",
                         method = {
                             runBlocking {
-//                                val response = qa.subscription()
-
-                                val response = Subscription(
-                                    "subscriptionId",
-                                    listOf("deviceIds"),
-                                    "cohortId",
-                                    "cohortName",
-                                    Long.MAX_VALUE,
-                                )
+                                val response = qa.subscription()
 
                                 if (response == null) {
                                     result.success(null)

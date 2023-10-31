@@ -41,7 +41,7 @@ class VoidMethodChannelHandler(
                 "resumeDataCollection" ->
                     QAFlutterPluginHelper.safeMethodChannel(
                         result = result,
-                        methodName = "pauseDataCollection",
+                        methodName = "resumeDataCollection",
                         method = {
                             qa.resumeDataCollection(context)
                         }
@@ -55,7 +55,7 @@ class VoidMethodChannelHandler(
                     if (id != null) {
                         QAFlutterPluginHelper.safeMethodChannel(
                             result = result,
-                            methodName = "pauseDataCollection",
+                            methodName = "deleteJournalEntry",
                             method = {
                                 runBlocking {
                                     launch {
@@ -67,7 +67,7 @@ class VoidMethodChannelHandler(
                     } else {
                         QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(
                             result = result,
-                            methodName = "pauseDataCollection"
+                            methodName = "deleteJournalEntry"
                         )
                     }
                 }
@@ -118,6 +118,36 @@ class VoidMethodChannelHandler(
                         QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(
                             result = result,
                             methodName = "leaveCohort"
+                        )
+                    }
+                }
+
+                "recordQuestionnaireResponse" -> {
+                    val params = call.arguments as Map<*, *>
+
+                    val name = params["name"] as String?
+                    val code = params["code"] as String?
+                    val fullID = params["fullId"] as String?
+                    val response = params["response"] as String?
+                    val date: Long? = (params["date"] as String?)?.toLong()
+
+                    if (name != null && code != null && fullID != null && response != null && date != null) {
+                        QAFlutterPluginHelper.safeMethodChannel(
+                            result = result,
+                            methodName = "recordQuestionnaireResponse",
+                            method = {
+                                runBlocking {
+                                    launch {
+                                        qa.recordQuestionnaireResponse(
+                                            name, code, date, fullID, response
+                                        )
+                                    }
+                                }
+                            },
+                        )
+                    } else {
+                        QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(
+                            result = result, methodName = "recordQuestionnaireResponse"
                         )
                     }
                 }

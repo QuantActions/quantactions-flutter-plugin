@@ -22,8 +22,14 @@ class DataCollectionRunningMethodChannelHandler(
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         mainScope.launch {
             when (call.method) {
-                "isDataCollectionRunning" -> result.success(
-                    qa.isDataCollectionRunning(context)
+                QAFlutterPluginHelper.safeMethodChannel(
+                    result = result,
+                    methodName = "isDataCollectionRunning",
+                    method = {
+                        result.success(
+                            qa.isDataCollectionRunning(context)
+                        )
+                    }
                 )
             }
         }

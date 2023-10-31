@@ -46,7 +46,7 @@ class InitMethodChannelHandler(
 
                         QAFlutterPluginHelper.safeMethodChannel(
                             result = result,
-                            methodName = "leaveCohort",
+                            methodName = "init",
                             method = {
                                 result.success(
                                     runBlocking {

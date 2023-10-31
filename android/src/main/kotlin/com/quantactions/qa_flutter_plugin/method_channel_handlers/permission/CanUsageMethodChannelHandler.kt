@@ -24,9 +24,11 @@ class CanUsageMethodChannelHandler(
         mainScope.launch {
             when (call.method) {
                 "canUsage" -> {
-                    QAFlutterPluginHelper.safeMethodChannel(result = result,
+                    QAFlutterPluginHelper.safeMethodChannel(
+                        result = result,
                         methodName = "canUsage",
-                        method = { result.success(qa.canUsage(context)) })
+                        method = { result.success(qa.canUsage(context)) }
+                    )
                 }
             }
         }

@@ -28,7 +28,10 @@ class SaveJournalEntryMethodChannelHandler(
 //    private val ListIntType = object : TypeToken<List<Int>>() {}.type
 
     fun register(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        var channel = MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin/save_journal_entry")
+        var channel = MethodChannel(
+            flutterPluginBinding.binaryMessenger,
+            "qa_flutter_plugin/save_journal_entry"
+        )
         channel.setMethodCallHandler(this)
     }
 
@@ -36,6 +39,7 @@ class SaveJournalEntryMethodChannelHandler(
         mainScope.launch {
             when (call.method) {
                 "saveJournalEntry" -> {
+                    //TODO: (Karatysh): uncomment and implement method when will be ready
 //                    val id = params["id"] as String?
 //
 //                    val date = params["date"] as String

@@ -51,36 +51,6 @@ class GetQuestionnairesListStreamHandler(
                         },
                     )
                 }
-
-                "recordQuestionnaireResponse" -> {
-                    val name = params["name"] as String?
-                    val code = params["code"] as String?
-                    val fullID = params["fullId"] as String?
-                    val response = params["response"] as String?
-                    val date: Long? = (params["date"] as String?)?.toLong()
-
-                    if (name != null && code != null && fullID != null && response != null && date != null) {
-                        QAFlutterPluginHelper.safeEventChannel(
-                            eventSink = eventSink,
-                            methodName = "recordQuestionnaireResponse",
-                            method = {
-                                eventSink.success(
-                                    runBlocking {
-                                        launch {
-                                            qa.recordQuestionnaireResponse(
-                                                name, code, date, fullID, response
-                                            )
-                                        }
-                                    },
-                                )
-                            },
-                        )
-                    } else {
-                        QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
-                            eventSink = eventSink, methodName = "recordQuestionnaireResponse"
-                        )
-                    }
-                }
             }
         }
     }
