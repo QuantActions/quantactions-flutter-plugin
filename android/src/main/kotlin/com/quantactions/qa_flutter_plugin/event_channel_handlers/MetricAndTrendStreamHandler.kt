@@ -10,6 +10,9 @@ import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
 
 class MetricAndTrendStreamHandler(
     private var mainScope: CoroutineScope,
@@ -40,6 +43,7 @@ class MetricAndTrendStreamHandler(
 
             val metric = params["metric"] as String
             val metricToAsk = QAFlutterPluginMetricMapper.getMetric(metric)
+            val dateIntervalType = params["metricInterval"] as? String
 
             mainScope.launch {
                 when (params["method"] as? String) {
@@ -55,9 +59,10 @@ class MetricAndTrendStreamHandler(
                                         runBlocking {
                                             launch {
                                                 qa.getMetricSample(
-                                                    context,
-                                                    apiKey,
-                                                    metricToAsk,
+                                                    context = context,
+                                                    apiKey = apiKey,
+                                                    score = metricToAsk,
+                                                    from = getFromDateInterval(dateIntervalType)
                                                 ).collect {
                                                     eventSink.success(
                                                         QAFlutterPluginMetricMapper.mapMetricResponse(
@@ -85,7 +90,10 @@ class MetricAndTrendStreamHandler(
                                 eventSink.success(
                                     runBlocking {
                                         launch {
-                                            qa.getMetric(metricToAsk).collect {
+                                            qa.getMetric(
+                                                score = metricToAsk,
+                                                from = getFromDateInterval(dateIntervalType)
+                                            ).collect {
                                                 eventSink.success(
                                                     QAFlutterPluginMetricMapper.mapMetricResponse(
                                                         metric,
@@ -106,5 +114,20 @@ class MetricAndTrendStreamHandler(
 
     override fun onCancel(arguments: Any?) {
         eventSink = null
+    }
+
+    private fun getFromDateInterval(dateIntervalType: String?): Long {
+        val calendar = Calendar.getInstance()
+        val dayOfWeek = calendar[Calendar.DAY_OF_WEEK]
+        val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+
+        return when (dateIntervalType) {
+            "2weeks" -> Instant.now().minus(14, ChronoUnit.DAYS).toEpochMilli()
+            "6weeks" -> Instant.now().minus(dayOfWeek.toLong(), ChronoUnit.DAYS)
+                .minus(42, ChronoUnit.DAYS).toEpochMilli()
+
+            else -> Instant.now().minus(dayOfMonth.toLong(), ChronoUnit.DAYS)
+                .minus(12, ChronoUnit.MONTHS).toEpochMilli()
+        }
     }
 }

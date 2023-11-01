@@ -1,6 +1,7 @@
 package com.quantactions.qa_flutter_plugin.method_channel_handlers
 
 import android.content.Context
+import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
 import com.quantactions.sdk.QA
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -15,22 +16,26 @@ class DataCollectionRunningMethodChannelHandler(
 ) : MethodChannel.MethodCallHandler {
 
     fun register(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        val channel = MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin/data_collection_running")
+        val channel = MethodChannel(
+            flutterPluginBinding.binaryMessenger,
+            "qa_flutter_plugin/data_collection_running"
+        )
         channel.setMethodCallHandler(this)
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         mainScope.launch {
             when (call.method) {
-                QAFlutterPluginHelper.safeMethodChannel(
-                    result = result,
-                    methodName = "isDataCollectionRunning",
-                    method = {
-                        result.success(
-                            qa.isDataCollectionRunning(context)
-                        )
-                    }
-                )
+                "isDataCollectionRunning" ->
+                    QAFlutterPluginHelper.safeMethodChannel(
+                        result = result,
+                        methodName = "isDataCollectionRunning",
+                        method = {
+                            result.success(
+                                qa.isDataCollectionRunning(context)
+                            )
+                        }
+                    )
             }
         }
     }
