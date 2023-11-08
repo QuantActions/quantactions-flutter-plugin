@@ -196,8 +196,8 @@ class QAFlutterPlugin {
     required MetricInterval interval,
   }) {
     return _metricRepository.getMetric(
-        metric: metric,
-        interval: interval,
+      metric: metric,
+      interval: interval,
     );
   }
 

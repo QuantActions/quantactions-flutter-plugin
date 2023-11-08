@@ -14,7 +14,7 @@ import com.quantactions.qa_flutter_plugin.event_channel_handlers.UserStreamHandl
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.cohort.LeaveCohortStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.journal.GetJournalEventsStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.journal.GetJournalStreamHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.MainMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.MethodChannelHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodChannel
@@ -91,7 +91,7 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
 
         metricEventChannels = QAFlutterPluginHelper.listOfMetricsAndTrends.map {
             Log.d("QAFlutterPlugin", "Creating event channel for ${it.id}")
-             EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/${it.id}")
+            EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/${it.id}")
         }
 
         metricEventChannels.forEach {

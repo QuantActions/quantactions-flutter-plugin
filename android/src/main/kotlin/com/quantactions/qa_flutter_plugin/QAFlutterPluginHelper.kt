@@ -30,8 +30,8 @@ class QAFlutterPluginHelper {
 
         fun parseGender(gender: String?): Gender {
             return when (gender) {
-                "male" -> QA.Gender.MALE
-                "femail" -> QA.Gender.FEMALE
+                "cognitive" -> QA.Gender.MALE
+                "social" -> QA.Gender.FEMALE
                 "other" -> QA.Gender.OTHER
                 else -> QA.Gender.UNKNOWN
             }
