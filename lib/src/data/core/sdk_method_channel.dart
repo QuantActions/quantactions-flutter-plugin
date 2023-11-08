@@ -24,8 +24,8 @@ class SDKMethodChannel extends SDKMethodChannelCore {
         request: () => methodChannel.invokeMethod<T>(method, params),
       );
     } else {
-      response = await _safeRequest(
-        request: () => _methodChannel.invokeMethod<T>(method, params),
+      response = _safeRequest(
+        request: () async => _methodChannel.invokeMethod<T>(method, params),
       );
     }
 
@@ -52,11 +52,11 @@ class SDKMethodChannel extends SDKMethodChannelCore {
 
   dynamic _safeRequest({
     required Function() request,
-  }) async {
+  }) {
     if (defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS) {
       try {
-        return await request();
+        return request();
       } on PlatformException catch (e) {
         throw QAError(
           description: e.message.toString(),
