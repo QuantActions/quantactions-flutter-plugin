@@ -209,10 +209,12 @@ class QAFlutterPlugin {
   Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
     required MetricType metric,
+    required MetricInterval interval,
   }) {
     return _metricRepository.getMetricSample(
       apiKey: apiKey,
       metric: metric,
+      interval: interval,
     );
   }
 

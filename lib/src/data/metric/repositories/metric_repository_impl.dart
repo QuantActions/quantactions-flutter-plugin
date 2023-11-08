@@ -37,11 +37,13 @@ class MetricRepositoryImpl implements MetricRepository {
   Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
     required MetricType metric,
+    required MetricInterval interval,
   }) {
     return _mapStream(
       stream: _metricProvider.getMetricSample(
         apiKey: apiKey,
         metric: metric,
+        interval: interval,
       ),
       metric: metric,
     );

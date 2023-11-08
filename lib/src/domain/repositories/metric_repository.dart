@@ -9,6 +9,7 @@ abstract class MetricRepository {
   Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
     required MetricType metric,
+    required MetricInterval interval,
   });
 
   Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric);

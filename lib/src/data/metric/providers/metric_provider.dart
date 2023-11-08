@@ -9,6 +9,7 @@ abstract class MetricProvider {
   Stream<dynamic> getMetricSample({
     required String apiKey,
     required MetricType metric,
+    required MetricInterval interval,
   });
 
   Future<String?> getMetricAsync(MetricType metric);
