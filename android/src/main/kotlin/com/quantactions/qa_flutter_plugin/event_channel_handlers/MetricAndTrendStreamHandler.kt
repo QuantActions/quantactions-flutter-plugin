@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.Calendar
+import java.time.LocalDate
+import java.time.ZoneOffset
 
 class MetricAndTrendStreamHandler(
     private var mainScope: CoroutineScope,
@@ -96,8 +97,7 @@ class MetricAndTrendStreamHandler(
                                             ).collect {
                                                 eventSink.success(
                                                     QAFlutterPluginMetricMapper.mapMetricResponse(
-                                                        metric,
-                                                        it
+                                                        metric, it
                                                     )
                                                 )
                                             }
@@ -117,17 +117,16 @@ class MetricAndTrendStreamHandler(
     }
 
     private fun getFromDateInterval(dateIntervalType: String?): Long {
-        val calendar = Calendar.getInstance()
-        val dayOfWeek = calendar[Calendar.DAY_OF_WEEK]
-        val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+        val currentDate = LocalDate.now()
 
-        return when (dateIntervalType) {
-            "2weeks" -> Instant.now().minus(14, ChronoUnit.DAYS).toEpochMilli()
-            "6weeks" -> Instant.now().minus(dayOfWeek.toLong(), ChronoUnit.DAYS)
-                .minus(42, ChronoUnit.DAYS).toEpochMilli()
+        val localDate = when (dateIntervalType) {
+            "2weeks" -> currentDate.minusDays(14)
 
-            else -> Instant.now().minus(dayOfMonth.toLong(), ChronoUnit.DAYS)
-                .minus(12, ChronoUnit.MONTHS).toEpochMilli()
+            "6weeks" -> currentDate.minusDays(currentDate.dayOfWeek.value.toLong()).minusWeeks(5)
+
+            else -> currentDate.minusDays(currentDate.dayOfMonth.toLong() - 1).minusMonths(11)
         }
+
+        return localDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
     }
 }
