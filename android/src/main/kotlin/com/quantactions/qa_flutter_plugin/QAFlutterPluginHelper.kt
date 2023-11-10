@@ -55,9 +55,9 @@ class QAFlutterPluginHelper {
             }
         }
 
-        fun safeEventChannel(
+        suspend fun safeEventChannel(
             eventSink: EventChannel.EventSink, methodName: String,
-            method: () ->
+            method: suspend () ->
             Unit
         ) {
             try {

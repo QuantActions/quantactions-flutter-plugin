@@ -7,7 +7,6 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class GetJournalEventKindsStreamHandler(
     private var mainScope: CoroutineScope,
@@ -34,18 +33,12 @@ class GetJournalEventKindsStreamHandler(
                         eventSink = eventSink,
                         methodName = "journalEventKinds",
                         method = {
-                            eventSink.success(
-                                runBlocking {
-                                    launch {
-                                        val response = qa.journalEventKinds()
+                            val response = qa.journalEventKinds()
 
-                                        eventSink.success(
-                                            QAFlutterPluginSerializable.serializeJournalEventEntity(
-                                                response
-                                            )
-                                        )
-                                    }
-                                },
+                            eventSink.success(
+                                QAFlutterPluginSerializable.serializeJournalEventEntity(
+                                    response
+                                )
                             )
                         },
                     )

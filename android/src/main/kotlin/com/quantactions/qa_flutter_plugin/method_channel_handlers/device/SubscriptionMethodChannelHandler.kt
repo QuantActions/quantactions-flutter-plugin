@@ -3,18 +3,15 @@ package com.quantactions.qa_flutter_plugin.method_channel_handlers.device
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
-import com.quantactions.sdk.Subscription
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.time.LocalDate
 
 class SubscriptionMethodChannelHandler(
     private var mainScope: CoroutineScope,
-//    private var ioScope: CoroutineScope,
     private var qa: QA,
 ) : MethodChannel.MethodCallHandler {
 

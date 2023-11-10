@@ -10,10 +10,9 @@ import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 import java.time.LocalDate
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 class MetricAndTrendStreamHandler(
     private var mainScope: CoroutineScope,
@@ -56,24 +55,32 @@ class MetricAndTrendStreamHandler(
                                 eventSink = eventSink,
                                 methodName = "getMetricSample",
                                 method = {
-                                    eventSink.success(
-                                        runBlocking {
-                                            launch {
-                                                qa.getMetricSample(
-                                                    context = context,
-                                                    apiKey = apiKey,
-                                                    score = metricToAsk,
-                                                    from = getFromDateInterval(dateIntervalType)
-                                                ).collect {
-                                                    eventSink.success(
-                                                        QAFlutterPluginMetricMapper.mapMetricResponse(
-                                                            metric, it
-                                                        )
-                                                    )
-                                                }
-                                            }
-                                        },
-                                    )
+                                    val fromLocalDate = getFromDateInterval(dateIntervalType)
+                                    val toLocalDate = LocalDate.now()
+
+                                    qa.getMetricSample(
+                                        context = context,
+                                        apiKey = apiKey,
+                                        score = metricToAsk,
+                                        from = fromLocalDate.atStartOfDay()
+                                            .toInstant(ZoneOffset.UTC).toEpochMilli(),
+                                        to = toLocalDate.atStartOfDay().toInstant(ZoneOffset.UTC)
+                                            .toEpochMilli()
+                                    ).collect {
+                                        val rewindDays = ChronoUnit.DAYS.between(
+                                            fromLocalDate,
+                                            toLocalDate
+                                        ).toInt() - it.timestamps.size
+
+                                        eventSink.success(
+                                            QAFlutterPluginMetricMapper.mapMetricResponse(
+                                                metric, it.fillMissingDays(
+                                                    rewindDays = rewindDays,
+                                                    inplace = true,
+                                                )
+                                            )
+                                        )
+                                    }
                                 },
                             )
                         } else {
@@ -91,13 +98,29 @@ class MetricAndTrendStreamHandler(
                                 eventSink.success(
                                     runBlocking {
                                         launch {
+                                            val fromLocalDate =
+                                                getFromDateInterval(dateIntervalType)
+                                            val toLocalDate = LocalDate.now()
+
                                             qa.getMetric(
                                                 score = metricToAsk,
-                                                from = getFromDateInterval(dateIntervalType)
+                                                from = fromLocalDate.atStartOfDay()
+                                                    .toInstant(ZoneOffset.UTC).toEpochMilli(),
+                                                to = toLocalDate.atStartOfDay()
+                                                    .toInstant(ZoneOffset.UTC)
+                                                    .toEpochMilli()
                                             ).collect {
+                                                val rewindDays = ChronoUnit.DAYS.between(
+                                                    fromLocalDate,
+                                                    toLocalDate
+                                                ).toInt() - it.timestamps.size
+
                                                 eventSink.success(
                                                     QAFlutterPluginMetricMapper.mapMetricResponse(
-                                                        metric, it
+                                                        metric, it.fillMissingDays(
+                                                            rewindDays = rewindDays,
+                                                            inplace = true,
+                                                        )
                                                     )
                                                 )
                                             }
@@ -116,17 +139,15 @@ class MetricAndTrendStreamHandler(
         eventSink = null
     }
 
-    private fun getFromDateInterval(dateIntervalType: String?): Long {
+    private fun getFromDateInterval(dateIntervalType: String?): LocalDate {
         val currentDate = LocalDate.now()
 
-        val localDate = when (dateIntervalType) {
+        return when (dateIntervalType) {
             "2weeks" -> currentDate.minusDays(14)
 
             "6weeks" -> currentDate.minusDays(currentDate.dayOfWeek.value.toLong()).minusWeeks(5)
 
-            else -> currentDate.minusDays(currentDate.dayOfMonth.toLong() - 1).minusMonths(11)
+            else -> currentDate.minusDays(currentDate.dayOfMonth.toLong()).minusMonths(11)
         }
-
-        return localDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
     }
 }

@@ -7,7 +7,6 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class GetCohortListStreamHandler(
     private var mainScope: CoroutineScope,
@@ -17,7 +16,10 @@ class GetCohortListStreamHandler(
 
     fun register(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val channel =
-            EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/get_cohort_list")
+            EventChannel(
+                flutterPluginBinding.binaryMessenger,
+                "qa_flutter_plugin_stream/get_cohort_list"
+            )
         channel.setStreamHandler(this)
     }
 
@@ -34,15 +36,9 @@ class GetCohortListStreamHandler(
                         methodName = "getCohortList",
                         method = {
                             eventSink.success(
-                                runBlocking {
-                                    launch {
-                                        eventSink.success(
-                                            QAFlutterPluginSerializable.serializeCohortList(
-                                                qa.getCohortList()
-                                            )
-                                        )
-                                    }
-                                },
+                                QAFlutterPluginSerializable.serializeCohortList(
+                                    qa.getCohortList()
+                                )
                             )
                         },
                     )

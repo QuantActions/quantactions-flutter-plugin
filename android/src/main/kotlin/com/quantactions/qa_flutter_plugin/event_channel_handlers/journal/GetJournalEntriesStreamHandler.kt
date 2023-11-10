@@ -9,7 +9,6 @@ import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class GetJournalEntriesStreamHandler(
@@ -40,19 +39,14 @@ class GetJournalEntriesStreamHandler(
                         eventSink = eventSink,
                         methodName = "journalEntries",
                         method = {
-                            eventSink.success(
-                                runBlocking {
-                                    launch {
-                                        qa.journalEntries().collect {
-                                            eventSink.success(
-                                                QAFlutterPluginSerializable.serializeJournalEntryList(
-                                                    it
-                                                )
-                                            )
-                                        }
-                                    }
-                                },
-                            )
+                            qa.journalEntries().collect {
+                                eventSink.success(
+                                    QAFlutterPluginSerializable.serializeJournalEntryList(
+                                        it
+                                    )
+                                )
+                            }
+
                         },
                     )
                 }
@@ -66,18 +60,12 @@ class GetJournalEntriesStreamHandler(
                                 eventSink = eventSink,
                                 methodName = "journalEntriesSample",
                                 method = {
-                                    eventSink.success(
-                                        runBlocking {
-                                            launch {
-                                                val response = qa.getJournalSample(context, apiKey)
+                                    val response = qa.getJournalSample(context, apiKey)
 
-                                                eventSink.success(
-                                                    QAFlutterPluginSerializable.serializeJournalEntryList(
-                                                        response
-                                                    )
-                                                )
-                                            }
-                                        },
+                                    eventSink.success(
+                                        QAFlutterPluginSerializable.serializeJournalEntryList(
+                                            response
+                                        )
                                     )
                                 },
                             )
