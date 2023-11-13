@@ -37,6 +37,7 @@ class MetricProviderImpl implements MetricProvider {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getMetric,
       eventChannel: _eventChannels[metric]!,
+      metricType: metric,
       params: <String, dynamic>{
         'metric': metric.id,
       },
@@ -47,6 +48,7 @@ class MetricProviderImpl implements MetricProvider {
   Future<String?> getMetricAsync(MetricType metric) {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.getMetricAsync,
+      metricType: metric,
       params: <String, dynamic>{
         'metric': metric.id,
       },
@@ -61,6 +63,7 @@ class MetricProviderImpl implements MetricProvider {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getMetricSample,
       eventChannel: _eventChannels[metric]!,
+      metricType: metric,
       params: <String, dynamic>{
         'apiKey': apiKey,
         'metric': metric.id,
@@ -75,6 +78,7 @@ class MetricProviderImpl implements MetricProvider {
   }) {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.getStatSampleAsync,
+      metricType: metric,
       params: <String, dynamic>{
         'apiKey': apiKey,
         'metric': metric.id,
