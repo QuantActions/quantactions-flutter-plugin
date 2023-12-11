@@ -69,7 +69,7 @@ void main() {
   test('getMetric', () {
     eventChannels.forEach((MetricType key, EventChannel value) {
       expect(
-        qaFlutterPlugin.getMetric(key),
+        qaFlutterPlugin.getMetric(metric: key, interval: MetricInterval.month),
         const TypeMatcher<Stream<TimeSeries<dynamic>>>(),
       );
     });
@@ -87,7 +87,7 @@ void main() {
   test('getMetricSample', () {
     eventChannels.forEach((MetricType key, EventChannel value) {
       expect(
-        qaFlutterPlugin.getMetricSample(apiKey: '', metric: key),
+        qaFlutterPlugin.getMetricSample(apiKey: '', metric: key, interval: MetricInterval.month),
         const TypeMatcher<Stream<TimeSeries<dynamic>>>(),
       );
     });

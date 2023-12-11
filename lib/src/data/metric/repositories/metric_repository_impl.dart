@@ -12,9 +12,15 @@ class MetricRepositoryImpl implements MetricRepository {
   }) : _metricProvider = metricProvider;
 
   @override
-  Stream<TimeSeries<dynamic>> getMetric(MetricType metric) {
+  Stream<TimeSeries<dynamic>> getMetric({
+  required MetricType metric,
+  required MetricInterval interval,
+}) {
     return _mapStream(
-      stream: _metricProvider.getMetric(metric),
+      stream: _metricProvider.getMetric(
+          metric: metric,
+          interval: interval,
+      ),
       metric: metric,
     );
   }
@@ -31,11 +37,13 @@ class MetricRepositoryImpl implements MetricRepository {
   Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
     required MetricType metric,
+    required MetricInterval interval,
   }) {
     return _mapStream(
       stream: _metricProvider.getMetricSample(
         apiKey: apiKey,
         metric: metric,
+        interval: interval,
       ),
       metric: metric,
     );
