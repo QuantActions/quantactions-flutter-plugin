@@ -16,9 +16,9 @@ class SDKMethodChannel extends SDKMethodChannelCore {
   Future<T> callMethodChannel<T>({
     required String method,
     Map<String, dynamic>? params,
-    // //param for mock data
-    MetricType? metricType,
     MethodChannel? methodChannel,
+    //param for mock data
+    MetricType? metricType,
   }) async {
     return await _safeRequest(
       request: () => methodChannel != null

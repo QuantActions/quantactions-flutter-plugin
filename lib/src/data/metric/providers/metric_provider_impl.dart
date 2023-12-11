@@ -33,14 +33,18 @@ class MetricProviderImpl implements MetricProvider {
   }) : _sdkMethodChannel = sdkMethodChannel;
 
   @override
-  Stream<dynamic> getMetric(MetricType metric) {
+  Stream<dynamic> getMetric({
+    required MetricType metric,
+    required MetricInterval interval,
+}) {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getMetric,
       eventChannel: _eventChannels[metric]!,
-      metricType: metric,
       params: <String, dynamic>{
         'metric': metric.id,
+        'metricInterval': interval.id,
       },
+      metricType: metric,
     );
   }
 
@@ -48,6 +52,7 @@ class MetricProviderImpl implements MetricProvider {
   Stream<dynamic> getMetricSample({
     required String apiKey,
     required MetricType metric,
+    required MetricInterval interval,
   }) {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getMetricSample,
@@ -56,6 +61,7 @@ class MetricProviderImpl implements MetricProvider {
       params: <String, dynamic>{
         'apiKey': apiKey,
         'metric': metric.id,
+        'metricInterval': interval.id,
       },
     );
   }

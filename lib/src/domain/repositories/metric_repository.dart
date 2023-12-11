@@ -1,12 +1,15 @@
-import '../models/metric/metric_type.dart';
-import '../models/time_series/time_series.dart';
+import '../domain.dart';
 
 abstract class MetricRepository {
-  Stream<TimeSeries<dynamic>> getMetric(MetricType metric);
+  Stream<TimeSeries<dynamic>> getMetric({
+    required MetricType metric,
+    required MetricInterval interval,
+  });
 
   Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
     required MetricType metric,
+    required MetricInterval interval,
   });
 
   Future<TimeSeries<dynamic>?> getStatSampleAsync({

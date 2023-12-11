@@ -155,8 +155,14 @@ class QAFlutterPlugin {
   ///Check the the list of available metrics from [Metric] or [Trend].
   ///The function returns an object of type [TimeSeries] which contains timestamps
   ///and values of the requested metric. The call is asynchronous ans returns a flow.
-  Stream<TimeSeries<dynamic>> getMetric(MetricType metric) {
-    return _metricRepository.getMetric(metric);
+  Stream<TimeSeries<dynamic>> getMetric({
+    required MetricType metric,
+    required MetricInterval interval,
+  }) {
+    return _metricRepository.getMetric(
+      metric: metric,
+      interval: interval,
+    );
   }
 
   ///Get a QA metric relative to a fictitious test device.
@@ -167,10 +173,12 @@ class QAFlutterPlugin {
   Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
     required MetricType metric,
+    required MetricInterval interval,
   }) {
     return _metricRepository.getMetricSample(
       apiKey: apiKey,
       metric: metric,
+      interval: interval,
     );
   }
 
