@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import '../../../domain/domain.dart';
+import '../../mappers/journal_entry/journal_entry_with_events_mapper.dart';
+import '../../mappers/journal_entry/journal_event_entity_mapper.dart';
 import '../../mappers/journal_entry/journal_stream_mapper.dart';
 import '../providers/journal_provider.dart';
 
@@ -18,14 +21,14 @@ class JournalRepositoryImpl implements JournalRepository {
     required String note,
     required List<JournalEvent> events,
   }) async {
-    final Map<String, dynamic> map = await _journalProvider.saveJournalEntry(
+    final String json = await _journalProvider.saveJournalEntry(
       id: id,
       date: date,
       note: note,
       events: events,
     );
 
-    return JournalEntry.fromJson(map);
+    return JournalEntry.fromJson(jsonDecode(json));
   }
 
   @override
@@ -39,7 +42,7 @@ class JournalRepositoryImpl implements JournalRepository {
   Stream<List<JournalEntry>> getJournalEntries() {
     final Stream<dynamic> stream = _journalProvider.getJournalEntries();
 
-    return JournalStreamMapper.getListEntryWithEvents(stream);
+    return JournalStreamMapper.getListJournalEntry(stream);
   }
 
   @override
@@ -52,19 +55,19 @@ class JournalRepositoryImpl implements JournalRepository {
   }
 
   @override
-  Stream<List<JournalEvent>> getJournalEventKinds() {
-    final Stream<dynamic> stream = _journalProvider.getJournalEventKinds();
+  Future<List<JournalEventEntity>> getJournalEventKinds() async {
+    final String list = await _journalProvider.getJournalEventKinds();
 
-    return JournalStreamMapper.getListEvent(stream);
+    return JournalEventEntityMapper.fromList(jsonDecode(list));
   }
 
   @override
-  Stream<List<JournalEntry>> getJournalEntriesSample({
+  Future<List<JournalEntry>> getJournalEntriesSample({
     required String apiKey,
-  }) {
-    final Stream<dynamic> stream = _journalProvider.getJournalEntriesSample(apiKey: apiKey);
+  }) async {
+    final String json = await _journalProvider.getJournalEntriesSample(apiKey: apiKey);
 
-    return JournalStreamMapper.getListEntryWithEvents(stream);
+    return JournalEntryMapper.fromList(jsonDecode(json));
   }
 
   @override

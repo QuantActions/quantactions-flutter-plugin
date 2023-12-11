@@ -11,11 +11,11 @@ class JournalStreamMapper {
     );
   }
 
-  static Stream<List<JournalEntry>> getListEntryWithEvents(
+  static Stream<List<JournalEntry>> getListJournalEntry(
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (dynamic event) => JournalEntryWithEventsMapper.fromList(jsonDecode(event)),
+      (dynamic event) => JournalEntryMapper.fromList(jsonDecode(event)),
     );
   }
 }

@@ -6,6 +6,7 @@ export 'error/qa_error.dart';
 export 'gender/gender.dart';
 export 'journal/journal_entry.dart';
 export 'journal/journal_event.dart';
+export 'journal/journal_event_entity.dart';
 export 'metric/flag.dart';
 export 'metric/metric.dart';
 export 'metric/metric_type.dart';

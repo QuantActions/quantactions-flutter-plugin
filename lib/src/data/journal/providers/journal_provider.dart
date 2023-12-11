@@ -14,13 +14,13 @@ abstract class JournalProvider {
 
   Stream<dynamic> getJournalEntries();
 
-  Stream<dynamic> getJournalEntriesSample({
+  Future<dynamic> getJournalEntriesSample({
     required String apiKey,
   });
 
   Future<String?> getJournalEntry(String journalEntryId);
 
-  Stream<dynamic> getJournalEventKinds();
+  Future<dynamic> getJournalEventKinds();
 
   Future<void> sendNote(String text);
 }

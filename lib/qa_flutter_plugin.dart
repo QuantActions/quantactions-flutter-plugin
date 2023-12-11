@@ -138,16 +138,16 @@ class QAFlutterPlugin {
   ///This functions returns a fictitious journal and can be used for
   ///test/display purposes, Checkout JournalEntryWithEvents for a complete
   ///description of how the journal entries are organized.
-  Stream<List<JournalEntry>> getJournalEntriesSample({
+  Future<List<JournalEntry>> getJournalEntriesSample({
     required String apiKey,
-  }) {
+  }) async {
     return _journalRepository.getJournalEntriesSample(apiKey: apiKey);
   }
 
   ///Retrieves the Journal events, meaning the events that one can log together
   ///with a journal entry. The events come from a fixed set which may be
-  ///updated in the future, this function return the latest update to the [JournalEvent].
-  Stream<List<JournalEvent>> getJournalEventKinds() {
+  ///updated in the future, this function return the latest update to the [JournalEventEntity].
+  Future<List<JournalEventEntity>> getJournalEventKinds() async {
     return _journalRepository.getJournalEventKinds();
   }
 

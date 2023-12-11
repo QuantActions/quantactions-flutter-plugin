@@ -8,12 +8,13 @@ class JournalEntryFactory extends MockModelFactory<JournalEntry> {
     return JournalEntry(
       id: generateId,
       timestamp: generateDateTime,
-      note: faker.lorem.sentences(3).join(),
+      note: faker.lorem.sentences(2).join(),
       events: JournalEventFactory().generateListFake(length: 5),
-      scores: faker.lorem.words(5).fold<Map<String, int>>(
-        <String, int>{},
-        (Map<String, int> map, String word) => map..[word] = faker.randomGenerator.integer(5),
-      ),
+      scores: <String, int>{
+        'fitness': faker.randomGenerator.integer(100),
+        'sleep': faker.randomGenerator.integer(100),
+        'social': faker.randomGenerator.integer(100),
+      },
     );
   }
 

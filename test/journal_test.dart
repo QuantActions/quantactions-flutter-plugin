@@ -78,22 +78,18 @@ void main() {
     );
   });
 
-  test('getJournalEvents', () {
-    qaFlutterPlugin.getJournalEventKinds().listen((List<JournalEvent> event) {
-      expect(
-        event,
-        const TypeMatcher<List<JournalEvent>>(),
-      );
-    });
+  test('getJournalEventKinds', () async {
+    expect(
+      await qaFlutterPlugin.getJournalEventKinds(),
+      const TypeMatcher<List<JournalEventEntity>>(),
+    );
   });
 
-  test('getJournalSample', () {
-    qaFlutterPlugin.getJournalEntriesSample(apiKey: '').listen((List<JournalEntry> event) {
-      expect(
-        event,
-        const TypeMatcher<List<JournalEntry>>(),
-      );
-    });
+  test('getJournalSample', () async {
+    expect(
+      await qaFlutterPlugin.getJournalEntriesSample(apiKey: ''),
+      const TypeMatcher<List<JournalEntry>>(),
+    );
   });
 
   test('sendNote', () async {

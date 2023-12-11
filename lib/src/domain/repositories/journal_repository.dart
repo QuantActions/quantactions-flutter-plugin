@@ -14,13 +14,13 @@ abstract class JournalRepository {
 
   Stream<List<JournalEntry>> getJournalEntries();
 
-  Stream<List<JournalEntry>> getJournalEntriesSample({
+  Future<List<JournalEntry>> getJournalEntriesSample({
     required String apiKey,
   });
 
   Future<JournalEntry?> getJournalEntry(String journalEntryId);
 
-  Stream<List<JournalEvent>> getJournalEventKinds();
+  Future<List<JournalEventEntity>> getJournalEventKinds();
 
   Future<void> sendNote(String text);
 }

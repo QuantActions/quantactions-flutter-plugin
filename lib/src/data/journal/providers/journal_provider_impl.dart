@@ -9,11 +9,14 @@ import '../../core/sdk_method_channel.dart';
 import 'journal_provider.dart';
 
 class JournalProviderImpl implements JournalProvider {
-  final EventChannel _getJournalEventKindsEventChannel = const EventChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/get_journal_event_kinds',
+  final MethodChannel _getJournalEventKindsEventChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/get_journal_event_kinds',
   );
   final EventChannel _getJournalEntriesChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/get_journal_entries',
+  );
+  final MethodChannel _getJournalEntriesSampleChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/get_journal_entries_sample',
   );
   final MethodChannel _getJournalEntryMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/get_journal_entry',
@@ -40,7 +43,7 @@ class JournalProviderImpl implements JournalProvider {
       methodChannel: _saveJournalEntryMethodChannel,
       params: <String, dynamic>{
         'id': id,
-        'date': date.toUtc().toString(),
+        'date': date.toString(),
         'note': note,
         'events': jsonEncode(
           events.map((JournalEvent event) => event.toJson()).toList(),
@@ -81,20 +84,20 @@ class JournalProviderImpl implements JournalProvider {
   }
 
   @override
-  Stream<dynamic> getJournalEventKinds() {
-    return _sdkMethodChannel.callEventChannel(
+  Future<dynamic> getJournalEventKinds() {
+    return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.journalEventKinds,
-      eventChannel: _getJournalEventKindsEventChannel,
+      methodChannel: _getJournalEventKindsEventChannel,
     );
   }
 
   @override
-  Stream<dynamic> getJournalEntriesSample({
+  Future<dynamic> getJournalEntriesSample({
     required String apiKey,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
+  }) async{
+    return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.journalEntriesSample,
-      eventChannel: _getJournalEntriesChannel,
+      methodChannel: _getJournalEntriesSampleChannel,
       params: <String, dynamic>{
         'apiKey': apiKey,
       },
