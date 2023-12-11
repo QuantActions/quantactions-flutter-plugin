@@ -5,10 +5,9 @@ import android.content.Context
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanDrawMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanUsageMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetCohortListStreamHandler
+import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetJournalEntriesStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetQuestionnairesListStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.MetricAndTrendStreamHandler
-import com.quantactions.qa_flutter_plugin.event_channel_handlers.journal.GetJournalEntriesStreamHandler
-import com.quantactions.qa_flutter_plugin.event_channel_handlers.journal.GetJournalEventKindsStreamHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.BasicInfoMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.DataCollectionRunningMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.DeviceIdMethodChannelHandler
@@ -19,6 +18,8 @@ import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.SaveJo
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.SubscribeMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.VoidMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.SubscriptionMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEntriesSampleMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEventEntityMethodChannelHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -68,13 +69,13 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
 
     private fun initChannels(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        VoidMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
+        VoidMethodChannelHandler(ioScope, qa, context).register(flutterPluginBinding)
         InitMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         BasicInfoMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
         DataCollectionRunningMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         IsDeviceRegisteredMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
         DeviceIdMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
-        SaveJournalEntryMethodChannelHandler(mainScope, ioScope, qa, context).register(flutterPluginBinding)
+        SaveJournalEntryMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         GetJournalEntryMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         CanDrawMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         CanUsageMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
@@ -83,8 +84,9 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         MetricAndTrendStreamHandler(mainScope, ioScope, qa, context).register(flutterPluginBinding)
         GetCohortListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetCohortListStreamHandler(mainScope, qa).register(flutterPluginBinding)
-        GetJournalEventKindsStreamHandler(mainScope, qa).register(flutterPluginBinding)
+        GetJournalEventEntityMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         GetJournalEntriesStreamHandler(mainScope, qa, context).register(flutterPluginBinding)
         GetQuestionnairesListStreamHandler(mainScope, qa).register(flutterPluginBinding)
+        GetJournalEntriesSampleMethodChannelHandler(ioScope, qa, context).register(flutterPluginBinding)
     }
 }

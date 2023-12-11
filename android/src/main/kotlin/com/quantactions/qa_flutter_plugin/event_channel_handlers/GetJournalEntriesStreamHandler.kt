@@ -1,22 +1,28 @@
-package com.quantactions.qa_flutter_plugin.event_channel_handlers.journal
+package com.quantactions.qa_flutter_plugin.event_channel_handlers
 
+import android.content.Context
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class GetJournalEventKindsStreamHandler(
-    private var mainScope: CoroutineScope,
+class GetJournalEntriesStreamHandler(
+    private var ioScope: CoroutineScope,
     private var qa: QA,
+    private var context: Context,
 ) : EventChannel.StreamHandler {
     private var eventSink: EventChannel.EventSink? = null
 
     fun register(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val channel = EventChannel(
-            flutterPluginBinding.binaryMessenger, "qa_flutter_plugin/get_journal_event_kinds"
+            flutterPluginBinding.binaryMessenger,
+            "qa_flutter_plugin_stream/get_journal_entries"
         )
         channel.setStreamHandler(this)
     }
@@ -24,22 +30,23 @@ class GetJournalEventKindsStreamHandler(
     override fun onListen(arguments: Any?, eventSink: EventChannel.EventSink) {
         this.eventSink = eventSink
 
-        mainScope.launch {
+        ioScope.launch {
             val params = arguments as Map<*, *>
 
             when (params["method"]) {
-                "journalEventKinds" -> {
+
+                "journalEntries" -> {
                     QAFlutterPluginHelper.safeEventChannel(
                         eventSink = eventSink,
-                        methodName = "journalEventKinds",
+                        methodName = "journalEntries",
                         method = {
-                            val response = qa.journalEventKinds()
-
-                            eventSink.success(
-                                QAFlutterPluginSerializable.serializeJournalEventEntity(
-                                    response
-                                )
-                            )
+                                qa.journalEntries().collect {
+                                    eventSink.success(
+                                        QAFlutterPluginSerializable.serializeJournalEntryList(
+                                            it
+                                        )
+                                    )
+                                }
                         },
                     )
                 }

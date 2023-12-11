@@ -8,8 +8,10 @@ import com.quantactions.sdk.data.model.JournalEntry
 import com.quantactions.sdk.data.entity.Questionnaire
 import com.quantactions.sdk.Subscription
 import com.quantactions.sdk.data.entity.JournalEventEntity
+import com.quantactions.sdk.data.model.JournalEntryEvent
 import com.squareup.moshi.JsonClass
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -270,13 +272,27 @@ class QAFlutterPluginSerializable {
                 events.map { event ->
                     SerializableJournalEventEntity(
                         event.id,
-                        event.public_name,
-                        event.icon_name,
+                        event.name,
+                        event.icon,
                         event.created,
                         event.modified
                     )
                 }
             )
+        }
+
+        fun serializeJournalEventFromJson(json: String): List<JournalEntryEvent> {
+            val list = Json.decodeFromString<List<SerializableJournalEntryEvent>>(json)
+
+            return list.map { element ->
+                JournalEntryEvent(
+                    element.id,
+                    element.eventKindID,
+                    element.eventName,
+                    element.eventIcon,
+                    element.rating
+                )
+            }
         }
 
         fun serializeBasicInfo(basicInfo: BasicInfo): String {

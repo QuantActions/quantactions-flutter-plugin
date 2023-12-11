@@ -2,6 +2,7 @@ package com.quantactions.qa_flutter_plugin.method_channel_handlers
 
 import android.content.Context
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
+import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -9,9 +10,11 @@ import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class VoidMethodChannelHandler(
-    private var mainScope: CoroutineScope,
+    private var ioScope: CoroutineScope,
     private var qa: QA,
     private var context: Context
 ) : MethodChannel.MethodCallHandler {
@@ -22,7 +25,7 @@ class VoidMethodChannelHandler(
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        mainScope.launch {
+        ioScope.launch {
             when (call.method) {
                 "getPlatformVersion" -> {
                     result.success("Android ${android.os.Build.VERSION.RELEASE}")
@@ -109,7 +112,8 @@ class VoidMethodChannelHandler(
                             method = {
                                 runBlocking {
                                     launch {
-                                        qa.leaveCohort(cohortId)
+                                        //TODO (karatysh): set subscriptionId instead of ""
+                                        qa.leaveCohort("", cohortId)
                                     }
                                 }
                             }
@@ -129,9 +133,13 @@ class VoidMethodChannelHandler(
                     val code = params["code"] as String?
                     val fullID = params["fullId"] as String?
                     val response = params["response"] as String?
+                    val responseMap =
+                        if (response == null) null else Json.decodeFromString<Map<String, Any>>(
+                            response
+                        )
                     val date: Long? = (params["date"] as String?)?.toLong()
 
-                    if (name != null && code != null && fullID != null && response != null && date != null) {
+                    if (name != null && code != null && fullID != null && responseMap != null && date != null) {
                         QAFlutterPluginHelper.safeMethodChannel(
                             result = result,
                             methodName = "recordQuestionnaireResponse",
@@ -139,7 +147,11 @@ class VoidMethodChannelHandler(
                                 runBlocking {
                                     launch {
                                         qa.recordQuestionnaireResponse(
-                                            name, code, date, fullID, response
+                                            name,
+                                            code,
+                                            date,
+                                            fullID,
+                                            responseMap
                                         )
                                     }
                                 }
