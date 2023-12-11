@@ -75,15 +75,6 @@ void main() {
     });
   });
 
-  test('getMetricAsync', () {
-    eventChannels.forEach((MetricType key, EventChannel value) async {
-      expect(
-        await qaFlutterPlugin.getMetricAsync(key),
-        const TypeMatcher<TimeSeries<dynamic>>(),
-      );
-    });
-  });
-
   test('getMetricSample', () {
     eventChannels.forEach((MetricType key, EventChannel value) {
       expect(

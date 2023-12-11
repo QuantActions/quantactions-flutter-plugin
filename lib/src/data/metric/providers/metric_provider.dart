@@ -8,8 +8,6 @@ abstract class MetricProvider {
     required MetricType metric,
   });
 
-  Future<String?> getMetricAsync(MetricType metric);
-
   Future<String?> getStatSampleAsync({
     required String apiKey,
     required MetricType metric,

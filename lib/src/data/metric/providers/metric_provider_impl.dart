@@ -45,17 +45,6 @@ class MetricProviderImpl implements MetricProvider {
   }
 
   @override
-  Future<String?> getMetricAsync(MetricType metric) {
-    return _sdkMethodChannel.callMethodChannel(
-      method: SupportedMethods.getMetricAsync,
-      metricType: metric,
-      params: <String, dynamic>{
-        'metric': metric.id,
-      },
-    );
-  }
-
-  @override
   Stream<dynamic> getMetricSample({
     required String apiKey,
     required MetricType metric,

@@ -35,7 +35,7 @@ class MockDataProvider {
         return;
       case SupportedMethods.getJournalEntry || SupportedMethods.saveJournalEntry:
         return _getJournalEntry();
-      case SupportedMethods.getMetricAsync || SupportedMethods.getStatSampleAsync:
+      case SupportedMethods.getStatSampleAsync:
         if (metricType == null) return;
 
         return jsonEncode(_getMetric(metricType));

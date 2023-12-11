@@ -151,15 +151,6 @@ class QAFlutterPlugin {
     return _journalRepository.getJournalEventKinds();
   }
 
-  ///Asynchronous version of [getMetric].
-  ///The functionality is identical except that it implements
-  ///it with a coroutine logic instead of a flow logic.
-  ///Can be used in cases where coroutines can be executed and
-  ///flow are not necessary, e.g. background update tasks.
-  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric) async {
-    return _metricRepository.getMetricAsync(metric);
-  }
-
   ///Get a QA metric relative to the device in use.
   ///Check the the list of available metrics from [Metric] or [Trend].
   ///The function returns an object of type [TimeSeries] which contains timestamps

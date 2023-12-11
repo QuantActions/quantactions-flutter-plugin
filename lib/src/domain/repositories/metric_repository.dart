@@ -9,8 +9,6 @@ abstract class MetricRepository {
     required MetricType metric,
   });
 
-  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric);
-
   Future<TimeSeries<dynamic>?> getStatSampleAsync({
     required String apiKey,
     required MetricType metric,
