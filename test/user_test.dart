@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -23,8 +22,6 @@ void main() {
     binaryMessenger.setMockStreamHandler(eventChannel, UserHandler());
     binaryMessenger.setMockMethodCallHandler(methodChannel, (MethodCall methodCall) {
       switch (methodCall.method) {
-        case 'isInit' || 'initAsync':
-          return Future<bool>(() => false);
         case 'getBasicInfo':
           return Future<String>(
             () => jsonEncode(
@@ -45,45 +42,10 @@ void main() {
     binaryMessenger.setMockStreamHandler(eventChannel, null);
   });
 
-  test('isInit', () async {
-    expect(
-      await qaFlutterPlugin.isInit(),
-      const TypeMatcher<bool>(),
-    );
-  });
-
-  test('initAsync', () async {
-    expect(
-      await qaFlutterPlugin.initAsync(apiKey: ''),
-      const TypeMatcher<bool>(),
-    );
-  });
-
   test('init', () {
     expect(
       qaFlutterPlugin.init(apiKey: ''),
-      const TypeMatcher<Stream<QAResponse<String>>>(),
-    );
-  });
-
-  test('savePublicKey', () {
-    expect(
-      qaFlutterPlugin.savePublicKey,
-      isA<void>(),
-    );
-  });
-
-  test('setVerboseLevel', () {
-    expect(
-      () => qaFlutterPlugin.setVerboseLevel(1),
-      isA<void>(),
-    );
-  });
-
-  test('validateToken', () {
-    expect(
-      qaFlutterPlugin.validateToken(apiKey: ''),
-      const TypeMatcher<Stream<QAResponse<String>>>(),
+      const TypeMatcher<bool>(),
     );
   });
 
@@ -118,10 +80,8 @@ class UserHandler implements MockStreamHandler {
       final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
       switch (params['method']) {
-        case 'init' || 'validateToken':
-          eventSink?.success(
-            QAResponse<String>(data: null, message: null),
-          );
+        case 'init':
+          eventSink?.success(true);
       }
     }
   }

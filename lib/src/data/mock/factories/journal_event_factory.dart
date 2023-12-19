@@ -6,10 +6,10 @@ class JournalEventFactory extends MockModelFactory<JournalEvent> {
   JournalEvent generateFake([dynamic data]) {
     return JournalEvent(
       id: generateId,
-      publicName: faker.conference.name(),
-      iconName: faker.lorem.word(),
-      created: generateDateTime,
-      modified: generateDateTime,
+      eventKindID: generateId,
+      eventName: faker.lorem.word(),
+      eventIcon: faker.lorem.word(),
+      rating: faker.randomGenerator.integer(5),
     );
   }
 

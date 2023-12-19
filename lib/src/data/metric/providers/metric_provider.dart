@@ -12,8 +12,6 @@ abstract class MetricProvider {
     required MetricInterval interval,
   });
 
-  Future<String?> getMetricAsync(MetricType metric);
-
   Future<String?> getStatSampleAsync({
     required String apiKey,
     required MetricType metric,

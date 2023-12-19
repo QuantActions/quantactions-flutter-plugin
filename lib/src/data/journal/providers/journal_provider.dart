@@ -1,27 +1,26 @@
 import '../../../domain/domain.dart';
 
 abstract class JournalProvider {
-  Stream<dynamic> createJournalEntry({
+  Future<dynamic> saveJournalEntry({
+    String? id,
     required DateTime date,
     required String note,
     required List<JournalEvent> events,
-    required List<int> ratings,
-    required String oldId,
   });
 
-  Stream<dynamic> deleteJournalEntry({
+  Future<void> deleteJournalEntry({
     required String id,
   });
 
-  Stream<dynamic> getJournal();
+  Stream<dynamic> getJournalEntries();
 
-  Stream<dynamic> getJournalSample({
+  Future<dynamic> getJournalEntriesSample({
     required String apiKey,
   });
 
   Future<String?> getJournalEntry(String journalEntryId);
 
-  Stream<dynamic> getJournalEvents();
+  Future<dynamic> getJournalEventKinds();
 
-  Stream<dynamic> sendNote(String text);
+  Future<void> sendNote(String text);
 }

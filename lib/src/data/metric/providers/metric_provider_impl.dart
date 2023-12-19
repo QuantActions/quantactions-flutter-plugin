@@ -49,16 +49,6 @@ class MetricProviderImpl implements MetricProvider {
   }
 
   @override
-  Future<String?> getMetricAsync(MetricType metric) {
-    return _sdkMethodChannel.callMethodChannel(
-      method: SupportedMethods.getMetricAsync,
-      params: <String, dynamic>{
-        'metric': metric.id,
-      },
-    );
-  }
-
-  @override
   Stream<dynamic> getMetricSample({
     required String apiKey,
     required MetricType metric,
@@ -67,12 +57,12 @@ class MetricProviderImpl implements MetricProvider {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getMetricSample,
       eventChannel: _eventChannels[metric]!,
+      metricType: metric,
       params: <String, dynamic>{
         'apiKey': apiKey,
         'metric': metric.id,
         'metricInterval': interval.id,
       },
-      metricType: metric,
     );
   }
 
@@ -83,6 +73,7 @@ class MetricProviderImpl implements MetricProvider {
   }) {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.getStatSampleAsync,
+      metricType: metric,
       params: <String, dynamic>{
         'apiKey': apiKey,
         'metric': metric.id,

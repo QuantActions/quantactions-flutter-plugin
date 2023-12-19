@@ -20,19 +20,13 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     //param for mock data
     MetricType? metricType,
   }) async {
-    final T response = await _safeRequest(
-      request: () => _methodChannel.invokeMethod<T>(method, params),
+    return await _safeRequest(
+      request: () => methodChannel != null
+          ? methodChannel.invokeMethod<T>(method, params)
+          : _methodChannel.invokeMethod<T>(method, params),
       method: method,
       metricType: metricType,
     );
-
-    if (response == null) {
-      throw QAError(
-        description: 'call $method from methodChannel return null',
-      );
-    }
-
-    return response;
   }
 
   Stream<dynamic> callEventChannel({
@@ -64,7 +58,14 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     MetricType? metricType,
   }) {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return request();
+      try {
+        return request();
+      } on PlatformException catch (e) {
+        throw QAError(
+          description: e.message.toString(),
+          reason: e.details.toString(),
+        );
+      }
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return MockDataProvider.callMockMethod(
         method: method,

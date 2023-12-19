@@ -7,15 +7,15 @@ import 'journal_event_mapper.dart';
 class JournalStreamMapper {
   static Stream<List<JournalEvent>> getListEvent(Stream<dynamic> stream) {
     return stream.map(
-      (dynamic event) => JournalEventMapper.fromList(jsonDecode(event)),
+          (dynamic event) => JournalEventMapper.fromList(jsonDecode(event)),
     );
   }
 
-  static Stream<List<JournalEntryWithEvents>> getListEntryWithEvents(
+  static Stream<List<JournalEntry>> getListJournalEntry(
     Stream<dynamic> stream,
   ) {
     return stream.map(
-      (dynamic event) => JournalEntryWithEventsMapper.fromList(jsonDecode(event)),
+      (dynamic event) => JournalEntryMapper.fromList(jsonDecode(event)),
     );
   }
 }

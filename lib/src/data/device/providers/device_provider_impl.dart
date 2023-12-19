@@ -6,11 +6,17 @@ import '../../core/sdk_method_channel.dart';
 import 'device_provider.dart';
 
 class DeviceProviderImpl implements DeviceProvider {
-  final EventChannel _getSubscriptionIdEventChannel = const EventChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/get_subscription_id',
+  final MethodChannel _getSubscriptionMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/subscription',
   );
-  final EventChannel _eventChannel = const EventChannel(
-    '${MethodChannelConsts.eventMethodChannelPrefix}/device',
+  final MethodChannel _isDeviceRegisteredMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/is_device_registered',
+  );
+  final MethodChannel _deviceIDMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/device_id',
+  );
+  final MethodChannel _subscribeMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/subscribe',
   );
 
   final SDKMethodChannel _sdkMethodChannel;
@@ -23,42 +29,17 @@ class DeviceProviderImpl implements DeviceProvider {
   Future<bool> isDeviceRegistered() {
     return _sdkMethodChannel.callMethodChannel<bool>(
       method: SupportedMethods.isDeviceRegistered,
+      methodChannel: _isDeviceRegisteredMethodChannel,
     );
   }
 
   @override
-  Stream<dynamic> redeemVoucher({
-    required String voucher,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.redeemVoucher,
-      eventChannel: _eventChannel,
-      params: <String, dynamic>{
-        'voucher': voucher,
-      },
-    );
-  }
-
-  @override
-  Stream<dynamic> subscribeWithGooglePurchaseToken({
-    required String purchaseToken,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.subscribeWithGooglePurchaseToken,
-      eventChannel: _eventChannel,
-      params: <String, dynamic>{
-        'purchaseToken': purchaseToken,
-      },
-    );
-  }
-
-  @override
-  Stream<dynamic> subscribe({
+  Future<dynamic> subscribe({
     required String subscriptionIdOrCohortId,
-  }) {
-    return _sdkMethodChannel.callEventChannel(
-      eventChannel: _eventChannel,
+  }) async {
+    return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.subscribe,
+      methodChannel: _subscribeMethodChannel,
       params: <String, dynamic>{
         'subscriptionIdOrCohortId': subscriptionIdOrCohortId,
       },
@@ -66,24 +47,10 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Stream<dynamic> getSubscriptionId() {
-    return _sdkMethodChannel.callEventChannel(
-      method: SupportedMethods.getSubscriptionId,
-      eventChannel: _getSubscriptionIdEventChannel,
-    );
-  }
-
-  @override
-  Future<String?> getSubscriptionIdAsync() {
+  Future<dynamic> getSubscription() async {
     return _sdkMethodChannel.callMethodChannel(
-      method: SupportedMethods.getSubscriptionIdAsync,
-    );
-  }
-
-  @override
-  Future<String> syncData() {
-    return _sdkMethodChannel.callMethodChannel<String>(
-      method: SupportedMethods.syncData,
+      method: SupportedMethods.subscription,
+      methodChannel: _getSubscriptionMethodChannel,
     );
   }
 
@@ -91,20 +58,14 @@ class DeviceProviderImpl implements DeviceProvider {
   Future<String> getDeviceID() {
     return _sdkMethodChannel.callMethodChannel<String>(
       method: SupportedMethods.getDeviceID,
+      methodChannel: _deviceIDMethodChannel,
     );
   }
 
   @override
-  Future<String?> getFirebaseToken() async {
-    return _sdkMethodChannel.callMethodChannel<String?>(
-      method: SupportedMethods.getFirebaseToken,
-    );
-  }
-
-  @override
-  Future<bool> getIsTablet() async {
-    return _sdkMethodChannel.callMethodChannel<bool>(
-      method: SupportedMethods.getIsTablet,
+  Future<bool?> getIsKeyboardAdded() {
+    return _sdkMethodChannel.callMethodChannel<bool?>(
+      method: SupportedMethods.getDeviceID,
     );
   }
 }

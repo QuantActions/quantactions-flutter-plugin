@@ -12,8 +12,6 @@ abstract class MetricRepository {
     required MetricInterval interval,
   });
 
-  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric);
-
   Future<TimeSeries<dynamic>?> getStatSampleAsync({
     required String apiKey,
     required MetricType metric,

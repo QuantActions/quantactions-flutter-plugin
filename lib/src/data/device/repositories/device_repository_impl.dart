@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../../../domain/domain.dart';
-import '../../mappers/qa_response/qa_response_mapper.dart';
 import '../providers/device_provider.dart';
 
 class DeviceRepositoryImpl implements DeviceRepository {
@@ -17,59 +16,23 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
-    required String voucher,
-  }) {
-    final Stream<dynamic> stream = _deviceProvider.redeemVoucher(voucher: voucher);
-    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
-  }
-
-  @override
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribeWithGooglePurchaseToken({
-    required String purchaseToken,
-  }) {
-    final Stream<dynamic> stream = _deviceProvider.subscribeWithGooglePurchaseToken(
-      purchaseToken: purchaseToken,
-    );
-    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
-  }
-
-  @override
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
+  Future<SubscriptionWithQuestionnaires> subscribe({
     required String subscriptionIdOrCohortId,
-  }) {
-    final Stream<dynamic> stream = _deviceProvider.subscribe(
+  }) async {
+    final Map<String, dynamic> map = await _deviceProvider.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
 
-    return QAResponseMapper.fromStream<SubscriptionWithQuestionnaires>(stream);
+    return SubscriptionWithQuestionnaires.fromJson(map);
   }
 
   @override
-  Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId() {
-    final Stream<dynamic> stream = _deviceProvider.getSubscriptionId();
+  Future<Subscription?> getSubscription() async {
+    final String? json = await _deviceProvider.getSubscription();
+    
+    if (json == null) return null;
 
-    return QAResponseMapper.fromStream<SubscriptionIdResponse>(stream);
-  }
-
-  @override
-  Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync() async {
-    final String? json = await _deviceProvider.getSubscriptionIdAsync();
-
-    if (json == null) {
-      throw const QAError(
-        description: 'QAFlutterPlugin.getSubscriptionIdAsync() returned no data',
-      );
-    }
-
-    return QAResponse<SubscriptionIdResponse>.fromJson(
-      jsonDecode(json),
-    );
-  }
-
-  @override
-  Future<String> syncData() {
-    return _deviceProvider.syncData();
+    return Subscription.fromJson(jsonDecode(json));
   }
 
   @override
@@ -78,12 +41,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Future<String?> getFirebaseToken() {
-    return _deviceProvider.getFirebaseToken();
-  }
-
-  @override
-  Future<bool> getIsTablet() {
-    return _deviceProvider.getIsTablet();
+  Future<bool?> getIsKeyboardAdded() {
+    return _deviceProvider.getIsKeyboardAdded();
   }
 }

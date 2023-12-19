@@ -35,7 +35,7 @@ void main() {
   test('recordQuestionnaireResponse', () {
     expect(
       qaFlutterPlugin.recordQuestionnaireResponse(),
-      const TypeMatcher<Stream<QAResponse<String>>>(),
+      isA<void>(),
     );
   });
 }
@@ -52,16 +52,12 @@ class CohortHandler implements MockStreamHandler {
   void onListen(Object? arguments, MockStreamHandlerEventSink events) {
     eventSink = events;
 
-    if(arguments != null) {
+    if (arguments != null) {
       final Map<String, dynamic> params = arguments as Map<String, dynamic>;
 
       switch (params['method']) {
         case 'getQuestionnairesList':
           eventSink?.success(<Questionnaire>[]);
-        case 'recordQuestionnaireResponse':
-          eventSink?.success(
-            QAResponse<String>(data: null, message: null),
-          );
       }
     }
   }

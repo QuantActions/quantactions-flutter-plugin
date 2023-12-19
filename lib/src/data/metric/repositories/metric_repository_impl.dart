@@ -26,14 +26,6 @@ class MetricRepositoryImpl implements MetricRepository {
   }
 
   @override
-  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric) async {
-    return _mapFuture(
-      response: await _metricProvider.getMetricAsync(metric),
-      metric: metric,
-    );
-  }
-
-  @override
   Stream<TimeSeries<dynamic>> getMetricSample({
     required String apiKey,
     required MetricType metric,

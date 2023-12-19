@@ -5,29 +5,33 @@ part 'journal_event.g.dart';
 @JsonSerializable()
 class JournalEvent {
   final String id;
-  final String publicName;
-  final String iconName;
-  @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  final DateTime created;
-  @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  final DateTime modified;
+  final String eventKindID;
+  final String eventName;
+  final String eventIcon;
+  final int? rating;
 
   JournalEvent({
     required this.id,
-    required this.publicName,
-    required this.iconName,
-    required this.created,
-    required this.modified,
+    required this.eventKindID,
+    required this.eventName,
+    required this.eventIcon,
+    required this.rating,
   });
+
+  JournalEvent copyWithRating({
+    int? rating,
+  }) {
+    return JournalEvent(
+      id: id,
+      eventKindID: eventKindID,
+      eventName: eventName,
+      eventIcon: eventIcon,
+      rating: rating,
+    );
+  }
 
   factory JournalEvent.fromJson(Map<String, dynamic> json) =>
       _$JournalEventFromJson(json);
 
   Map<String, dynamic> toJson() => _$JournalEventToJson(this);
-
-  static int _dateTimeToJson(DateTime dateTime) =>
-      dateTime.millisecondsSinceEpoch;
-
-  static DateTime _dateTimeFromJson(int milliseconds) =>
-      DateTime.fromMillisecondsSinceEpoch(milliseconds);
 }

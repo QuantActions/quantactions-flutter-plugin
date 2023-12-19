@@ -33,11 +33,12 @@ class QAFlutterPlugin {
   ///ID of the device
   Future<String> get deviceId => _deviceRepository.getDeviceID();
 
-  ///Firebase token for communication
-  Future<String?> get firebaseToken => _deviceRepository.getFirebaseToken();
-
-  ///Whether or not this device is considerable a tablet
-  Future<bool> get isTablet => _deviceRepository.getIsTablet();
+  ///The method is only relevant for iOS
+  ///A boolean indicating if the keyboard is added in the system Keyboards settings.
+  ///It determines whether the keyboard is added or not based on KEYBOARD_EXTENSION_BUNDLE_ID field
+  ///from Info.plist file of the keyboard companion app.
+  ///Returns nil if the KEYBOARD_EXTENSION_BUNDLE_ID is not added to the Info.plist file properly.
+  Future<bool?> get isKeyboardAdded => _deviceRepository.getIsKeyboardAdded();
 
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
@@ -45,12 +46,13 @@ class QAFlutterPlugin {
   }
 
   ///Use this to withdraw the device from a particular cohort.
-  Stream<QAResponse<String>> leaveCohort(String cohortId) {
-    return _cohortRepository.leaveCohort(cohortId);
+  Future<void> leaveCohort(String cohortId) async {
+    await _cohortRepository.leaveCohort(cohortId);
   }
 
+  ///The method is only relevant for Android
   ///This function check that the data collection is currently running.
-  Future<bool> isDataCollectionRunning() {
+  Future<bool> isDataCollectionRunning() async {
     return _dataCollectionRepository.isDataCollectionRunning();
   }
 
@@ -64,57 +66,32 @@ class QAFlutterPlugin {
     await _dataCollectionRepository.pauseDataCollection();
   }
 
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> redeemVoucher({
-    required String voucher,
-  }) {
-    return _deviceRepository.redeemVoucher(voucher: voucher);
-  }
-
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribeWithGooglePurchaseToken({
-    required String purchaseToken,
-  }) {
-    return _deviceRepository.subscribeWithGooglePurchaseToken(
-      purchaseToken: purchaseToken,
-    );
-  }
-
   ///Use this function to subscribe the device to your(one of your) cohort(s).
-  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribe({
+  Future<SubscriptionWithQuestionnaires> subscribe({
     required String subscriptionIdOrCohortId,
-  }) {
+  }) async {
     return _deviceRepository.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
   }
 
-  ///Returns an object of type [SubscriptionIdResponse] that contains
+  ///Returns an object of type [Subscription] that contains
   ///the subscription ID of the cohort to which the device is currently
   ///subscribed to, if multiple devices are subscribed using
   ///the same subscriptionId it returns all the device IDs.
-  Stream<QAResponse<SubscriptionIdResponse>> getSubscriptionId() {
-    return _deviceRepository.getSubscriptionId();
+  Future<Subscription?> getSubscription() async {
+    return _deviceRepository.getSubscription();
   }
 
-  Future<bool> isDeviceRegistered() {
+  Future<bool> isDeviceRegistered() async {
     return _deviceRepository.isDeviceRegistered();
-  }
-
-  ///Utility function to sync all the local data with the server.
-  ///Due to the complexity of the work, it spawns a Worker and return its UUID.
-  ///The status of the worker can be observed to check its status of SUCCESS/FAILURE.
-  Future<String> syncData() {
-    return _deviceRepository.syncData();
-  }
-
-  Future<QAResponse<SubscriptionIdResponse>> getSubscriptionIdAsync() {
-    return _deviceRepository.getSubscriptionIdAsync();
   }
 
   ///Use this function to retrieve a particular journal entry.
   ///You need to provide the id of the entry you want to retrieve,
-  ///checkout [getJournal] and JournalEntryWithEvents to see
+  ///checkout [getJournalEntries] and JournalEntryWithEvents to see
   ///how to retrieve the id of the entry.
-  Future<JournalEntryWithEvents?> getJournalEntry(String journalEntryId) {
+  Future<JournalEntry?> getJournalEntry(String journalEntryId) async {
     return _journalRepository.getJournalEntry(journalEntryId);
   }
 
@@ -123,68 +100,55 @@ class QAFlutterPlugin {
   ///The function returns an asynchronous flow with the response of the action.
   ///The response is mostly to trigger UI/UX events,
   ///in case of failure the SDK will take care internally of retrying.
-  Stream<QAResponse<String>> createJournalEntry({
+  Future<JournalEntry> saveJournalEntry({
+    String? id,
     required DateTime date,
     required String note,
     required List<JournalEvent> events,
-    required List<int> ratings,
-    required String oldId,
-  }) {
-    return _journalRepository.createJournalEntry(
+  }) async {
+    return _journalRepository.saveJournalEntry(
+      id: id,
       date: date,
       note: note,
       events: events,
-      ratings: ratings,
-      oldId: oldId,
     );
   }
 
   ///Use this function to delete a journal entry.
   ///You need to provide the id of the entry you want to delete,
-  ///checkout [getJournal] and JournalEntryWithEvents
+  ///checkout [getJournalEntries] and JournalEntryWithEvents
   ///to see how to retrieve the id of the entry to delete.
-  Stream<QAResponse<String>> deleteJournalEntry({
-    required String id,
-  }) {
-    return _journalRepository.deleteJournalEntry(id: id);
+  Future<void> deleteJournalEntry({required String id}) async {
+    await _journalRepository.deleteJournalEntry(id: id);
   }
 
   ///Saves simple text note.
-  Stream<QAResponse<String>> sendNote(String text) {
-    return _journalRepository.sendNote(text);
+  Future<void> sendNote(String text) async {
+    await _journalRepository.sendNote(text);
   }
 
   ///This functions returns the full journal of the device,
   ///meaning all entries with the corresponding events.
   ///Checkout JournalEntryWithEvents for a complete description of
   ///how the journal entries are organized.
-  Stream<List<JournalEntryWithEvents>> getJournal() {
-    return _journalRepository.getJournal();
+  Stream<List<JournalEntry>> getJournalEntries() {
+    return _journalRepository.getJournalEntries();
   }
 
   ///This functions returns a fictitious journal and can be used for
   ///test/display purposes, Checkout JournalEntryWithEvents for a complete
   ///description of how the journal entries are organized.
-  Stream<List<JournalEntryWithEvents>> getJournalSample({
+  Future<List<JournalEntry>> getJournalEntriesSample({
     required String apiKey,
-  }) {
-    return _journalRepository.getJournalSample(apiKey: apiKey);
+  }) async {
+    return _journalRepository.getJournalEntriesSample(apiKey: apiKey);
   }
 
   ///Retrieves the Journal events, meaning the events that one can log together
   ///with a journal entry. The events come from a fixed set which may be
-  ///updated in the future, this function return the latest update to the [JournalEvent].
-  Stream<List<JournalEvent>> getJournalEvents() {
-    return _journalRepository.getJournalEvents();
-  }
-
-  ///Asynchronous version of [getMetric].
-  ///The functionality is identical except that it implements
-  ///it with a coroutine logic instead of a flow logic.
-  ///Can be used in cases where coroutines can be executed and
-  ///flow are not necessary, e.g. background update tasks.
-  Future<TimeSeries<dynamic>?> getMetricAsync(MetricType metric) {
-    return _metricRepository.getMetricAsync(metric);
+  ///updated in the future, this function return the latest update to the [JournalEventEntity].
+  Future<List<JournalEventEntity>> getJournalEventKinds() async {
+    return _journalRepository.getJournalEventKinds();
   }
 
   ///Get a QA metric relative to the device in use.
@@ -226,20 +190,22 @@ class QAFlutterPlugin {
   Future<TimeSeries<dynamic>?> getStatSampleAsync({
     required String apiKey,
     required MetricType metric,
-  }) {
+  }) async {
     return _metricRepository.getStatSampleAsync(
       apiKey: apiKey,
       metric: metric,
     );
   }
 
+  ///The method is only relevant for Android
   ///Returns whether or not the ```draw over other apps``` permission has been granted
-  Future<bool> canDraw() {
+  Future<bool> canDraw() async {
     return _permissionRepository.canDraw();
   }
 
+  ///The method is only relevant for Android
   ///Returns whether or not the ```usage``` permission has been granted
-  Future<bool> canUsage() {
+  Future<bool> canUsage() async {
     return _permissionRepository.canUsage();
   }
 
@@ -250,14 +216,14 @@ class QAFlutterPlugin {
   }
 
   ///Saves a questionnaire response.
-  Stream<QAResponse<String>> recordQuestionnaireResponse({
+  Future<void> recordQuestionnaireResponse({
     String? name,
     String? code,
     DateTime? date,
     String? fullId,
     String? response,
-  }) {
-    return _questionnaireRepository.recordQuestionnaireResponse(
+  }) async {
+    await _questionnaireRepository.recordQuestionnaireResponse(
       name: name,
       code: code,
       date: date,
@@ -266,38 +232,16 @@ class QAFlutterPlugin {
     );
   }
 
-  ///Checks whether or not the SDK is initialized.
-  Future<bool> isInit() {
-    return _userRepository.isInit();
-  }
-
-  ///The first time you use the QA SDK in the code you should initialize it, this allows the SDK
-  ///to create a unique identifier and initiate server transactions and workflows.
-  ///Most of the functionality will not work if you have never initialized the singleton before.
-  Future<bool> initAsync({
-    required String apiKey,
-    int? age,
-    Gender? gender,
-    bool? selfDeclaredHealthy,
-  }) {
-    return _userRepository.initAsync(
-      apiKey: apiKey,
-      age: age,
-      gender: gender,
-      selfDeclaredHealthy: selfDeclaredHealthy,
-    );
-  }
-
   ///The first time you use the QA SDK in the code you should initialize it,
   ///this allows the SDK to create a unique identifier and initiate server
   ///transactions and workflows. Most of the functionality will not work
   ///if you have never initialized the singleton before.
-  Stream<QAResponse<String>> init({
+  Future<bool> init({
     required String apiKey,
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
-  }) {
+  }) async {
     return _userRepository.init(
       apiKey: apiKey,
       age: age,
@@ -319,21 +263,5 @@ class QAFlutterPlugin {
       newGender: newGender,
       newSelfDeclaredHealthy: newSelfDeclaredHealthy,
     );
-  }
-
-  Future<void> savePublicKey() async {
-    await _userRepository.savePublicKey();
-  }
-
-  Future<void> setVerboseLevel(int verbose) async {
-    await _userRepository.setVerboseLevel(verbose);
-  }
-
-  ///Use this function to double check that your API key is correct and valid,
-  ///this is just for testing purposes.
-  Stream<QAResponse<String>> validateToken({
-    required String apiKey,
-  }) {
-    return _userRepository.validateToken(apiKey: apiKey);
   }
 }
