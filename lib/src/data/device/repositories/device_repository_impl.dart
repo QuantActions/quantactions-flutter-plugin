@@ -29,7 +29,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   @override
   Future<Subscription?> getSubscription() async {
     final String? json = await _deviceProvider.getSubscription();
-
+    
     if (json == null) return null;
 
     return Subscription.fromJson(jsonDecode(json));
