@@ -4,6 +4,8 @@ import com.quantactions.sdk.Metric
 import com.quantactions.sdk.QA
 import com.quantactions.sdk.Trend
 import com.quantactions.sdk.QA.Gender
+import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.MethodChannel
 
 class QAFlutterPluginHelper {
     companion object {
@@ -30,11 +32,64 @@ class QAFlutterPluginHelper {
 
         fun parseGender(gender: String?): Gender {
             return when (gender) {
-                "cognitive" -> QA.Gender.MALE
-                "social" -> QA.Gender.FEMALE
+                "male" -> QA.Gender.MALE
+                "female" -> QA.Gender.FEMALE
                 "other" -> QA.Gender.OTHER
                 else -> QA.Gender.UNKNOWN
             }
+        }
+
+       suspend fun safeMethodChannel(
+            result: MethodChannel.Result,
+            methodName: String,
+            method: suspend () -> Unit
+        ) {
+            try {
+                method()
+            } catch (e: Exception) {
+                result.error(
+                    "0",
+                    "$methodName method failed",
+                    e.localizedMessage,
+                )
+            }
+        }
+
+        suspend fun safeEventChannel(
+            eventSink: EventChannel.EventSink, methodName: String,
+            method: suspend () -> Unit
+        ) {
+            try {
+                method()
+            } catch (e: Exception) {
+                eventSink.error(
+                    "0",
+                    "$methodName method failed",
+                    e.localizedMessage,
+                )
+            }
+        }
+
+        fun returnInvalidParamsMethodChannelError(
+            result: MethodChannel.Result,
+            methodName: String
+        ) {
+            result.error(
+                "0",
+                "$methodName method failed",
+                "invalids params"
+            )
+        }
+
+        fun returnInvalidParamsEventChannelError(
+            eventSink: EventChannel.EventSink,
+            methodName: String
+        ) {
+            eventSink.error(
+                "0",
+                "$methodName method failed",
+                "invalids params"
+            )
         }
     }
 }

@@ -1,17 +1,17 @@
 package com.quantactions.qa_flutter_plugin
 
 import com.quantactions.sdk.BasicInfo
-import com.quantactions.sdk.QA
 import com.quantactions.sdk.TimeSeries
-import com.quantactions.sdk.QAResponse
-import com.quantactions.sdk.SubscriptionIdResponse
 import com.quantactions.sdk.data.api.adapters.SubscriptionWithQuestionnaires
 import com.quantactions.sdk.data.entity.Cohort
-import com.quantactions.sdk.data.entity.JournalEvent
+import com.quantactions.sdk.data.model.JournalEntry
 import com.quantactions.sdk.data.entity.Questionnaire
-import com.quantactions.sdk.data.model.JournalEntryWithEvents
+import com.quantactions.sdk.Subscription
+import com.quantactions.sdk.data.entity.JournalEventEntity
+import com.quantactions.sdk.data.model.JournalEntryEvent
 import com.squareup.moshi.JsonClass
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -28,19 +28,12 @@ class QAFlutterPluginSerializable {
 
     @JsonClass(generateAdapter = true)
     @Serializable
-    data class SerializableQAResponse<T>(
-        val data: T?,
-        val message: String?
-    )
-
-    @JsonClass(generateAdapter = true)
-    @Serializable
-    data class SerializableSubscriptionIdResponse(
+    data class SerializableSubscription(
         val subscriptionId: String,
         val deviceIds: List<String>,
         val cohortId: String,
         val cohortName: String,
-        val premiumFeaturesTTL: Long,
+        val premiumFeaturesTTL: Int,
     )
 
     @JsonClass(generateAdapter = true)
@@ -78,26 +71,27 @@ class QAFlutterPluginSerializable {
 
     @JsonClass(generateAdapter = true)
     @Serializable
-    data class SerializableJournalEntryWithEvents(
-        val id: String,
-        val timestamp: Long,
+    data class SerializableJournalEntry(
+        val id: String?,
+        val timestamp: String,
         val note: String,
-        val events: List<SerializableResolvedJournalEvent>,
-        val ratings: List<Int>,
+        val events: List<SerializableJournalEntryEvent>,
         var scores: Map<String, Int>
     )
 
     @JsonClass(generateAdapter = true)
     @Serializable
-    data class SerializableResolvedJournalEvent(
+    data class SerializableJournalEntryEvent(
         val id: String,
-        val publicName: String,
-        val iconName: String
+        val eventKindID: String,
+        val eventName: String,
+        val eventIcon: String,
+        val rating: Int?
     )
 
     @JsonClass(generateAdapter = true)
     @Serializable
-    data class SerializableJournalEvents(
+    data class SerializableJournalEventEntity(
         val id: String,
         val publicName: String,
         val iconName: String,
@@ -114,64 +108,33 @@ class QAFlutterPluginSerializable {
     )
 
     companion object {
-        fun serializeQAResponseString(response: QAResponse<String>): String {
-            val data = response.data
-                ?: return Json.encodeToString(
-                    SerializableQAResponse<String>(null, response.message)
-                )
+        fun serializeSubscription(
+            response: Subscription
+        ): String {
             return Json.encodeToString(
-                SerializableQAResponse(data, null)
+                SerializableSubscription(
+                    response.subscriptionId,
+                    response.deviceIds,
+                    response.cohortId,
+                    response.cohortName,
+                    response.premiumFeaturesTTL.toInt(),
+                ),
             )
         }
 
-        fun serializeQAResponseSubscriptionIdResponse(
-            response: QAResponse<SubscriptionIdResponse>
+        fun serializeSubscriptionWithQuestionnaires(
+            response: SubscriptionWithQuestionnaires
         ): String {
-            val data = response.data
-                ?: return Json.encodeToString(
-                    SerializableQAResponse<SerializableSubscriptionIdResponse>(
-                        null,
-                        response.message.toString()
-                    )
-                )
-
             return Json.encodeToString(
-                SerializableQAResponse(
-                    SerializableSubscriptionIdResponse(
-                        data.subscriptionId,
-                        data.deviceIds,
-                        data.cohortId,
-                        data.cohortName,
-                        data.premiumFeaturesTTL,
-                    ),
-                    null,
-                )
-            )
-        }
-
-        fun serializeQAResponseSubscriptionWithQuestionnaires(
-            response: QAResponse<SubscriptionWithQuestionnaires>
-        ): String {
-            val data = response.data
-                ?: return Json.encodeToString(
-                    SerializableQAResponse<SerializableSubscriptionWithQuestionnaires>(
-                        null, response.message
-                    )
-                )
-
-            return Json.encodeToString(
-                SerializableQAResponse(
-                    SerializableSubscriptionWithQuestionnaires(
-                        cohortToSerializableCohort(data.cohort),
-                        data.listOfQuestionnaires.map { questionnaire ->
-                            questionnaireToSerializableQuestionnaire(questionnaire)
-                        },
-                        data.subscriptionId,
-                        data.tapDeviceIds,
-                        data.premiumFeaturesTTL
-                    ),
-                    null,
-                )
+                SerializableSubscriptionWithQuestionnaires(
+                    cohortToSerializableCohort(response.cohort),
+                    response.listOfQuestionnaires.map { questionnaire ->
+                        questionnaireToSerializableQuestionnaire(questionnaire)
+                    },
+                    response.subscriptionId,
+                    response.tapDeviceIds,
+                    response.premiumFeaturesTTL
+                ),
             )
         }
 
@@ -262,58 +225,74 @@ class QAFlutterPluginSerializable {
                 )
         }
 
-        fun serializeJournalEntryWithEvents(journalEntries: List<JournalEntryWithEvents>): String {
+        fun serializeJournalEntryList(journalEntries: List<JournalEntry>): String {
             return Json.encodeToString(
                 journalEntries.map { journalEntry ->
-                    SerializableJournalEntryWithEvents(
+                    SerializableJournalEntry(
                         journalEntry.id,
-                        journalEntry.timestamp,
+                        journalEntry.date.toString(),
                         journalEntry.note,
                         journalEntry.events.map { event ->
-                            SerializableResolvedJournalEvent(
+                            SerializableJournalEntryEvent(
                                 event.id,
-                                event.publicName,
-                                event.iconName
+                                event.eventKindID,
+                                event.eventName,
+                                event.eventIcon,
+                                event.rating
                             )
                         },
-                        journalEntry.ratings,
                         journalEntry.scores,
                     )
                 }
             )
         }
 
-        fun serializeJournalEntry(journalEntry: JournalEntryWithEvents): String {
+        fun serializeJournalEntry(journalEntry: JournalEntry): String {
             return Json.encodeToString(
-                SerializableJournalEntryWithEvents(
+                SerializableJournalEntry(
                     journalEntry.id,
-                    journalEntry.timestamp,
+                    journalEntry.date.toString(),
                     journalEntry.note,
                     journalEntry.events.map { event ->
-                        SerializableResolvedJournalEvent(
+                        SerializableJournalEntryEvent(
                             event.id,
-                            event.publicName,
-                            event.iconName
+                            event.eventKindID,
+                            event.eventName,
+                            event.eventIcon,
+                            event.rating
                         )
                     },
-                    journalEntry.ratings,
                     journalEntry.scores,
                 )
             )
         }
 
-        fun serializeJournalEvents(events: List<JournalEvent>): String {
+        fun serializeJournalEventEntity(events: List<JournalEventEntity>): String {
             return Json.encodeToString(
                 events.map { event ->
-                    SerializableJournalEvents(
+                    SerializableJournalEventEntity(
                         event.id,
-                        event.public_name,
-                        event.icon_name,
+                        event.name,
+                        event.icon,
                         event.created,
                         event.modified
                     )
                 }
             )
+        }
+
+        fun serializeJournalEventFromJson(json: String): List<JournalEntryEvent> {
+            val list = Json.decodeFromString<List<SerializableJournalEntryEvent>>(json)
+
+            return list.map { element ->
+                JournalEntryEvent(
+                    element.id,
+                    element.eventKindID,
+                    element.eventName,
+                    element.eventIcon,
+                    element.rating
+                )
+            }
         }
 
         fun serializeBasicInfo(basicInfo: BasicInfo): String {

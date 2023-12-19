@@ -16,7 +16,7 @@ class QAFlutterPluginMetricMapper {
                 "typing" -> Metric.TYPING_SPEED
                 "sleep_summary" -> Metric.SLEEP_SUMMARY
                 "screen_time_aggregate" -> Metric.SCREEN_TIME_AGGREGATE
-                "social_taps" -> Metric.SOCIAL_TAPS;
+                "social_taps" -> Metric.SOCIAL_TAPS
                 "sleep_trend" -> Trend.SLEEP_SCORE
                 "cognitive_trend" -> Trend.COGNITIVE_FITNESS
                 "social_engagement_trend" -> Trend.SOCIAL_ENGAGEMENT
