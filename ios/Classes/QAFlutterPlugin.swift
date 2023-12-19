@@ -1,19 +1,27 @@
 import Flutter
 import UIKit
+import QuantActionsSDK
 
 public class QAFlutterPlugin: NSObject, FlutterPlugin {
-  public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "qa_flutter_plugin", binaryMessenger: registrar.messenger())
-    let instance = QAFlutterPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
-  }
-
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    switch call.method {
-    case "getPlatformVersion":
-      result("iOS " + UIDevice.current.systemVersion)
-    default:
-      result(FlutterMethodNotImplemented)
+    
+    public static func register(with registrar: FlutterPluginRegistrar) {
+        VoidMethodChannel.register(with: registrar)
+        DeviceMethodChannel.register(with: registrar)
+        IsDeviceRegisteredMethodChannel.register(with: registrar)
+        SubscribeMethodChannel.register(with: registrar)
+        SubscriptionMethodChannel.register(with: registrar)
+        IsKeyboardAddedMethodChannel.register(with: registrar)
+        GetJournalEntryMethodChannel.register(with: registrar)
+        SaveJournalEntryMethodChannel.register(with: registrar)
+        BasicInfoMethodChannel.register(with: registrar)
+        InitMethodChannel.register(with: registrar)
+        
+        MetricAndTrendEventChannel.register(with: registrar)
+        GetCohortListEventChannel.register(with: registrar)
+        GetQuestionnairesListEventChannel.register(with: registrar)
+        GetJournalEntitiesEventChannel.register(with: registrar)
+        GetJournalEventKindsEventChannel.register(with: registrar)
     }
-  }
+    
+    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {}
 }

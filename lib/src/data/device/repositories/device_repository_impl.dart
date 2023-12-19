@@ -25,8 +25,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Stream<QAResponse<SubscriptionWithQuestionnaires>>
-      subscribeWithGooglePurchaseToken({
+  Stream<QAResponse<SubscriptionWithQuestionnaires>> subscribeWithGooglePurchaseToken({
     required String purchaseToken,
   }) {
     final Stream<dynamic> stream = _deviceProvider.subscribeWithGooglePurchaseToken(
@@ -58,8 +57,9 @@ class DeviceRepositoryImpl implements DeviceRepository {
     final String? json = await _deviceProvider.getSubscriptionIdAsync();
 
     if (json == null) {
-      throw Exception(
-          'QAFlutterPlugin.getSubscriptionIdAsync() returned no data');
+      throw const QAError(
+        description: 'QAFlutterPlugin.getSubscriptionIdAsync() returned no data',
+      );
     }
 
     return QAResponse<SubscriptionIdResponse>.fromJson(

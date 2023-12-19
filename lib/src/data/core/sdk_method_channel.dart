@@ -27,7 +27,9 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     );
 
     if (response == null) {
-      throw Exception('call $method from methodChannel return null');
+      throw QAError(
+        description: 'call $method from methodChannel return null',
+      );
     }
 
     return response;
@@ -69,8 +71,8 @@ class SDKMethodChannel extends SDKMethodChannelCore {
         metricType: metricType,
       );
     } else {
-      throw Exception(
-        'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
+      throw QAError(
+        description: 'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
       );
     }
   }
