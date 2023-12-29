@@ -241,12 +241,16 @@ class QAFlutterPlugin {
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
+    String? identityId,
+    String? password,
   }) async {
     return _userRepository.init(
       apiKey: apiKey,
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
+      identityId: identityId,
+      password: password,
     );
   }
 

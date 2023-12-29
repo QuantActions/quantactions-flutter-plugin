@@ -26,16 +26,20 @@ class UserProviderImpl implements UserProvider {
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
+    String? identityId,
+    String? password,
   }) async {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.init,
       methodChannel: _initMethodChannel,
-      params: _buildInitParams(
-        apiKey: apiKey,
-        age: age,
-        gender: gender,
-        selfDeclaredHealthy: selfDeclaredHealthy,
-      ),
+      params: <String, dynamic>{
+        'apiKey': apiKey,
+        'age': age,
+        'gender': gender?.id,
+        'selfDeclaredHealthy': selfDeclaredHealthy,
+        'identityId': identityId,
+        'password': password,
+      },
     );
   }
 
@@ -59,22 +63,6 @@ class UserProviderImpl implements UserProvider {
   @override
   Future<String> getBasicInfo() {
     return _sdkMethodChannel.callMethodChannel<String>(
-      method: SupportedMethods.getBasicInfo,
-      methodChannel: _basicInfoMethodChannel
-    );
-  }
-
-  Map<String, dynamic> _buildInitParams({
-    required String apiKey,
-    required int? age,
-    required Gender? gender,
-    required bool? selfDeclaredHealthy,
-  }) {
-    return <String, dynamic>{
-      'apiKey': apiKey,
-      'age': age,
-      'gender': gender?.id,
-      'selfDeclaredHealthy': selfDeclaredHealthy,
-    };
+        method: SupportedMethods.getBasicInfo, methodChannel: _basicInfoMethodChannel);
   }
 }

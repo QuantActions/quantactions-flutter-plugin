@@ -6,6 +6,8 @@ abstract class UserProvider {
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
+    String? identityId,
+    String? password,
   });
 
   Future<void> updateBasicInfo({

@@ -16,12 +16,16 @@ class UserRepositoryImpl implements UserRepository {
     int? age,
     Gender? gender,
     bool? selfDeclaredHealthy,
+    String? identityId,
+    String? password,
   }) async {
     return _userProvider.init(
       apiKey: apiKey,
       age: age,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
+      identityId: identityId,
+      password: password,
     );
   }
 
