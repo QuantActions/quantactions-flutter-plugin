@@ -108,18 +108,26 @@ class QAFlutterPluginSerializable {
     )
 
     companion object {
-        fun serializeSubscription(
-            response: Subscription
+        fun serializeSubscriptions(
+            response: List<Subscription>
         ): String {
-            return Json.encodeToString(
-                SerializableSubscription(
-                    response.subscriptionId,
-                    response.deviceIds,
-                    response.cohortId,
-                    response.cohortName,
-                    response.premiumFeaturesTTL.toInt(),
-                ),
-            )
+            val result = mutableListOf<String>()
+
+            response.forEach { item ->
+                result.add(
+                    Json.encodeToString(
+                        SerializableSubscription(
+                            item.subscriptionId,
+                            item.deviceIds,
+                            item.cohortId,
+                            item.cohortName,
+                            item.premiumFeaturesTTL.toInt(),
+                        ),
+                    ),
+                )
+            }
+
+            return Json.encodeToString(result);
         }
 
         fun serializeSubscriptionWithQuestionnaires(

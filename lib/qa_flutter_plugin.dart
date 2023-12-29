@@ -79,8 +79,8 @@ class QAFlutterPlugin {
   ///the subscription ID of the cohort to which the device is currently
   ///subscribed to, if multiple devices are subscribed using
   ///the same subscriptionId it returns all the device IDs.
-  Future<Subscription?> getSubscription() async {
-    return _deviceRepository.getSubscription();
+  Future<List<Subscription>> getSubscriptions() async {
+    return _deviceRepository.getSubscriptions();
   }
 
   Future<bool> isDeviceRegistered() async {

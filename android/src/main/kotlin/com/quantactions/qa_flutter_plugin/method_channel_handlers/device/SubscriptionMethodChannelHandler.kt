@@ -30,46 +30,14 @@ class SubscriptionMethodChannelHandler(
                         methodName = "subscription",
                         method = {
                             runBlocking {
-                                val response = qa.subscription()
+                                val response = qa.subscriptions()
 
-                                if (response == null) {
-                                    result.success(null)
-                                } else {
-                                    result.success(
-                                        QAFlutterPluginSerializable.serializeSubscription(
-                                            response
-                                        )
-                                    )
-                                }
+                                result.success(
+                                    QAFlutterPluginSerializable.serializeSubscriptions(response)
+                                )
                             }
                         },
                     )
-                }
-
-                "getJournalEntry" -> {
-                    val params = call.arguments as Map<*, *>
-
-                    val journalEntryId = params["journalEntryId"] as String?
-
-                    if (journalEntryId != null) {
-                        QAFlutterPluginHelper.safeMethodChannel(
-                            result = result,
-                            methodName = "getJournalEntry",
-                            method = {
-                                val response = qa.getJournalEntry(journalEntryId)
-
-                                result.success(
-                                    if (response == null) null
-                                    else QAFlutterPluginSerializable.serializeJournalEntry(response)
-                                )
-                            }
-                        )
-                    } else {
-                        QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(
-                            result = result,
-                            methodName = "getJournalEntry"
-                        )
-                    }
                 }
             }
         }

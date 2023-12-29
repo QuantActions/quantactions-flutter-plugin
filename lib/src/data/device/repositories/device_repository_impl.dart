@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../../../domain/domain.dart';
+import '../../mappers/device/subscriptions_mapper.dart';
 import '../providers/device_provider.dart';
 
 class DeviceRepositoryImpl implements DeviceRepository {
@@ -27,12 +28,12 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Future<Subscription?> getSubscription() async {
-    final String? json = await _deviceProvider.getSubscription();
+  Future<List<Subscription>> getSubscriptions() async {
+    final String? json = await _deviceProvider.getSubscriptions();
     
-    if (json == null) return null;
+    if (json == null) return <Subscription>[];
 
-    return Subscription.fromJson(jsonDecode(json));
+    return SubscriptionsMapper.fromList(jsonDecode(json));
   }
 
   @override
