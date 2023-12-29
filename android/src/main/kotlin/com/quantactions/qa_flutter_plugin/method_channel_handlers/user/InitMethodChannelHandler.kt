@@ -37,7 +37,8 @@ class InitMethodChannelHandler(
                     val age = params["age"] as? Int? ?: 0
                     val selfDeclaredHealthy = params["age"] as? Boolean? ?: false
                     val gender = QAFlutterPluginHelper.parseGender(params["gender"] as? String)
-
+                    val identityId = params["identityId"] as String?
+                    val password = params["password"] as String?
 
                     if (apiKey != null) {
                         val basicInfo = BasicInfo(
@@ -46,17 +47,13 @@ class InitMethodChannelHandler(
                             selfDeclaredHealthy,
                         )
 
-//                        val x = async {
-//                            qa.init(context, apiKey, basicInfo)
-//                        }.await()
-
                         QAFlutterPluginHelper.safeMethodChannel(
                             result = result,
                             methodName = "init",
                             method = {
                                 result.success(
                                     async {
-                                        qa.init(context, apiKey, basicInfo)
+                                        qa.init(context, apiKey, basicInfo, identityId, password)
                                     }.await()
                                 )
                             }

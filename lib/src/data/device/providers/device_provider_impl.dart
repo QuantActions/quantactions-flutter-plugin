@@ -47,7 +47,7 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Future<dynamic> getSubscription() async {
+  Future<dynamic> getSubscriptions() async {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.subscription,
       methodChannel: _getSubscriptionMethodChannel,

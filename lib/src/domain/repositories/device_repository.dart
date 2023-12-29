@@ -7,7 +7,7 @@ abstract class DeviceRepository {
     required String subscriptionIdOrCohortId,
   });
 
-  Future<Subscription?> getSubscription();
+  Future<List<Subscription>> getSubscriptions();
 
   Future<String> getDeviceID();
 

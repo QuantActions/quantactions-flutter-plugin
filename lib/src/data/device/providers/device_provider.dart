@@ -5,7 +5,7 @@ abstract class DeviceProvider {
     required String subscriptionIdOrCohortId,
   });
 
-  Future<dynamic> getSubscription();
+  Future<dynamic> getSubscriptions();
 
   Future<String> getDeviceID();
 
