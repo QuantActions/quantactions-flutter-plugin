@@ -23,6 +23,7 @@ import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.Subscri
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEntriesSampleMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEventEntityMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.GetConnectedDevicesMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.OpenBatteryOptimisationSettingsChannelHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -98,5 +99,6 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         GetQuestionnairesListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetJournalEntriesSampleMethodChannelHandler(ioScope, qa, context).register(flutterPluginBinding)
         GetConnectedDevicesMethodChannelHandler(mainScope, qa).register(flutterPluginBinding);
+        OpenBatteryOptimisationSettingsChannelHandler(mainScope, qa, context).register(flutterPluginBinding);
     }
 }

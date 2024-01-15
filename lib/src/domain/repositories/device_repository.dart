@@ -14,4 +14,6 @@ abstract class DeviceRepository {
   Future<List<String>> getConnectedDevices();
 
   Future<bool?> getIsKeyboardAdded();
+
+  Future<void> openBatteryOptimisationSettings();
 }

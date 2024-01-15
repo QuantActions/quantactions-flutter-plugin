@@ -50,4 +50,9 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Future<bool?> getIsKeyboardAdded() {
     return _deviceProvider.getIsKeyboardAdded();
   }
+
+  @override
+  Future<void> openBatteryOptimisationSettings() async {
+    return _deviceProvider.openBatteryOptimisationSettings();
+  }
 }

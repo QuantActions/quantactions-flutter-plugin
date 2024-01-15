@@ -92,6 +92,10 @@ class QAFlutterPlugin {
     return _deviceRepository.isDeviceRegistered();
   }
 
+  Future<void> openBatteryOptimisationSettings() async {
+    return _deviceRepository.openBatteryOptimisationSettings();
+  }
+
   ///Use this function to retrieve a particular journal entry.
   ///You need to provide the id of the entry you want to retrieve,
   ///checkout [getJournalEntries] and JournalEntryWithEvents to see
