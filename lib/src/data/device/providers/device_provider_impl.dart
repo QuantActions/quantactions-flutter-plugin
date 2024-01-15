@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 
 import '../../consts/method_channel_consts.dart';
@@ -17,6 +19,9 @@ class DeviceProviderImpl implements DeviceProvider {
   );
   final MethodChannel _subscribeMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/subscribe',
+  );
+  final MethodChannel _connectedDevicesMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/get_connected_devices',
   );
 
   final SDKMethodChannel _sdkMethodChannel;
@@ -60,6 +65,18 @@ class DeviceProviderImpl implements DeviceProvider {
       method: SupportedMethods.getDeviceID,
       methodChannel: _deviceIDMethodChannel,
     );
+  }
+
+  @override
+  Future<List<String>> getConnectedDevices() async {
+    final String json = await _sdkMethodChannel.callMethodChannel<String>(
+      method: SupportedMethods.getConnectedDevices,
+      methodChannel: _connectedDevicesMethodChannel,
+    );
+
+    final List<dynamic> ids = jsonDecode(json);
+
+    return ids.cast<String>();
   }
 
   @override

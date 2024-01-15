@@ -42,6 +42,11 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
+  Future<List<String>> getConnectedDevices() async {
+    return _deviceProvider.getConnectedDevices();
+  }
+
+  @override
   Future<bool?> getIsKeyboardAdded() {
     return _deviceProvider.getIsKeyboardAdded();
   }

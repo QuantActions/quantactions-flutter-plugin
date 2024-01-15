@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanDrawMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanUsageMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.RequestOverlayPermissionMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.RequestUsagePermissionMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetCohortListStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetJournalEntriesStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetQuestionnairesListStreamHandler
@@ -20,6 +22,7 @@ import com.quantactions.qa_flutter_plugin.method_channel_handlers.VoidMethodChan
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.SubscriptionMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEntriesSampleMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEventEntityMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.GetConnectedDevicesMethodChannelHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -68,6 +71,10 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
 
+    private fun getActivity(): Activity {
+        return activity;
+    }
+
     private fun initChannels(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         VoidMethodChannelHandler(ioScope, qa, context).register(flutterPluginBinding)
         InitMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
@@ -78,7 +85,9 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         SaveJournalEntryMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         GetJournalEntryMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         CanDrawMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
+        RequestOverlayPermissionMethodChannelHandler(mainScope, qa, context, this::getActivity).register(flutterPluginBinding);
         CanUsageMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
+        RequestUsagePermissionMethodChannelHandler(mainScope, qa, context, this::getActivity).register(flutterPluginBinding);
         SubscribeMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
         SubscriptionMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
         MetricAndTrendStreamHandler(mainScope, ioScope, qa, context).register(flutterPluginBinding)
@@ -88,5 +97,6 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         GetJournalEntriesStreamHandler(mainScope, qa, context).register(flutterPluginBinding)
         GetQuestionnairesListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetJournalEntriesSampleMethodChannelHandler(ioScope, qa, context).register(flutterPluginBinding)
+        GetConnectedDevicesMethodChannelHandler(mainScope, qa).register(flutterPluginBinding);
     }
 }

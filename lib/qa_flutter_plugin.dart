@@ -40,6 +40,11 @@ class QAFlutterPlugin {
   ///Returns nil if the KEYBOARD_EXTENSION_BUNDLE_ID is not added to the Info.plist file properly.
   Future<bool?> get isKeyboardAdded => _deviceRepository.getIsKeyboardAdded();
 
+  ///Retrieves the list of paired devices
+  Future<List<String>> getConnectedDevices() async {
+    return _deviceRepository.getConnectedDevices();
+  }
+
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
     return _cohortRepository.getCohortList();
@@ -207,6 +212,18 @@ class QAFlutterPlugin {
   ///Returns whether or not the ```usage``` permission has been granted
   Future<bool> canUsage() async {
     return _permissionRepository.canUsage();
+  }
+
+  ///The method is only relevant for Android
+  ///Opens device settings to grant the ```draw``` permission
+  Future<void> openDrawSettings() async {
+    return _permissionRepository.openDrawSettings();
+  }
+
+  ///The method is only relevant for Android
+  ///Opens device settings to grant the ```usage``` permission
+  Future<void> openUsageSettings() async {
+    return _permissionRepository.openUsageSettings();
   }
 
   ///Get a list of all the questionnaires available to complete

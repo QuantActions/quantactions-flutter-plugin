@@ -9,5 +9,7 @@ abstract class DeviceProvider {
 
   Future<String> getDeviceID();
 
+  Future<List<String>> getConnectedDevices();
+
   Future<bool?> getIsKeyboardAdded();
 }
