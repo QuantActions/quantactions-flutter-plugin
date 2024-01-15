@@ -11,6 +11,8 @@ class SupportedMethods {
   static const String getStatSampleAsync = 'getStatSampleAsync';
   static const String canDraw = 'canDraw';
   static const String canUsage = 'canUsage';
+  static const String requestOverlayPermission = 'requestOverlayPermission';
+  static const String requestUsagePermission = 'requestUsagePermission';
   static const String updateBasicInfo = 'updateBasicInfo';
   static const String leaveCohort = 'leaveCohort';
   static const String saveJournalEntry = 'saveJournalEntry';
@@ -18,6 +20,7 @@ class SupportedMethods {
   static const String sendNote = 'sendNote';
   static const String recordQuestionnaireResponse = 'recordQuestionnaireResponse';
   static const String init = 'init';
+  static const String getConnectedDevices = 'getConnectedDevices';
 
   //event channel
   static const String getCohortList = 'getCohortList';

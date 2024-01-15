@@ -17,4 +17,14 @@ class PermissionRepositoryImpl implements PermissionRepository {
   Future<bool> canUsage() {
     return _permissionProvider.canUsage();
   }
+
+  @override
+  Future<void> openDrawSettings() {
+    return _permissionProvider.openDrawSettings();
+  }
+
+  @override
+  Future<void> openUsageSettings() {
+    return _permissionProvider.openUsageSettings();
+  }
 }

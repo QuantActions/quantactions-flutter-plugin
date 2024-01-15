@@ -16,6 +16,14 @@ class PermissionProviderImpl implements PermissionProvider {
     '${MethodChannelConsts.mainMethodChannel}/can_usage',
   );
 
+  final MethodChannel _requestOverlayPermissionMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/request_overlay_permission',
+  );
+
+  final MethodChannel _requestUsagePermissionMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/request_usage_permission',
+  );
+
   PermissionProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;
@@ -33,6 +41,22 @@ class PermissionProviderImpl implements PermissionProvider {
     return _sdkMethodChannel.callMethodChannel<bool>(
       method: SupportedMethods.canUsage,
       methodChannel: _canUsageMethodChannel,
+    );
+  }
+
+  @override
+  Future<void> openDrawSettings() async {
+    await _sdkMethodChannel.callMethodChannel<int>(
+      method: SupportedMethods.requestOverlayPermission,
+      methodChannel: _requestOverlayPermissionMethodChannel,
+    );
+  }
+
+  @override
+  Future<void> openUsageSettings() async {
+    await _sdkMethodChannel.callMethodChannel<int>(
+      method: SupportedMethods.requestUsagePermission,
+      methodChannel: _requestUsagePermissionMethodChannel,
     );
   }
 }

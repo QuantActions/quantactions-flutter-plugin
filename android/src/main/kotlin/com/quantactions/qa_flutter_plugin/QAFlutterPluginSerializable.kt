@@ -312,5 +312,13 @@ class QAFlutterPluginSerializable {
                 )
             )
         }
+
+        fun serializeDevicesIds(ids: List<String>): String {
+            return Json.encodeToString(
+                ids.map { element ->
+                    element.toString()
+                }
+            )
+        }
     }
 }
