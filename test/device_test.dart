@@ -55,7 +55,7 @@ void main() {
 
   test('getSubscriptionId', () {
     expect(
-      qaFlutterPlugin.getSubscription(),
+      qaFlutterPlugin.getSubscriptions(),
       const TypeMatcher<Stream<Subscription>>(),
     );
   });
