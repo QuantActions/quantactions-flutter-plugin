@@ -53,6 +53,6 @@ class DeviceRepositoryImpl implements DeviceRepository {
 
   @override
   Future<void> openBatteryOptimisationSettings() async {
-    return _deviceProvider.openBatteryOptimisationSettings();
+    await _deviceProvider.openBatteryOptimisationSettings();
   }
 }

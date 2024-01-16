@@ -93,7 +93,7 @@ class QAFlutterPlugin {
   }
 
   Future<void> openBatteryOptimisationSettings() async {
-    return _deviceRepository.openBatteryOptimisationSettings();
+    await _deviceRepository.openBatteryOptimisationSettings();
   }
 
   ///Use this function to retrieve a particular journal entry.
@@ -221,13 +221,13 @@ class QAFlutterPlugin {
   ///The method is only relevant for Android
   ///Opens device settings to grant the ```draw``` permission
   Future<void> openDrawSettings() async {
-    return _permissionRepository.openDrawSettings();
+    await _permissionRepository.openDrawSettings();
   }
 
   ///The method is only relevant for Android
   ///Opens device settings to grant the ```usage``` permission
   Future<void> openUsageSettings() async {
-    return _permissionRepository.openUsageSettings();
+    await _permissionRepository.openUsageSettings();
   }
 
   ///Get a list of all the questionnaires available to complete
