@@ -13,6 +13,9 @@ class UserProviderImpl implements UserProvider {
   final MethodChannel _basicInfoMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/basic_info',
   );
+  final MethodChannel _passwordMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/get_password',
+  );
 
   final SDKMethodChannel _sdkMethodChannel;
 
@@ -63,6 +66,16 @@ class UserProviderImpl implements UserProvider {
   @override
   Future<String> getBasicInfo() {
     return _sdkMethodChannel.callMethodChannel<String>(
-        method: SupportedMethods.getBasicInfo, methodChannel: _basicInfoMethodChannel);
+      method: SupportedMethods.getBasicInfo,
+      methodChannel: _basicInfoMethodChannel,
+    );
+  }
+
+  @override
+  Future<String?> getPassword() {
+    return _sdkMethodChannel.callMethodChannel<String?>(
+      method: SupportedMethods.getPassword,
+      methodChannel: _passwordMethodChannel,
+    );
   }
 }

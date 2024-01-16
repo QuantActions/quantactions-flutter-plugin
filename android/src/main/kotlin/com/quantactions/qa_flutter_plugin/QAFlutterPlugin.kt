@@ -11,6 +11,7 @@ import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetJournalEntri
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetQuestionnairesListStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.MetricAndTrendStreamHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.BasicInfoMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.PasswodMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.DataCollectionRunningMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.DeviceIdMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEntryMethodChannelHandler
@@ -80,6 +81,7 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         VoidMethodChannelHandler(ioScope, qa, context).register(flutterPluginBinding)
         InitMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         BasicInfoMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
+        PasswodMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
         DataCollectionRunningMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         IsDeviceRegisteredMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
         DeviceIdMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)

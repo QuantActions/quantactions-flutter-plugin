@@ -19,34 +19,42 @@ class MockDataProvider {
     required MetricType? metricType,
   }) {
     switch (method) {
-    //methods for method channel
+      //methods for method channel
       case SupportedMethods.getBasicInfo:
         return _getBasicInfo();
       case SupportedMethods.getDeviceID:
         return faker.randomGenerator.fromCharSet('1234567890', 10);
       case SupportedMethods.isDataCollectionRunning ||
-      SupportedMethods.isDeviceRegistered ||
-      SupportedMethods.canDraw ||
-      SupportedMethods.canUsage || SupportedMethods.init:
+            SupportedMethods.isDeviceRegistered ||
+            SupportedMethods.canDraw ||
+            SupportedMethods.canUsage ||
+            SupportedMethods.init:
         return faker.randomGenerator.boolean();
       case SupportedMethods.resumeDataCollection ||
-      SupportedMethods.pauseDataCollection ||
-      SupportedMethods.updateBasicInfo:
+            SupportedMethods.pauseDataCollection ||
+            SupportedMethods.updateBasicInfo:
         return;
       case SupportedMethods.getJournalEntry || SupportedMethods.saveJournalEntry:
         return _getJournalEntry();
       case SupportedMethods.getStatSampleAsync:
         if (metricType == null) return;
-
         return jsonEncode(_getMetric(metricType));
 
-    //methods for event channel
+      case SupportedMethods.getPassword:
+        return faker.randomGenerator.string(16, min: 16);
+
+      case SupportedMethods.subscription: {
+        return jsonEncode(<Subscription>[
+          SubscriptionFactory().generateFake(),
+          SubscriptionFactory().generateFake(),
+        ]);
+      }
+
+      //methods for event channel
       case SupportedMethods.getCohortList:
         return _getCohortList();
       case SupportedMethods.subscribe:
         return _getSubscriptionWithQuestionnaires();
-      case SupportedMethods.subscription:
-        return Stream<String>.value(_getSubscriptionResponse());
       case SupportedMethods.journalEntries || SupportedMethods.journalEntriesSample:
         return _getJournalEntries(length: 10);
       case SupportedMethods.journalEventKinds:
@@ -74,12 +82,6 @@ class MockDataProvider {
             .map((JournalEntry event) => event.toJson())
             .toList(),
       ),
-    );
-  }
-
-  static String _getSubscriptionResponse() {
-    return jsonEncode(
-      SubscriptionFactory().generateFake(),
     );
   }
 

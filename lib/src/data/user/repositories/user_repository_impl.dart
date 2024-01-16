@@ -48,4 +48,9 @@ class UserRepositoryImpl implements UserRepository {
 
     return BasicInfo.fromJson(jsonDecode(json));
   }
+
+  @override
+  Future<String?> getPassword() async {
+    return _userProvider.getPassword();
+  }
 }

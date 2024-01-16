@@ -22,11 +22,12 @@ class SupportedMethods {
   static const String init = 'init';
   static const String getConnectedDevices = 'getConnectedDevices';
   static const String openBatteryOptimisationSettings = 'openBatteryOptimisationSettings';
+  static const String getPassword = 'getPassword';
+  static const String subscription = 'subscription';
 
   //event channel
   static const String getCohortList = 'getCohortList';
   static const String subscribe = 'subscribe';
-  static const String subscription = 'subscription';
   static const String journalEntries = 'journalEntries';
   static const String journalEntriesSample = 'journalEntriesSample';
   static const String journalEventKinds = 'journalEventKinds';

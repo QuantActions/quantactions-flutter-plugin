@@ -17,4 +17,6 @@ abstract class UserProvider {
   });
 
   Future<String> getBasicInfo();
+
+  Future<String?> getPassword();
 }
