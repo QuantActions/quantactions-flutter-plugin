@@ -23,6 +23,9 @@ class DeviceProviderImpl implements DeviceProvider {
   final MethodChannel _connectedDevicesMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/get_connected_devices',
   );
+  final MethodChannel _batteryOptimisationMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/open_battery_optimisation_settings',
+  );
 
   final SDKMethodChannel _sdkMethodChannel;
 
@@ -83,6 +86,14 @@ class DeviceProviderImpl implements DeviceProvider {
   Future<bool?> getIsKeyboardAdded() {
     return _sdkMethodChannel.callMethodChannel<bool?>(
       method: SupportedMethods.getDeviceID,
+    );
+  }
+
+  @override
+  Future<void> openBatteryOptimisationSettings() {
+    return _sdkMethodChannel.callMethodChannel<void>(
+      method: SupportedMethods.openBatteryOptimisationSettings,
+      methodChannel: _batteryOptimisationMethodChannel,
     );
   }
 }

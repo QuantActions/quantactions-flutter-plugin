@@ -21,6 +21,7 @@ class SupportedMethods {
   static const String recordQuestionnaireResponse = 'recordQuestionnaireResponse';
   static const String init = 'init';
   static const String getConnectedDevices = 'getConnectedDevices';
+  static const String openBatteryOptimisationSettings = 'openBatteryOptimisationSettings';
 
   //event channel
   static const String getCohortList = 'getCohortList';
