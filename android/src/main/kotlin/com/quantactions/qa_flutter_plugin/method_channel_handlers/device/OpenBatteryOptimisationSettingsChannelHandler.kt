@@ -29,9 +29,9 @@ class OpenBatteryOptimisationSettingsChannelHandler (
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         mainScope.launch {
             when (call.method) {
-                "retrieveBatteryOptimizationIntentForCurrentManufacturer" -> QAFlutterPluginHelper.safeMethodChannel(
+                "openBatteryOptimisationSettings" -> QAFlutterPluginHelper.safeMethodChannel(
                     result = result,
-                    methodName = "retrieveBatteryOptimizationIntentForCurrentManufacturer",
+                    methodName = "openBatteryOptimisationSettings",
                     method = {
                         val intent = qa.retrieveBatteryOptimizationIntentForCurrentManufacturer(context)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
