@@ -23,6 +23,7 @@ class SupportedMethods {
   static const String getConnectedDevices = 'getConnectedDevices';
   static const String openBatteryOptimisationSettings = 'openBatteryOptimisationSettings';
   static const String getPassword = 'getPassword';
+  static const String getIdentityId = 'getIdentityId';
   static const String subscription = 'subscription';
 
   //event channel

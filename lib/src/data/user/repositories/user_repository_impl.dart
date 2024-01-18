@@ -53,4 +53,9 @@ class UserRepositoryImpl implements UserRepository {
   Future<String?> getPassword() async {
     return _userProvider.getPassword();
   }
+
+  @override
+  Future<String> getIdentityId() {
+    return _userProvider.getIdentityId();
+  }
 }

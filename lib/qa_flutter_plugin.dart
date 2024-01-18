@@ -36,6 +36,10 @@ class QAFlutterPlugin {
   ///User password
   Future<String?> get password => _userRepository.getPassword();
 
+  ///The method is only relevant for Android
+  ///User identity id
+  Future<String> get identityId => _userRepository.getIdentityId();
+
   ///The method is only relevant for iOS
   ///A boolean indicating if the keyboard is added in the system Keyboards settings.
   ///It determines whether the keyboard is added or not based on KEYBOARD_EXTENSION_BUNDLE_ID field
