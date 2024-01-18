@@ -17,4 +17,8 @@ abstract class UserRepository {
   });
 
   Future<BasicInfo> getBasicInfo();
+
+  Future<String?> getPassword();
+
+  Future<String> getIdentityId();
 }
