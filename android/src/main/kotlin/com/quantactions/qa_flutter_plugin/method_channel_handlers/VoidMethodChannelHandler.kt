@@ -2,14 +2,13 @@ package com.quantactions.qa_flutter_plugin.method_channel_handlers
 
 import android.content.Context
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
-import com.quantactions.qa_flutter_plugin.QAFlutterPluginSerializable
 import com.quantactions.sdk.QA
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
@@ -60,11 +59,9 @@ class VoidMethodChannelHandler(
                             result = result,
                             methodName = "deleteJournalEntry",
                             method = {
-                                runBlocking {
-                                    launch {
-                                        qa.deleteJournalEntry(id)
-                                    }
-                                }
+                                async {
+                                    qa.deleteJournalEntry(id)
+                                }.await()
                             }
                         )
                     } else {
@@ -85,11 +82,9 @@ class VoidMethodChannelHandler(
                             result = result,
                             methodName = "sendNote",
                             method = {
-                                runBlocking {
-                                    launch {
-                                        qa.sendNote(text)
-                                    }
-                                }
+                                async {
+                                    qa.sendNote(text)
+                                }.await()
                             }
                         )
                     } else {
@@ -110,12 +105,10 @@ class VoidMethodChannelHandler(
                             result = result,
                             methodName = "leaveCohort",
                             method = {
-                                runBlocking {
-                                    launch {
-                                        //TODO (karatysh): set subscriptionId instead of ""
-                                        qa.leaveCohort("", cohortId)
-                                    }
-                                }
+                                async {
+                                    //TODO (karatysh): set subscriptionId instead of ""
+                                    qa.leaveCohort("", cohortId)
+                                }.await()
                             }
                         )
                     } else {
@@ -144,17 +137,15 @@ class VoidMethodChannelHandler(
                             result = result,
                             methodName = "recordQuestionnaireResponse",
                             method = {
-                                runBlocking {
-                                    launch {
-                                        qa.recordQuestionnaireResponse(
-                                            name,
-                                            code,
-                                            date,
-                                            fullID,
-                                            responseMap
-                                        )
-                                    }
-                                }
+                                async {
+                                    qa.recordQuestionnaireResponse(
+                                        name,
+                                        code,
+                                        date,
+                                        fullID,
+                                        responseMap
+                                    )
+                                }.await()
                             },
                         )
                     } else {

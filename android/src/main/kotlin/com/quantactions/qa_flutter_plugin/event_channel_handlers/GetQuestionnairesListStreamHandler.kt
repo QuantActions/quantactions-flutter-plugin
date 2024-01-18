@@ -6,6 +6,7 @@ import com.quantactions.sdk.QA
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class GetQuestionnairesListStreamHandler(
@@ -33,13 +34,15 @@ class GetQuestionnairesListStreamHandler(
                         eventSink = eventSink,
                         methodName = "getQuestionnairesList",
                         method = {
-                            val response = qa.getQuestionnairesList()
+                            async {
+                                val response = qa.getQuestionnairesList()
 
-                            eventSink.success(
-                                QAFlutterPluginSerializable.serializeQuestionnaireList(
-                                    response
+                                eventSink.success(
+                                    QAFlutterPluginSerializable.serializeQuestionnaireList(
+                                        response
+                                    )
                                 )
-                            )
+                            }.await()
                         },
                     )
                 }

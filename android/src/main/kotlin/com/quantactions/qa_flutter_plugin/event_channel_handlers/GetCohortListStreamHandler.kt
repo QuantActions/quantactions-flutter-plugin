@@ -6,6 +6,7 @@ import com.quantactions.sdk.QA
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class GetCohortListStreamHandler(
@@ -35,11 +36,13 @@ class GetCohortListStreamHandler(
                         eventSink = eventSink,
                         methodName = "getCohortList",
                         method = {
-                            eventSink.success(
-                                QAFlutterPluginSerializable.serializeCohortList(
-                                    qa.getCohortList()
+                            async {
+                                eventSink.success(
+                                    QAFlutterPluginSerializable.serializeCohortList(
+                                        qa.getCohortList()
+                                    )
                                 )
-                            )
+                            }.await()
                         },
                     )
                 }

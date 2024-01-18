@@ -7,8 +7,8 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class SubscribeMethodChannelHandler(
     private var mainScope: CoroutineScope,
@@ -32,17 +32,13 @@ class SubscribeMethodChannelHandler(
                         QAFlutterPluginHelper.safeMethodChannel(result = result,
                             methodName = "subscribe",
                             method = {
-                                result.success(
-                                    runBlocking {
-                                        launch {
-                                            result.success(
-                                                QAFlutterPluginSerializable.serializeSubscriptionWithQuestionnaires(
-                                                    qa.subscribe(subscriptionIdOrCohortId)
-                                                )
-                                            )
-                                        }
-                                    }
-                                )
+                                async {
+                                    result.success(
+                                        QAFlutterPluginSerializable.serializeSubscriptionWithQuestionnaires(
+                                            qa.subscribe(subscriptionIdOrCohortId)
+                                        )
+                                    )
+                                }.await()
                             }
                         )
                     } else {

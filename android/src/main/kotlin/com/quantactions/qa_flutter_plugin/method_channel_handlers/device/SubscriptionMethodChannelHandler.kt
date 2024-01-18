@@ -7,8 +7,8 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class SubscriptionMethodChannelHandler(
     private var mainScope: CoroutineScope,
@@ -29,13 +29,13 @@ class SubscriptionMethodChannelHandler(
                         result = result,
                         methodName = "subscription",
                         method = {
-                            runBlocking {
+                            async {
                                 val response = qa.subscriptions()
 
                                 result.success(
                                     QAFlutterPluginSerializable.serializeSubscriptions(response)
                                 )
-                            }
+                            }.await()
                         },
                     )
                 }
