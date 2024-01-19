@@ -38,7 +38,10 @@ class VoidMethodChannelHandler(
                 "pauseDataCollection" -> QAFlutterPluginHelper.safeMethodChannel(
                     result = result,
                     methodName = "pauseDataCollection",
-                    method = { qa.pauseDataCollection(context) }
+                    method = {
+                        qa.pauseDataCollection(context)
+                        result.success(true)
+                    }
                 )
 
                 "resumeDataCollection" ->
@@ -47,6 +50,7 @@ class VoidMethodChannelHandler(
                         methodName = "resumeDataCollection",
                         method = {
                             qa.resumeDataCollection(context)
+                            result.success(true)
                         }
                     )
 
