@@ -42,6 +42,8 @@ class BasicInfoMethodChannelHandler(
                                 newGender,
                                 newSelfDeclaredHealthy,
                             )
+
+                            result.success(true);
                         }
                     )
                 }
