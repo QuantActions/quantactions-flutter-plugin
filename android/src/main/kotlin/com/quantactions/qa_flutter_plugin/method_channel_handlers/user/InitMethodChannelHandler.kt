@@ -35,7 +35,7 @@ class InitMethodChannelHandler(
 
                     val apiKey = params["apiKey"] as String?
                     val age = params["age"] as? Int? ?: 0
-                    val selfDeclaredHealthy = params["age"] as? Boolean? ?: false
+                    val selfDeclaredHealthy = params["selfDeclaredHealthy"] as? Boolean? ?: false
                     val gender = QAFlutterPluginHelper.parseGender(params["gender"] as? String)
                     val identityId = params["identityId"] as String?
                     val password = params["password"] as String?
