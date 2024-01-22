@@ -17,17 +17,17 @@ class SubscriptionMethodChannelHandler(
 
     fun register(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val channel =
-            MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin/subscription")
+            MethodChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin/subscriptions")
         channel.setMethodCallHandler(this)
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         mainScope.launch {
             when (call.method) {
-                "subscription" -> {
+                "subscriptions" -> {
                     QAFlutterPluginHelper.safeMethodChannel(
                         result = result,
-                        methodName = "subscription",
+                        methodName = "subscriptions",
                         method = {
                             async {
                                 val response = qa.subscriptions()

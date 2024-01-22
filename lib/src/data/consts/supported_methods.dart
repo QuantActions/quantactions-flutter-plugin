@@ -24,7 +24,7 @@ class SupportedMethods {
   static const String openBatteryOptimisationSettings = 'openBatteryOptimisationSettings';
   static const String getPassword = 'getPassword';
   static const String getIdentityId = 'getIdentityId';
-  static const String subscription = 'subscription';
+  static const String subscriptions = 'subscriptions';
 
   //event channel
   static const String getCohortList = 'getCohortList';

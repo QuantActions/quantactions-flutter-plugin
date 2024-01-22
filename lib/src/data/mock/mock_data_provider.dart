@@ -43,7 +43,7 @@ class MockDataProvider {
       case SupportedMethods.getPassword:
         return faker.randomGenerator.string(16, min: 16);
 
-      case SupportedMethods.subscription: {
+      case SupportedMethods.subscriptions: {
         return jsonEncode(<Subscription>[
           SubscriptionFactory().generateFake(),
           SubscriptionFactory().generateFake(),

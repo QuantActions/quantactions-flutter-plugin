@@ -8,8 +8,8 @@ import '../../core/sdk_method_channel.dart';
 import 'device_provider.dart';
 
 class DeviceProviderImpl implements DeviceProvider {
-  final MethodChannel _getSubscriptionMethodChannel = const MethodChannel(
-    '${MethodChannelConsts.mainMethodChannel}/subscription',
+  final MethodChannel _getSubscriptionsMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/subscriptions',
   );
   final MethodChannel _isDeviceRegisteredMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/is_device_registered',
@@ -57,8 +57,8 @@ class DeviceProviderImpl implements DeviceProvider {
   @override
   Future<dynamic> getSubscriptions() async {
     return _sdkMethodChannel.callMethodChannel(
-      method: SupportedMethods.subscription,
-      methodChannel: _getSubscriptionMethodChannel,
+      method: SupportedMethods.subscriptions,
+      methodChannel: _getSubscriptionsMethodChannel,
     );
   }
 
