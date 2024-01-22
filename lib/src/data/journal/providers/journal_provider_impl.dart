@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../../domain/domain.dart';
 import '../../consts/method_channel_consts.dart';
@@ -43,7 +44,7 @@ class JournalProviderImpl implements JournalProvider {
       methodChannel: _saveJournalEntryMethodChannel,
       params: <String, dynamic>{
         'id': id,
-        'date': date.toString(),
+        'date': DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS').format(date),
         'note': note,
         'events': jsonEncode(
           events.map((JournalEvent event) => event.toJson()).toList(),
@@ -94,7 +95,7 @@ class JournalProviderImpl implements JournalProvider {
   @override
   Future<dynamic> getJournalEntriesSample({
     required String apiKey,
-  }) async{
+  }) async {
     return _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.journalEntriesSample,
       methodChannel: _getJournalEntriesSampleChannel,
