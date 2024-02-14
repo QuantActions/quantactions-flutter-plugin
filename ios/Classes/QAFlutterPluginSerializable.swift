@@ -252,16 +252,24 @@ class QAFlutterPluginSerializable : NSObject {
         return encodeObject(object: serializableObject)
     }
     
-    public static func serializeSubscription(data: Subscription) -> String {
-        let serializableObject = SerializableSubscription(
-            subscriptionId:  data.id,
-            deviceIds: data.deviceIDs,
-            cohortId: data.cohortID,
-            cohortName: data.cohortName,
-            premiumFeaturesTTL: data.premiumFeaturesTTL
-        )
+    public static func serializeSubscription(data: [Subscription]) -> String {
+        let dateFormatter = DateFormatter()
         
-        return encodeObject(object: serializableObject)
+        var dataArray : [SerializableSubscription] = []
+        
+        for x in data {
+            dataArray.append(
+                SerializableSubscription(
+                    subscriptionId:  x.id,
+                    deviceIds: x.deviceIDs,
+                    cohortId: x.cohortID,
+                    cohortName: x.cohortName,
+                    premiumFeaturesTTL: x.premiumFeaturesTTL
+                )
+            )
+        }
+
+        return encodeObject(object: dataArray)
     }
     
     public static func serializeJournalEntryList(data: [JournalEntry]) -> String {
@@ -283,6 +291,21 @@ class QAFlutterPluginSerializable : NSObject {
         }
 
         return encodeObject(object: dataArray)
+    }
+    
+    public static func serializeJournalEntry(data: JournalEntry) -> String {
+        let dateFormatter = DateFormatter()
+        
+        let entry = SerializableJournalEntry(
+            id: data.id,
+            date: dateFormatter.string(from: data.date),
+            note: data.note,
+            events: data.events.map{
+                (journalEntryEvent) -> SerializableJournalEntryEvent in return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent)
+            }
+        )
+
+        return encodeObject(object: entry)
     }
     
     public static func serializeJournalEntryFromQAModel (data: JournalEntry) -> String {

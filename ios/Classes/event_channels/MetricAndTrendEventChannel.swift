@@ -10,6 +10,8 @@ import Flutter
 import QuantActionsSDK
 
 class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
+    
+    
     private var eventSink: FlutterEventSink?
     
     static func register(with registrar: FlutterPluginRegistrar) {
@@ -31,6 +33,22 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
         
         let params = arguments as? Dictionary<String, Any>
         
+        let method = params?["method"] as? String
+        
+        var participationID = "";
+        
+        if (method == "getMetric") {
+            let subscription = QA.shared.subscriptions
+            
+            if (!subscription.isEmpty) {
+                participationID = subscription.first!.id
+            } else {
+                QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: method!)
+            }
+        } else {
+            participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb"
+        }
+        
         let metric = params?["metric"] as? String
         let dateIntervalType = params?["metricInterval"] as? String
         
@@ -42,10 +60,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                     eventSink: eventSink,
                     methodName: "getMetric\(metricToAsk)"
                 ) {
-                    Task {
-                        //participationID has getSubscriptionId value
-                        var result = try await QA.shared.trend(
-                            participationID: "",
+                    Task { [participationID] in
+                        let result = try await QA.shared.trend(
+                            participationID: participationID,
                             interval: getDateInterval(dateIntervalType),
                             trendKind: metricToAsk
                         )
@@ -61,9 +78,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                 ) {
                     switch (metric) {
                     case "sleep":
-                        Task {
+                        Task { [participationID] in
                             let result : [DataPoint<SleepScoreElement>] = try await QA.shared.sleepScoreMetric(
-                                participationID: "",
+                                participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
                             eventSink(
@@ -71,9 +88,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             )
                         }
                     case "cognitive":
-                        Task {
+                        Task { [participationID] in
                             let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.cognitiveFitnessMetric(
-                                participationID: "",
+                                participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
                             
@@ -82,9 +99,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             )
                         }
                     case "social":
-                        Task {
+                        Task { [participationID] in
                             let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.socialEngagementMetric(
-                                participationID: "",
+                                participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
                             
@@ -93,9 +110,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             )
                         }
                     case "action":
-                        Task {
+                        Task { [participationID] in
                             let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.actionSpeedMetric(
-                                participationID: "",
+                                participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
                             
@@ -104,9 +121,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             )
                         }
                     case "typing":
-                        Task {
+                        Task { [participationID] in
                             let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.typingSpeedMetric(
-                                participationID: "",
+                                participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
                             
@@ -115,9 +132,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             )
                         }
                     case "sleep_summary":
-                        Task {
+                        Task { [participationID] in
                             let result : [DataPoint<SleepSummaryElement>]  = try await QA.shared.sleepSummaryMetric(
-                                participationID: "",
+                                participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
                             
@@ -126,9 +143,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             )
                         }
                     case "screen_time_aggregate":
-                        Task {
+                        Task { [participationID] in
                             let result : [DataPoint<ScreenTimeAggregateElement>]  = try await QA.shared.screenTimeAggregateMetric(
-                                participationID: "",
+                                participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
                             
@@ -137,9 +154,9 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             )
                         }
                     case "social_taps":
-                        Task {
+                        Task { [participationID] in
                             let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.socialTapsMetric(
-                                participationID: "",
+                                participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
                             

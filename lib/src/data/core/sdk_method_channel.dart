@@ -57,7 +57,8 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     required String method,
     MetricType? metricType,
   }) {
-    if (defaultTargetPlatform == TargetPlatform.android) {
+    if (defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS) {
       try {
         return request();
       } on PlatformException catch (e) {
@@ -66,11 +67,6 @@ class SDKMethodChannel extends SDKMethodChannelCore {
           reason: e.details.toString(),
         );
       }
-    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return MockDataProvider.callMockMethod(
-        method: method,
-        metricType: metricType,
-      );
     } else {
       throw QAError(
         description: 'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',

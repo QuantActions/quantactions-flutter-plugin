@@ -26,6 +26,9 @@ class DeviceProviderImpl implements DeviceProvider {
   final MethodChannel _batteryOptimisationMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/open_battery_optimisation_settings',
   );
+  final MethodChannel _isKeyboardAddedMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/is_keyboard_added',
+  );
 
   final SDKMethodChannel _sdkMethodChannel;
 
@@ -85,7 +88,8 @@ class DeviceProviderImpl implements DeviceProvider {
   @override
   Future<bool?> getIsKeyboardAdded() {
     return _sdkMethodChannel.callMethodChannel<bool?>(
-      method: SupportedMethods.getDeviceID,
+      method: SupportedMethods.getIsKeyboardAdded,
+      methodChannel: _isKeyboardAddedMethodChannel,
     );
   }
 

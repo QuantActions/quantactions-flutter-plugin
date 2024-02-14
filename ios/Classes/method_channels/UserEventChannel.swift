@@ -35,7 +35,7 @@ class UserEventChannel : NSObject, FlutterStreamHandler {
                 
                 QAFlutterPluginHelper.safeEventChannel(
                     eventSink: eventSink,
-                    methodName: "leaveCohort"
+                    methodName: "init"
                 ) {
                     Task {
                         let basicInfo = BasicInfo(

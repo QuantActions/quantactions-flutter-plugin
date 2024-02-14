@@ -1,5 +1,5 @@
 //
-//  GetJournalEventKindsEventChannel.swift
+//  GetJournalEntitiesEventChannel.swift
 //  qa_flutter_plugin
 //
 //  Created by User on 31/10/2023.
@@ -9,12 +9,12 @@ import Foundation
 import Flutter
 import QuantActionsSDK
 
-class GetJournalEventKindsEventChannel : NSObject, FlutterStreamHandler {
+class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
     private var eventSink: FlutterEventSink?
     
     static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterEventChannel(name: "qa_flutter_plugin_stream/get_journal_event_kinds", binaryMessenger: registrar.messenger())
-        let instance = GetJournalEventKindsEventChannel()
+        let channel = FlutterEventChannel(name: "qa_flutter_plugin_stream/get_journal_entries", binaryMessenger: registrar.messenger())
+        let instance = GetJournalEntitiesEventChannel()
         channel.setStreamHandler(instance)
     }
     
@@ -26,22 +26,25 @@ class GetJournalEventKindsEventChannel : NSObject, FlutterStreamHandler {
         
         let method = params?["method"] as? String
         
-        if let method = method{
+        if let method = method {
             switch method {
-            case "journalEventKinds":
+            case "journalEntries":
                 QAFlutterPluginHelper.safeEventChannel(
                     eventSink: eventSink,
-                    methodName: "journalEventKinds"
+                    methodName: "journalEntries"
                 ) {
-                    let response = QA.shared.journalEventKinds()
-                    eventSink(QAFlutterPluginSerializable.serializeJournalEventKind(data: response))
+                    Task {
+                        let response = QA.shared.journalEntries()
+                        eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response))
+                    }
+                
                 }
             default: break
             }
         } else {
             QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
                 eventSink: eventSink,
-                methodName: "journalEventKinds"
+                methodName: "journalEntries"
             )
         }
         

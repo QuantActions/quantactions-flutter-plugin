@@ -12,7 +12,7 @@ import QuantActionsSDK
 class SubscriptionMethodChannel : NSObject, FlutterPlugin {
     
     static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "qa_flutter_plugin/subscription", binaryMessenger: registrar.messenger())
+        let channel = FlutterMethodChannel(name: "qa_flutter_plugin/subscriptions", binaryMessenger: registrar.messenger())
         let instance = SubscriptionMethodChannel()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
@@ -22,17 +22,10 @@ class SubscriptionMethodChannel : NSObject, FlutterPlugin {
         case "subscription":
             QAFlutterPluginHelper.safeMethodChannel(
                 result: result,
-                methodName: "subscription"
+                methodName: "subscriptions"
             ) {
-                Task {
-                    let response = try await QA.shared.subscription()
-                    
-                    if (response == nil){
-                        result(nil)
-                    } else {
-                        result(QAFlutterPluginSerializable.serializeSubscription(data: response!))
-                    }
-                }
+                    let response = QA.shared.subscriptions
+                    result(QAFlutterPluginSerializable.serializeSubscription(data: response))
             }
         default: break
         }

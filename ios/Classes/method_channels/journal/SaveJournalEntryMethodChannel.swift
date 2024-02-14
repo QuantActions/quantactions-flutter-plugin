@@ -28,7 +28,7 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
             let note = params?["note"] as? String
             let events = params?["events"] as? String
             
-            if let id = id, let dateString = dateString, let note = note, let events = events {
+            if let dateString = dateString, let note = note, let events = events {
                 QAFlutterPluginHelper.safeMethodChannel(
                     result: result,
                     methodName: "getJournalEntry"
@@ -39,6 +39,9 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
                             note: note,
                             events: QAFlutterPluginSerializable.journalEntryEventFromJson(json: events)
                         )
+                        if (id != nil){
+                            try QA.shared.deleteJournalEntry(byID: id!)
+                        }
                         let response = try QA.shared.saveJournalEntry(journalEntry: journalEntry)
                     }
                 }

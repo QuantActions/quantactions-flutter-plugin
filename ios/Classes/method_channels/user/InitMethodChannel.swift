@@ -40,7 +40,8 @@ class InitMethodChannel : NSObject, FlutterPlugin {
                         selfDeclaredHealthy: selfDeclaredHealthy
                     )
                     
-                    result(try await QA.shared.setup(basicInfo: basicInfo))
+                    let x = try await QA.shared.setup(basicInfo: basicInfo)
+                    result(x)
                 }
             }
         default: break

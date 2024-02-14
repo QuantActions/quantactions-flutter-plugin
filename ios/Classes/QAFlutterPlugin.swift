@@ -15,12 +15,10 @@ public class QAFlutterPlugin: NSObject, FlutterPlugin {
         SaveJournalEntryMethodChannel.register(with: registrar)
         BasicInfoMethodChannel.register(with: registrar)
         InitMethodChannel.register(with: registrar)
+        GetJournalEventKindsMethodChannel.register(with: registrar)
         
         MetricAndTrendEventChannel.register(with: registrar)
-        GetCohortListEventChannel.register(with: registrar)
-        GetQuestionnairesListEventChannel.register(with: registrar)
         GetJournalEntitiesEventChannel.register(with: registrar)
-        GetJournalEventKindsEventChannel.register(with: registrar)
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {}

@@ -29,7 +29,13 @@ class GetJournalEntryMethodChannel : NSObject, FlutterPlugin {
                     result: result,
                     methodName: "getJournalEntry"
                 ) {
-                    // TODO: (karatysh) implement when will be ready
+                    let response = QA.shared.journalEntries().first(where: {$0.id == journalEntryId})
+                    
+                    if let response = response {
+                        result(QAFlutterPluginSerializable.serializeJournalEntry(data: response))
+                    } else {
+                        result(nil)
+                    }
                 }
             } else {
                 QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "getJournalEntry")
