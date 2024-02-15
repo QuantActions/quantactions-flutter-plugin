@@ -15,6 +15,21 @@ struct SerializableBasicInfo : Encodable {
     public var selfDeclaredHealthy: Bool
 }
 
+struct SerializableKeyboardSettings: Encodable{
+    public var caseSensitive: Bool
+    public var smartPunctuation: Bool
+    public var autoCorrect: Bool
+    public var autoCapitalization: Bool
+    public var autoLearn: Bool
+    public var doubleSpaceTapAddsPunctuation: Bool
+    public var swipeTyping: Bool
+    public var swipeLeftToDelete: Bool
+    public var autoCorrectAfterPunctuation: Bool
+    public var spacebarMovesCursor: Bool
+    public var hapticFeedback: Bool
+    public var soundFeedback: Bool
+}
+
 struct SerializableTimeSeries<T : Encodable> : Encodable {
     public var timestamps: [String]
     public var values: [T]
@@ -109,6 +124,27 @@ class QAFlutterPluginSerializable : NSObject {
         
         return encodeObject(object: serializableBasicInfo)
     }
+    
+    public static func serializeKeyboardSettings(keyboardSettings: KeyboardSettings) -> String {
+        
+        let serializableKeyboardSettings = SerializableKeyboardSettings(
+            caseSensitive: keyboardSettings.caseSensitive,
+            smartPunctuation: keyboardSettings.smartPunctuation,
+            autoCorrect: keyboardSettings.autoCorrect,
+            autoCapitalization: keyboardSettings.autoCapitalization,
+            autoLearn: keyboardSettings.autoLearn,
+            doubleSpaceTapAddsPunctuation: keyboardSettings.doubleSpaceTapAddsPunctuation,
+            swipeTyping: keyboardSettings.swipeTyping,
+            swipeLeftToDelete: keyboardSettings.swipeLeftToDelete,
+            autoCorrectAfterPunctuation: keyboardSettings.autoCorrectAfterPunctuation,
+            spacebarMovesCursor: keyboardSettings.spacebarMovesCursor,
+            hapticFeedback: keyboardSettings.hapticFeedback,
+            soundFeedback: keyboardSettings.soundFeedback
+        )
+        
+        return encodeObject(object: serializableKeyboardSettings)
+    }
+    
     
     public static func serializeTimeSeriesSleepSummaryElement(data: [DataPoint<SleepSummaryElement>]) -> String {
         let dateFormatter = DateFormatter()
