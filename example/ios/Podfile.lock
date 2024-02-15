@@ -19,10 +19,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/qa_flutter_plugin/ios"
 
 SPEC CHECKSUMS:
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   integration_test: 13825b8a9334a850581300559b8839134b124670
-  qa_flutter_plugin: 3c451f65fb2f509c1a3759c7d0847a2b0355fcc2
+  qa_flutter_plugin: ca64c18ee4ca88dff359b064da19be81a5bac187
 
-PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+PODFILE CHECKSUM: f393a3e970b6bcad3ccd24fdc079653b90c459b1
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

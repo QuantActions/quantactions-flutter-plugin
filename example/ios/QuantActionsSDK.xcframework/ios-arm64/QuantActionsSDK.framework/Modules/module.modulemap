@@ -1,0 +1,11 @@
+framework module QuantActionsSDK {
+  umbrella header "QuantActionsSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module QuantActionsSDK.Swift {
+  header "QuantActionsSDK-Swift.h"
+  requires objc
+}
