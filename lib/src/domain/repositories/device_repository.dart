@@ -16,4 +16,10 @@ abstract class DeviceRepository {
   Future<bool?> getIsKeyboardAdded();
 
   Future<void> openBatteryOptimisationSettings();
+
+  Future<KeyboardSettings> keyboardSettings();
+
+  Future<void> updateKeyboardSettings({
+    required KeyboardSettings keyboardSettings,
+  });
 }

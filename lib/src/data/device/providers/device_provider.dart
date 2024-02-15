@@ -1,7 +1,9 @@
+import '../../../domain/domain.dart';
+
 abstract class DeviceProvider {
   Future<bool> isDeviceRegistered();
 
-  Future<dynamic> subscribe({
+  Future<String> subscribe({
     required String subscriptionIdOrCohortId,
   });
 
@@ -9,9 +11,15 @@ abstract class DeviceProvider {
 
   Future<String> getDeviceID();
 
-  Future<List<String>> getConnectedDevices();
+  Future<String> getConnectedDevices();
 
   Future<bool?> getIsKeyboardAdded();
 
   Future<void> openBatteryOptimisationSettings();
+
+  Future<String> getKeyboardSettings();
+
+  Future<void> updateKeyboardSettings({
+    required KeyboardSettings keyboardSettings,
+  });
 }

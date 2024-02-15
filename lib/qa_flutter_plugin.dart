@@ -40,6 +40,9 @@ class QAFlutterPlugin {
   ///User identity id
   Future<String> get identityId => _userRepository.getIdentityId();
 
+  ///KeyboardSettings
+  Future<KeyboardSettings> get keyboardSettings => _deviceRepository.keyboardSettings();
+
   ///The method is only relevant for iOS
   ///A boolean indicating if the keyboard is added in the system Keyboards settings.
   ///It determines whether the keyboard is added or not based on KEYBOARD_EXTENSION_BUNDLE_ID field
@@ -50,6 +53,13 @@ class QAFlutterPlugin {
   ///Retrieves the list of paired devices
   Future<List<String>> getConnectedDevices() async {
     return _deviceRepository.getConnectedDevices();
+  }
+
+  /// Updates current keyboard settings. See [KeyboardSettings] fields for more details.
+  Future<void> updateKeyboardSettings({
+    required KeyboardSettings keyboardSettings,
+  }) async {
+    await _deviceRepository.updateKeyboardSettings(keyboardSettings: keyboardSettings);
   }
 
   ///Retrieves the list of studies the device is currently registered for.

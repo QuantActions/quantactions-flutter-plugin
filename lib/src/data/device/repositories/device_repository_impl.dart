@@ -20,17 +20,17 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Future<SubscriptionWithQuestionnaires> subscribe({
     required String subscriptionIdOrCohortId,
   }) async {
-    final Map<String, dynamic> map = await _deviceProvider.subscribe(
+    final String json = await _deviceProvider.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
 
-    return SubscriptionWithQuestionnaires.fromJson(map);
+    return SubscriptionWithQuestionnaires.fromJson(jsonDecode(json));
   }
 
   @override
   Future<List<Subscription>> getSubscriptions() async {
     final String? json = await _deviceProvider.getSubscriptions();
-    
+
     if (json == null) return <Subscription>[];
 
     return SubscriptionsMapper.fromList(jsonDecode(json));
@@ -43,7 +43,9 @@ class DeviceRepositoryImpl implements DeviceRepository {
 
   @override
   Future<List<String>> getConnectedDevices() async {
-    return _deviceProvider.getConnectedDevices();
+    final String json = await _deviceProvider.getConnectedDevices();
+
+    return jsonDecode(json);
   }
 
   @override
@@ -54,5 +56,19 @@ class DeviceRepositoryImpl implements DeviceRepository {
   @override
   Future<void> openBatteryOptimisationSettings() async {
     await _deviceProvider.openBatteryOptimisationSettings();
+  }
+
+  @override
+  Future<KeyboardSettings> keyboardSettings() async {
+    final String json = await _deviceProvider.getKeyboardSettings();
+
+    return KeyboardSettings.fromJson(jsonDecode(json));
+  }
+
+  @override
+  Future<void> updateKeyboardSettings({
+    required KeyboardSettings keyboardSettings,
+  }) async {
+    await _deviceProvider.updateKeyboardSettings(keyboardSettings: keyboardSettings);
   }
 }

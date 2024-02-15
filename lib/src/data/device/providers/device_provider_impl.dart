@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/services.dart';
 
+import '../../../domain/models/keyboard_settings/keyboard_settings.dart';
 import '../../consts/method_channel_consts.dart';
 import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
@@ -29,6 +28,12 @@ class DeviceProviderImpl implements DeviceProvider {
   final MethodChannel _isKeyboardAddedMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/is_keyboard_added',
   );
+  final MethodChannel _keyboardSettingsMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/keyboard_settings',
+  );
+  final MethodChannel _updateKeyboardSettingsMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/update_keyboard_settings',
+  );
 
   final SDKMethodChannel _sdkMethodChannel;
 
@@ -45,7 +50,7 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Future<dynamic> subscribe({
+  Future<String> subscribe({
     required String subscriptionIdOrCohortId,
   }) async {
     return _sdkMethodChannel.callMethodChannel(
@@ -74,15 +79,11 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Future<List<String>> getConnectedDevices() async {
-    final String json = await _sdkMethodChannel.callMethodChannel<String>(
+  Future<String> getConnectedDevices() async {
+    return _sdkMethodChannel.callMethodChannel<String>(
       method: SupportedMethods.getConnectedDevices,
       methodChannel: _connectedDevicesMethodChannel,
     );
-
-    final List<dynamic> ids = jsonDecode(json);
-
-    return ids.cast<String>();
   }
 
   @override
@@ -98,6 +99,23 @@ class DeviceProviderImpl implements DeviceProvider {
     return _sdkMethodChannel.callMethodChannel<void>(
       method: SupportedMethods.openBatteryOptimisationSettings,
       methodChannel: _batteryOptimisationMethodChannel,
+    );
+  }
+
+  @override
+  Future<String> getKeyboardSettings() {
+    return _sdkMethodChannel.callMethodChannel<String>(
+      method: SupportedMethods.keyboardSettings,
+      methodChannel: _keyboardSettingsMethodChannel,
+    );
+  }
+
+  @override
+  Future<void> updateKeyboardSettings({required KeyboardSettings keyboardSettings}) {
+    return _sdkMethodChannel.callMethodChannel<String>(
+      method: SupportedMethods.updateKeyboardSettings,
+      methodChannel: _updateKeyboardSettingsMethodChannel,
+      params: keyboardSettings.toJson(),
     );
   }
 }

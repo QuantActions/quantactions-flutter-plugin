@@ -25,6 +25,8 @@ class SupportedMethods {
   static const String getPassword = 'getPassword';
   static const String getIdentityId = 'getIdentityId';
   static const String subscriptions = 'subscriptions';
+  static const String keyboardSettings = 'keyboardSettings';
+  static const String updateKeyboardSettings = 'updateKeyboardSettings';
 
   //event channel
   static const String getCohortList = 'getCohortList';
