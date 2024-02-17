@@ -25,7 +25,7 @@ class RequestHealthKitAuthorizationMethodChannel : NSObject, FlutterPlugin {
                 methodName: "requestHealthKitAuthorization"
             ) {
                 Task {
-                    result(QA.shared.requestHealthKitAuthorization())
+                    result(try await QA.shared.requestHealthKitAuthorization())
                 }
             }
         default: break

@@ -25,7 +25,7 @@ class RequestCoreMotionAuthorizationMethodChannel : NSObject, FlutterPlugin {
                 methodName: "requestCoreMotionAuthorization"
             ) {
                 Task {
-                    esult(QA.shared.requestCoreMotionAuthorization())
+                    result(try await QA.shared.requestCoreMotionAuthorization())
                 }
             }
         default: break
