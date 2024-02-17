@@ -34,6 +34,18 @@ class DeviceProviderImpl implements DeviceProvider {
   final MethodChannel _updateKeyboardSettingsMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/update_keyboard_settings',
   );
+  final MethodChannel _coreMotionAuthorizationStatusMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/core_motion_authorization_status',
+  );
+  final MethodChannel _isHealthKitAuthorizationStatusDeterminedMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/is_health_kit_authorization_status_determined',
+  );
+  final MethodChannel _requestCoreMotionAuthorizationMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/request_core_motion_authorization',
+  );
+  final MethodChannel _requestHealthKitAuthorizationMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/request_health_kit_authorization',
+  );
 
   final SDKMethodChannel _sdkMethodChannel;
 
@@ -116,6 +128,38 @@ class DeviceProviderImpl implements DeviceProvider {
       method: SupportedMethods.updateKeyboardSettings,
       methodChannel: _updateKeyboardSettingsMethodChannel,
       params: keyboardSettings.toJson(),
+    );
+  }
+
+  @override
+  Future<int> coreMotionAuthorizationStatus() {
+    return _sdkMethodChannel.callMethodChannel<int>(
+      method: SupportedMethods.coreMotionAuthorizationStatus,
+      methodChannel: _coreMotionAuthorizationStatusMethodChannel,
+    );
+  }
+
+  @override
+  Future<bool> isHealthKitAuthorizationStatusDetermined() {
+    return _sdkMethodChannel.callMethodChannel<bool>(
+      method: SupportedMethods.isHealthKitAuthorizationStatusDetermined,
+      methodChannel: _isHealthKitAuthorizationStatusDeterminedMethodChannel,
+    );
+  }
+
+  @override
+  Future<bool> requestCoreMotionAuthorization() {
+    return _sdkMethodChannel.callMethodChannel<bool>(
+      method: SupportedMethods.requestCoreMotionAuthorization,
+      methodChannel: _requestCoreMotionAuthorizationMethodChannel,
+    );
+  }
+
+  @override
+  Future<bool> requestHealthKitAuthorization() {
+    return _sdkMethodChannel.callMethodChannel<bool>(
+      method: SupportedMethods.requestHealthKitAuthorization,
+      methodChannel: _requestHealthKitAuthorizationMethodChannel,
     );
   }
 }

@@ -75,6 +75,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _initDependencies() async {
-    _stream = _qa.getMetricSample(apiKey: tempApiKey, metric: Metric.actionSpeed);
+    _stream = _qa.getMetricSample(
+      apiKey: tempApiKey,
+      metric: Trend.theWave,
+      interval: MetricInterval.day,
+    );
   }
 }

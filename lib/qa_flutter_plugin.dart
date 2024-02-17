@@ -306,4 +306,25 @@ class QAFlutterPlugin {
       newSelfDeclaredHealthy: newSelfDeclaredHealthy,
     );
   }
+
+  ///Requests permission to read CoreMotion (Motion Activity) data requiered by the SDK.
+  Future<bool> requestCoreMotionAuthorization() async {
+    return _deviceRepository.requestCoreMotionAuthorization();
+  }
+
+  ///Requests permission to read HealthKit data requiered by the SDK.
+  Future<bool> requestHealthKitAuthorization() async {
+    return _deviceRepository.requestHealthKitAuthorization();
+  }
+
+  ///Indicates whether a user was already asked for HealthKit permissions required by the SDK.
+  ///Returns true if user was asked for permission by displaying system popup.
+  Future<bool> isHealthKitAuthorizationStatusDetermined() async {
+    return _deviceRepository.isHealthKitAuthorizationStatusDetermined();
+  }
+
+  ///CoreMotion [AuthorizationStatus]
+  Future<AuthorizationStatus> coreMotionAuthorizationStatus() async {
+    return _deviceRepository.coreMotionAuthorizationStatus();
+  }
 }

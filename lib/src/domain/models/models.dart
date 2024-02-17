@@ -1,5 +1,6 @@
 library models;
 
+export 'authorization_status.dart';
 export 'basic_info/basic_info.dart';
 export 'cohort/cohort.dart';
 export 'error/qa_error.dart';

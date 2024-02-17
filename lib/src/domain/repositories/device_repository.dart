@@ -22,4 +22,12 @@ abstract class DeviceRepository {
   Future<void> updateKeyboardSettings({
     required KeyboardSettings keyboardSettings,
   });
+
+  Future<bool> requestCoreMotionAuthorization();
+
+  Future<bool> requestHealthKitAuthorization();
+
+  Future<bool> isHealthKitAuthorizationStatusDetermined();
+
+  Future<AuthorizationStatus> coreMotionAuthorizationStatus();
 }

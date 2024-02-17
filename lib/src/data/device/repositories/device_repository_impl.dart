@@ -71,4 +71,35 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }) async {
     await _deviceProvider.updateKeyboardSettings(keyboardSettings: keyboardSettings);
   }
+
+  @override
+  Future<AuthorizationStatus> coreMotionAuthorizationStatus() async {
+    final int index = await _deviceProvider.coreMotionAuthorizationStatus();
+
+    switch (index) {
+      case 1:
+        return AuthorizationStatus.restricted;
+      case 2:
+        return AuthorizationStatus.denied;
+      case 3:
+        return AuthorizationStatus.authorized;
+      default:
+        return AuthorizationStatus.notDetermined;
+    }
+  }
+
+  @override
+  Future<bool> isHealthKitAuthorizationStatusDetermined() async {
+    return _deviceProvider.isHealthKitAuthorizationStatusDetermined();
+  }
+
+  @override
+  Future<bool> requestCoreMotionAuthorization() async {
+    return _deviceProvider.requestCoreMotionAuthorization();
+  }
+
+  @override
+  Future<bool> requestHealthKitAuthorization() async {
+    return _deviceProvider.requestHealthKitAuthorization();
+  }
 }
