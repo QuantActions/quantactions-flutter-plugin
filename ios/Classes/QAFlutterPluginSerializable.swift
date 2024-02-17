@@ -230,6 +230,7 @@ class QAFlutterPluginSerializable : NSObject {
     
     public static func serializeTimeSeriesDoubleValueElement(data: [DataPoint<DoubleValueElement>]) -> String {
         let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         
         var timestamps : [String] = []
         var values : [Double?] = []

@@ -14,11 +14,11 @@ public class QAFlutterPlugin: NSObject, FlutterPlugin {
         KeyboardSettingsMethodChannel.register(with: registrar)
         SubscribeMethodChannel.register(with: registrar)
         SubscriptionMethodChannel.register(with: registrar)
-        UpdateKeyboardSettingsMethodChannelregister(with: registrar)
+        UpdateKeyboardSettingsMethodChannel.register(with: registrar)
         GetJournalEntryMethodChannel.register(with: registrar)
         GetJournalEventKindsMethodChannel.register(with: registrar)
         SaveJournalEntryMethodChannel.register(with: registrar)
-        GetBasicInfoMethodChannel.register(with: registrar)
+        BasicInfoMethodChannel.register(with: registrar)
         InitMethodChannel.register(with: registrar)
         
         GetJournalEntitiesEventChannel.register(with: registrar)

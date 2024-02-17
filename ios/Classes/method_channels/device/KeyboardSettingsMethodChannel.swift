@@ -13,7 +13,7 @@ class KeyboardSettingsMethodChannel : NSObject, FlutterPlugin {
     
     static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "qa_flutter_plugin/keyboard_settings", binaryMessenger: registrar.messenger())
-        let instance = IsKeyboardAddedMethodChannel()
+        let instance = KeyboardSettingsMethodChannel()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
