@@ -14,6 +14,13 @@ class ScreenTimeAggregate {
     required this.socialScreenTime,
   });
 
+  factory ScreenTimeAggregate.empty() {
+    return ScreenTimeAggregate(
+      totalScreenTime: 0.0,
+      socialScreenTime: 0.0,
+    );
+  }
+
   factory ScreenTimeAggregate.fromJson(Map<String, dynamic> json) =>
       _$ScreenTimeAggregateFromJson(json);
 
