@@ -147,7 +147,7 @@ class QAFlutterPluginSerializable : NSObject {
     
     
     public static func serializeTimeSeriesSleepSummaryElement(data: [DataPoint<SleepSummaryElement>]) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         var timestamps : [String] = []
         var values : [SerializableSleepSummaryElement?] = []
@@ -174,7 +174,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeTrendElement(data: [DataPoint<TrendElement>]) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         var timestamps : [String] = []
         var values : [SerializableTrendElement?] = []
@@ -201,7 +201,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeTimeSeriesSleepScoreElement(data: [DataPoint<SleepScoreElement>]) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         var timestamps : [String] = []
         var values : [Double?] = []
@@ -229,8 +229,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeTimeSeriesDoubleValueElement(data: [DataPoint<DoubleValueElement>]) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        let dateFormatter = getDateTimeFormatter()
         
         var timestamps : [String] = []
         var values : [Double?] = []
@@ -256,7 +255,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeTimeSeriesScreenTimeAggregateElement(data: [DataPoint<ScreenTimeAggregateElement>]) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         var timestamps : [String] = []
         var values : [SerializableScreenTimeAggregateElement?] = []
@@ -290,7 +289,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeSubscription(data: [Subscription]) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [SerializableSubscription] = []
         
@@ -310,7 +309,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeJournalEntryList(data: [JournalEntry]) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [SerializableJournalEntry] = []
         
@@ -331,7 +330,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeJournalEntry(data: JournalEntry) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         let entry = SerializableJournalEntry(
             id: data.id,
@@ -346,7 +345,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeJournalEntryFromQAModel (data: JournalEntry) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         let serializableObject =  SerializableJournalEntry(
             id: data.id,
@@ -361,7 +360,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeJournalEventKind(data: [JournalEventKind]) -> String {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [SerializableJournalEventKind] = []
         
@@ -438,7 +437,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     private static func serializeSleepSummaryElement(sleepSummaryElement: SleepSummaryElement) -> SerializableSleepSummaryElement {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         return SerializableSleepSummaryElement(
             sleepDate: dateFormatter.string(from: sleepSummaryElement.sleepDate),
@@ -468,7 +467,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     private static func journalEntryEventFromSerializable(data: [SerializableJournalEntryEvent]) -> [JournalEntryEvent] {
-        let dateFormatter = DateFormatter()
+        let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [JournalEntryEvent] = []
         
@@ -490,5 +489,12 @@ class QAFlutterPluginSerializable : NSObject {
         let jsonString = String(data: jsonData, encoding: .utf8)!
         
         return jsonString
+    }
+    
+    private static func getDateTimeFormatter() -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        
+        return dateFormatter
     }
 }

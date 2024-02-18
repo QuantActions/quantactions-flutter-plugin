@@ -166,7 +166,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                         }
                     default: QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
                         eventSink: eventSink,
-                        methodName: "gerMetric \(metric)"
+                        methodName: "getMetric \(metric)"
                     )
                     }
                 }
