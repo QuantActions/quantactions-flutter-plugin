@@ -2,9 +2,9 @@ group 'com.quantactions.qa_flutter_plugin'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
     repositories {
         google()
+        gradlePluginPortal()
         mavenCentral()
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -13,12 +13,17 @@ buildscript {
             url "https://jitpack.io"
             credentials { username authToken }
         }
+        maven {
+            url = uri("https://storage.googleapis.com/r8-releases/raw")
+        }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.0'
+        classpath 'com.android.tools.build:gradle:8.0.2'
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.7.20"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0'
+        classpath 'org.jetbrains.kotlin:kotlin-serialization:1.8.10'
+        classpath 'com.android.tools:r8:8.2.47'
     }
 }
 
@@ -31,7 +36,10 @@ allprojects {
         }
         maven {
             url "https://jitpack.io"
-            credentials { username authToken }
+            credentials { username "jp_20tbne8t52jp171mi3tn667da5" }
+        }
+        maven {
+            url = uri("https://storage.googleapis.com/r8-releases/raw")
         }
     }
 
@@ -42,15 +50,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlinx-serialization'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
+    namespace 'com.quantactions.qa_flutter_plugin'
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     sourceSets {
@@ -59,7 +68,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 26
     }
 
     dependencies {
@@ -67,7 +76,7 @@ android {
         testImplementation 'org.mockito:mockito-core:5.0.0'
         implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
         implementation project(':qa_sdk')
-//        implementation 'com.github.QuantActions:QA-Android-SDK:0.8.1-rc4'
+//        implementation 'com.github.QuantActions:QA-Android-SDK:1.0.3-rc05'
         implementation 'com.squareup.moshi:moshi:1.14.0'
         implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'
         implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'

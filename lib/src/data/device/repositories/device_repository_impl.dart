@@ -24,6 +24,8 @@ class DeviceRepositoryImpl implements DeviceRepository {
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
 
+    print(json);
+
     return SubscriptionWithQuestionnaires.fromJson(jsonDecode(json));
   }
 
@@ -42,9 +44,8 @@ class DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Future<List<String>> getConnectedDevices() async {
+  Future<List<dynamic>> getConnectedDevices() async {
     final String json = await _deviceProvider.getConnectedDevices();
-
     return jsonDecode(json);
   }
 

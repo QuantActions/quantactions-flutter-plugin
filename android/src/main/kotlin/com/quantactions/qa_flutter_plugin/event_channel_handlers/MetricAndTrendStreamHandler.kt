@@ -95,9 +95,9 @@ class MetricAndTrendStreamHandler(
                             eventSink = eventSink,
                             methodName = "getMetric",
                             method = {
-                                eventSink.success(
-                                    runBlocking {
-                                        launch {
+//                                eventSink.success(
+//                                    runBlocking {
+//                                        launch {
                                             val fromLocalDate =
                                                 getFromDateInterval(dateIntervalType)
                                             val toLocalDate = LocalDate.now()
@@ -124,9 +124,9 @@ class MetricAndTrendStreamHandler(
                                                     )
                                                 )
                                             }
-                                        }
-                                    },
-                                )
+//                                        }
+//                                    },
+//                                )
                             },
                         )
                     }

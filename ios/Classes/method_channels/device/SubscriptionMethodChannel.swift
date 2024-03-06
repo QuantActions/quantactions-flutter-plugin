@@ -19,7 +19,7 @@ class SubscriptionMethodChannel : NSObject, FlutterPlugin {
     
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
-        case "subscription":
+        case "subscriptions":
             QAFlutterPluginHelper.safeMethodChannel(
                 result: result,
                 methodName: "subscriptions"

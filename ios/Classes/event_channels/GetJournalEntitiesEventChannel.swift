@@ -35,7 +35,9 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                 ) {
                     Task {
                         let response = QA.shared.journalEntries()
-                        eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response))
+                        DispatchQueue.main.async {
+                            eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response))
+                        }
                     }
                 
                 }

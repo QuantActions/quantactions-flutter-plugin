@@ -93,8 +93,8 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         RequestOverlayPermissionMethodChannelHandler(mainScope, qa, context, this::getActivity).register(flutterPluginBinding);
         CanUsageMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         RequestUsagePermissionMethodChannelHandler(mainScope, qa, context, this::getActivity).register(flutterPluginBinding);
-        SubscribeMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
-        SubscriptionMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
+        SubscribeMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
+        SubscriptionMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         MetricAndTrendStreamHandler(mainScope, ioScope, qa, context).register(flutterPluginBinding)
         GetCohortListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetCohortListStreamHandler(mainScope, qa).register(flutterPluginBinding)

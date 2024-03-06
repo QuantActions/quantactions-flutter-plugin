@@ -18,8 +18,10 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
     }
     
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        print("calling save journal entry")
+        print(call.method)
         switch call.method {
-        case "getJournalEntry":
+        case "saveJournalEntry":
             let dateFormatter = DateFormatter()
             let params = call.arguments as? Dictionary<String, Any>
             
@@ -31,7 +33,7 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
             if let dateString = dateString, let note = note, let events = events {
                 QAFlutterPluginHelper.safeMethodChannel(
                     result: result,
-                    methodName: "getJournalEntry"
+                    methodName: "saveJournalEntry"
                 ) {
                     Task {
                         let journalEntry = JournalEntry(
@@ -39,14 +41,26 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
                             note: note,
                             events: QAFlutterPluginSerializable.journalEntryEventFromJson(json: events)
                         )
+                        print(id)
                         if (id != nil){
                             try QA.shared.deleteJournalEntry(byID: id!)
                         }
-                        let response = try QA.shared.saveJournalEntry(journalEntry: journalEntry)
+                        
+                        do {
+                            
+                            let response = try QA.shared.saveJournalEntry(journalEntry: journalEntry)
+                            
+                            print(QAFlutterPluginSerializable.serializeJournalEntry(data: response))
+                            result(QAFlutterPluginSerializable.serializeJournalEntry(data: response))
+                        
+                        } catch let error {
+                            print(error.localizedDescription)
+                        }
+                        
                     }
                 }
             } else {
-                QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "getJournalEntry")
+                QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(result: result, methodName: "saveJournalEntry")
             }
         default: break
         }

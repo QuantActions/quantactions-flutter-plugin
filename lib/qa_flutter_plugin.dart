@@ -51,7 +51,7 @@ class QAFlutterPlugin {
   Future<bool?> get isKeyboardAdded => _deviceRepository.getIsKeyboardAdded();
 
   ///Retrieves the list of paired devices
-  Future<List<String>> getConnectedDevices() async {
+  Future<List<dynamic>> getConnectedDevices() async {
     return _deviceRepository.getConnectedDevices();
   }
 

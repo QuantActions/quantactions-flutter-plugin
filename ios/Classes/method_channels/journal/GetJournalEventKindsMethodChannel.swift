@@ -24,8 +24,8 @@ class GetJournalEventKindsMethodChannel : NSObject, FlutterPlugin {
         
         let method = params?["method"] as? String
         
-        if let method = method{
-            switch method {
+//        if let method = method{
+        switch call.method {
             case "journalEventKinds":
                 QAFlutterPluginHelper.safeMethodChannel(
                     result: result,
@@ -36,11 +36,11 @@ class GetJournalEventKindsMethodChannel : NSObject, FlutterPlugin {
                 }
             default: break
             }
-        } else {
-            QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(
-                result: result,
-                methodName: "journalEventKinds"
-            )
-        }
+//        } else {
+//            QAFlutterPluginHelper.returnInvalidParamsMethodChannelError(
+//                result: result,
+//                methodName: "journalEventKinds"
+//            )
+//        }
     }
 }

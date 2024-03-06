@@ -33,7 +33,8 @@ class QAFlutterPluginSerializable {
         val deviceIds: List<String>,
         val cohortId: String,
         val cohortName: String,
-        val premiumFeaturesTTL: Int,
+        val premiumFeaturesTTL: Long,
+        val token: String
     )
 
     @JsonClass(generateAdapter = true)
@@ -121,7 +122,8 @@ class QAFlutterPluginSerializable {
                             item.deviceIds,
                             item.cohortId,
                             item.cohortName,
-                            item.premiumFeaturesTTL.toInt(),
+                            item.premiumFeaturesTTL,
+                            item.token ?: ""
                         ),
                     ),
                 )

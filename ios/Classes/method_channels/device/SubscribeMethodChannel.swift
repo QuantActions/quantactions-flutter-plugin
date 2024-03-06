@@ -30,8 +30,15 @@ class SubscribeMethodChannel : NSObject, FlutterPlugin {
                     methodName: "subscribe"
                 ) {
                     Task {
-                        let response = try await QA.shared.subscribe(participationID: subscriptionIdOrCohortId!)
-                        result(QAFlutterPluginSerializable.serializeSubscriptionWithQuestionnaires(data: response))
+                        print("calling subscribe")
+                        do {
+                            let response = try await QA.shared.subscribe(participationID: subscriptionIdOrCohortId!)
+                            print(response)
+                            result(QAFlutterPluginSerializable.serializeSubscriptionWithQuestionnaires(data: response))
+                        } catch let error {
+                            print(error.localizedDescription)
+                        }
+                        
                     }
                 }
             } else {

@@ -53,8 +53,9 @@ class _MyAppState extends State<MyApp> {
                             return ListView.builder(
                               itemCount: snapshot.data!.timestamps.length,
                               itemBuilder: (_, int index) {
-                                final DateTime item = snapshot.data!.timestamps[index];
-                                return Text(item.toString());
+                                // final DateTime item = snapshot.data!.timestamps[index];
+                                final ScreenTimeAggregate item = snapshot.data!.values[index];
+                                return Text(item.totalScreenTime.toString());
                               },
                             );
                           }
@@ -77,7 +78,7 @@ class _MyAppState extends State<MyApp> {
   void _initDependencies() async {
     _stream = _qa.getMetricSample(
       apiKey: tempApiKey,
-      metric: Trend.theWave,
+      metric: Metric.screenTimeAggregate,
       interval: MetricInterval.day,
     );
   }

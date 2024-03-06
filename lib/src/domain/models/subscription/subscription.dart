@@ -9,6 +9,7 @@ class Subscription {
   final String cohortId;
   final String cohortName;
   final int premiumFeaturesTTL;
+  final String? token;
 
   Subscription({
     required this.subscriptionId,
@@ -16,6 +17,7 @@ class Subscription {
     required this.cohortId,
     required this.cohortName,
     required this.premiumFeaturesTTL,
+    required this.token
   });
 
   factory Subscription.fromJson(Map<String, dynamic> json) =>

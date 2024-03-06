@@ -35,7 +35,7 @@ struct SerializableTimeSeries<T : Encodable> : Encodable {
     public var values: [T]
     public var confidenceIntervalLow: [T]
     public var confidenceIntervalHigh: [T]
-    public var confidence: [Double]
+    public var confidence: [T]
 }
 
 struct SerializableTrendElement : Encodable {
@@ -64,9 +64,9 @@ struct SerializableScreenTimeAggregateElement : Encodable {
 
 struct SerializableSubscriptionWithQuestionnaires : Encodable {
     public var cohort: SerializableCohort
-    public var questionnaires: [SerializableQuestionnaire]
-    public var subscriptionID: String
-    public var tapDeviceIDs: [String]
+    public var listOfQuestionnaires: [SerializableQuestionnaire]
+    public var subscriptionId: String
+    public var tapDeviceIds: [String]
     public var premiumFeaturesTTL: Int
 }
 
@@ -79,10 +79,10 @@ struct SerializableSubscription : Encodable {
 }
 
 struct SerializableCohort : Encodable {
-    public var id: String
-    public var name: String
+    public var cohortId: String
+    public var cohortName: String
     public var privacyPolicy: String
-    public var canWidthdraw: Bool
+    public var canWithdraw: Int
 }
 
 struct SerializableQuestionnaire : Encodable {
@@ -96,14 +96,17 @@ struct SerializableQuestionnaire : Encodable {
 
 struct SerializableJournalEntry : Encodable {
     public var id: String
-    public var date: String
+    public var timestamp: String
     public var note: String
     public var events: [SerializableJournalEntryEvent]
+    public var scores: Dictionary<String, Int>
 }
 
 struct SerializableJournalEntryEvent : Encodable, Decodable {
     public var id: String
     public var eventKindID: String
+    public var eventName: String
+    public var eventIcon: String
     public var rating: Int
 }
 
@@ -207,14 +210,14 @@ class QAFlutterPluginSerializable : NSObject {
         var values : [Double?] = []
         var confidenceIntervalLow : [Double?] = []
         var confidenceIntervalHigh : [Double?] = []
-        var confidence : [Double] = []
+        var confidence : [Double?] = []
         
         for val in data{
             timestamps.append(dateFormatter.string(from: val.date))
             values.append(val.element == nil ? nil : val.element!.sleepScore)
             confidenceIntervalLow.append(val.element == nil ? nil : val.element!.confidenceIntervalLow)
             confidenceIntervalHigh.append(val.element == nil ? nil : val.element!.confidenceIntervalHigh)
-            confidence.append(val.element!.confidence)
+            confidence.append(val.element == nil ? nil : val.element!.confidence)
         }
         
         let serializableTimeSeries = SerializableTimeSeries<Double?>(
@@ -279,11 +282,12 @@ class QAFlutterPluginSerializable : NSObject {
     public static func serializeSubscriptionWithQuestionnaires(data: SubscriptionWithQuestionnaires) -> String {
         let serializableObject = SerializableSubscriptionWithQuestionnaires(
             cohort: serializeCohort(cohort: data.cohort),
-            questionnaires: serializeQuestionnaireList(questionnaires: data.questionnaires),
-            subscriptionID: data.subscriptionID,
-            tapDeviceIDs: data.tapDeviceIDs,
+            listOfQuestionnaires: serializeQuestionnaireList(questionnaires: data.questionnaires),
+            subscriptionId: data.subscriptionID,
+            tapDeviceIds: data.tapDeviceIDs,
             premiumFeaturesTTL: data.premiumFeaturesTTL
         )
+        print(serializableObject)
         
         return encodeObject(object: serializableObject)
     }
@@ -312,16 +316,20 @@ class QAFlutterPluginSerializable : NSObject {
         let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [SerializableJournalEntry] = []
+        let eventKinds = QA.shared.journalEventKinds();
         
         for x in data {
             dataArray.append(
                 SerializableJournalEntry(
                     id: x.id,
-                    date: dateFormatter.string(from: x.date),
+                    timestamp: dateFormatter.string(from: x.date),
                     note: x.note,
                     events: x.events.map{
-                        (journalEntryEvent) -> SerializableJournalEntryEvent in return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent)
-                    }
+                        journalEntryEvent in
+                        let ee = eventKinds.filter{ek in journalEntryEvent.eventKindID == ek.id}.first;
+                        return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent, eventName: ee!.publicName, eventIcon: ee!.publicName);
+                    },
+                    scores: [String: Int]()
                 )
             )
         }
@@ -332,13 +340,18 @@ class QAFlutterPluginSerializable : NSObject {
     public static func serializeJournalEntry(data: JournalEntry) -> String {
         let dateFormatter = getDateTimeFormatter()
         
+        let eventKinds = QA.shared.journalEventKinds()
+
         let entry = SerializableJournalEntry(
             id: data.id,
-            date: dateFormatter.string(from: data.date),
+            timestamp: dateFormatter.string(from: data.date),
             note: data.note,
-            events: data.events.map{
-                (journalEntryEvent) -> SerializableJournalEntryEvent in return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent)
-            }
+            events: data.events.map {
+                journalEntryEvent in
+                let ee = eventKinds.filter{ek in journalEntryEvent.eventKindID == ek.id}.first;
+                return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent, eventName: ee!.publicName, eventIcon: ee!.publicName);
+            },
+            scores: [String: Int]()
         )
 
         return encodeObject(object: entry)
@@ -346,14 +359,18 @@ class QAFlutterPluginSerializable : NSObject {
     
     public static func serializeJournalEntryFromQAModel (data: JournalEntry) -> String {
         let dateFormatter = getDateTimeFormatter()
+        let eventKinds = QA.shared.journalEventKinds()
         
         let serializableObject =  SerializableJournalEntry(
             id: data.id,
-            date: dateFormatter.string(from: data.date),
+            timestamp: dateFormatter.string(from: data.date),
             note: data.note,
-            events: data.events.map{
-                (journalEntryEvent) -> SerializableJournalEntryEvent in return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent)
-            }
+            events: data.events.map {
+                journalEntryEvent in
+                let ee = eventKinds.filter{ek in journalEntryEvent.eventKindID == ek.id}.first;
+                return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent, eventName: ee!.publicName, eventIcon: ee!.publicName);
+            },
+            scores: [String: Int]()
         )
         
         return encodeObject(object: serializableObject)
@@ -396,10 +413,10 @@ class QAFlutterPluginSerializable : NSObject {
     
     private static func serializeCohort(cohort: Cohort) -> SerializableCohort {
         return SerializableCohort(
-            id: cohort.id,
-            name: cohort.name,
+            cohortId: cohort.id,
+            cohortName: cohort.name,
             privacyPolicy: cohort.privacyPolicy,
-            canWidthdraw: cohort.canWidthdraw
+            canWithdraw: cohort.canWidthdraw ? 1 : 0
         )
     }
     
@@ -458,10 +475,12 @@ class QAFlutterPluginSerializable : NSObject {
         )
     }
     
-    private static func serializeJournalEntryEvent(journalEntryEvent: JournalEntryEvent) -> SerializableJournalEntryEvent {
+    private static func serializeJournalEntryEvent(journalEntryEvent: JournalEntryEvent, eventName: String, eventIcon: String) -> SerializableJournalEntryEvent {
         return SerializableJournalEntryEvent(
             id: journalEntryEvent.id,
             eventKindID: journalEntryEvent.eventKindID,
+            eventName: eventName,
+            eventIcon: eventIcon,
             rating: journalEntryEvent.rating
         )
     }
@@ -489,6 +508,17 @@ class QAFlutterPluginSerializable : NSObject {
         let jsonString = String(data: jsonData, encoding: .utf8)!
         
         return jsonString
+    }
+    
+    struct Foo: Codable {
+        var string: String? = nil
+        var number: Int = 1
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(number, forKey: .number)
+            try container.encode(string, forKey: .string)
+        }
     }
     
     private static func getDateTimeFormatter() -> DateFormatter {

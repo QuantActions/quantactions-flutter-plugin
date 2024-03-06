@@ -11,7 +11,7 @@ abstract class DeviceRepository {
 
   Future<String> getDeviceID();
 
-  Future<List<String>> getConnectedDevices();
+  Future<List<dynamic>> getConnectedDevices();
 
   Future<bool?> getIsKeyboardAdded();
 
