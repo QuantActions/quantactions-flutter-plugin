@@ -154,6 +154,9 @@ class QAFlutterPluginSerializable : NSObject {
         
         var timestamps : [String] = []
         var values : [SerializableSleepSummaryElement?] = []
+        var confidenceIntervalLow : [SerializableSleepSummaryElement?] = []
+        var confidenceIntervalHigh : [SerializableSleepSummaryElement?] = []
+        var confidence : [SerializableSleepSummaryElement?] = []
         
         for val in data{
             timestamps.append(dateFormatter.string(from: val.date))
@@ -163,14 +166,17 @@ class QAFlutterPluginSerializable : NSObject {
             } else {
                 values.append(nil)
             }
+            confidenceIntervalLow.append(nil)
+            confidenceIntervalHigh.append(nil)
+            confidence.append(nil)
         }
         
         let serializableTimeSeries = SerializableTimeSeries<SerializableSleepSummaryElement?>(
             timestamps: timestamps,
             values: values,
-            confidenceIntervalLow: [],
-            confidenceIntervalHigh: [],
-            confidence: []
+            confidenceIntervalLow: confidenceIntervalLow,
+            confidenceIntervalHigh: confidenceIntervalHigh,
+            confidence: confidence
         )
         
         return encodeObject(object: serializableTimeSeries)
@@ -181,6 +187,9 @@ class QAFlutterPluginSerializable : NSObject {
         
         var timestamps : [String] = []
         var values : [SerializableTrendElement?] = []
+        var confidenceIntervalLow : [SerializableTrendElement?] = []
+        var confidenceIntervalHigh : [SerializableTrendElement?] = []
+        var confidence : [SerializableTrendElement?] = []
         
         for val in data{
             timestamps.append(dateFormatter.string(from: val.date))
@@ -190,14 +199,17 @@ class QAFlutterPluginSerializable : NSObject {
             } else {
                 values.append(nil)
             }
+            confidenceIntervalLow.append(nil)
+            confidenceIntervalHigh.append(nil)
+            confidence.append(nil)
         }
         
         let serializableTimeSeries = SerializableTimeSeries<SerializableTrendElement?>(
             timestamps: timestamps,
             values: values,
-            confidenceIntervalLow: [],
-            confidenceIntervalHigh: [],
-            confidence: []
+            confidenceIntervalLow: confidenceIntervalLow,
+            confidenceIntervalHigh: confidenceIntervalHigh,
+            confidence: confidence
         )
         
         return encodeObject(object: serializableTimeSeries)
@@ -236,6 +248,7 @@ class QAFlutterPluginSerializable : NSObject {
         
         var timestamps : [String] = []
         var values : [Double?] = []
+        var confidence : [Double?] = []
         var confidenceIntervalLow : [Double?] = []
         var confidenceIntervalHigh : [Double?] = []
         
@@ -244,6 +257,7 @@ class QAFlutterPluginSerializable : NSObject {
             values.append(val.element == nil ? nil : val.element!.value)
             confidenceIntervalLow.append(val.element == nil ? nil : val.element!.confidenceIntervalLow)
             confidenceIntervalHigh.append(val.element == nil ? nil : val.element!.confidenceIntervalHigh)
+            confidence.append(nil)
         }
         
         let serializableTimeSeries = SerializableTimeSeries<Double?>(
@@ -251,7 +265,7 @@ class QAFlutterPluginSerializable : NSObject {
             values: values,
             confidenceIntervalLow: confidenceIntervalLow,
             confidenceIntervalHigh: confidenceIntervalHigh,
-            confidence: []
+            confidence: confidence
         )
         
         return encodeObject(object: serializableTimeSeries)
@@ -262,18 +276,24 @@ class QAFlutterPluginSerializable : NSObject {
         
         var timestamps : [String] = []
         var values : [SerializableScreenTimeAggregateElement?] = []
+        var confidenceIntervalLow : [SerializableScreenTimeAggregateElement?] = []
+        var confidenceIntervalHigh : [SerializableScreenTimeAggregateElement?] = []
+        var confidence : [SerializableScreenTimeAggregateElement?] = []
         
         for val in data{
             timestamps.append(dateFormatter.string(from: val.date))
             values.append(val.element == nil ? nil : serializeScreenTimeAggregateElement(screenTimeAggregateElement: val.element!))
+            confidenceIntervalLow.append(nil)
+            confidenceIntervalHigh.append(nil)
+            confidence.append(nil)
         }
         
         let serializableTimeSeries = SerializableTimeSeries<SerializableScreenTimeAggregateElement?>(
             timestamps: timestamps,
             values: values,
-            confidenceIntervalLow: [],
-            confidenceIntervalHigh: [],
-            confidence: []
+            confidenceIntervalLow: confidenceIntervalLow,
+            confidenceIntervalHigh: confidenceIntervalHigh,
+            confidence: confidence
         )
         
         return encodeObject(object: serializableTimeSeries)
@@ -287,13 +307,12 @@ class QAFlutterPluginSerializable : NSObject {
             tapDeviceIds: data.tapDeviceIDs,
             premiumFeaturesTTL: data.premiumFeaturesTTL
         )
-        print(serializableObject)
         
         return encodeObject(object: serializableObject)
     }
     
     public static func serializeSubscription(data: [Subscription]) -> String {
-        let dateFormatter = getDateTimeFormatter()
+//        let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [SerializableSubscription] = []
         
@@ -377,7 +396,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeJournalEventKind(data: [JournalEventKind]) -> String {
-        let dateFormatter = getDateTimeFormatter()
+//        let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [SerializableJournalEventKind] = []
         
@@ -486,7 +505,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     private static func journalEntryEventFromSerializable(data: [SerializableJournalEntryEvent]) -> [JournalEntryEvent] {
-        let dateFormatter = getDateTimeFormatter()
+//        let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [JournalEntryEvent] = []
         

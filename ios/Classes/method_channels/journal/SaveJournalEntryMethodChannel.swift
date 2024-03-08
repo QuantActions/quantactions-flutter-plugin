@@ -41,7 +41,6 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
                             note: note,
                             events: QAFlutterPluginSerializable.journalEntryEventFromJson(json: events)
                         )
-                        print(id)
                         if (id != nil){
                             try QA.shared.deleteJournalEntry(byID: id!)
                         }
@@ -49,10 +48,7 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
                         do {
                             
                             let response = try QA.shared.saveJournalEntry(journalEntry: journalEntry)
-                            
-                            print(QAFlutterPluginSerializable.serializeJournalEntry(data: response))
                             result(QAFlutterPluginSerializable.serializeJournalEntry(data: response))
-                        
                         } catch let error {
                             print(error.localizedDescription)
                         }

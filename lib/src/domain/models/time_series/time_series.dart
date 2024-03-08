@@ -401,67 +401,67 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
 
 // and also a takeLast function for TrendHolder
 
-TimeSeries<TrendHolder> takeLastTrendHolder(TimeSeries<TrendHolder> timeSeries, int n) {
-
-  final timeSeries2 = fillMissingDaysTrendHolder(timeSeries, n);
-
-  return TimeSeries<TrendHolder>(
-    values: timeSeries2.values.sublist(timeSeries2.values.length - n),
-    timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
-    confidenceIntervalLow:
-    timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
-    confidenceIntervalHigh:
-    timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
-    confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
-  );
-}
-
-
-TimeSeries<double> takeLast(TimeSeries<double> timeSeries, int n) {
-
-  final timeSeries2 = fillMissingDays(timeSeries, n);
-
-  return TimeSeries<double>(
-    values: timeSeries2.values.sublist(timeSeries2.values.length - n),
-    timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
-    confidenceIntervalLow:
-    timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
-    confidenceIntervalHigh:
-    timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
-    confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
-  );
-}
-
-// now I need the similar function for TimeSeries<SleepSummary> and TimeSeries<ScreenTimeAggregate>
-
-TimeSeries<SleepSummary> takeLastSleepSummary(TimeSeries<SleepSummary> timeSeries, int n) {
-
-  final timeSeries2 = fillMissingDaysSleepSummary(timeSeries, n);
-
-  return TimeSeries<SleepSummary>(
-    values: timeSeries2.values.sublist(timeSeries2.values.length - n),
-    timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
-    confidenceIntervalLow:
-    timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
-    confidenceIntervalHigh:
-    timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
-    confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
-  );
-}
-
-TimeSeries<ScreenTimeAggregate> takeLastScreenTimeAggregate(TimeSeries<ScreenTimeAggregate> timeSeries, int n) {
-
-  final timeSeries2 = fillMissingDaysScreenTimeAggregate(timeSeries, n);
-
-  return TimeSeries<ScreenTimeAggregate>(
-    values: timeSeries2.values.sublist(timeSeries2.values.length - n),
-    timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
-    confidenceIntervalLow:
-    timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
-    confidenceIntervalHigh:
-    timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
-    confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
-  );
-}
+// TimeSeries<TrendHolder> takeLastTrendHolder(TimeSeries<TrendHolder> timeSeries, int n) {
+//
+//   final timeSeries2 = fillMissingDaysTrendHolder(timeSeries, n);
+//
+//   return TimeSeries<TrendHolder>(
+//     values: timeSeries2.values.sublist(timeSeries2.values.length - n),
+//     timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
+//     confidenceIntervalLow:
+//     timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
+//     confidenceIntervalHigh:
+//     timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
+//     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
+//   );
+// }
+//
+//
+// TimeSeries<double> takeLast(TimeSeries<double> timeSeries, int n) {
+//
+//   final timeSeries2 = fillMissingDays(timeSeries, n);
+//
+//   return TimeSeries<double>(
+//     values: timeSeries2.values.sublist(timeSeries2.values.length - n),
+//     timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
+//     confidenceIntervalLow:
+//     timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
+//     confidenceIntervalHigh:
+//     timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
+//     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
+//   );
+// }
+//
+// // now I need the similar function for TimeSeries<SleepSummary> and TimeSeries<ScreenTimeAggregate>
+//
+// TimeSeries<SleepSummary> takeLastSleepSummary(TimeSeries<SleepSummary> timeSeries, int n) {
+//
+//   final timeSeries2 = fillMissingDaysSleepSummary(timeSeries, n);
+//
+//   return TimeSeries<SleepSummary>(
+//     values: timeSeries2.values.sublist(timeSeries2.values.length - n),
+//     timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
+//     confidenceIntervalLow:
+//     timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
+//     confidenceIntervalHigh:
+//     timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
+//     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
+//   );
+// }
+//
+// TimeSeries<ScreenTimeAggregate> takeLastScreenTimeAggregate(TimeSeries<ScreenTimeAggregate> timeSeries, int n) {
+//
+//   final timeSeries2 = fillMissingDaysScreenTimeAggregate(timeSeries, n);
+//
+//   return TimeSeries<ScreenTimeAggregate>(
+//     values: timeSeries2.values.sublist(timeSeries2.values.length - n),
+//     timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
+//     confidenceIntervalLow:
+//     timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
+//     confidenceIntervalHigh:
+//     timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
+//     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
+//   );
+// }
 
 
