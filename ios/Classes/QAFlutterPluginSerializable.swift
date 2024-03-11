@@ -331,13 +331,42 @@ class QAFlutterPluginSerializable : NSObject {
         return encodeObject(object: dataArray)
     }
     
-    public static func serializeJournalEntryList(data: [JournalEntry]) -> String {
+    public static func serializeJournalEntryList(data: [JournalEntry],
+                                                 cogScore: [DataPoint<DoubleValueElement>],
+                                                 sleepScore: [DataPoint<SleepScoreElement>],
+                                                 engScore: [DataPoint<DoubleValueElement>]
+    ) -> String {
         let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [SerializableJournalEntry] = []
         let eventKinds = QA.shared.journalEventKinds();
         
         for x in data {
+            
+            var scores = [String: Int]();
+            
+            let cogElement: DataPoint<DoubleValueElement>? = cogScore.first{a in Calendar.current.startOfDay(for: a.date) == Calendar.current.startOfDay(for: x.date)}
+            let cogValue: Double? = cogElement?.element?.value
+            
+            let sleepElement: DataPoint<SleepScoreElement>? = sleepScore.first{a in Calendar.current.startOfDay(for: a.date) == Calendar.current.startOfDay(for: x.date)}
+            let sleepValue: Double? = sleepElement?.element?.sleepScore
+            
+            let engElement: DataPoint<DoubleValueElement>? = engScore.first{a in Calendar.current.startOfDay(for: a.date) == Calendar.current.startOfDay(for: x.date)}
+            let engValue: Double? = engElement?.element?.value
+            
+            
+            if cogValue != nil && !cogValue!.isNaN {
+                scores["003-001-001-003"] = Int(cogValue!);
+            }
+            
+            if sleepValue != nil && !sleepValue!.isNaN {
+                scores["003-001-001-002"] = Int(sleepValue!);
+            }
+            
+            if engValue != nil && !engValue!.isNaN {
+                scores["003-001-001-004"] = Int(engValue!);
+            }
+            
             dataArray.append(
                 SerializableJournalEntry(
                     id: x.id,
@@ -348,7 +377,7 @@ class QAFlutterPluginSerializable : NSObject {
                         let ee = eventKinds.filter{ek in journalEntryEvent.eventKindID == ek.id}.first;
                         return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent, eventName: ee!.publicName, eventIcon: ee!.publicName);
                     },
-                    scores: [String: Int]()
+                    scores: scores
                 )
             )
         }

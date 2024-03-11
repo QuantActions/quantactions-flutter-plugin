@@ -18,4 +18,13 @@ class JournalStreamMapper {
       (dynamic event) => JournalEntryMapper.fromList(jsonDecode(event)),
     );
   }
+
+  static Map<String, dynamic> checkDynamicType(dynamic json){
+    if (json is String) { // android
+      return jsonDecode(json);
+    } else { // ios
+      return json as Map<String, dynamic>;
+    }
+  }
+
 }

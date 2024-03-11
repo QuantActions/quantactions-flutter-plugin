@@ -35,8 +35,29 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                 ) {
                     Task {
                         let response = QA.shared.journalEntries()
+                        let allDates = response.map{ a in a.date}
+                        // retrieve scores
+                        // FIXME: should retrieve the partID first
+                        let endDate : Date? = Calendar.current.date(byAdding: .day, value: 1, to: allDates.max()!)!
+                        let startDate : Date? = Calendar.current.date(byAdding: .day, value: -1, to: allDates.min()!)!
+
+                        let dateInterval = DateInterval(start: startDate ?? .now, end: endDate ?? .now)
+                        
+                        do {
+                            let cogScore = try await QA.shared.cognitiveFitnessMetric(participationID: "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb",
+                                                                                      interval: dateInterval)
+                            let sleepScore = try await QA.shared.sleepScoreMetric(participationID: "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb",
+                                                                            interval: dateInterval)
+
+                            let engScore = try await QA.shared.socialEngagementMetric(participationID: "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb",
+                                                                        interval: dateInterval)
+                        
                         DispatchQueue.main.async {
-                            eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response))
+                            eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response, cogScore: cogScore, sleepScore: sleepScore, engScore: engScore))
+                        }
+                            
+                        } catch let error {
+                            print(error.localizedDescription)
                         }
                     }
                 
