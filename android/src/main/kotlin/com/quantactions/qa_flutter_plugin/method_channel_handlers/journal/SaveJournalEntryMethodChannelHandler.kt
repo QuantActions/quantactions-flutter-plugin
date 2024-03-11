@@ -54,13 +54,12 @@ class SaveJournalEntryMethodChannelHandler(
                                     id, localDate, note, journalEvents.toMutableList()
                                 )
 
-                                async {
-                                    result.success(
-                                        QAFlutterPluginSerializable.serializeJournalEntry(
-                                            qa.saveJournalEntry(journalEntry)
-                                        )
+                                result.success(
+                                    QAFlutterPluginSerializable.serializeJournalEntry(
+                                        qa.saveJournalEntry(journalEntry)
                                     )
-                                }.await()
+                                )
+
                             }
                         )
                     }

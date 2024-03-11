@@ -23,6 +23,8 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
         switch call.method {
         case "saveJournalEntry":
             let dateFormatter = DateFormatter()
+            // Set the date format to match the string format
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSS"
             let params = call.arguments as? Dictionary<String, Any>
             
             let id = params?["id"] as? String
@@ -36,6 +38,7 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
                     methodName: "saveJournalEntry"
                 ) {
                     Task {
+                        print(dateString)
                         let journalEntry = JournalEntry(
                             date: dateFormatter.date(from: dateString) ?? Date.now,
                             note: note,
