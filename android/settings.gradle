@@ -10,5 +10,5 @@
 //    }
 //}
 rootProject.name = 'qa_flutter_plugin'
-include 'qa_sdk'
-project(':qa_sdk').projectDir = file('/Users/enea/QA/QA-Android-SDK/qa_sdk')
+//include 'qa_sdk'
+//project(':qa_sdk').projectDir = file('/Users/enea/QA/QA-Android-SDK/qa_sdk')
