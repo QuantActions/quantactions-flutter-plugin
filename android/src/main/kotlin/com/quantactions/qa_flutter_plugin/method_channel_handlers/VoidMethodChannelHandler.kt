@@ -63,9 +63,8 @@ class VoidMethodChannelHandler(
                             result = result,
                             methodName = "deleteJournalEntry",
                             method = {
-                                async {
-                                    qa.deleteJournalEntry(id)
-                                }.await()
+                                qa.deleteJournalEntry(id)
+                                result.success(true)
                             }
                         )
                     } else {

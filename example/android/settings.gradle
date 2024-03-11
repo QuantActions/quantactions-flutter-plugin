@@ -10,5 +10,5 @@ def flutterSdkPath = properties.getProperty("flutter.sdk")
 assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
 apply from: "$flutterSdkPath/packages/flutter_tools/gradle/app_plugin_loader.gradle"
 
-include 'qa_sdk'
-project(':qa_sdk').projectDir = file('/Users/enea/QA/QA-Android-SDK/qa_sdk')
+//include 'qa_sdk'
+//project(':qa_sdk').projectDir = file('/Users/enea/QA/QA-Android-SDK/qa_sdk')

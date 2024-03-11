@@ -92,6 +92,7 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
                 ) {
                     Task {
                         try QA.shared.deleteJournalEntry(byID: id)
+                        result(true)
                     }
                 }
             } else {
