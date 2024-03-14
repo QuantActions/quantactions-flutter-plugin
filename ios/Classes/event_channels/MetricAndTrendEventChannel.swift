@@ -42,7 +42,8 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
             
             if (!subscription.isEmpty) {
                 participationID = subscription.first!.id
-            } else {
+            } 
+            else {
                 QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: method!)
             }
         } else {

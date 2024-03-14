@@ -36,6 +36,12 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                     Task {
                         let response = QA.shared.journalEntries()
                         let allDates = response.map{ a in a.date}
+                        if (response.isEmpty){
+                            DispatchQueue.main.async {
+                                eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: [], cogScore: [], sleepScore: [], engScore: []))
+                            }
+                            return;
+                        }
                         // retrieve scores
                         // FIXME: should retrieve the partID first
                         let endDate : Date? = Calendar.current.date(byAdding: .day, value: 1, to: allDates.max()!)!

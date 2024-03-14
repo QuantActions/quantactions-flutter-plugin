@@ -24,8 +24,17 @@ extension TimeSeriesExtension<T> on TimeSeries<T> {
       confidence: confidence.reversed.toList(),
     );
   }
-
 }
+
+extension DoubleTimeSeiresExtension on TimeSeries<double> {
+  bool isEmpty() {
+    return values.where((double element) => !element.isNaN).isEmpty;
+  }
+  bool isNotEmpty() {
+    return !isEmpty();
+  }
+}
+
 
 
 

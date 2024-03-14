@@ -1,6 +1,7 @@
 package com.quantactions.qa_flutter_plugin.method_channel_handlers
 
 import android.content.Context
+import android.util.Log
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
 import com.quantactions.sdk.QA
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -85,9 +86,8 @@ class VoidMethodChannelHandler(
                             result = result,
                             methodName = "sendNote",
                             method = {
-                                async {
                                     qa.sendNote(text)
-                                }.await()
+                                    result.success(true)
                             }
                         )
                     } else {
@@ -102,16 +102,16 @@ class VoidMethodChannelHandler(
                     val params = call.arguments as Map<*, *>
 
                     val cohortId = params["cohortId"] as? String
+                    val subscriptionId = params["subscriptionId"] as? String
+                    Log.d("SUBSUB", "$subscriptionId : $cohortId")
 
-                    if (cohortId != null) {
+                    if (cohortId != null && subscriptionId != null) {
                         QAFlutterPluginHelper.safeMethodChannel(
                             result = result,
                             methodName = "leaveCohort",
                             method = {
-                                async {
-                                    //TODO (karatysh): set subscriptionId instead of ""
-                                    qa.leaveCohort("", cohortId)
-                                }.await()
+                                    qa.leaveCohort(subscriptionId, cohortId)
+                                    result.success(true)
                             }
                         )
                     } else {

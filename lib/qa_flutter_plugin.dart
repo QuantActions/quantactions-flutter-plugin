@@ -68,8 +68,8 @@ class QAFlutterPlugin {
   }
 
   ///Use this to withdraw the device from a particular cohort.
-  Future<void> leaveCohort(String cohortId) async {
-    await _cohortRepository.leaveCohort(cohortId);
+  Future<void> leaveCohort(String subscriptionId, String cohortId) async {
+    await _cohortRepository.leaveCohort(subscriptionId, cohortId);
   }
 
   ///The method is only relevant for Android

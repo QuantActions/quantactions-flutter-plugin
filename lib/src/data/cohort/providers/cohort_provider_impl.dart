@@ -25,10 +25,11 @@ class CohortProviderImpl implements CohortProvider {
   }
 
   @override
-  Future<void> leaveCohort(String cohortId) async {
+  Future<void> leaveCohort(String subscriptionId, String cohortId) async {
     await _sdkMethodChannel.callMethodChannel(
       method: SupportedMethods.leaveCohort,
       params: <String, dynamic>{
+        'subscriptionId': subscriptionId,
         'cohortId': cohortId,
       },
     );

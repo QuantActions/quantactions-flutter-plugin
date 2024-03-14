@@ -17,7 +17,7 @@ class CohortRepositoryImpl implements CohortRepository {
   }
 
   @override
-  Future<void> leaveCohort(String cohortId) async {
-    await _cohortProvider.leaveCohort(cohortId);
+  Future<void> leaveCohort(String subscriptionId, String cohortId) async {
+    await _cohortProvider.leaveCohort(subscriptionId, cohortId);
   }
 }

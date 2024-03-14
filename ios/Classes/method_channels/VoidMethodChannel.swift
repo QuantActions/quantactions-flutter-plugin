@@ -48,7 +48,7 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
         case "leaveCohort":
             let params = call.arguments as? Dictionary<String, Any>
             
-            let participationID = params?["participationID"] as? String
+            let participationID = params?["subscriptionId"] as? String
             
             if let participationID = participationID {
                 QAFlutterPluginHelper.safeMethodChannel(
@@ -57,6 +57,7 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
                 ) {
                     Task {
                         try await QA.shared.leaveCohort(participationID: participationID)
+                        result(true)
                     }
                 }
             } else {
@@ -74,6 +75,7 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
                 ) {
                     Task {
                         try await QA.shared.sendNote(text: text)
+                        result(true)
                     }
                 }
                 
