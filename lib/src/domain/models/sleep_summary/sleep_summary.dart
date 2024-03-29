@@ -65,3 +65,11 @@ class SleepSummary {
     return DateTime.parse(data.split('[').first).toLocal();
   }
 }
+
+// extension to sleep summary that check if is nan
+extension SleepSummaryExtension on SleepSummary {
+  bool isNan() {
+    return sleepStart == DateTime.fromMicrosecondsSinceEpoch(0);
+  }
+}
+

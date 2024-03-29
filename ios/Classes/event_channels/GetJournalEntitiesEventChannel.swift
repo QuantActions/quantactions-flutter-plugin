@@ -26,6 +26,17 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
         
         let method = params?["method"] as? String
         
+        var participationID = "";
+        
+        let subscription = QA.shared.subscriptions
+        if (!subscription.isEmpty) {
+            participationID = subscription.first!.id
+        }
+        else {
+            QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: method!)
+        }
+
+        
         if let method = method {
             switch method {
             case "journalEntries":
@@ -33,7 +44,7 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                     eventSink: eventSink,
                     methodName: "journalEntries"
                 ) {
-                    Task {
+                    Task { [participationID] in
                         let response = QA.shared.journalEntries()
                         let allDates = response.map{ a in a.date}
                         if (response.isEmpty){
@@ -43,28 +54,31 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                             return;
                         }
                         // retrieve scores
-                        // FIXME: should retrieve the partID first
                         let endDate : Date? = Calendar.current.date(byAdding: .day, value: 1, to: allDates.max()!)!
                         let startDate : Date? = Calendar.current.date(byAdding: .day, value: -1, to: allDates.min()!)!
 
                         let dateInterval = DateInterval(start: startDate ?? .now, end: endDate ?? .now)
+                        var cogScore : [DataPoint<DoubleValueElement>] = []
+                        var sleepScore : [DataPoint<SleepScoreElement>] = []
+                        var engScore : [DataPoint<DoubleValueElement>] = []
                         
                         do {
-                            let cogScore = try await QA.shared.cognitiveFitnessMetric(participationID: "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb",
+                            cogScore = try await QA.shared.cognitiveFitnessMetric(participationID: participationID,
                                                                                       interval: dateInterval)
-                            let sleepScore = try await QA.shared.sleepScoreMetric(participationID: "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb",
+                        } catch {}
+                        do {
+                            sleepScore = try await QA.shared.sleepScoreMetric(participationID: participationID,
                                                                             interval: dateInterval)
-
-                            let engScore = try await QA.shared.socialEngagementMetric(participationID: "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb",
+                        } catch {}
+                        do {
+                            engScore = try await QA.shared.socialEngagementMetric(participationID: participationID,
                                                                         interval: dateInterval)
+                        } catch {}
                         
-                        DispatchQueue.main.async {
+                        DispatchQueue.main.async {[cogScore, sleepScore, engScore] in
                             eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response, cogScore: cogScore, sleepScore: sleepScore, engScore: engScore))
                         }
-                            
-                        } catch let error {
-                            print(error.localizedDescription)
-                        }
+                        
                     }
                 
                 }

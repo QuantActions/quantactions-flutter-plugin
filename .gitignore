@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+.env
 migrate_working_dir/
 
 # IntelliJ related
@@ -44,3 +45,4 @@ app.*.map.json
 /android/app/release
 
 *.g.dart
+pubspec.lock

@@ -51,14 +51,15 @@ struct SerializableTrendElement : Encodable {
 }
 
 struct SerializableSleepSummaryElement : Encodable {
-    public var sleepDate: String
+    public var sleepStart: String
+    public var sleepEnd: String
     public var interruptionsStart: [String]
-    public var interruptionsStop: [String]
+    public var interruptionsEnd: [String]
     public var interruptionsNumberOfTaps: [Int]
 }
 
 struct SerializableScreenTimeAggregateElement : Encodable {
-    public var screenTime: Double
+    public var totalScreenTime: Double
     public var socialScreenTime: Double
 }
 
@@ -505,11 +506,12 @@ class QAFlutterPluginSerializable : NSObject {
         let dateFormatter = getDateTimeFormatter()
         
         return SerializableSleepSummaryElement(
-            sleepDate: dateFormatter.string(from: sleepSummaryElement.sleepDate),
+            sleepStart: dateFormatter.string(from: sleepSummaryElement.sleepDate),
+            sleepEnd: dateFormatter.string(from: sleepSummaryElement.wakeDate),
             interruptionsStart: sleepSummaryElement.interruptionsStart.map({ (start) -> String in
                 return dateFormatter.string(from: start)
             }),
-            interruptionsStop: sleepSummaryElement.interruptionsStop.map({ (stop) -> String in
+            interruptionsEnd: sleepSummaryElement.interruptionsStop.map({ (stop) -> String in
                 return dateFormatter.string(from: stop)
             }),
             interruptionsNumberOfTaps: sleepSummaryElement.interruptionsNumberOfTaps
@@ -518,7 +520,7 @@ class QAFlutterPluginSerializable : NSObject {
     
     private static func serializeScreenTimeAggregateElement(screenTimeAggregateElement: ScreenTimeAggregateElement) -> SerializableScreenTimeAggregateElement {
         return SerializableScreenTimeAggregateElement(
-            screenTime: screenTimeAggregateElement.screenTime,
+            totalScreenTime: screenTimeAggregateElement.screenTime,
             socialScreenTime: screenTimeAggregateElement.socialScreenTime
         )
     }

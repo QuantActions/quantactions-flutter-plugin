@@ -35,22 +35,22 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
         
         let method = params?["method"] as? String
         
-        var participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb";
+        var participationID = "";
         
         if (method == "getMetric") {
             let subscription = QA.shared.subscriptions
-            
             if (!subscription.isEmpty) {
                 participationID = subscription.first!.id
             } 
             else {
+//                participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb"
                 QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: method!)
             }
         } else {
             participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb"
         }
         
-        participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb";
+//        participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb";
         
         let metric = params?["metric"] as? String
         let dateIntervalType = params?["metricInterval"] as? String
@@ -70,30 +70,6 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                 interval: getDateInterval(dateIntervalType),
                                 trendKind: metricToAsk
                             )
-                            
-                            // ios SDK does not fill mising values
-//                            let thisDateInterval = getDateInterval(dateIntervalType)
-                            
-//                            let missingDays = thisDateInterval.durationInDays - (result as [DataPoint<TrendElement>]).count
-//                            let fullDays = thisDateInterval.datesAtMidnight()
-//                            let res = result as [DataPoint<TrendElement>]
-//                            let presentDays: [Date] = res.map { $0.date }
-//                            let newRes: [DataPoint<TrendElement>] = []
-//                            
-//                            presentDays.
-                            
-//                            res.forEach { element in
-//                                if !presentDays.contains(element.date) {
-//                                    
-//                                }
-//                            }
-                            
-//                            for d in thisDateInterval.datesAtMidnight() {
-//                                if presentDays.contains(d) {
-//                                    
-//                                }
-//                            }
-                            
                             DispatchQueue.main.async {
                               // Call the desired channel message here.
                                 eventSink(
@@ -132,38 +108,57 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                         }
                     case "cognitive":
                         Task { [participationID] in
-                            let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.cognitiveFitnessMetric(
-                                participationID: participationID,
-                                interval: getDateInterval(dateIntervalType)
-                            )
-                            DispatchQueue.main.async {
-                                eventSink(
-                                    QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                            do {
+                                let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.cognitiveFitnessMetric(
+                                    participationID: participationID,
+                                    interval: getDateInterval(dateIntervalType)
                                 )
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                                    )
+                                }
+                            } catch let error {
+                                print(error)
                             }
                         }
                     case "social":
                         Task { [participationID] in
-                            let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.socialEngagementMetric(
-                                participationID: participationID,
-                                interval: getDateInterval(dateIntervalType)
-                            )
-                            DispatchQueue.main.async {
-                                eventSink(
-                                    QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                            do {
+                                let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.socialEngagementMetric(
+                                    participationID: participationID,
+                                    interval: getDateInterval(dateIntervalType)
                                 )
+                                let b = result as [DataPoint<DoubleValueElement>]
+                                let a = QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: b)
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        a
+                                    )
+                                }
+                            } catch let error {
+                                print(error)
                             }
+                            
                         }
                     case "action":
+                        print("TASK ACTION")
                         Task { [participationID] in
+                            
+                            do {
                             let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.actionSpeedMetric(
                                 participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
+                            let a = QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                            print(a)
                             DispatchQueue.main.async {
                                 eventSink(
-                                    QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                                    a
                                 )
+                            }
+                            } catch let error {
+                                print(error)
                             }
                         }
                     case "typing":

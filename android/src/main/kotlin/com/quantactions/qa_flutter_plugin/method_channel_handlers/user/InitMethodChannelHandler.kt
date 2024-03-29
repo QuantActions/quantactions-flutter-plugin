@@ -52,9 +52,9 @@ class InitMethodChannelHandler(
                             methodName = "init",
                             method = {
                                 result.success(
-                                    async {
+//                                    async {
                                         qa.init(context, apiKey, basicInfo, identityId, password)
-                                    }.await()
+//                                    }.await()
                                 )
                             }
                         )

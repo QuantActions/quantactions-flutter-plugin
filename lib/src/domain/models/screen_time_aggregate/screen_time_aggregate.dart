@@ -16,8 +16,8 @@ class ScreenTimeAggregate {
 
   factory ScreenTimeAggregate.empty() {
     return ScreenTimeAggregate(
-      totalScreenTime: 0.0,
-      socialScreenTime: 0.0,
+      totalScreenTime: double.nan,
+      socialScreenTime: double.nan,
     );
   }
 
@@ -25,4 +25,11 @@ class ScreenTimeAggregate {
       _$ScreenTimeAggregateFromJson(json);
 
   Map<String, dynamic> toJson() => _$ScreenTimeAggregateToJson(this);
+}
+
+// extension to screen time aggregate to check if it's nan
+extension ScreenTimeAggregateExtension on ScreenTimeAggregate {
+  bool isNan() {
+    return totalScreenTime.isNaN;
+  }
 }

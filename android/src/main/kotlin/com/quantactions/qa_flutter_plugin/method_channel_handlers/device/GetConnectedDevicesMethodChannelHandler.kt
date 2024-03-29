@@ -28,9 +28,16 @@ class GetConnectedDevicesMethodChannelHandler(
                     QAFlutterPluginHelper.safeMethodChannel(
                         result = result,
                         methodName = "getConnectedDevices",
-                        method = { async {
-                            result.success(QAFlutterPluginSerializable.serializeDevicesIds(qa.getConnectedDevices()))
-                        }.await() }
+                        method = {
+                            try {
+                                val devices = qa.getConnectedDevices()
+                                result.success(QAFlutterPluginSerializable.serializeDevicesIds(devices))
+                            } catch (e: Exception) {
+                                result.success(QAFlutterPluginSerializable.serializeDevicesIds(
+                                    listOf()
+                                ))
+                            }
+                        }
                     )
                 }
             }

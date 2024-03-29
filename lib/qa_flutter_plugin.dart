@@ -276,7 +276,7 @@ class QAFlutterPlugin {
   ///if you have never initialized the singleton before.
   Future<bool> init({
     required String apiKey,
-    int? age,
+    int? yearOfBirth,
     Gender? gender,
     bool? selfDeclaredHealthy,
     String? identityId,
@@ -284,7 +284,7 @@ class QAFlutterPlugin {
   }) async {
     return _userRepository.init(
       apiKey: apiKey,
-      age: age,
+      age: yearOfBirth,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
       identityId: identityId,

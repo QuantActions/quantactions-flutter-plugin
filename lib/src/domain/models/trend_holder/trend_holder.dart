@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'trend_holder.g.dart';
 
+part 'trend_holder_extension.dart';
+
 @JsonSerializable()
 class TrendHolder {
   @JsonKey(defaultValue: double.nan)
@@ -37,15 +39,15 @@ class TrendHolder {
 
   factory TrendHolder.empty() {
     return TrendHolder(
-      difference2Weeks: 0.0,
-      statistic2Weeks: 0.0,
-      significance2Weeks: 0.0,
-      difference6Weeks: 0.0,
-      statistic6Weeks: 0.0,
-      significance6Weeks: 0.0,
-      difference1Year: 0.0,
-      statistic1Year: 0.0,
-      significance1Year: 0.0,
+      difference2Weeks: double.nan,
+      statistic2Weeks: double.nan,
+      significance2Weeks: double.nan,
+      difference6Weeks: double.nan,
+      statistic6Weeks: double.nan,
+      significance6Weeks: double.nan,
+      difference1Year: double.nan,
+      statistic1Year: double.nan,
+      significance1Year: double.nan,
     );
   }
 
@@ -54,3 +56,4 @@ class TrendHolder {
 
   Map<String, dynamic> toJson() => _$TrendHolderToJson(this);
 }
+

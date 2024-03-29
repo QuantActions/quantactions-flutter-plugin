@@ -34,7 +34,7 @@ void main() {
 
   test('leaveCohort', () {
     expect(
-      qaFlutterPlugin.leaveCohort(''),
+      qaFlutterPlugin.leaveCohort('', ''),
       isA<void>(),
     );
   });

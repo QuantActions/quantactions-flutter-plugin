@@ -35,6 +35,35 @@ extension DoubleTimeSeiresExtension on TimeSeries<double> {
   }
 }
 
+extension SleepSummaryTimeSeiresExtension on TimeSeries<SleepSummary> {
+  bool isEmpty() {
+    return values.where((SleepSummary element) => element.sleepStart != DateTime.fromMicrosecondsSinceEpoch(0)).isEmpty;
+  }
+  bool isNotEmpty() {
+    return !isEmpty();
+  }
+}
+
+extension ScreenTimeAggregateTimeSeiresExtension on TimeSeries<ScreenTimeAggregate> {
+  bool isEmpty() {
+    return values.where((ScreenTimeAggregate element) => !element.totalScreenTime.isNaN).isEmpty;
+  }
+  bool isNotEmpty() {
+    return !isEmpty();
+  }
+}
+
+extension TrendHolderTimeSeiresExtension on TimeSeries<TrendHolder> {
+  bool isEmpty() {
+    return values.where((TrendHolder element) => !element.isNan()).isEmpty;
+  }
+  bool isNotEmpty() {
+    return !isEmpty();
+  }
+}
+
+
+
 
 
 

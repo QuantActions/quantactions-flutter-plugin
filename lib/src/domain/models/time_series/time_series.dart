@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../qa_flutter_plugin.dart';
@@ -126,6 +127,8 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
   }
 
 }
+
+
 
 TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries , int rewindDays) {
   final List<DateTime> newTimestamps = [];
@@ -463,5 +466,10 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
 //     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
 //   );
 // }
+
+// an interface for the time series objects that allows to check if the object is nan
+abstract class TimeSeriesObjectNan {
+  bool isNan();
+}
 
 
