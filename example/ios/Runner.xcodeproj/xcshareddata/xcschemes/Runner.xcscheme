@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1520"
+   LastUpgradeVersion = "1510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -70,6 +70,13 @@
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "API_KEY"
+            value = "55b9cf50-dac2-11e6-b535-fd8dff3bf4e9"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Profile"

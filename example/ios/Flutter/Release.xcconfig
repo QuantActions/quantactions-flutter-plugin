@@ -1,2 +1,4 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 #include "Generated.xcconfig"
+
+API_KEY = 55b9cf50-dac2-11e6-b535-fd8dff3bf4e9

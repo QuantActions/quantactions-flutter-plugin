@@ -1,3 +1,4 @@
+**/Package.resolved
 **/dgph
 *.mode1v3
 *.mode2v3
@@ -32,3 +33,4 @@ Runner/GeneratedPluginRegistrant.*
 !default.mode2v3
 !default.pbxuser
 !default.perspectivev3
+

@@ -25,13 +25,13 @@
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>KEYBOARD_EXTENSION_BUNDLE_ID</key>
-	<string>com.quantactions.keyboardextension</string>
+	<string>com.quantactions.brainaware.QuantActionsKeyboardEstension</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>QUANTACTIONS_API_KEY</key>
-	<string>55b9cf50-dac2-11e6-b535-fd8dff3bf4e9</string>
+	<string>$(API_KEY)</string>
 	<key>QUANTACTIONS_APP_GROUP</key>
-	<string>group.65ZXVRTB44.com.quantactions.brainaware</string>
+	<string>group.com.quantactions.brainaware</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
