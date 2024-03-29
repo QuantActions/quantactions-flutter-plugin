@@ -25,7 +25,7 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
             let params = call.arguments as? Dictionary<String, Any>
             
             let yearOfBirth = params?["newYearOfBirth"] as? Int ?? QuantActionsSDK.BasicInfo().yearOfBirth
-            let selfDeclaredHealthy = params?["age"] as? Bool ?? QuantActionsSDK.BasicInfo().selfDeclaredHealthy
+            let selfDeclaredHealthy = params?["newSelfDeclaredHealthy"] as? Bool ?? QuantActionsSDK.BasicInfo().selfDeclaredHealthy
             
             let newGenderString  = params?["newGender"] as? String
             let gender: Gender = (newGenderString == nil) ? QuantActionsSDK.BasicInfo().gender : QAFlutterPluginHelper.parseGender(gender: newGenderString)
