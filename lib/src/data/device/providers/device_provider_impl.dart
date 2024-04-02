@@ -124,7 +124,7 @@ class DeviceProviderImpl implements DeviceProvider {
 
   @override
   Future<void> updateKeyboardSettings({required KeyboardSettings keyboardSettings}) {
-    return _sdkMethodChannel.callMethodChannel<String>(
+    return _sdkMethodChannel.callMethodChannel<void>(
       method: SupportedMethods.updateKeyboardSettings,
       methodChannel: _updateKeyboardSettingsMethodChannel,
       params: keyboardSettings.toJson(),

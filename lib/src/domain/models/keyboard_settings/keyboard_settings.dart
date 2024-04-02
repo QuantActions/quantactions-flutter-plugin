@@ -32,6 +32,53 @@ class KeyboardSettings {
     required this.soundFeedback,
   });
 
+  // add some default values
+  factory KeyboardSettings.defaults() => KeyboardSettings(
+    caseSensitive: false,
+    smartPunctuation: true,
+    autoCorrect: true,
+    autoCapitalization: true,
+    autoLearn: true,
+    doubleSpaceTapAddsPunctuation: true,
+    swipeTyping: true,
+    swipeLeftToDelete: true,
+    autoCorrectAfterPunctuation: true,
+    spacebarMovesCursor: true,
+    hapticFeedback: true,
+    soundFeedback: true,
+  );
+
+  // copy with
+  KeyboardSettings copyWith({
+    bool? caseSensitive,
+    bool? smartPunctuation,
+    bool? autoCorrect,
+    bool? autoCapitalization,
+    bool? autoLearn,
+    bool? doubleSpaceTapAddsPunctuation,
+    bool? swipeTyping,
+    bool? swipeLeftToDelete,
+    bool? autoCorrectAfterPunctuation,
+    bool? spacebarMovesCursor,
+    bool? hapticFeedback,
+    bool? soundFeedback,
+  }) {
+    return KeyboardSettings(
+      caseSensitive: caseSensitive ?? this.caseSensitive,
+      smartPunctuation: smartPunctuation ?? this.smartPunctuation,
+      autoCorrect: autoCorrect ?? this.autoCorrect,
+      autoCapitalization: autoCapitalization ?? this.autoCapitalization,
+      autoLearn: autoLearn ?? this.autoLearn,
+      doubleSpaceTapAddsPunctuation: doubleSpaceTapAddsPunctuation ?? this.doubleSpaceTapAddsPunctuation,
+      swipeTyping: swipeTyping ?? this.swipeTyping,
+      swipeLeftToDelete: swipeLeftToDelete ?? this.swipeLeftToDelete,
+      autoCorrectAfterPunctuation: autoCorrectAfterPunctuation ?? this.autoCorrectAfterPunctuation,
+      spacebarMovesCursor: spacebarMovesCursor ?? this.spacebarMovesCursor,
+      hapticFeedback: hapticFeedback ?? this.hapticFeedback,
+      soundFeedback: soundFeedback ?? this.soundFeedback,
+    );
+  }
+
   factory KeyboardSettings.fromJson(Map<String, dynamic> json) => _$KeyboardSettingsFromJson(json);
 
   Map<String, dynamic> toJson() => _$KeyboardSettingsToJson(this);
