@@ -1,5 +1,6 @@
 package com.quantactions.qa_flutter_plugin
 
+import android.util.Log
 import com.quantactions.sdk.Metric
 import com.quantactions.sdk.TimeSeries
 import com.quantactions.sdk.Trend

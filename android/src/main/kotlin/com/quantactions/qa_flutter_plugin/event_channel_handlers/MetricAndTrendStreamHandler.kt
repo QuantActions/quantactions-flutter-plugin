@@ -5,6 +5,7 @@ import android.util.Log
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginMetricMapper
 import com.quantactions.sdk.QA
+import com.quantactions.sdk.TimeSeries
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
@@ -64,7 +65,7 @@ class MetricAndTrendStreamHandler(
                                         score = metricToAsk,
                                         from = fromLocalDate.atStartOfDay()
                                             .toInstant(ZoneOffset.UTC).toEpochMilli(),
-                                        to = toLocalDate.atStartOfDay().toInstant(ZoneOffset.UTC)
+                                        to = toLocalDate.atStartOfDay().plusDays(1).toInstant(ZoneOffset.UTC)
                                             .toEpochMilli()
                                     ).collect {
                                         val rewindDays = ChronoUnit.DAYS.between(

@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:quiver/iterables.dart';
 
 import '../../../../qa_flutter_plugin.dart';
 import '../../domain.dart';
 
 part 'time_series.g.dart';
-
 part 'time_series_extension.dart';
 
 @JsonSerializable()
@@ -471,5 +471,16 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
 abstract class TimeSeriesObjectNan {
   bool isNan();
 }
+
+// extension ExtractWeeklyAverages on TimeSeries<SleepSummary>  {
+//
+//   TimeSeries<SleepSummary> extractWeeklyAverages() {
+//     // Group timestamps and values by the start of the week (Sunday)
+//     final a = zip([timestamps, values]).groupListsBy((pair) => (pair[0] as DateTime).fir);
+//
+//   }
+//
+//
+// }
 
 
