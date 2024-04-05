@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/iterables.dart';
+import 'date_time_extension.dart';
 
 import '../../../../qa_flutter_plugin.dart';
 import '../../domain.dart';
@@ -47,7 +49,7 @@ class TimeSeries<T> {
       dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
 
   static List<DateTime> _dateTimeFromJson(List<dynamic> data) => data
-      .map<DateTime>((dynamic item) => DateTime.parse(item.split('[').first).toLocal())
+      .map<DateTime>((dynamic item) => DateTime.parse(item))
       .toList();
 
   factory TimeSeries.empty() {

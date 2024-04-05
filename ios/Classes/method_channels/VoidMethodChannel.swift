@@ -18,6 +18,7 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
     }
     
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        print("Call method \(call.method)" )
         switch call.method {
         case "someOtherMethod":
             result("Success!")
@@ -29,6 +30,8 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
             
             let newGenderString  = params?["newGender"] as? String
             let gender: Gender = (newGenderString == nil) ? QuantActionsSDK.BasicInfo().gender : QAFlutterPluginHelper.parseGender(gender: newGenderString)
+            
+            print("Updateing with \(yearOfBirth) \(selfDeclaredHealthy) \(gender)")
             
             QAFlutterPluginHelper.safeMethodChannel(
                 result: result,
@@ -42,6 +45,7 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
                     )
                     
                     try await QA.shared.update(basicInfo: basicInfo)
+                    result(true)
                 }
             }
             
@@ -105,14 +109,16 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
                 result: result,
                 methodName: "pauseDataCollection"
             ) {
-                result(QA.shared.pauseDataCollection)
+                QA.shared.pauseDataCollection()
+                result(true)
             }
         case "resumeDataCollection":
             QAFlutterPluginHelper.safeMethodChannel(
                 result: result,
                 methodName: "resumeDataCollection"
             ) {
-                result(QA.shared.resumeDataCollection)
+                QA.shared.resumeDataCollection()
+                result(true)
             }
         case "recordQuestionnaireResponse": break
             //TODO: implement when will be ready

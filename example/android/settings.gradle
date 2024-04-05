@@ -21,6 +21,7 @@ plugins {
     id "com.android.application" version "8.0.2" apply false
     id "org.jetbrains.kotlin.android" version "1.8.0" apply false
     id "org.jetbrains.kotlin.plugin.serialization" version "1.8.10" apply false
+    id "org.jetbrains.dokka" version "1.9.20"  apply false
 }
 
 include ':app'
@@ -35,5 +36,5 @@ include ':app'
 //assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
 //apply from: "$flutterSdkPath/packages/flutter_tools/gradle/app_plugin_loader.gradle"
 
-//include 'qa_sdk'
-//project(':qa_sdk').projectDir = file('/Users/enea/QA/QA-Android-SDK/qa_sdk')
+include 'qa_sdk'
+project(':qa_sdk').projectDir = file('/Users/enea/QA/QA-Android-SDK/qa_sdk')

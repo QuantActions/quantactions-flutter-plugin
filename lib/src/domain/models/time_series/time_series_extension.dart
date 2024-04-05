@@ -1,4 +1,3 @@
-
 part of 'time_series.dart';
 
 extension TimeSeriesExtension<T> on TimeSeries<T> {
@@ -18,10 +17,8 @@ extension TimeSeriesExtension<T> on TimeSeries<T> {
     return TimeSeries<T>(
       values: values.reversed.toList(),
       timestamps: timestamps.reversed.toList(),
-      confidenceIntervalLow:
-      confidenceIntervalLow.reversed.toList(),
-      confidenceIntervalHigh:
-      confidenceIntervalHigh.reversed.toList(),
+      confidenceIntervalLow: confidenceIntervalLow.reversed.toList(),
+      confidenceIntervalHigh: confidenceIntervalHigh.reversed.toList(),
       confidence: confidence.reversed.toList(),
     );
   }
@@ -31,6 +28,7 @@ extension DoubleTimeSeiresExtension on TimeSeries<double> {
   bool isEmpty() {
     return values.where((double element) => !element.isNaN).isEmpty;
   }
+
   bool isNotEmpty() {
     return !isEmpty();
   }
@@ -38,17 +36,25 @@ extension DoubleTimeSeiresExtension on TimeSeries<double> {
 
 extension SleepSummaryTimeSeiresExtension on TimeSeries<SleepSummary> {
   bool isEmpty() {
-    return values.where((SleepSummary element) => element.sleepStart != DateTime.fromMicrosecondsSinceEpoch(0)).isEmpty;
+    return values
+        .where((SleepSummary element) =>
+            element.sleepStart != DateTime.now().nan)
+        .isEmpty;
   }
+
   bool isNotEmpty() {
     return !isEmpty();
   }
 }
 
-extension ScreenTimeAggregateTimeSeiresExtension on TimeSeries<ScreenTimeAggregate> {
+extension ScreenTimeAggregateTimeSeiresExtension
+    on TimeSeries<ScreenTimeAggregate> {
   bool isEmpty() {
-    return values.where((ScreenTimeAggregate element) => !element.totalScreenTime.isNaN).isEmpty;
+    return values
+        .where((ScreenTimeAggregate element) => !element.totalScreenTime.isNaN)
+        .isEmpty;
   }
+
   bool isNotEmpty() {
     return !isEmpty();
   }
@@ -58,6 +64,7 @@ extension TrendHolderTimeSeiresExtension on TimeSeries<TrendHolder> {
   bool isEmpty() {
     return values.where((TrendHolder element) => !element.isNan()).isEmpty;
   }
+
   bool isNotEmpty() {
     return !isEmpty();
   }
@@ -122,13 +129,30 @@ extension TrendHolderTimeSeiresExtension on TimeSeries<TrendHolder> {
 // )
 // }
 
+
+DateTime periodicMean(List<DateTime> dateTimes, List<DateTime> references,
+    DateTime reference) {
+
+  // remove nan
+  final placeholder = DateTime.now().nan;
+  final zonedDateTimes = dateTimes.where((DateTime element) => element != placeholder);
+
+  // print all
+  // for (final pair in zip([zonedDateTimes, references])) {
+  //   print('--> ${pair[0]} - ${pair[1]}');
+  // }
+
+  if (zonedDateTimes.isEmpty) return DateTime.now().nan;
+  // rewrite using expand instead of zip
+  final List<int> rawShifts = zip([zonedDateTimes, references])
+      .map((pair) => pair[0].difference(pair[1]).inSeconds)
+      .toList();
+  return reference.add(Duration(seconds: rawShifts.average.toInt()));
+}
+
+
 // this is the dart version of the periodicMean function
-// DateTime periodicMean(List<DateTime> zonedDateTimes, List<DateTime> references, DateTime reference) {
-//   if (zonedDateTimes.isEmpty) return DateTime.fromMicrosecondsSinceEpoch(0);
-//   // rewrite using expand instead of zip
-//   final List<int> rawShifts = zonedDateTimes.expand((DateTime z) => references.map((DateTime r) => z.difference(r).inSeconds)).toList();
-//   return reference.add(Duration(seconds: rawShifts.average.toInt()));
-// }
+
 //
 //
 //
@@ -136,16 +160,285 @@ extension TrendHolderTimeSeiresExtension on TimeSeries<TrendHolder> {
 //
 //   TimeSeries<SleepSummary> extractWeeklyAverages() {
 //     // Group timestamps and values by the start of the week (Sunday)
-//     final a = timestamps.zip(values);
-//     final averagedValues = timestamps.zip(values).groupBy(
-//             (entry) => entry.first.with(TemporalAdjusters.previousOrSame(
-//         DayOfWeek.sunday)).truncatedTo(ChronoUnit.days).toLocalDateTime(),
-//     (entry) => entry,
-//     );
+//     final List<List<Object>> a = IterableZip([timestamps, values]).toList();
+//     // a.groupListsBy((element) => (element[0] as DateTime).subtract(Duration(days: (element[0] as DateTime).weekday - 1))).truncatedTo(ChronoUnit.days).toLocalDateTime());
+//
+//
+//     final b = a.groupListsBy((element) => Jiffy.parseFromDateTime(element[0] as DateTime).startOf(Unit.week).startOf(Unit.day));
+//     final b = a.groupFoldBy((element) => Jiffy.parseFromDateTime(element[0] as DateTime).startOf(Unit.week).startOf(Unit.day), (previous, element) => element[1])
+//     final c = b.map((element) => elemnt[1][]);
 //   }
-//
-//
 // }
 
+extension ExtractWeeklyAverages on TimeSeries<double> {
+  TimeSeries<double> extractWeeklyAverages() {
+    final List<List<Object>> zippedValues =
+        IterableZip([timestamps, values]).toList();
+    final List<List<Object>> zippedCIH =
+        IterableZip([timestamps, confidenceIntervalHigh]).toList();
+    final List<List<Object>> zippedCIL =
+        IterableZip([timestamps, confidenceIntervalLow]).toList();
+    final List<List<Object>> zippedConfidence =
+        IterableZip([timestamps, confidence]).toList();
 
+    final newValues = zippedValues
+        .groupListsBy((element) =>
+            Jiffy.parseFromDateTime(element[0] as DateTime)
+                .startOf(Unit.week)
+                .startOf(Unit.day)
+                .dateTime)
+        .map((key, value) => MapEntry(
+            key, value.map((element) => element[1] as double).toList()));
 
+    final newCIH = zippedCIH
+        .groupListsBy((element) =>
+            Jiffy.parseFromDateTime(element[0] as DateTime)
+                .startOf(Unit.week)
+                .startOf(Unit.day)
+                .dateTime)
+        .map((key, value) => MapEntry(
+            key, value.map((element) => element[1] as double).toList()));
+    final newCIL = zippedCIL
+        .groupListsBy((element) =>
+            Jiffy.parseFromDateTime(element[0] as DateTime)
+                .startOf(Unit.week)
+                .startOf(Unit.day)
+                .dateTime)
+        .map((key, value) => MapEntry(
+            key, value.map((element) => element[1] as double).toList()));
+    final newConfidence = zippedConfidence
+        .groupListsBy((element) =>
+            Jiffy.parseFromDateTime(element[0] as DateTime)
+                .startOf(Unit.week)
+                .startOf(Unit.day)
+                .dateTime)
+        .map((key, value) => MapEntry(
+            key, value.map((element) => element[1] as double).toList()));
+
+    return TimeSeries<double>(
+      values: newValues.values
+          .toList()
+          .map((element) => element.toList().safeAverage())
+          .toList(),
+      timestamps: newValues.keys.toList(),
+      confidenceIntervalLow: newCIL.values
+          .toList()
+          .map((element) => element.toList().safeAverage())
+          .toList(),
+      confidenceIntervalHigh: newCIH.values
+          .toList()
+          .map((element) => element.toList().safeAverage())
+          .toList(),
+      confidence: newConfidence.values
+          .toList()
+          .map((element) => element.toList().safeAverage())
+          .toList(),
+    );
+  }
+
+  TimeSeries<double> extractMonthlyAverages() {
+    // Group timestamps and values by the start of the week (Sunday)
+    final List<List<Object>> zippedValues =
+        IterableZip([timestamps, values]).toList();
+    final List<List<Object>> zippedCIH =
+        IterableZip([timestamps, confidenceIntervalHigh]).toList();
+    final List<List<Object>> zippedCIL =
+        IterableZip([timestamps, confidenceIntervalLow]).toList();
+    final List<List<Object>> zippedConfidence =
+        IterableZip([timestamps, confidence]).toList();
+
+    final newValues = zippedValues
+        .groupListsBy((element) =>
+            Jiffy.parseFromDateTime(element[0] as DateTime)
+                .startOf(Unit.month)
+                .startOf(Unit.day)
+                .dateTime)
+        .map((key, value) => MapEntry(
+            key, value.map((element) => element[1] as double).toList()));
+
+    final newCIH = zippedCIH
+        .groupListsBy((element) =>
+            Jiffy.parseFromDateTime(element[0] as DateTime)
+                .startOf(Unit.month)
+                .startOf(Unit.day)
+                .dateTime)
+        .map((key, value) => MapEntry(
+            key, value.map((element) => element[1] as double).toList()));
+    final newCIL = zippedCIL
+        .groupListsBy((element) =>
+            Jiffy.parseFromDateTime(element[0] as DateTime)
+                .startOf(Unit.month)
+                .startOf(Unit.day)
+                .dateTime)
+        .map((key, value) => MapEntry(
+            key, value.map((element) => element[1] as double).toList()));
+    final newConfidence = zippedConfidence
+        .groupListsBy((element) =>
+            Jiffy.parseFromDateTime(element[0] as DateTime)
+                .startOf(Unit.month)
+                .startOf(Unit.day)
+                .dateTime)
+        .map((key, value) => MapEntry(
+            key, value.map((element) => element[1] as double).toList()));
+
+    return TimeSeries<double>(
+      values: newValues.values
+          .toList()
+          .map((element) => element.toList().safeAverage())
+          .toList(),
+      timestamps: newValues.keys.toList(),
+      confidenceIntervalLow: newCIL.values
+          .toList()
+          .map((element) => element.toList().safeAverage())
+          .toList(),
+      confidenceIntervalHigh: newCIH.values
+          .toList()
+          .map((element) => element.toList().safeAverage())
+          .toList(),
+      confidence: newConfidence.values
+          .toList()
+          .map((element) => element.toList().safeAverage())
+          .toList(),
+    );
+  }
+}
+
+extension SafeAverage on List<double> {
+  double safeAverage() {
+    if (isEmpty) return double.nan;
+    final List<double> nanSafe = where((double e) => !e.isNaN).toList();
+    if (nanSafe.isEmpty) return double.nan;
+    return nanSafe.average;
+  }
+}
+
+extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
+  TimeSeries<SleepSummary> extractWeeklyAverages() {
+    final List<List<Object>> zippedValues =
+        IterableZip([timestamps, values]).toList();
+
+    final newZippedValues = zippedValues.groupListsBy((element) =>
+        Jiffy.parseFromDateTime(element[0] as DateTime)
+            .startOf(Unit.week)
+            .startOf(Unit.day)
+            .dateTime);
+    final newValues = newZippedValues.entries
+        .map((element) => SleepSummary(
+            sleepStart: periodicMean(
+                element.value
+                    .map((element) => (element[1] as SleepSummary).sleepStart)
+                    .toList(),
+                element.value.map((element) => element[0] as DateTime).toList(),
+                (element.key as DateTime)),
+            sleepEnd: periodicMean(
+                element.value
+                    .map((element) => (element[1] as SleepSummary).sleepEnd)
+                    .toList(),
+                element.value.map((element) => element[0] as DateTime).toList(),
+                (element.key as DateTime)),
+            interruptionsStart: List<DateTime>.filled(
+                element.value
+                    .map((element) => (element[1] as SleepSummary)
+                        .interruptionsNumberOfTaps
+                        .length)
+                    .toList()
+                    .average
+                    .ceil(),
+                DateTime.now().nan),
+            interruptionsEnd: List<DateTime>.filled(
+                element.value
+                    .map((element) => (element[1] as SleepSummary)
+                        .interruptionsNumberOfTaps
+                        .length)
+                    .toList()
+                    .average
+                    .ceil(),
+                DateTime.now().nan),
+            interruptionsNumberOfTaps: List<int>.filled(
+                element.value
+                    .map((element) =>
+                        (element[1] as SleepSummary).interruptionsNumberOfTaps.length)
+                    .toList()
+                    .average
+                    .ceil(),
+                0)))
+        .toList();
+
+    return TimeSeries<SleepSummary>(
+      values: newValues,
+
+      // fill a list of length n with 0 values
+      timestamps: newZippedValues.keys.toList(),
+      confidenceIntervalLow: newValues,
+      confidenceIntervalHigh: newValues,
+      confidence: List<double>.filled(newZippedValues.keys.length, 0.0),
+    );
+  }
+
+  TimeSeries<SleepSummary> extractMonthlyAverages() {
+    // Group timestamps and values by the start of the week (Sunday)
+    final List<List<Object>> zippedValues =
+    IterableZip([timestamps, values]).toList();
+
+    // for (final pair in zippedValues) {
+    //   print('--> ${pair[0]} - ${pair[1]}');
+    // }
+
+    final newZippedValues = zippedValues.groupListsBy((element) =>
+    Jiffy.parseFromDateTime(element[0] as DateTime)
+        .startOf(Unit.month)
+        .startOf(Unit.day)
+        .dateTime);
+    final newValues = newZippedValues.entries
+        .map((element) => SleepSummary(
+        sleepStart: periodicMean(
+            element.value
+                .map((element) => (element[1] as SleepSummary).sleepStart)
+                .toList(),
+            element.value.map((element) => element[0] as DateTime).toList(),
+            (element.key as DateTime)),
+        sleepEnd: periodicMean(
+            element.value
+                .map((element) => (element[1] as SleepSummary).sleepEnd)
+                .toList(),
+            element.value.map((element) => element[0] as DateTime).toList(),
+            (element.key as DateTime)),
+        interruptionsStart: List<DateTime>.filled(
+            element.value
+                .map((element) => (element[1] as SleepSummary)
+                .interruptionsNumberOfTaps
+                .length)
+                .toList()
+                .average
+                .ceil(),
+            DateTime.now().nan),
+        interruptionsEnd: List<DateTime>.filled(
+            element.value
+                .map((element) => (element[1] as SleepSummary)
+                .interruptionsNumberOfTaps
+                .length)
+                .toList()
+                .average
+                .ceil(),
+            DateTime.now().nan),
+        interruptionsNumberOfTaps: List<int>.filled(
+            element.value
+                .map((element) =>
+            (element[1] as SleepSummary).interruptionsNumberOfTaps.length)
+                .toList()
+                .average
+                .ceil(),
+            0)))
+        .toList();
+
+    return TimeSeries<SleepSummary>(
+      values: newValues,
+
+      // fill a list of length n with 0 values
+      timestamps: newZippedValues.keys.toList(),
+      confidenceIntervalLow: newValues,
+      confidenceIntervalHigh: newValues,
+      confidence: List<double>.filled(newZippedValues.keys.length, 0.0),
+    );
+  }
+}

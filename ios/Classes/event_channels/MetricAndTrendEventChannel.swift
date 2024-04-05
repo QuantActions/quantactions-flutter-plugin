@@ -78,13 +78,13 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             }
                         } catch let error {
                             // TODO: ugly must handle network error better
-                            if error.localizedDescription.contains("404"){
+//                            if error.localizedDescription.contains("404"){
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTrendElement(data: [])
                                     )
                                 }
-                            }
+//                            }
                         }
                     }
                 }

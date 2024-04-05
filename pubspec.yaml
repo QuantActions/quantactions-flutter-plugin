@@ -18,6 +18,7 @@ dependencies:
   json_annotation: ^4.8.1
   intl: ^0.18.1
   quiver: ^3.2.1
+  jiffy: ^6.2.1
 
 dev_dependencies:
   flutter_test:

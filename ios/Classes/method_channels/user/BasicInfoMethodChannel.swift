@@ -26,9 +26,38 @@ class BasicInfoMethodChannel : NSObject, FlutterPlugin {
             ) {
                 result(
                     QAFlutterPluginSerializable.serializeBasicInfo(
-                        basicInfo: QuantActionsSDK.BasicInfo()
+                        basicInfo: QA.shared.basicInfo ?? QuantActionsSDK.BasicInfo()
                     )
                 )
+            }
+        case "updateBasicInfo":
+            let params = call.arguments as? Dictionary<String, Any>
+            
+            let yearOfBirth = params?["newYearOfBirth"] as? Int ?? QuantActionsSDK.BasicInfo().yearOfBirth
+            let selfDeclaredHealthy = params?["newSelfDeclaredHealthy"] as? Bool ?? QuantActionsSDK.BasicInfo().selfDeclaredHealthy
+            
+            let newGenderString  = params?["newGender"] as? String
+            let gender: Gender = (newGenderString == nil) ? QuantActionsSDK.BasicInfo().gender : QAFlutterPluginHelper.parseGender(gender: newGenderString)
+            
+            print("Updateing with \(yearOfBirth) \(selfDeclaredHealthy) \(gender)")
+            
+            QAFlutterPluginHelper.safeMethodChannel(
+                result: result,
+                methodName: "updateBasicInfo"
+            ) {
+                Task {
+                    let basicInfo = BasicInfo(
+                        yearOfBirth: yearOfBirth,
+                        gender: gender,
+                        selfDeclaredHealthy: selfDeclaredHealthy
+                    )
+                    print("Updating")
+                    try await QA.shared.update(basicInfo: basicInfo)
+                    let a = QA.shared.basicInfo
+                    print(a?.gender)
+                    print(a?.yearOfBirth)
+                    result(true)
+                }
             }
         default: break
         }

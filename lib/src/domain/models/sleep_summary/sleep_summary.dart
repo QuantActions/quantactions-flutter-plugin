@@ -1,4 +1,7 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../time_series/date_time_extension.dart';
 
 part 'sleep_summary.g.dart';
 
@@ -40,12 +43,12 @@ class SleepSummary {
 
   factory SleepSummary.emptySummary() {
     return SleepSummary(
-      sleepStart: DateTime.fromMicrosecondsSinceEpoch(0),
-      sleepEnd: DateTime.fromMicrosecondsSinceEpoch(0),
+      sleepStart: DateTime.now().nan,
+      sleepEnd: DateTime.now().nan,
       interruptionsStart:
-          List<DateTime>.generate(1, (int index) => DateTime.fromMicrosecondsSinceEpoch(0)),
+          List<DateTime>.generate(1, (int index) => DateTime.now().nan),
       interruptionsEnd:
-          List<DateTime>.generate(1, (int index) => DateTime.fromMicrosecondsSinceEpoch(0)),
+          List<DateTime>.generate(1, (int index) => DateTime.now().nan),
       interruptionsNumberOfTaps: List<int>.generate(1, (int index) => 0),
     );
   }
@@ -54,22 +57,21 @@ class SleepSummary {
       dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
 
   static List<DateTime> _dateTimeListFromJson(List<dynamic> data) => data
-      .map<DateTime>((dynamic item) => DateTime.parse(item.split('[').first).toLocal())
+      .map<DateTime>((dynamic item) => DateTime.parse(item))
       .toList();
 
   static String _dateTimeToJson(DateTime dateTime) => dateTime.toString();
 
   static DateTime _dateTimeFromJson(String? data) {
-    if (data == null) return DateTime.fromMicrosecondsSinceEpoch(0);
-
-    return DateTime.parse(data.split('[').first).toLocal();
+    if (data == null) return DateTime.now().nan;
+    return DateTime.parse(data);
   }
 }
 
 // extension to sleep summary that check if is nan
 extension SleepSummaryExtension on SleepSummary {
   bool isNan() {
-    return sleepStart == DateTime.fromMicrosecondsSinceEpoch(0);
+    return sleepStart == DateTime.now().nan;
   }
 }
 

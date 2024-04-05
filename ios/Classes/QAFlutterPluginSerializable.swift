@@ -117,6 +117,12 @@ struct SerializableJournalEventKind : Encodable {
     public var iconName: String
 }
 
+extension String {
+  func replaceTimeWithZeros() -> String {
+    return self.prefix(11) + "00:00:00" + self.dropFirst(19) // Add timezone back
+  }
+}
+
 class QAFlutterPluginSerializable : NSObject {
     
     public static func serializeBasicInfo(basicInfo: BasicInfo) -> String {
@@ -149,7 +155,7 @@ class QAFlutterPluginSerializable : NSObject {
         return encodeObject(object: serializableKeyboardSettings)
     }
     
-    
+
     public static func serializeTimeSeriesSleepSummaryElement(data: [DataPoint<SleepSummaryElement>]) -> String {
         let dateFormatter = getDateTimeFormatter()
         
@@ -160,11 +166,15 @@ class QAFlutterPluginSerializable : NSObject {
         var confidence : [SerializableSleepSummaryElement?] = []
         
         for val in data{
-            timestamps.append(dateFormatter.string(from: val.date))
+            
             if let sleepSummaryElement = val.element {
+                
+                let a = getDateTimeFormatterTZ(inDate: sleepSummaryElement.wakeDate, tz: sleepSummaryElement.timeZone)
+                timestamps.append(a.replaceTimeWithZeros())
                 let serializedElement = serializeSleepSummaryElement(sleepSummaryElement: sleepSummaryElement)
                 values.append(serializedElement)
             } else {
+                timestamps.append(dateFormatter.string(from: val.date))
                 values.append(nil)
             }
             confidenceIntervalLow.append(nil)
@@ -503,16 +513,16 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     private static func serializeSleepSummaryElement(sleepSummaryElement: SleepSummaryElement) -> SerializableSleepSummaryElement {
-        let dateFormatter = getDateTimeFormatter()
+//        let dateFormatter = getDateTimeFormatter()
         
         return SerializableSleepSummaryElement(
-            sleepStart: dateFormatter.string(from: sleepSummaryElement.sleepDate),
-            sleepEnd: dateFormatter.string(from: sleepSummaryElement.wakeDate),
+            sleepStart: getDateTimeFormatterTZ(inDate: sleepSummaryElement.sleepDate, tz: sleepSummaryElement.timeZone),
+            sleepEnd: getDateTimeFormatterTZ(inDate: sleepSummaryElement.wakeDate, tz: sleepSummaryElement.timeZone),
             interruptionsStart: sleepSummaryElement.interruptionsStart.map({ (start) -> String in
-                return dateFormatter.string(from: start)
+                return getDateTimeFormatterTZ(inDate: start, tz: sleepSummaryElement.timeZone)
             }),
             interruptionsEnd: sleepSummaryElement.interruptionsStop.map({ (stop) -> String in
-                return dateFormatter.string(from: stop)
+                return getDateTimeFormatterTZ(inDate: stop, tz: sleepSummaryElement.timeZone)
             }),
             interruptionsNumberOfTaps: sleepSummaryElement.interruptionsNumberOfTaps
         )
@@ -573,8 +583,17 @@ class QAFlutterPluginSerializable : NSObject {
     
     private static func getDateTimeFormatter() -> DateFormatter {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         
         return dateFormatter
     }
+    
+    private static func getDateTimeFormatterTZ(inDate: Date, tz: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        dateFormatter.timeZone = TimeZone(identifier: tz)
+
+        return dateFormatter.string(from: inDate)
+    }
+    
 }

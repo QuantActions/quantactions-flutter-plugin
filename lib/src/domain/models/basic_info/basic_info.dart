@@ -26,7 +26,7 @@ class BasicInfo {
 
   static String _genderToJson(Gender gender) => gender.id;
 
-  static Gender _genderFromJson(String gender) => switch (gender) {
+  static Gender _genderFromJson(String gender) => switch (gender.toUpperCase()) {
         'MALE' => Gender.male,
         'FEMALE' => Gender.female,
         'OTHER' => Gender.other,
