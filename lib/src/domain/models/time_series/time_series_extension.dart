@@ -135,18 +135,20 @@ DateTime periodicMean(List<DateTime> dateTimes, List<DateTime> references,
 
   // remove nan
   final placeholder = DateTime.now().nan;
-  final zonedDateTimes = dateTimes.where((DateTime element) => element != placeholder);
 
   // print all
-  // for (final pair in zip([zonedDateTimes, references])) {
+  // for (final pair in zip([dateTimes, references])) {
   //   print('--> ${pair[0]} - ${pair[1]}');
   // }
 
-  if (zonedDateTimes.isEmpty) return DateTime.now().nan;
   // rewrite using expand instead of zip
-  final List<int> rawShifts = zip([zonedDateTimes, references])
+  final List<int> rawShifts = zip([dateTimes, references]).where((element) => element[0] != placeholder)
       .map((pair) => pair[0].difference(pair[1]).inSeconds)
       .toList();
+  if (rawShifts.isEmpty) return DateTime.now().nan;
+  // print('periodic mean raw shifts: $rawShifts');
+  print('periodic mean reference: $reference');
+  print('periodic mean: ${reference.add(Duration(seconds: rawShifts.average.toInt()))}');
   return reference.add(Duration(seconds: rawShifts.average.toInt()));
 }
 
@@ -169,6 +171,7 @@ DateTime periodicMean(List<DateTime> dateTimes, List<DateTime> references,
 //     final c = b.map((element) => elemnt[1][]);
 //   }
 // }
+
 
 extension ExtractWeeklyAverages on TimeSeries<double> {
   TimeSeries<double> extractWeeklyAverages() {
@@ -314,6 +317,12 @@ extension SafeAverage on List<double> {
 
 extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
   TimeSeries<SleepSummary> extractWeeklyAverages() {
+
+    // print all timestamps
+    for (final timestamp in timestamps) {
+      print('--> $timestamp');
+    }
+
     final List<List<Object>> zippedValues =
         IterableZip([timestamps, values]).toList();
 
@@ -432,6 +441,68 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
         .toList();
 
     return TimeSeries<SleepSummary>(
+      values: newValues,
+
+      // fill a list of length n with 0 values
+      timestamps: newZippedValues.keys.toList(),
+      confidenceIntervalLow: newValues,
+      confidenceIntervalHigh: newValues,
+      confidence: List<double>.filled(newZippedValues.keys.length, 0.0),
+    );
+  }
+}
+
+extension ExtractScreenTimeAggregateWeeklyAverages on TimeSeries<ScreenTimeAggregate> {
+  TimeSeries<ScreenTimeAggregate> extractWeeklyAverages() {
+    final List<List<Object>> zippedValues =
+    IterableZip([timestamps, values]).toList();
+
+    final newZippedValues = zippedValues.groupListsBy((element) =>
+    Jiffy.parseFromDateTime(element[0] as DateTime)
+        .startOf(Unit.week)
+        .startOf(Unit.day)
+        .dateTime);
+    final newValues = newZippedValues.entries
+        .map((element) => ScreenTimeAggregate(
+      totalScreenTime: element.value
+          .map((element) => (element[1] as ScreenTimeAggregate).totalScreenTime)
+          .toList().safeAverage(),
+        socialScreenTime: element.value
+            .map((element) => (element[1] as ScreenTimeAggregate).socialScreenTime)
+            .toList().safeAverage()))
+        .toList();
+
+    return TimeSeries<ScreenTimeAggregate>(
+      values: newValues,
+
+      // fill a list of length n with 0 values
+      timestamps: newZippedValues.keys.toList(),
+      confidenceIntervalLow: newValues,
+      confidenceIntervalHigh: newValues,
+      confidence: List<double>.filled(newZippedValues.keys.length, 0.0),
+    );
+  }
+
+  TimeSeries<ScreenTimeAggregate> extractMonthlyAverages() {
+    final List<List<Object>> zippedValues =
+    IterableZip([timestamps, values]).toList();
+
+    final newZippedValues = zippedValues.groupListsBy((element) =>
+    Jiffy.parseFromDateTime(element[0] as DateTime)
+        .startOf(Unit.month)
+        .startOf(Unit.day)
+        .dateTime);
+    final newValues = newZippedValues.entries
+        .map((element) => ScreenTimeAggregate(
+        totalScreenTime: element.value
+            .map((element) => (element[1] as ScreenTimeAggregate).totalScreenTime)
+            .toList().safeAverage(),
+        socialScreenTime: element.value
+            .map((element) => (element[1] as ScreenTimeAggregate).socialScreenTime)
+            .toList().safeAverage()))
+        .toList();
+
+    return TimeSeries<ScreenTimeAggregate>(
       values: newValues,
 
       // fill a list of length n with 0 values

@@ -19,7 +19,7 @@ class IsKeyboardAddedMethodChannel : NSObject, FlutterPlugin {
     
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
-        case "isKeyboardAdded":
+        case "getIsKeyboardAdded":
             QAFlutterPluginHelper.safeMethodChannel(
                 result: result,
                 methodName: "isKeyboardAdded"

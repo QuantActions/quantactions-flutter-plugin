@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DB136764195E57AFD9DCCF1 /* Pods_QuantActionsKeyboardEstension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4472F6227FCDEE47C5F41CFF /* Pods_QuantActionsKeyboardEstension.framework */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		21E8A16AB368D3CDCDF3E09B /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE3202A86D0B9227F4BB43FA /* Pods_Runner.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -15,7 +17,6 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		B53BBF6F2BB4718E001281B2 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53BBF6E2BB4718E001281B2 /* KeyboardViewController.swift */; };
 		B53BBF7D2BB47EFD001281B2 /* QuantActionsKeyboardEstension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardEstension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BDE2B3DB186DEABFE4F1438A /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6FBE0E0C19664C5BFEBE129 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,13 +26,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = B53BBF6B2BB4718E001281B2;
 			remoteInfo = QuantActionsKeyboardEstension;
-		};
-		B53BBFD12BB5559F001281B2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B53BBFCC2BB5559F001281B2 /* UmbrellaFramework.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B53BBFBD2BB55516001281B2;
-			remoteInfo = UmbrellaFramework;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -50,18 +44,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		13EE4DDFE980992693E9697C /* Pods-QuantActionsKeyboardEstension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardEstension.release.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardEstension/Pods-QuantActionsKeyboardEstension.release.xcconfig"; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
-		2E4120AB3ED7882912C0CE71 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		1F546A1A6013BEE166857AB5 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		4472F6227FCDEE47C5F41CFF /* Pods_QuantActionsKeyboardEstension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuantActionsKeyboardEstension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F07750827115D6D95BEA840 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		8CD068FF20C21BE055352B28 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		85DE1C3EA955D47F429C9671 /* Pods-QuantActionsKeyboardEstension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardEstension.debug.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardEstension/Pods-QuantActionsKeyboardEstension.debug.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
-		975D997785D9C44149FAC8A3 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C146FB1CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -72,15 +68,16 @@
 		B53BBF702BB4718E001281B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B53BBF7B2BB4750C001281B2 /* QuantActionsKeyboardEstensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuantActionsKeyboardEstensionRelease.entitlements; sourceTree = "<group>"; };
 		B53BBF7C2BB47AC1001281B2 /* QuantActionsKeyboardEstensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuantActionsKeyboardEstensionDebug.entitlements; sourceTree = "<group>"; };
-		B53BBFCA2BB5559F001281B2 /* UmbrellaFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UmbrellaFramework.h; sourceTree = "<group>"; };
-		B53BBFCC2BB5559F001281B2 /* UmbrellaFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = UmbrellaFramework.xcodeproj; sourceTree = "<group>"; };
+		B562E7B92BC03D94000E3C8A /* qa_flutter_plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = qa_flutter_plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE9EF2B5625A265C0FEC16BB /* Pods-QuantActionsKeyboardEstension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardEstension.profile.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardEstension/Pods-QuantActionsKeyboardEstension.profile.xcconfig"; sourceTree = "<group>"; };
 		CE33EC5F2AE7D009006B3E65 /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		CE33EC602AE7D013006B3E65 /* QauantActionsKeyboardExtensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QauantActionsKeyboardExtensionDebug.entitlements; sourceTree = "<group>"; };
 		CE8117602AE0109D001E1C8F /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		CE8117622AE0109D001E1C8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE81176D2AE01376001E1C8F /* QauantActionsKeyboardExtensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QauantActionsKeyboardExtensionRelease.entitlements; sourceTree = "<group>"; };
 		CEF06C232ADE70ED00C207C9 /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
-		F6FBE0E0C19664C5BFEBE129 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5870A59D0F530AD09B4A34A /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		FE3202A86D0B9227F4BB43FA /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDE2B3DB186DEABFE4F1438A /* Pods_Runner.framework in Frameworks */,
+				21E8A16AB368D3CDCDF3E09B /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DB136764195E57AFD9DCCF1 /* Pods_QuantActionsKeyboardEstension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,9 +103,12 @@
 		298006F861E054C65918CA07 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				975D997785D9C44149FAC8A3 /* Pods-Runner.debug.xcconfig */,
-				2E4120AB3ED7882912C0CE71 /* Pods-Runner.release.xcconfig */,
-				8CD068FF20C21BE055352B28 /* Pods-Runner.profile.xcconfig */,
+				85DE1C3EA955D47F429C9671 /* Pods-QuantActionsKeyboardEstension.debug.xcconfig */,
+				13EE4DDFE980992693E9697C /* Pods-QuantActionsKeyboardEstension.release.xcconfig */,
+				BE9EF2B5625A265C0FEC16BB /* Pods-QuantActionsKeyboardEstension.profile.xcconfig */,
+				D5870A59D0F530AD09B4A34A /* Pods-Runner.debug.xcconfig */,
+				1F546A1A6013BEE166857AB5 /* Pods-Runner.release.xcconfig */,
+				6F07750827115D6D95BEA840 /* Pods-Runner.profile.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -141,7 +142,7 @@
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				298006F861E054C65918CA07 /* Pods */,
-				D28A678F4903FBD2F59BC031 /* Frameworks */,
+				CA5EB21FA582E3CC02B0F881 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -182,30 +183,14 @@
 			path = QuantActionsKeyboardEstension;
 			sourceTree = "<group>";
 		};
-		B53BBFCB2BB5559F001281B2 /* UmbrellaFramework */ = {
+		CA5EB21FA582E3CC02B0F881 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B53BBFCA2BB5559F001281B2 /* UmbrellaFramework.h */,
+				B562E7B92BC03D94000E3C8A /* qa_flutter_plugin.framework */,
+				4472F6227FCDEE47C5F41CFF /* Pods_QuantActionsKeyboardEstension.framework */,
+				FE3202A86D0B9227F4BB43FA /* Pods_Runner.framework */,
 			);
-			path = UmbrellaFramework;
-			sourceTree = "<group>";
-		};
-		B53BBFCD2BB5559F001281B2 /* UmbrellaFramework */ = {
-			isa = PBXGroup;
-			children = (
-				B53BBFCB2BB5559F001281B2 /* UmbrellaFramework */,
-				B53BBFCC2BB5559F001281B2 /* UmbrellaFramework.xcodeproj */,
-			);
-			name = UmbrellaFramework;
-			path = ../../../recharge_yourself_flutter/ios/UmbrellaFramework;
-			sourceTree = "<group>";
-		};
-		B53BBFCE2BB5559F001281B2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B53BBFD22BB5559F001281B2 /* UmbrellaFramework.framework */,
-			);
-			name = Products;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CE81175F2AE0109D001E1C8F /* QauantActionsKeyboardExtension */ = {
@@ -219,15 +204,6 @@
 			path = QauantActionsKeyboardExtension;
 			sourceTree = "<group>";
 		};
-		D28A678F4903FBD2F59BC031 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				B53BBFCD2BB5559F001281B2 /* UmbrellaFramework */,
-				F6FBE0E0C19664C5BFEBE129 /* Pods_Runner.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -235,14 +211,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
-				0232FE46999C9C23E7DBB478 /* [CP] Check Pods Manifest.lock */,
+				8A7BDEA7529FFC8458D3A919 /* [CP] Check Pods Manifest.lock */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				B53BBF802BB47EFD001281B2 /* Embed Foundation Extensions */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				4CD4F962C27BE2E94AF53F55 /* [CP] Embed Pods Frameworks */,
+				08DC88D65A4854D597FABE70 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -258,6 +234,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B53BBF772BB4718E001281B2 /* Build configuration list for PBXNativeTarget "QuantActionsKeyboardEstension" */;
 			buildPhases = (
+				ED40FA65B2D70022EE55868E /* [CP] Check Pods Manifest.lock */,
 				B53BBF682BB4718E001281B2 /* Sources */,
 				B53BBF692BB4718E001281B2 /* Frameworks */,
 				B53BBF6A2BB4718E001281B2 /* Resources */,
@@ -302,12 +279,6 @@
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = B53BBFCE2BB5559F001281B2 /* Products */;
-					ProjectRef = B53BBFCC2BB5559F001281B2 /* UmbrellaFramework.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
@@ -315,16 +286,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		B53BBFD22BB5559F001281B2 /* UmbrellaFramework.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = UmbrellaFramework.framework;
-			remoteRef = B53BBFD12BB5559F001281B2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		97C146EC1CF9000F007C117D /* Resources */ = {
@@ -348,7 +309,40 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0232FE46999C9C23E7DBB478 /* [CP] Check Pods Manifest.lock */ = {
+		08DC88D65A4854D597FABE70 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}",
+			);
+			name = "Thin Binary";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
+		};
+		8A7BDEA7529FFC8458D3A919 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -370,39 +364,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}",
-			);
-			name = "Thin Binary";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
-		};
-		4CD4F962C27BE2E94AF53F55 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
@@ -416,6 +377,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
+		};
+		ED40FA65B2D70022EE55868E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-QuantActionsKeyboardEstension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -730,6 +713,7 @@
 		};
 		B53BBF742BB4718E001281B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 85DE1C3EA955D47F429C9671 /* Pods-QuantActionsKeyboardEstension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -770,6 +754,7 @@
 		};
 		B53BBF752BB4718E001281B2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 13EE4DDFE980992693E9697C /* Pods-QuantActionsKeyboardEstension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -807,6 +792,7 @@
 		};
 		B53BBF762BB4718E001281B2 /* Profile */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE9EF2B5625A265C0FEC16BB /* Pods-QuantActionsKeyboardEstension.profile.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

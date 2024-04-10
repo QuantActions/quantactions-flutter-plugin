@@ -49,7 +49,11 @@ class TimeSeries<T> {
       dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
 
   static List<DateTime> _dateTimeFromJson(List<dynamic> data) => data
-      .map<DateTime>((dynamic item) => DateTime.parse(item))
+      .map<DateTime>((dynamic item) {
+        // print('Item is ${DateTime.parse((item as String).substring(0, 16))}');
+        // return DateTime.parse((item as String).substring(0, 16));
+        return DateTime.parse(item);
+      })
       .toList();
 
   factory TimeSeries.empty() {

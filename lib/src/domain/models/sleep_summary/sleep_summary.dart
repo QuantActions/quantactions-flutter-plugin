@@ -57,13 +57,19 @@ class SleepSummary {
       dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
 
   static List<DateTime> _dateTimeListFromJson(List<dynamic> data) => data
-      .map<DateTime>((dynamic item) => DateTime.parse(item))
-      .toList();
+      .map<DateTime>((dynamic item) {
+      // print('Item is ${DateTime.parse((item as String).substring(0, 16))}');
+      // return DateTime.parse((item as String).substring(0, 16));
+      return DateTime.parse(item);
+      })
+    .toList();
 
   static String _dateTimeToJson(DateTime dateTime) => dateTime.toString();
 
   static DateTime _dateTimeFromJson(String? data) {
     if (data == null) return DateTime.now().nan;
+    // print('Item is ${DateTime.parse((data as String).substring(0, 16))}');
+    // return DateTime.parse((data as String).substring(0, 16));
     return DateTime.parse(data);
   }
 }

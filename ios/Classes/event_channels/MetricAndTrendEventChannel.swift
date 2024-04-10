@@ -93,6 +93,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                     eventSink: eventSink,
                     methodName: "getMetric\(metric)"
                 ) {
+                    print("Asking for \(metric)")
                     switch (metric) {
                     case "sleep":
                         Task { [participationID] in
@@ -100,6 +101,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                 participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
+                            print("Sleep: sending \(result.count)")
                             DispatchQueue.main.async {
                                 eventSink(
                                     QAFlutterPluginSerializable.serializeTimeSeriesSleepScoreElement(data: result as [DataPoint<SleepScoreElement>])
@@ -113,6 +115,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                     participationID: participationID,
                                     interval: getDateInterval(dateIntervalType)
                                 )
+                                print("Cognitive: sending \(result.count)")
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
@@ -131,6 +134,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                 )
                                 let b = result as [DataPoint<DoubleValueElement>]
                                 let a = QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: b)
+                                print("Social: sending \(b.count)")
                                 DispatchQueue.main.async {
                                     eventSink(
                                         a
@@ -142,7 +146,6 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                             
                         }
                     case "action":
-                        print("TASK ACTION")
                         Task { [participationID] in
                             
                             do {
@@ -151,7 +154,6 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                 interval: getDateInterval(dateIntervalType)
                             )
                             let a = QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
-                            print(a)
                             DispatchQueue.main.async {
                                 eventSink(
                                     a

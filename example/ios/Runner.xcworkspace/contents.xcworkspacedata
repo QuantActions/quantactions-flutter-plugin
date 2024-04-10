@@ -7,7 +7,4 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:../../../recharge_yourself_flutter/ios/UmbrellaFramework/UmbrellaFramework.xcodeproj">
-   </FileRef>
 </Workspace>
