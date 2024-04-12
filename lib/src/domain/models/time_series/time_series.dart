@@ -51,8 +51,9 @@ class TimeSeries<T> {
   static List<DateTime> _dateTimeFromJson(List<dynamic> data) => data
       .map<DateTime>((dynamic item) {
         // print('Item is ${DateTime.parse((item as String).substring(0, 16))}');
-        // return DateTime.parse((item as String).substring(0, 16));
-        return DateTime.parse(item);
+        return DateTime.parse((item as String).substring(0, 16));
+        // tz.TZDateTime.parse(tz.getLocation('UTC'), item as String);
+        // return DateTime.parse(item);
       })
       .toList();
 

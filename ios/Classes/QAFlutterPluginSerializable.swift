@@ -56,6 +56,7 @@ struct SerializableSleepSummaryElement : Encodable {
     public var interruptionsStart: [String]
     public var interruptionsEnd: [String]
     public var interruptionsNumberOfTaps: [Int]
+    public var referenceDate: String
 }
 
 struct SerializableScreenTimeAggregateElement : Encodable {
@@ -524,7 +525,8 @@ class QAFlutterPluginSerializable : NSObject {
             interruptionsEnd: sleepSummaryElement.interruptionsStop.map({ (stop) -> String in
                 return getDateTimeFormatterTZ(inDate: stop, tz: sleepSummaryElement.timeZone)
             }),
-            interruptionsNumberOfTaps: sleepSummaryElement.interruptionsNumberOfTaps
+            interruptionsNumberOfTaps: sleepSummaryElement.interruptionsNumberOfTaps,
+            referenceDate: getDateTimeFormatterTZ(inDate: sleepSummaryElement.wakeDate, tz: sleepSummaryElement.timeZone).replaceTimeWithZeros()
         )
     }
     

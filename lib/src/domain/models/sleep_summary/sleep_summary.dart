@@ -29,12 +29,19 @@ class SleepSummary {
   @JsonKey(defaultValue: <int>[])
   final List<int> interruptionsNumberOfTaps;
 
+  @JsonKey(
+    fromJson: _truncatedDateTimeFromJson,
+    toJson: _dateTimeToJson,
+  )
+  final DateTime referenceDate;
+
   SleepSummary({
     required this.sleepStart,
     required this.sleepEnd,
     required this.interruptionsStart,
     required this.interruptionsEnd,
     required this.interruptionsNumberOfTaps,
+    required this.referenceDate,
   });
 
   factory SleepSummary.fromJson(Map<String, dynamic> json) => _$SleepSummaryFromJson(json);
@@ -50,6 +57,7 @@ class SleepSummary {
       interruptionsEnd:
           List<DateTime>.generate(1, (int index) => DateTime.now().nan),
       interruptionsNumberOfTaps: List<int>.generate(1, (int index) => 0),
+      referenceDate: DateTime.now().nan,
     );
   }
 
@@ -67,6 +75,12 @@ class SleepSummary {
   static String _dateTimeToJson(DateTime dateTime) => dateTime.toString();
 
   static DateTime _dateTimeFromJson(String? data) {
+    if (data == null) return DateTime.now().nan;
+    // print('Item is ${DateTime.parse((data as String).substring(0, 16))}');
+    // return DateTime.parse((data as String).substring(0, 16));
+    return DateTime.parse(data);
+  }
+  static DateTime _truncatedDateTimeFromJson(String? data) {
     if (data == null) return DateTime.now().nan;
     // print('Item is ${DateTime.parse((data as String).substring(0, 16))}');
     // return DateTime.parse((data as String).substring(0, 16));

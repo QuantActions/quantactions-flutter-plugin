@@ -28,6 +28,7 @@ class SleepSummaryFactory extends MockModelFactory<SleepSummary> {
         Random().nextInt(4),
         (int index) => faker.randomGenerator.integer(5),
       ),
+      referenceDate: sleepEnd,
     );
   }
 
