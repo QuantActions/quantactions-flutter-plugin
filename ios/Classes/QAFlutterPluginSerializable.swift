@@ -348,7 +348,7 @@ class QAFlutterPluginSerializable : NSObject {
                                                  sleepScore: [DataPoint<SleepScoreElement>],
                                                  engScore: [DataPoint<DoubleValueElement>]
     ) -> String {
-        let dateFormatter = getDateTimeFormatter()
+        let dateFormatter = getSimpleDateTimeFormatter()
         
         var dataArray : [SerializableJournalEntry] = []
         let eventKinds = QA.shared.journalEventKinds();
@@ -398,7 +398,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeJournalEntry(data: JournalEntry) -> String {
-        let dateFormatter = getDateTimeFormatter()
+        let dateFormatter = getSimpleDateTimeFormatter()
         
         let eventKinds = QA.shared.journalEventKinds()
 
@@ -418,7 +418,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     public static func serializeJournalEntryFromQAModel (data: JournalEntry) -> String {
-        let dateFormatter = getDateTimeFormatter()
+        let dateFormatter = getSimpleDateTimeFormatter()
         let eventKinds = QA.shared.journalEventKinds()
         
         let serializableObject =  SerializableJournalEntry(
@@ -581,6 +581,13 @@ class QAFlutterPluginSerializable : NSObject {
             try container.encode(number, forKey: .number)
             try container.encode(string, forKey: .string)
         }
+    }
+    
+    private static func getSimpleDateTimeFormatter() -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        return dateFormatter
     }
     
     private static func getDateTimeFormatter() -> DateFormatter {

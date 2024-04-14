@@ -32,5 +32,7 @@ class JournalEntry {
 
   static String _dateTimeToJson(DateTime dateTime) => DateFormat('yyyy-MM-dd').format(dateTime);
 
-  static DateTime _dateTimeFromJson(String date) => DateTime.parse(date);
+  static DateTime _dateTimeFromJson(String date) {
+  return DateTime.parse(date);
+  }
 }
