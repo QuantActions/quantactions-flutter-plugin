@@ -1,9 +1,11 @@
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sugar/sugar.dart';
 
 import '../time_series/date_time_extension.dart';
 
 part 'sleep_summary.g.dart';
+part 'sleep_summary_extension.dart';
 
 @JsonSerializable()
 class SleepSummary {
@@ -11,21 +13,21 @@ class SleepSummary {
     fromJson: _dateTimeFromJson,
     toJson: _dateTimeToJson,
   )
-  final DateTime sleepStart;
+  final ZonedDateTime sleepStart;
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  final DateTime sleepEnd;
+  final ZonedDateTime sleepEnd;
   @JsonKey(
     fromJson: _dateTimeListFromJson,
     toJson: _dateTimeListToJson,
-    defaultValue: <DateTime>[],
+    defaultValue: <ZonedDateTime>[],
   )
-  final List<DateTime> interruptionsStart;
+  final List<ZonedDateTime> interruptionsStart;
   @JsonKey(
     fromJson: _dateTimeListFromJson,
     toJson: _dateTimeListToJson,
-    defaultValue: <DateTime>[],
+    defaultValue: <ZonedDateTime>[],
   )
-  final List<DateTime> interruptionsEnd;
+  final List<ZonedDateTime> interruptionsEnd;
   @JsonKey(defaultValue: <int>[])
   final List<int> interruptionsNumberOfTaps;
 
@@ -33,7 +35,6 @@ class SleepSummary {
     fromJson: _truncatedDateTimeFromJson,
     toJson: _dateTimeToJson,
   )
-  final DateTime referenceDate;
 
   SleepSummary({
     required this.sleepStart,
@@ -41,7 +42,6 @@ class SleepSummary {
     required this.interruptionsStart,
     required this.interruptionsEnd,
     required this.interruptionsNumberOfTaps,
-    required this.referenceDate,
   });
 
   factory SleepSummary.fromJson(Map<String, dynamic> json) => _$SleepSummaryFromJson(json);
@@ -50,48 +50,55 @@ class SleepSummary {
 
   factory SleepSummary.emptySummary() {
     return SleepSummary(
-      sleepStart: DateTime.now().nan,
-      sleepEnd: DateTime.now().nan,
+      sleepStart: ZonedDateTime.now().nan,
+      sleepEnd: ZonedDateTime.now().nan,
       interruptionsStart:
-          List<DateTime>.generate(1, (int index) => DateTime.now().nan),
+          List<ZonedDateTime>.generate(1, (int index) => ZonedDateTime.now().nan),
       interruptionsEnd:
-          List<DateTime>.generate(1, (int index) => DateTime.now().nan),
-      interruptionsNumberOfTaps: List<int>.generate(1, (int index) => 0),
-      referenceDate: DateTime.now().nan,
+          List<ZonedDateTime>.generate(1, (int index) => ZonedDateTime.now().nan),
+      interruptionsNumberOfTaps: List<int>.generate(1, (int index) => 0)
     );
   }
 
-  static List<String> _dateTimeListToJson(List<DateTime> dateTime) =>
-      dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
+  static List<String> _dateTimeListToJson(List<ZonedDateTime> dateTime) =>
+      dateTime.map((ZonedDateTime dateTime) => dateTime.toString()).toList();
 
-  static List<DateTime> _dateTimeListFromJson(List<dynamic> data) => data
-      .map<DateTime>((dynamic item) {
-      // print('Item is ${DateTime.parse((item as String).substring(0, 16))}');
-      // return DateTime.parse((item as String).substring(0, 16));
-      return DateTime.parse(item);
+  static List<ZonedDateTime> _dateTimeListFromJson(List<dynamic> data) => data
+      .map<ZonedDateTime>((dynamic item) {
+    if (item == null) return ZonedDateTime.now().nan;
+    // print(item);
+    final List<String> split = (item as String).split('+');
+    if (split.length == 1) {
+      return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(item) * 1000);
+    } else {
+      final tz = Timezone(split[1]);
+      return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
+    }
       })
     .toList();
 
-  static String _dateTimeToJson(DateTime dateTime) => dateTime.toString();
+  static String _dateTimeToJson(ZonedDateTime dateTime) => dateTime.toString();
 
-  static DateTime _dateTimeFromJson(String? data) {
-    if (data == null) return DateTime.now().nan;
-    // print('Item is ${DateTime.parse((data as String).substring(0, 16))}');
-    // return DateTime.parse((data as String).substring(0, 16));
-    return DateTime.parse(data);
+  static ZonedDateTime _dateTimeFromJson(String? data) {
+    if (data == null) return ZonedDateTime.now().nan;
+    // print(data);
+    final List<String> split = (data as String).split('+');
+    if (split.length == 1) {
+      return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(data) * 1000);
+    } else {
+      final tz = Timezone(split[1]);
+      return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
+    }
   }
-  static DateTime _truncatedDateTimeFromJson(String? data) {
-    if (data == null) return DateTime.now().nan;
-    // print('Item is ${DateTime.parse((data as String).substring(0, 16))}');
-    // return DateTime.parse((data as String).substring(0, 16));
-    return DateTime.parse(data);
+  static ZonedDateTime _truncatedDateTimeFromJson(String? data) {
+    if (data == null) return ZonedDateTime.now().nan;
+    // print(data);
+    final List<String> split = (data as String).split('+');
+    if (split.length == 1) {
+      return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(data) * 1000);
+    } else {
+      final tz = Timezone(split[1]);
+      return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
+    }
   }
 }
-
-// extension to sleep summary that check if is nan
-extension SleepSummaryExtension on SleepSummary {
-  bool isNan() {
-    return sleepStart == DateTime.now().nan;
-  }
-}
-

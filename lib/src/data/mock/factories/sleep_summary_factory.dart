@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:sugar/sugar.dart';
 
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
@@ -6,21 +7,21 @@ import 'mock_model_factory.dart';
 class SleepSummaryFactory extends MockModelFactory<SleepSummary> {
   @override
   SleepSummary generateFake([dynamic data]) {
-    final DateTime sleepStart = (data as DateTime)
+    final ZonedDateTime sleepStart = (data as ZonedDateTime)
         .subtract(const Duration(days: 1))
         .copyWith(hour: Random().nextInt(4) + 20);
-    final DateTime sleepEnd = data.copyWith(hour: Random().nextInt(9) + 1);
+    final ZonedDateTime sleepEnd = data.copyWith(hour: Random().nextInt(9) + 1);
 
     return SleepSummary(
       sleepStart: sleepStart,
       sleepEnd: sleepEnd,
-      interruptionsStart: List<DateTime>.generate(
+      interruptionsStart: List<ZonedDateTime>.generate(
         Random().nextInt(2),
         (int index) => data.subtract(const Duration(days: 1)).copyWith(
               hour: Random().nextInt(24 - sleepStart.hour) + sleepStart.hour + 1,
             ),
       ),
-      interruptionsEnd: List<DateTime>.generate(
+      interruptionsEnd: List<ZonedDateTime>.generate(
         Random().nextInt(2),
         (int index) => data.copyWith(hour: Random().nextInt(sleepEnd.hour) + 1),
       ),
@@ -28,7 +29,6 @@ class SleepSummaryFactory extends MockModelFactory<SleepSummary> {
         Random().nextInt(4),
         (int index) => faker.randomGenerator.integer(5),
       ),
-      referenceDate: sleepEnd,
     );
   }
 

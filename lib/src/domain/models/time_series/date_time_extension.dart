@@ -1,8 +1,14 @@
+import 'package:sugar/sugar.dart';
 
+extension ZonedDateTimeNaN on ZonedDateTime {
+  ZonedDateTime get nan => ZonedDateTime.fromEpochMilliseconds(Timezone('UTC'), 0);
 
+  bool get isNaN => this == nan;
 
-extension DateTimeNaN on DateTime {
-  DateTime get nan => DateTime.parse('1970-01-01T00:00:00.000Z');
+  static ZonedDateTime fromLocalDateTime(LocalDateTime localDateTime) {
+    return ZonedDateTime.fromEpochMilliseconds(Timezone.now(),
+        localDateTime.epochMilliseconds);
+  }
 }
 
 

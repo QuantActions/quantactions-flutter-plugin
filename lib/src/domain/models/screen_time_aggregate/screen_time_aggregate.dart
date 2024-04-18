@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 part 'screen_time_aggregate.g.dart';
+part 'screen_time_aggregate_extension.dart';
 
 @JsonSerializable()
 class ScreenTimeAggregate {
@@ -25,11 +26,4 @@ class ScreenTimeAggregate {
       _$ScreenTimeAggregateFromJson(json);
 
   Map<String, dynamic> toJson() => _$ScreenTimeAggregateToJson(this);
-}
-
-// extension to screen time aggregate to check if it's nan
-extension ScreenTimeAggregateExtension on ScreenTimeAggregate {
-  bool isNan() {
-    return totalScreenTime.isNaN;
-  }
 }

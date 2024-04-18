@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
                               itemBuilder: (_, int index) {
                                 // final DateTime item = snapshot.data!.timestamps[index];
                                 final int item = snapshot.data!.values[index].toInt();
-                                final date = DateFormat.yMMMd().format(snapshot.data!.timestamps[index]);
+                                final date = snapshot.data!.timestamps[index].toString();
                                 return Text('$date: $item');
                               },
                             );
@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
                                 // final DateTime item = snapshot.data!.timestamps[index];
                                 final ScreenTimeAggregate item = snapshot.data!.values[index];
                                 final timeInMinutes = item.totalScreenTime / 1000 / 60;
-                                final date = DateFormat.yMMMd().format(snapshot.data!.timestamps[index]);
+                                final date = snapshot.data!.timestamps[index].toString();
                                 return Text('$date: ${timeInMinutes.toInt()} minutes');
                               },
                             );

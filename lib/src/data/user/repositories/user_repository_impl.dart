@@ -45,8 +45,6 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<BasicInfo> getBasicInfo() async {
     final String json = await _userProvider.getBasicInfo();
-    print("these are basic infos");
-    print(json);
 
     return BasicInfo.fromJson(jsonDecode(json));
   }

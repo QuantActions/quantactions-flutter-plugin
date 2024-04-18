@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/iterables.dart';
+import 'package:sugar/sugar.dart';
 import 'date_time_extension.dart';
 
 import '../../../../qa_flutter_plugin.dart';
@@ -15,7 +15,7 @@ class TimeSeries<T> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
   final List<T> values;
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  final List<DateTime> timestamps;
+  final List<ZonedDateTime> timestamps;
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
   final List<T> confidenceIntervalLow;
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
@@ -45,22 +45,38 @@ class TimeSeries<T> {
     return _QATimeSeriesConverter<T>().toJson(object);
   }
 
-  static List<String> _dateTimeToJson(List<DateTime> dateTime) =>
-      dateTime.map((DateTime dateTime) => dateTime.toString()).toList();
+  static List<String> _dateTimeToJson(List<ZonedDateTime> dateTime) =>
+      dateTime.map((ZonedDateTime dateTime) => dateTime.toString()).toList();
 
-  static List<DateTime> _dateTimeFromJson(List<dynamic> data) => data
-      .map<DateTime>((dynamic item) {
-        // print('Item is ${DateTime.parse((item as String).substring(0, 16))}');
-        return DateTime.parse((item as String).substring(0, 16));
-        // tz.TZDateTime.parse(tz.getLocation('UTC'), item as String);
-        // return DateTime.parse(item);
+  static List<ZonedDateTime> _dateTimeFromJson(List<dynamic> data) => data
+      .map<ZonedDateTime>((dynamic item) {
+        // print(item);
+        final List<String> split = (item as String).split('+');
+        if (split.length == 1) {
+          return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(item) * 1000);
+        } else  {
+          if (split.length == 2){
+            final tz = Timezone(split[1]);
+            return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
+          } else {
+            final Timezone tz = Timezone(split[1]);
+            final ZonedDateTime a = ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
+            // if(split[1] == 'Asia/Dubai'){
+            //   print(item);
+            // }
+            return a.truncate(to: DateUnit.days);
+          }
+
+
+
+        }
       })
       .toList();
 
   factory TimeSeries.empty() {
     return TimeSeries<T>(
       values: List<T>.empty(),
-      timestamps: List<DateTime>.empty(),
+      timestamps: List<ZonedDateTime>.empty(),
       confidenceIntervalLow: List<T>.empty(),
       confidenceIntervalHigh: List<T>.empty(),
       confidence: List<double>.empty(),
@@ -138,15 +154,17 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
 
 
 TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries , int rewindDays) {
-  final List<DateTime> newTimestamps = [];
+  final List<ZonedDateTime> newTimestamps = [];
   final List<double> newValues = [];
   final List<double> newConfidenceIntervalLow = [];
   final List<double> newConfidenceIntervalHigh = [];
   final List<double> newConfidence = [];
-  final currentDay = DateTime.now();
-  var prevDate = timeSeries.timestamps.isNotEmpty
-      ? timeSeries.timestamps[0].subtract(Duration(days: rewindDays))
-      : currentDay.subtract(Duration(days: rewindDays));
+  final currentDay = ZonedDateTime.now();
+  print('Current day is $currentDay [double]');
+  print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
+  ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
+      ? timeSeries.timestamps[0].minus(days: rewindDays)
+      : currentDay.minus(days: rewindDays);
 
   if (timeSeries.timestamps.isEmpty) {
     final nMissingDays = prevDate
@@ -207,15 +225,17 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries , int rewindDay
 // now I need a similar fillMissing function for TimeSeries<SleepSummary> and TimeSeries<ScreenTimeAggregate>
 
 TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> timeSeries , int rewindDays) {
-  final List<DateTime> newTimestamps = <DateTime>[];
+  final List<ZonedDateTime> newTimestamps = <ZonedDateTime>[];
   final List<SleepSummary> newValues = <SleepSummary>[];
   final List<SleepSummary> newConfidenceIntervalLow = [];
   final List<SleepSummary> newConfidenceIntervalHigh = [];
   final List<double> newConfidence = [];
-  final currentDay = DateTime.now();
-  var prevDate = timeSeries.timestamps.isNotEmpty
-      ? timeSeries.timestamps[0].subtract(Duration(days: rewindDays))
-      : currentDay.subtract(Duration(days: rewindDays));
+  final currentDay = ZonedDateTime.now();
+  print('Current day is $currentDay [sleep summary]');
+  print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
+  ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
+      ? timeSeries.timestamps[0].minus(days: rewindDays)
+      : currentDay.minus(days: rewindDays);
 
   if (timeSeries.timestamps.isEmpty) {
     final int nMissingDays = prevDate
@@ -275,13 +295,15 @@ TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> ti
 }
 
 TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<ScreenTimeAggregate> timeSeries , int rewindDays) {
-  final List<DateTime> newTimestamps = [];
+  final List<ZonedDateTime> newTimestamps = [];
   final List<ScreenTimeAggregate> newValues = [];
   final List<ScreenTimeAggregate> newConfidenceIntervalLow = [];
   final List<ScreenTimeAggregate> newConfidenceIntervalHigh = [];
   final List<double> newConfidence = [];
-  final currentDay = DateTime.now();
-  var prevDate = timeSeries.timestamps.isNotEmpty
+  final currentDay = ZonedDateTime.now();
+  print('Current day is $currentDay [screen agg]');
+  print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
+  ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
       ? timeSeries.timestamps[0].subtract(Duration(days: rewindDays))
       : currentDay.subtract(Duration(days: rewindDays));
 
@@ -343,13 +365,15 @@ TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<Sc
 // I need a fill missing days function for TrendHolder
 
 TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeSeries , int rewindDays) {
-  final List<DateTime> newTimestamps = [];
+  final List<ZonedDateTime> newTimestamps = [];
   final List<TrendHolder> newValues = [];
   final List<TrendHolder> newConfidenceIntervalLow = [];
   final List<TrendHolder> newConfidenceIntervalHigh = [];
   final List<double> newConfidence = [];
-  final currentDay = DateTime.now();
-  var prevDate = timeSeries.timestamps.isNotEmpty
+  final currentDay = ZonedDateTime.now();
+  print('Current day is $currentDay [trend holder]');
+  print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
+  ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
       ? timeSeries.timestamps[0].subtract(Duration(days: rewindDays))
       : currentDay.subtract(Duration(days: rewindDays));
 

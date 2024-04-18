@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:sugar/sugar.dart';
+
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 import 'screen_time_aggregate_factory.dart';
@@ -17,7 +19,7 @@ class MetricFactory<T> extends MockModelFactory<TimeSeries<T>> {
 
     return TimeSeries<T>(
       values: values,
-      timestamps: List<DateTime>.generate(365, (int index) => now.subtract(Duration(days: index)))
+      timestamps: List<ZonedDateTime>.generate(365, (int index) => ZonedDateTime.now().subtract(Duration(days: index)))
           .reversed
           .toList(),
       confidenceIntervalLow: (T == double)
