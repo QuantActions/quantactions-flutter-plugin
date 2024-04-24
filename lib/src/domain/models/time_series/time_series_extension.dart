@@ -2,6 +2,9 @@ part of 'time_series.dart';
 
 extension TimeSeriesExtension<T> on TimeSeries<T> {
   TimeSeries<T> takeLast(int n) {
+    if (n > values.length) {
+      return this;
+    }
     return TimeSeries<T>(
       values: values.sublist(values.length - n),
       timestamps: timestamps.sublist(timestamps.length - n),

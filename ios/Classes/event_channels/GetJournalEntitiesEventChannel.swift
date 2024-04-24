@@ -57,36 +57,10 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                         let endDate : Date? = Calendar.current.date(byAdding: .day, value: 1, to: allDates.max()!)!
                         let startDate : Date? = Calendar.current.date(byAdding: .day, value: -1, to: allDates.min()!)!
 
-                        let dateInterval = DateInterval(start: startDate ?? .now, end: endDate ?? .now)
-                        var cogScore : [DataPoint<DoubleValueElement>] = []
-                        var sleepScore : [DataPoint<SleepScoreElement>] = []
-                        var engScore : [DataPoint<DoubleValueElement>] = []
-                        
-                        print("Calling cog")
-                        
-                        do {
-                            cogScore = try await QA.shared.cognitiveFitnessMetric(participationID: participationID,
-                                                                                      interval: dateInterval)
-                        } catch let error  {
-                            print(error)
-                        }
-                        print("Calling sleep")
-                        do {
-                            sleepScore = try await QA.shared.sleepScoreMetric(participationID: participationID,
-                                                                            interval: dateInterval)
-                        } catch let error  {
-                            print(error)
-                        }
-                        
-                        print("Calling eng")
-                        
-                        do {
-                            engScore = try await QA.shared.socialEngagementMetric(participationID: participationID,
-                                                                        interval: dateInterval)
-                        } catch let error  {
-                            print(error)
-                        }
-                        print("returning")
+                        let cogScore : [DataPoint<DoubleValueElement>] = []
+                        let sleepScore : [DataPoint<SleepScoreElement>] = []
+                        let engScore : [DataPoint<DoubleValueElement>] = []
+                    
                         DispatchQueue.main.async {[cogScore, sleepScore, engScore] in
                             eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response, cogScore: cogScore, sleepScore: sleepScore, engScore: engScore))
                         }

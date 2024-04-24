@@ -25,6 +25,23 @@ class JournalEntry {
     required this.scores,
   });
 
+  JournalEntry copyWith({
+    String? id,
+    DateTime? timestamp,
+    String? note,
+    List<JournalEvent>? events,
+    Map<String, int>? scores,
+  }) {
+    return JournalEntry(
+      id: id ?? this.id,
+      timestamp: timestamp ?? this.timestamp,
+      note: note ?? this.note,
+      events: events ?? this.events,
+      scores: scores ?? this.scores,
+    );
+  }
+
+
   factory JournalEntry.fromJson(Map<String, dynamic> json) =>
       _$JournalEntryFromJson(json);
 

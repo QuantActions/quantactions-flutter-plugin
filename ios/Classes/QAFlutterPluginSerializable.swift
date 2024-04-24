@@ -56,7 +56,6 @@ struct SerializableSleepSummaryElement : Encodable {
     public var interruptionsStart: [String]
     public var interruptionsEnd: [String]
     public var interruptionsNumberOfTaps: [Int]
-    public var referenceDate: String
 }
 
 struct SerializableScreenTimeAggregateElement : Encodable {
@@ -124,6 +123,15 @@ extension String {
   }
 }
 
+extension Date {
+//    func epochMilliseconds() -> Int {
+//        return Int(self.timeIntervalSince1970 * 1000)
+//    }
+    func epochSeconds() -> Int {
+        return Int(self.timeIntervalSince1970)
+    }
+}
+
 class QAFlutterPluginSerializable : NSObject {
     
     public static func serializeBasicInfo(basicInfo: BasicInfo) -> String {
@@ -169,13 +177,13 @@ class QAFlutterPluginSerializable : NSObject {
         for val in data{
             
             if let sleepSummaryElement = val.element {
-                
-                let a = getDateTimeFormatterTZ(inDate: sleepSummaryElement.wakeDate, tz: sleepSummaryElement.timeZone)
-                timestamps.append(a.replaceTimeWithZeros())
+//                print("In sleep : \(val.date)")
+//                timestamps.append(getDateTimeFormatterTZ(inDate: val.date, tz: sleepSummaryElement.timeZone))
+                timestamps.append(getDateTimeFormatterTZ(inDate: sleepSummaryElement.wakeDate, tz: sleepSummaryElement.timeZone) + "+t")
                 let serializedElement = serializeSleepSummaryElement(sleepSummaryElement: sleepSummaryElement)
                 values.append(serializedElement)
             } else {
-                timestamps.append(dateFormatter.string(from: val.date))
+                timestamps.append("\(val.date.epochSeconds())+\(TimeZone.current.identifier)")
                 values.append(nil)
             }
             confidenceIntervalLow.append(nil)
@@ -204,7 +212,7 @@ class QAFlutterPluginSerializable : NSObject {
         var confidence : [SerializableTrendElement?] = []
         
         for val in data{
-            timestamps.append(dateFormatter.string(from: val.date))
+            timestamps.append("\(val.date.epochSeconds())+\(TimeZone.current.identifier)")
             if let trendElement = val.element {
                 let serializedElement : SerializableTrendElement = serializeTrendElement(trendElement: trendElement)
                 values.append(serializedElement)
@@ -237,7 +245,7 @@ class QAFlutterPluginSerializable : NSObject {
         var confidence : [Double?] = []
         
         for val in data{
-            timestamps.append(dateFormatter.string(from: val.date))
+            timestamps.append("\(val.date.epochSeconds())+\(TimeZone.current.identifier)")
             values.append(val.element == nil ? nil : val.element!.sleepScore)
             confidenceIntervalLow.append(val.element == nil ? nil : val.element!.confidenceIntervalLow)
             confidenceIntervalHigh.append(val.element == nil ? nil : val.element!.confidenceIntervalHigh)
@@ -265,7 +273,7 @@ class QAFlutterPluginSerializable : NSObject {
         var confidenceIntervalHigh : [Double?] = []
         
         for val in data{
-            timestamps.append(dateFormatter.string(from: val.date))
+            timestamps.append("\(val.date.epochSeconds())+\(TimeZone.current.identifier)")
             values.append(val.element == nil ? nil : val.element!.value)
             confidenceIntervalLow.append(val.element == nil ? nil : val.element!.confidenceIntervalLow)
             confidenceIntervalHigh.append(val.element == nil ? nil : val.element!.confidenceIntervalHigh)
@@ -293,7 +301,7 @@ class QAFlutterPluginSerializable : NSObject {
         var confidence : [SerializableScreenTimeAggregateElement?] = []
         
         for val in data{
-            timestamps.append(dateFormatter.string(from: val.date))
+            timestamps.append("\(val.date.epochSeconds())+\(TimeZone.current.identifier)")
             values.append(val.element == nil ? nil : serializeScreenTimeAggregateElement(screenTimeAggregateElement: val.element!))
             confidenceIntervalLow.append(nil)
             confidenceIntervalHigh.append(nil)
@@ -525,8 +533,7 @@ class QAFlutterPluginSerializable : NSObject {
             interruptionsEnd: sleepSummaryElement.interruptionsStop.map({ (stop) -> String in
                 return getDateTimeFormatterTZ(inDate: stop, tz: sleepSummaryElement.timeZone)
             }),
-            interruptionsNumberOfTaps: sleepSummaryElement.interruptionsNumberOfTaps,
-            referenceDate: getDateTimeFormatterTZ(inDate: sleepSummaryElement.wakeDate, tz: sleepSummaryElement.timeZone).replaceTimeWithZeros()
+            interruptionsNumberOfTaps: sleepSummaryElement.interruptionsNumberOfTaps
         )
     }
     
@@ -598,11 +605,7 @@ class QAFlutterPluginSerializable : NSObject {
     }
     
     private static func getDateTimeFormatterTZ(inDate: Date, tz: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        dateFormatter.timeZone = TimeZone(identifier: tz)
-
-        return dateFormatter.string(from: inDate)
+        return "\(inDate.epochSeconds())+\(tz)"
     }
     
 }

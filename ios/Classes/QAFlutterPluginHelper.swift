@@ -89,10 +89,10 @@ class QAFlutterPluginHelper{
     public static func safeEventChannel(
         eventSink: FlutterEventSink,
         methodName: String,
-        method: () -> Void
+        method: () throws -> Void
     ) {
         do {
-            method()
+            try method()
         } catch {
             eventSink(
                 FlutterError(

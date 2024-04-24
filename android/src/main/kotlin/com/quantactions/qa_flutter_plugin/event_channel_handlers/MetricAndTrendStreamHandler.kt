@@ -105,11 +105,12 @@ class MetricAndTrendStreamHandler(
 
                                             qa.getMetric(
                                                 score = metricToAsk,
-                                                from = 0L,
-                                                to = toLocalDate.atStartOfDay().plusDays(30)
+                                                from = fromLocalDate.atStartOfDay()
                                                     .toInstant(ZoneOffset.UTC)
                                                     .toEpochMilli(),
-                                                refresh = true,
+                                                to = toLocalDate.atStartOfDay().plusDays(30)
+                                                    .toInstant(ZoneOffset.UTC)
+                                                    .toEpochMilli()
                                             ).collect {
                                                 val rewindDays = ChronoUnit.DAYS.between(
                                                     fromLocalDate,

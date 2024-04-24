@@ -50,7 +50,8 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
             participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb"
         }
         
-//        participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb";
+        // TODO - remove this!!!
+        participationID = "8ff6b05d-6b3c-4833-9e2f-d40f2fa88543";
         
         let metric = params?["metric"] as? String
         let dateIntervalType = params?["metricInterval"] as? String
@@ -93,19 +94,32 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                     eventSink: eventSink,
                     methodName: "getMetric\(metric)"
                 ) {
-                    print("Asking for \(metric)")
+                    print("Asking for \(metric) -> \(getDateInterval(dateIntervalType))")
+                    let start = Date.now
                     switch (metric) {
                     case "sleep":
                         Task { [participationID] in
+                            do {
                             let result : [DataPoint<SleepScoreElement>] = try await QA.shared.sleepScoreMetric(
                                 participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
-                            print("Sleep: sending \(result.count)")
+                            print("Sleep: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
+                            print("Sleep: last \(result.last?.date) ")
                             DispatchQueue.main.async {
                                 eventSink(
                                     QAFlutterPluginSerializable.serializeTimeSeriesSleepScoreElement(data: result as [DataPoint<SleepScoreElement>])
                                 )
+                            }
+                            } catch let error {
+                                // TODO: ugly must handle network error better
+    //                            if error.localizedDescription.contains("404"){
+                                    DispatchQueue.main.async {
+                                        eventSink(
+                                            QAFlutterPluginSerializable.serializeTimeSeriesSleepScoreElement(data: [])
+                                        )
+                                    }
+    //                            }
                             }
                         }
                     case "cognitive":
@@ -115,33 +129,42 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                     participationID: participationID,
                                     interval: getDateInterval(dateIntervalType)
                                 )
-                                print("Cognitive: sending \(result.count)")
+                                print("Cognitive: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
                                     )
                                 }
                             } catch let error {
-                                print(error)
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
+                                    )
+                                }
                             }
                         }
                     case "social":
                         Task { [participationID] in
                             do {
+                                
                                 let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.socialEngagementMetric(
                                     participationID: participationID,
                                     interval: getDateInterval(dateIntervalType)
                                 )
                                 let b = result as [DataPoint<DoubleValueElement>]
                                 let a = QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: b)
-                                print("Social: sending \(b.count)")
+                                print("Social: sending \(b.count) -> \(Date.now.timeIntervalSince(start))")
                                 DispatchQueue.main.async {
                                     eventSink(
                                         a
                                     )
                                 }
                             } catch let error {
-                                print(error)
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
+                                    )
+                                }
                             }
                             
                         }
@@ -153,6 +176,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                 participationID: participationID,
                                 interval: getDateInterval(dateIntervalType)
                             )
+                                print("action: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
                             let a = QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
                             DispatchQueue.main.async {
                                 eventSink(
@@ -160,55 +184,95 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                 )
                             }
                             } catch let error {
-                                print(error)
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
+                                    )
+                                }
                             }
                         }
                     case "typing":
                         Task { [participationID] in
-                            let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.typingSpeedMetric(
-                                participationID: participationID,
-                                interval: getDateInterval(dateIntervalType)
-                            )
-                            DispatchQueue.main.async {
-                                eventSink(
-                                    QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                            do {
+                                let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.typingSpeedMetric(
+                                    participationID: participationID,
+                                    interval: getDateInterval(dateIntervalType)
                                 )
+                                print("typing: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                                    )
+                                }
+                            } catch let error {
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
+                                    )
+                                }
                             }
                         }
                     case "sleep_summary":
                         Task { [participationID] in
-                            let result : [DataPoint<SleepSummaryElement>]  = try await QA.shared.sleepSummaryMetric(
-                                participationID: participationID,
-                                interval: getDateInterval(dateIntervalType)
-                            )
-                            DispatchQueue.main.async {
-                                eventSink(
-                                    QAFlutterPluginSerializable.serializeTimeSeriesSleepSummaryElement(data: result as [DataPoint<SleepSummaryElement>])
+                            do {
+                                let result : [DataPoint<SleepSummaryElement>]  = try await QA.shared.sleepSummaryMetric(
+                                    participationID: participationID,
+                                    interval: getDateInterval(dateIntervalType)
                                 )
+                                print("Sleep summary: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesSleepSummaryElement(data: result as [DataPoint<SleepSummaryElement>])
+                                    )
+                                }
+                            } catch let error {
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesSleepSummaryElement(data: [])
+                                    )
+                                }
                             }
                         }
                     case "screen_time_aggregate":
                         Task { [participationID] in
-                            let result : [DataPoint<ScreenTimeAggregateElement>]  = try await QA.shared.screenTimeAggregateMetric(
-                                participationID: participationID,
-                                interval: getDateInterval(dateIntervalType)
-                            )
-                            DispatchQueue.main.async {
-                                eventSink(
-                                    QAFlutterPluginSerializable.serializeTimeSeriesScreenTimeAggregateElement(data: result as [DataPoint<ScreenTimeAggregateElement>])
+                            do {
+                                let result : [DataPoint<ScreenTimeAggregateElement>]  = try await QA.shared.screenTimeAggregateMetric(
+                                    participationID: participationID,
+                                    interval: getDateInterval(dateIntervalType)
                                 )
+                                print("Screen time aggregate: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesScreenTimeAggregateElement(data: result as [DataPoint<ScreenTimeAggregateElement>])
+                                    )
+                                }
+                            }catch let error {
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesScreenTimeAggregateElement(data: [])
+                                    )
+                                }
                             }
                         }
                     case "social_taps":
                         Task { [participationID] in
-                            let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.socialTapsMetric(
-                                participationID: participationID,
-                                interval: getDateInterval(dateIntervalType)
-                            )
-                            DispatchQueue.main.async {
-                                eventSink(
-                                    QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                            do {
+                                let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.socialTapsMetric(
+                                    participationID: participationID,
+                                    interval: getDateInterval(dateIntervalType)
                                 )
+                                print("Soc taps: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                                    )
+                                }
+                            } catch let error {
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
+                                    )
+                                }
                             }
                         }
                     default: QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
@@ -238,6 +302,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
         
         
         let endDate : Date? = calendar.date(from: components)
+//        let endDate : Date? = calendar.date(byAdding: .day, value: 1, to: .now)
         var startDate : Date? = Date(timeIntervalSinceNow: 0)
         
         switch (dateIntervalType) {

@@ -153,7 +153,7 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
 
 
 
-TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries , int rewindDays) {
+TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays) {
   final List<ZonedDateTime> newTimestamps = [];
   final List<double> newValues = [];
   final List<double> newConfidenceIntervalLow = [];
@@ -165,11 +165,13 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries , int rewindDay
   ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
       ? timeSeries.timestamps[0].minus(days: rewindDays)
       : currentDay.minus(days: rewindDays);
-
+  print(prevDate);
+  print(timeSeries.timestamps.isEmpty);
   if (timeSeries.timestamps.isEmpty) {
-    final nMissingDays = prevDate
-        .difference(currentDay)
+    final nMissingDays = currentDay
+        .difference(prevDate)
         .inDays - 1;
+    print('Nmising days: $nMissingDays');
     for (var j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(double.nan);
@@ -178,6 +180,7 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries , int rewindDay
       newConfidence.add(double.nan);
     }
   }
+  print(newTimestamps.length);
 
   for (var i = 0; i < timeSeries.values.length; i++) {
     final nMissingDays = timeSeries.timestamps[i]
@@ -238,8 +241,8 @@ TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> ti
       : currentDay.minus(days: rewindDays);
 
   if (timeSeries.timestamps.isEmpty) {
-    final int nMissingDays = prevDate
-        .difference(currentDay)
+    final int nMissingDays = currentDay
+        .difference(prevDate)
         .inDays - 1;
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
@@ -308,8 +311,8 @@ TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<Sc
       : currentDay.subtract(Duration(days: rewindDays));
 
   if (timeSeries.timestamps.isEmpty) {
-    final nMissingDays = prevDate
-        .difference(currentDay)
+    final nMissingDays = currentDay
+        .difference(prevDate)
         .inDays - 1;
     for (var j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
@@ -378,8 +381,8 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
       : currentDay.subtract(Duration(days: rewindDays));
 
   if (timeSeries.timestamps.isEmpty) {
-    final nMissingDays = prevDate
-        .difference(currentDay)
+    final nMissingDays = currentDay
+        .difference(prevDate)
         .inDays - 1;
     for (var j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
