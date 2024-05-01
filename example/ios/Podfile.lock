@@ -38,7 +38,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   integration_test: 13825b8a9334a850581300559b8839134b124670
-  qa_flutter_plugin: d4fcdaf71caf37652fc089e6ead64bf3dd59cf4b
+  qa_flutter_plugin: 1f469de46f05c42eee987da8ae74ff4dbf5763f0
   QASwiftSDK: fc9124fa87b20318edcb4c211704f6577fb68a6e
   QuantActionsExtraFrameworks: ec0cc91b18aec23f077b9534dfc658b4b5286a37
   Realm: a3a10c2110744ec9510a5fc21a6051818c6181c7
