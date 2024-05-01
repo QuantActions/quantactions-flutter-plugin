@@ -103,4 +103,9 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Future<bool> requestHealthKitAuthorization() async {
     return _deviceProvider.requestHealthKitAuthorization();
   }
+
+  @override
+  Future<void> updateFCMToken({required String token}) async {
+    await _deviceProvider.updateFCMToken(token: token);
+  }
 }

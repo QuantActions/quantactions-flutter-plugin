@@ -15,6 +15,7 @@ public class QAFlutterPlugin: NSObject, FlutterPlugin {
         SubscribeMethodChannel.register(with: registrar)
         SubscriptionMethodChannel.register(with: registrar)
         UpdateKeyboardSettingsMethodChannel.register(with: registrar)
+        UpdateFCMTokenMethodChannel.register(with: registrar)
         RequestCoreMotionAuthorizationMethodChannel.register(with: registrar)
         RequestHealthKitAuthorizationMethodChannel.register(with: registrar)
         IsHealthKitAuthorizationStatusDeterminedMethodChannel.register(with: registrar)

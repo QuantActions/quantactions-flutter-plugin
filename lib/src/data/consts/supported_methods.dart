@@ -27,6 +27,7 @@ class SupportedMethods {
   static const String subscriptions = 'subscriptions';
   static const String keyboardSettings = 'keyboardSettings';
   static const String updateKeyboardSettings = 'updateKeyboardSettings';
+  static const String updateFCMToken = 'updateFCMToken';
   static const String coreMotionAuthorizationStatus = 'coreMotionAuthorizationStatus';
   static const String isHealthKitAuthorizationStatusDetermined = 'isHealthKitAuthorizationStatusDetermined';
   static const String requestCoreMotionAuthorization = 'requestCoreMotionAuthorization';

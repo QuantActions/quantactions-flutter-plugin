@@ -59,11 +59,9 @@ class TimeSeries<T> {
             final tz = Timezone(split[1]);
             return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
           } else {
+
             final Timezone tz = Timezone(split[1]);
             final ZonedDateTime a = ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
-            // if(split[1] == 'Asia/Dubai'){
-            //   print(item);
-            // }
             return a.truncate(to: DateUnit.days);
           }
 

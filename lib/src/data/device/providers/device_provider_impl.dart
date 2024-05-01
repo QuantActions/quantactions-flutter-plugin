@@ -34,6 +34,9 @@ class DeviceProviderImpl implements DeviceProvider {
   final MethodChannel _updateKeyboardSettingsMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/update_keyboard_settings',
   );
+  final MethodChannel _updateFCMTokenMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/update_fcm_token',
+  );
   final MethodChannel _coreMotionAuthorizationStatusMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/core_motion_authorization_status',
   );
@@ -128,6 +131,20 @@ class DeviceProviderImpl implements DeviceProvider {
       method: SupportedMethods.updateKeyboardSettings,
       methodChannel: _updateKeyboardSettingsMethodChannel,
       params: keyboardSettings.toJson(),
+    );
+  }
+
+  @override
+  Future<void> updateFCMToken({required String token}) {
+
+    print('calling wioth token: $token');
+
+    return _sdkMethodChannel.callMethodChannel<void>(
+      method: SupportedMethods.updateFCMToken,
+      methodChannel: _updateFCMTokenMethodChannel,
+      params: <String, dynamic>{
+        'token': token,
+      },
     );
   }
 

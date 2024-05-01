@@ -23,6 +23,10 @@ abstract class DeviceProvider {
     required KeyboardSettings keyboardSettings,
   });
 
+  Future<void> updateFCMToken({
+    required String token,
+  });
+
   Future<bool> requestCoreMotionAuthorization();
 
   Future<bool> requestHealthKitAuthorization();

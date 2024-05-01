@@ -62,6 +62,13 @@ class QAFlutterPlugin {
     await _deviceRepository.updateKeyboardSettings(keyboardSettings: keyboardSettings);
   }
 
+  /// Updates current keyboard settings. See [KeyboardSettings] fields for more details.
+  Future<void> updateFCMToken({
+    required String token,
+  }) async {
+    await _deviceRepository.updateFCMToken(token: token);
+  }
+
   ///Retrieves the list of studies the device is currently registered for.
   Stream<List<Cohort>> getCohortList() {
     return _cohortRepository.getCohortList();
