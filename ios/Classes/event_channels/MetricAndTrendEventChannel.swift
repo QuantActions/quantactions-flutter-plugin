@@ -79,7 +79,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                     QAFlutterPluginSerializable.serializeTrendElement(data: result as [DataPoint<TrendElement>])
                                 )
                             }
-                        } catch let error {
+                        } catch _ {
                             // TODO: ugly must handle network error better
 //                            if error.localizedDescription.contains("404"){
                                 DispatchQueue.main.async {
@@ -96,8 +96,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                     eventSink: eventSink,
                     methodName: "getMetric\(metric)"
                 ) {
-                    print("Asking for \(metric) -> \(dateIntervalType) -> \(getDateInterval(dateIntervalType))")
-                    let start = Date.now
+//                    print("Asking for \(metric) -> \(dateIntervalType) -> \(getDateInterval(dateIntervalType))")
                     switch (metric) {
                     case "sleep":
                         Task { [participationID] in
@@ -107,14 +106,14 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                 interval: getDateInterval(dateIntervalType)
                             )
 //                            print("Sleep: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
-                                print(">Sleep: \(result.last?.date), \(result.last?.element)")
+//                                print(">Sleep: \(result.last?.date), \(result.last?.element)")
                                 
                             DispatchQueue.main.async {
                                 eventSink(
                                     QAFlutterPluginSerializable.serializeTimeSeriesSleepScoreElement(data: result as [DataPoint<SleepScoreElement>])
                                 )
                             }
-                            } catch let error {
+                            } catch _ {
                                 // TODO: ugly must handle network error better
     //                            if error.localizedDescription.contains("404"){
                                     DispatchQueue.main.async {
@@ -132,13 +131,13 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                     participationID: participationID,
                                     interval: getDateInterval(dateIntervalType)
                                 )
-                                print("Cognitive: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
+//                                print("Cognitive: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
                                     )
                                 }
-                            } catch let error {
+                            } catch _ {
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
@@ -162,7 +161,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                         a
                                     )
                                 }
-                            } catch let error {
+                            } catch _ {
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
@@ -186,7 +185,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                     a
                                 )
                             }
-                            } catch let error {
+                            } catch _ {
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
@@ -207,7 +206,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
                                     )
                                 }
-                            } catch let error {
+                            } catch _ {
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
@@ -228,7 +227,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                         QAFlutterPluginSerializable.serializeTimeSeriesSleepSummaryElement(data: result as [DataPoint<SleepSummaryElement>])
                                     )
                                 }
-                            } catch let error {
+                            } catch _ {
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesSleepSummaryElement(data: [])
@@ -249,7 +248,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                         QAFlutterPluginSerializable.serializeTimeSeriesScreenTimeAggregateElement(data: result as [DataPoint<ScreenTimeAggregateElement>])
                                     )
                                 }
-                            }catch let error {
+                            }catch _ {
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesScreenTimeAggregateElement(data: [])
@@ -270,7 +269,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
                                     )
                                 }
-                            } catch let error {
+                            } catch _ {
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
