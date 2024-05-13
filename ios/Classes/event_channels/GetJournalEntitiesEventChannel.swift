@@ -26,14 +26,12 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
         
         let method = params?["method"] as? String
         
-        var participationID = "";
         
         let subscription = QA.shared.subscriptions
-        if (!subscription.isEmpty) {
-            participationID = subscription.first!.id
-        }
-        else {
-            QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: method!)
+        if (subscription.isEmpty) {
+            // no participation - no journal
+            return nil
+//            QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: method!)
         }
 
         
@@ -44,7 +42,7 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                     eventSink: eventSink,
                     methodName: "journalEntries"
                 ) {
-                    Task { [participationID] in
+                    Task {
                         let response = QA.shared.journalEntries()
                         let allDates = response.map{ a in a.date}
                         if (response.isEmpty){

@@ -23,9 +23,6 @@ class UpdateFCMTokenMethodChannel : NSObject, FlutterPlugin {
             let params = call.arguments as? Dictionary<String, Any>
             let token = params?["token"] as? String ?? ""
 
-
-            print("Updating fcm token \(token)")
-
             QAFlutterPluginHelper.safeMethodChannel(
                 result: result,
                 methodName: "updateFCMToken"

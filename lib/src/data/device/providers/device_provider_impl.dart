@@ -137,8 +137,6 @@ class DeviceProviderImpl implements DeviceProvider {
   @override
   Future<void> updateFCMToken({required String token}) {
 
-    print('calling wioth token: $token');
-
     return _sdkMethodChannel.callMethodChannel<void>(
       method: SupportedMethods.updateFCMToken,
       methodChannel: _updateFCMTokenMethodChannel,
