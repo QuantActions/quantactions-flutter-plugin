@@ -45,18 +45,20 @@ class PermissionProviderImpl implements PermissionProvider {
   }
 
   @override
-  Future<void> openDrawSettings() async {
+  Future<bool> openDrawSettings() async {
     await _sdkMethodChannel.callMethodChannel<int>(
       method: SupportedMethods.requestOverlayPermission,
       methodChannel: _requestOverlayPermissionMethodChannel,
     );
+    return true;
   }
 
   @override
-  Future<void> openUsageSettings() async {
+  Future<bool> openUsageSettings() async {
     await _sdkMethodChannel.callMethodChannel<int>(
       method: SupportedMethods.requestUsagePermission,
       methodChannel: _requestUsagePermissionMethodChannel,
     );
+    return true;
   }
 }

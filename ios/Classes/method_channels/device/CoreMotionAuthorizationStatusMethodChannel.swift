@@ -13,16 +13,16 @@ class CoreMotionAuthorizationStatusMethodChannel : NSObject, FlutterPlugin {
     
     static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "qa_flutter_plugin/core_motion_authorization_status", binaryMessenger: registrar.messenger())
-        let instance = IsHealthKitAuthorizationStatusDeterminedMethodChannel()
+        let instance = CoreMotionAuthorizationStatusMethodChannel()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
-        case "CoreMotionAuthorizationStatus":
+        case "coreMotionAuthorizationStatus":
             QAFlutterPluginHelper.safeMethodChannel(
                 result: result,
-                methodName: "CoreMotionAuthorizationStatus"
+                methodName: "coreMotionAuthorizationStatus"
             ) {
                 result(QA.shared.coreMotionAuthorizationStatus.rawValue)
             }

@@ -3,7 +3,7 @@ abstract class PermissionRepository {
 
   Future<bool> canUsage();
 
-  Future<void> openDrawSettings();
+  Future<bool> openDrawSettings();
 
-  Future<void> openUsageSettings();
+  Future<bool> openUsageSettings();
 }

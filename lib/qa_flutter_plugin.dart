@@ -244,14 +244,14 @@ class QAFlutterPlugin {
 
   ///The method is only relevant for Android
   ///Opens device settings to grant the ```draw``` permission
-  Future<void> openDrawSettings() async {
-    await _permissionRepository.openDrawSettings();
+  Future<bool> openDrawSettings() async {
+    return _permissionRepository.openDrawSettings();
   }
 
   ///The method is only relevant for Android
   ///Opens device settings to grant the ```usage``` permission
-  Future<void> openUsageSettings() async {
-    await _permissionRepository.openUsageSettings();
+  Future<bool> openUsageSettings() async {
+    return _permissionRepository.openUsageSettings();
   }
 
   ///Get a list of all the questionnaires available to complete
