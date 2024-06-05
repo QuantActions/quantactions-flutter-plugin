@@ -158,8 +158,8 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays
   final List<double> newConfidenceIntervalHigh = [];
   final List<double> newConfidence = [];
   final currentDay = ZonedDateTime.now();
-  print('Current day is $currentDay [double]');
-  print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
+  // print('Current day is $currentDay [double]');
+  // print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
   ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
       ? timeSeries.timestamps[0].minus(days: rewindDays)
       : currentDay.minus(days: rewindDays);
@@ -169,7 +169,7 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays
     final nMissingDays = currentDay
         .difference(prevDate)
         .inDays - 1;
-    print('Nmising days: $nMissingDays');
+    // print('Nmising days: $nMissingDays');
     for (var j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(double.nan);
@@ -232,8 +232,8 @@ TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> ti
   final List<SleepSummary> newConfidenceIntervalHigh = [];
   final List<double> newConfidence = [];
   final currentDay = ZonedDateTime.now();
-  print('Current day is $currentDay [sleep summary]');
-  print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
+  // print('Current day is $currentDay [sleep summary]');
+  // print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
   ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
       ? timeSeries.timestamps[0].minus(days: rewindDays)
       : currentDay.minus(days: rewindDays);
@@ -302,8 +302,8 @@ TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<Sc
   final List<ScreenTimeAggregate> newConfidenceIntervalHigh = [];
   final List<double> newConfidence = [];
   final currentDay = ZonedDateTime.now();
-  print('Current day is $currentDay [screen agg]');
-  print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
+  // print('Current day is $currentDay [screen agg]');
+  // print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
   ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
       ? timeSeries.timestamps[0].subtract(Duration(days: rewindDays))
       : currentDay.subtract(Duration(days: rewindDays));
@@ -372,8 +372,8 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
   final List<TrendHolder> newConfidenceIntervalHigh = [];
   final List<double> newConfidence = [];
   final currentDay = ZonedDateTime.now();
-  print('Current day is $currentDay [trend holder]');
-  print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
+  // print('Current day is $currentDay [trend holder]');
+  // print('Last timestamp is ${timeSeries.timestamps.isNotEmpty ? timeSeries.timestamps[0] : currentDay}');
   ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
       ? timeSeries.timestamps[0].subtract(Duration(days: rewindDays))
       : currentDay.subtract(Duration(days: rewindDays));

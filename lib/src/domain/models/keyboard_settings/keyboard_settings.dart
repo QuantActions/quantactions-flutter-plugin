@@ -34,18 +34,18 @@ class KeyboardSettings {
 
   // add some default values
   factory KeyboardSettings.defaults() => KeyboardSettings(
-    caseSensitive: false,
+    caseSensitive: true,
     smartPunctuation: true,
     autoCorrect: true,
     autoCapitalization: true,
     autoLearn: true,
     doubleSpaceTapAddsPunctuation: true,
     swipeTyping: true,
-    swipeLeftToDelete: true,
+    swipeLeftToDelete: false,
     autoCorrectAfterPunctuation: true,
     spacebarMovesCursor: true,
     hapticFeedback: true,
-    soundFeedback: true,
+    soundFeedback: false,
   );
 
   // copy with
