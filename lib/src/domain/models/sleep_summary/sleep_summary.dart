@@ -52,11 +52,9 @@ class SleepSummary {
     return SleepSummary(
       sleepStart: ZonedDateTime.now().nan,
       sleepEnd: ZonedDateTime.now().nan,
-      interruptionsStart:
-          List<ZonedDateTime>.generate(1, (int index) => ZonedDateTime.now().nan),
-      interruptionsEnd:
-          List<ZonedDateTime>.generate(1, (int index) => ZonedDateTime.now().nan),
-      interruptionsNumberOfTaps: List<int>.generate(1, (int index) => 0)
+      interruptionsStart: <ZonedDateTime>[],
+      interruptionsEnd: <ZonedDateTime>[],
+      interruptionsNumberOfTaps: <int>[]
     );
   }
 
