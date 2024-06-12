@@ -67,11 +67,13 @@ class SleepSummary {
       .map<ZonedDateTime>((dynamic item) {
     if (item == null) return ZonedDateTime.now().nan;
     // print(item);
-    final List<String> split = (item as String).split('+');
+    final List<String> split = (item as String).split('=');
+    // print(split);
     if (split.length == 1) {
       return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(item) * 1000);
     } else {
-      final tz = Timezone(split[1]);
+      print(split[1]);
+      final tz = Timezone(dumbTZMapper(split[1]));
       return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
     }
       })
@@ -82,23 +84,79 @@ class SleepSummary {
   static ZonedDateTime _dateTimeFromJson(String? data) {
     if (data == null) return ZonedDateTime.now().nan;
     // print(data);
-    final List<String> split = (data as String).split('+');
+    final List<String> split = (data as String).split('=');
     if (split.length == 1) {
       return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(data) * 1000);
     } else {
-      final tz = Timezone(split[1]);
+      final tz = Timezone(dumbTZMapper(split[1]));
       return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
     }
   }
   static ZonedDateTime _truncatedDateTimeFromJson(String? data) {
     if (data == null) return ZonedDateTime.now().nan;
     // print(data);
-    final List<String> split = (data as String).split('+');
+    final List<String> split = (data as String).split('=');
     if (split.length == 1) {
       return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(data) * 1000);
     } else {
-      final tz = Timezone(split[1]);
+      final tz = Timezone(dumbTZMapper(split[1]));
       return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
     }
   }
+
+  static String dumbTZMapper (String tz) {
+    switch(tz){
+      case 'GMT+0:00':
+        return 'Etc/GMT';
+      case 'GMT+1:00':
+        return 'Europe/Gibraltar';
+      case 'GMT+2:00':
+        return 'Europe/Zurich';
+      case 'GMT+3:00':
+        return 'Europe/Moscow';
+      case 'GMT+4:00':
+        return 'Asia/Baku';
+      case 'GMT+5:00':
+        return 'Asia/Tashkent';
+      case 'GMT+6:00':
+        return 'Asia/Almaty';
+      case 'GMT+7:00':
+        return 'Asia/Bangkok';
+      case 'GMT+8:00':
+        return 'Asia/Shanghai';
+      case 'GMT+9:00':
+        return 'Asia/Tokyo';
+      case 'GMT+10:00':
+        return 'Australia/Brisbane';
+      case 'GMT+11:00':
+        return 'Pacific/Guadalcanal';
+      case 'GMT+12:00':
+        return 'Pacific/Fiji';
+      case 'GMT-1:00':
+        return 'Atlantic/Cape_Verde';
+      case 'GMT-2:00':
+        return 'Atlantic/South_Georgia';
+      case 'GMT-3:00':
+        return 'America/Argentina/Buenos_Aires';
+      case 'GMT-4:00':
+        return 'America/Caracas';
+      case 'GMT-5:00':
+        return 'America/Bogota';
+      case 'GMT-6:00':
+        return 'America/Chicago';
+      case 'GMT-7:00':
+        return 'America/Denver';
+      case 'GMT-8:00':
+        return 'America/Los_Angeles';
+      case 'GMT-9:00':
+        return 'America/Anchorage';
+      case 'GMT-10:00':
+        return 'Pacific/Honolulu';
+      default:
+        return tz;
+    }
+  }
+
 }
+
+

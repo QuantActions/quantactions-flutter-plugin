@@ -51,16 +51,16 @@ class TimeSeries<T> {
   static List<ZonedDateTime> _dateTimeFromJson(List<dynamic> data) => data
       .map<ZonedDateTime>((dynamic item) {
         // print(item);
-        final List<String> split = (item as String).split('+');
+        final List<String> split = (item as String).split('=');
         if (split.length == 1) {
           return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(item) * 1000);
         } else  {
           if (split.length == 2){
-            final tz = Timezone(split[1]);
+            final tz = Timezone(dumbTZMapper(split[1]));
             return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
           } else {
 
-            final Timezone tz = Timezone(split[1]);
+            final Timezone tz = Timezone(dumbTZMapper(split[1]));
             final ZonedDateTime a = ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
             return a.truncate(to: DateUnit.days);
           }
@@ -70,6 +70,59 @@ class TimeSeries<T> {
         }
       })
       .toList();
+
+  static String dumbTZMapper (String tz) {
+    switch(tz){
+      case 'GMT+0:00':
+        return 'Etc/GMT';
+      case 'GMT+1:00':
+        return 'Europe/Gibraltar';
+      case 'GMT+2:00':
+        return 'Europe/Zurich';
+      case 'GMT+3:00':
+        return 'Europe/Moscow';
+      case 'GMT+4:00':
+        return 'Asia/Baku';
+      case 'GMT+5:00':
+        return 'Asia/Tashkent';
+      case 'GMT+6:00':
+        return 'Asia/Almaty';
+      case 'GMT+7:00':
+        return 'Asia/Bangkok';
+      case 'GMT+8:00':
+        return 'Asia/Shanghai';
+      case 'GMT+9:00':
+        return 'Asia/Tokyo';
+      case 'GMT+10:00':
+        return 'Australia/Brisbane';
+      case 'GMT+11:00':
+        return 'Pacific/Guadalcanal';
+      case 'GMT+12:00':
+        return 'Pacific/Fiji';
+      case 'GMT-1:00':
+        return 'Atlantic/Cape_Verde';
+      case 'GMT-2:00':
+        return 'Atlantic/South_Georgia';
+      case 'GMT-3:00':
+        return 'America/Argentina/Buenos_Aires';
+      case 'GMT-4:00':
+        return 'America/Caracas';
+      case 'GMT-5:00':
+        return 'America/Bogota';
+      case 'GMT-6:00':
+        return 'America/Chicago';
+      case 'GMT-7:00':
+        return 'America/Denver';
+      case 'GMT-8:00':
+        return 'America/Los_Angeles';
+      case 'GMT-9:00':
+        return 'America/Anchorage';
+      case 'GMT-10:00':
+        return 'Pacific/Honolulu';
+      default:
+        return tz;
+    }
+  }
 
   factory TimeSeries.empty() {
     return TimeSeries<T>(
