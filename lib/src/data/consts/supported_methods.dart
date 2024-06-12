@@ -2,6 +2,7 @@ class SupportedMethods {
   //method channel
   static const String getBasicInfo = 'getBasicInfo';
   static const String getDeviceID = 'getDeviceID';
+  static const String getLastTaps = 'getLastTaps';
   static const String getIsKeyboardAdded = 'getIsKeyboardAdded';
   static const String isDataCollectionRunning = 'isDataCollectionRunning';
   static const String resumeDataCollection = 'resumeDataCollection';

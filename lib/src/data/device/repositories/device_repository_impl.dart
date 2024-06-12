@@ -23,9 +23,6 @@ class DeviceRepositoryImpl implements DeviceRepository {
     final String json = await _deviceProvider.subscribe(
       subscriptionIdOrCohortId: subscriptionIdOrCohortId,
     );
-
-    print(json);
-
     return SubscriptionWithQuestionnaires.fromJson(jsonDecode(json));
   }
 
@@ -41,6 +38,11 @@ class DeviceRepositoryImpl implements DeviceRepository {
   @override
   Future<String> getDeviceID() {
     return _deviceProvider.getDeviceID();
+  }
+
+  @override
+  Future<int> getLastTaps({required int backwardDays}) {
+    return _deviceProvider.getLastTaps(backwardDays: backwardDays);
   }
 
   @override

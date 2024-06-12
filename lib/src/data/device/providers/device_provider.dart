@@ -11,6 +11,8 @@ abstract class DeviceProvider {
 
   Future<String> getDeviceID();
 
+  Future<int> getLastTaps({required int backwardDays});
+
   Future<String> getConnectedDevices();
 
   Future<bool?> getIsKeyboardAdded();

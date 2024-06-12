@@ -9,6 +9,7 @@ public class QAFlutterPlugin: NSObject, FlutterPlugin {
         UserEventChannel.register(with: registrar)
         VoidMethodChannel.register(with: registrar)
         DeviceMethodChannel.register(with: registrar)
+        LastTapsMethodChannel.register(with: registrar)
         IsDeviceRegisteredMethodChannel.register(with: registrar)
         IsKeyboardAddedMethodChannel.register(with: registrar)
         KeyboardSettingsMethodChannel.register(with: registrar)

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/services.dart';
 
 import '../../../domain/models/keyboard_settings/keyboard_settings.dart';
@@ -15,6 +17,9 @@ class DeviceProviderImpl implements DeviceProvider {
   );
   final MethodChannel _deviceIDMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/device_id',
+  );
+  final MethodChannel _lastTapsMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/last_taps',
   );
   final MethodChannel _subscribeMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/subscribe',
@@ -90,6 +95,17 @@ class DeviceProviderImpl implements DeviceProvider {
     return _sdkMethodChannel.callMethodChannel<String>(
       method: SupportedMethods.getDeviceID,
       methodChannel: _deviceIDMethodChannel,
+    );
+  }
+
+  @override
+  Future<int> getLastTaps({required int backwardDays}) {
+    return _sdkMethodChannel.callMethodChannel<int>(
+      method: SupportedMethods.getLastTaps,
+      methodChannel: _lastTapsMethodChannel,
+      params: <String, dynamic>{
+        'backwardDays': backwardDays,
+      },
     );
   }
 

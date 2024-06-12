@@ -11,6 +11,8 @@ abstract class DeviceRepository {
 
   Future<String> getDeviceID();
 
+  Future<int> getLastTaps({required int backwardDays});
+
   Future<List<dynamic>> getConnectedDevices();
 
   Future<bool?> getIsKeyboardAdded();

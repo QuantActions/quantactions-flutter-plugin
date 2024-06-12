@@ -50,6 +50,12 @@ class QAFlutterPlugin {
   ///Returns nil if the KEYBOARD_EXTENSION_BUNDLE_ID is not added to the Info.plist file properly.
   Future<bool?> get isKeyboardAdded => _deviceRepository.getIsKeyboardAdded();
 
+
+  ///Retrieves last taps in requested backward time
+  Future<int> getLastTaps({required int backwardDays}) async {
+    return _deviceRepository.getLastTaps(backwardDays: backwardDays);
+  }
+
   ///Retrieves the list of paired devices
   Future<List<dynamic>> getConnectedDevices() async {
     return _deviceRepository.getConnectedDevices();
