@@ -70,7 +70,7 @@ class SleepSummary {
     if (split.length == 1) {
       return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(item) * 1000);
     } else {
-      print(split[1]);
+      // print(split[1]);
       final tz = Timezone(dumbTZMapper(split[1]));
       return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
     }

@@ -216,8 +216,8 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays
   ZonedDateTime prevDate = timeSeries.timestamps.isNotEmpty
       ? timeSeries.timestamps[0].minus(days: rewindDays)
       : currentDay.minus(days: rewindDays);
-  print(prevDate);
-  print(timeSeries.timestamps.isEmpty);
+  // print(prevDate);
+  // print(timeSeries.timestamps.isEmpty);
   if (timeSeries.timestamps.isEmpty) {
     final nMissingDays = currentDay
         .difference(prevDate)
@@ -231,7 +231,7 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays
       newConfidence.add(double.nan);
     }
   }
-  print(newTimestamps.length);
+  // print(newTimestamps.length);
 
   for (var i = 0; i < timeSeries.values.length; i++) {
     final nMissingDays = timeSeries.timestamps[i]
