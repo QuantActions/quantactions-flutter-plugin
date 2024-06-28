@@ -13,7 +13,6 @@ class KeyboardSettings {
   final bool swipeTyping;
   final bool swipeLeftToDelete;
   final bool autoCorrectAfterPunctuation;
-  final bool spacebarMovesCursor;
   final bool hapticFeedback;
   final bool soundFeedback;
 
@@ -27,7 +26,6 @@ class KeyboardSettings {
     required this.swipeTyping,
     required this.swipeLeftToDelete,
     required this.autoCorrectAfterPunctuation,
-    required this.spacebarMovesCursor,
     required this.hapticFeedback,
     required this.soundFeedback,
   });
@@ -35,7 +33,7 @@ class KeyboardSettings {
   // add some default values
   factory KeyboardSettings.defaults() => KeyboardSettings(
     caseSensitive: true,
-    smartPunctuation: true,
+    smartPunctuation: false,
     autoCorrect: true,
     autoCapitalization: true,
     autoLearn: true,
@@ -43,8 +41,7 @@ class KeyboardSettings {
     swipeTyping: true,
     swipeLeftToDelete: false,
     autoCorrectAfterPunctuation: true,
-    spacebarMovesCursor: true,
-    hapticFeedback: true,
+    hapticFeedback: false,
     soundFeedback: false,
   );
 
@@ -59,7 +56,6 @@ class KeyboardSettings {
     bool? swipeTyping,
     bool? swipeLeftToDelete,
     bool? autoCorrectAfterPunctuation,
-    bool? spacebarMovesCursor,
     bool? hapticFeedback,
     bool? soundFeedback,
   }) {
@@ -73,7 +69,6 @@ class KeyboardSettings {
       swipeTyping: swipeTyping ?? this.swipeTyping,
       swipeLeftToDelete: swipeLeftToDelete ?? this.swipeLeftToDelete,
       autoCorrectAfterPunctuation: autoCorrectAfterPunctuation ?? this.autoCorrectAfterPunctuation,
-      spacebarMovesCursor: spacebarMovesCursor ?? this.spacebarMovesCursor,
       hapticFeedback: hapticFeedback ?? this.hapticFeedback,
       soundFeedback: soundFeedback ?? this.soundFeedback,
     );

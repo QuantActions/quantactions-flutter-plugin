@@ -26,16 +26,16 @@ class UpdateKeyboardSettingsMethodChannel : NSObject, FlutterPlugin {
             ) {
                 let params = call.arguments as? Dictionary<String, Any>
                 
-                let caseSensitive = params?["caseSensitive"] as? Bool ?? false
+                let caseSensitive = params?["caseSensitive"] as? Bool ?? true
                 let smartPunctuation = params?["smartPunctuation"] as? Bool ?? false
-                let autoCorrect = params?["autoCorrect"] as? Bool ?? false
-                let autoCapitalization = params?["autoCapitalization"] as? Bool ?? false
-                let autoLearn = params?["autoLearn"] as? Bool ?? false
-                let doubleSpaceTapAddsPunctuation = params?["doubleSpaceTapAddsPunctuation"] as? Bool ?? false
-                let swipeTyping = params?["swipeTyping"] as? Bool ?? false
+                let autoCorrect = params?["autoCorrect"] as? Bool ?? true
+                let autoCapitalization = params?["autoCapitalization"] as? Bool ?? true
+                let autoLearn = params?["autoLearn"] as? Bool ?? true
+                let doubleSpaceTapAddsPunctuation = params?["doubleSpaceTapAddsPunctuation"] as? Bool ?? true
+                let swipeTyping = params?["swipeTyping"] as? Bool ?? true
                 let swipeLeftToDelete = params?["swipeLeftToDelete"] as? Bool ?? false
-                let autoCorrectAfterPunctuation = params?["autoCorrectAfterPunctuation"] as? Bool ?? false
-                let spacebarMovesCursor = params?["spacebarMovesCursor"] as? Bool ?? false
+                let autoCorrectAfterPunctuation = params?["autoCorrectAfterPunctuation"] as? Bool ?? true
+                let spacebarMovesCursor = params?["spacebarMovesCursor"] as? Bool ?? true
                 let hapticFeedback = params?["hapticFeedback"] as? Bool ?? false
                 let soundFeedback = params?["soundFeedback"] as? Bool ?? false
                 
