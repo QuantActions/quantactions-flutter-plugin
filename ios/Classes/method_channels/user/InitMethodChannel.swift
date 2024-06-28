@@ -40,8 +40,15 @@ class InitMethodChannel : NSObject, FlutterPlugin {
                         gender: gender,
                         selfDeclaredHealthy: selfDeclaredHealthy
                     )
+                    // what if no connection? Does it crash and not return?
+                    do {
+                        let initResult = try await QA.shared.setup(basicInfo: basicInfo)
+                        result(initResult)
+                    } catch let e {
+                        print(e)
+                        result(false)
+                    }
                     
-                    result(try await QA.shared.setup(basicInfo: basicInfo))
                 }
             }
         default: break
