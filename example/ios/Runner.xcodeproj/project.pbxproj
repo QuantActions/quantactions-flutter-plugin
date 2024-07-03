@@ -14,9 +14,8 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		B054B6567416C2EAA7F8568C /* Pods_QuantActionsKeyboardEstension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F844001BE6FC6B0C9A12ACCD /* Pods_QuantActionsKeyboardEstension.framework */; };
 		B53BBF6F2BB4718E001281B2 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53BBF6E2BB4718E001281B2 /* KeyboardViewController.swift */; };
-		B53BBF7D2BB47EFD001281B2 /* QuantActionsKeyboardEstension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardEstension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B53BBF7D2BB47EFD001281B2 /* QuantActionsKeyboardExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,7 +24,7 @@
 			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B53BBF6B2BB4718E001281B2;
-			remoteInfo = QuantActionsKeyboardEstension;
+			remoteInfo = QuantActionsKeyboardExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -36,7 +35,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				B53BBF7D2BB47EFD001281B2 /* QuantActionsKeyboardEstension.appex in Embed Foundation Extensions */,
+				B53BBF7D2BB47EFD001281B2 /* QuantActionsKeyboardExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 1;
@@ -49,13 +48,13 @@
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		4A3BBBD8F4C5E70107412A88 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
-		643BE160A3441F2FBDAC08F0 /* Pods-QuantActionsKeyboardEstension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardEstension.debug.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardEstension/Pods-QuantActionsKeyboardEstension.debug.xcconfig"; sourceTree = "<group>"; };
-		6FA7E5CB6702C73B6EEF740E /* Pods-QuantActionsKeyboardEstension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardEstension.release.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardEstension/Pods-QuantActionsKeyboardEstension.release.xcconfig"; sourceTree = "<group>"; };
+		643BE160A3441F2FBDAC08F0 /* Pods-QuantActionsKeyboardExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardExtension.debug.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardExtension/Pods-QuantActionsKeyboardExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		6FA7E5CB6702C73B6EEF740E /* Pods-QuantActionsKeyboardExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardExtension.release.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardExtension/Pods-QuantActionsKeyboardExtension.release.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74CBB6A12193D7E2791F2ADC /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		8287FD01E689ADCA11522BE2 /* Pods-QuantActionsKeyboardEstension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardEstension.profile.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardEstension/Pods-QuantActionsKeyboardEstension.profile.xcconfig"; sourceTree = "<group>"; };
+		8287FD01E689ADCA11522BE2 /* Pods-QuantActionsKeyboardExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantActionsKeyboardExtension.profile.xcconfig"; path = "Target Support Files/Pods-QuantActionsKeyboardExtension/Pods-QuantActionsKeyboardExtension.profile.xcconfig"; sourceTree = "<group>"; };
 		83F5DAC6C5AF2B3EEDB31D72 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
@@ -65,14 +64,14 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1DB2A08D646A91D1DAB314C /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardEstension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = QuantActionsKeyboardEstension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = QuantActionsKeyboardExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53BBF6E2BB4718E001281B2 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		B53BBF702BB4718E001281B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B53BBF7B2BB4750C001281B2 /* QuantActionsKeyboardEstensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuantActionsKeyboardEstensionRelease.entitlements; sourceTree = "<group>"; };
-		B53BBF7C2BB47AC1001281B2 /* QuantActionsKeyboardEstensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuantActionsKeyboardEstensionDebug.entitlements; sourceTree = "<group>"; };
+		B53BBF7B2BB4750C001281B2 /* QuantActionsKeyboardExtensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuantActionsKeyboardExtensionRelease.entitlements; sourceTree = "<group>"; };
+		B53BBF7C2BB47AC1001281B2 /* QuantActionsKeyboardExtensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuantActionsKeyboardExtensionDebug.entitlements; sourceTree = "<group>"; };
+		B58D2E002C2EB7BF00BC1D1C /* realm-monorepo.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "realm-monorepo.xcframework"; path = "Pods/Realm/core/realm-monorepo.xcframework"; sourceTree = "<group>"; };
 		CE33EC5F2AE7D009006B3E65 /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		CEF06C232ADE70ED00C207C9 /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
-		F844001BE6FC6B0C9A12ACCD /* Pods_QuantActionsKeyboardEstension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuantActionsKeyboardEstension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +87,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B054B6567416C2EAA7F8568C /* Pods_QuantActionsKeyboardEstension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,9 +96,6 @@
 		298006F861E054C65918CA07 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				643BE160A3441F2FBDAC08F0 /* Pods-QuantActionsKeyboardEstension.debug.xcconfig */,
-				6FA7E5CB6702C73B6EEF740E /* Pods-QuantActionsKeyboardEstension.release.xcconfig */,
-				8287FD01E689ADCA11522BE2 /* Pods-QuantActionsKeyboardEstension.profile.xcconfig */,
 				83F5DAC6C5AF2B3EEDB31D72 /* Pods-Runner.debug.xcconfig */,
 				B1DB2A08D646A91D1DAB314C /* Pods-Runner.release.xcconfig */,
 				4A3BBBD8F4C5E70107412A88 /* Pods-Runner.profile.xcconfig */,
@@ -132,7 +127,7 @@
 			children = (
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
-				B53BBF6D2BB4718E001281B2 /* QuantActionsKeyboardEstension */,
+				B53BBF6D2BB4718E001281B2 /* QuantActionsKeyboardExtension */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				298006F861E054C65918CA07 /* Pods */,
@@ -144,7 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
-				B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardEstension.appex */,
+				B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,21 +161,21 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
-		B53BBF6D2BB4718E001281B2 /* QuantActionsKeyboardEstension */ = {
+		B53BBF6D2BB4718E001281B2 /* QuantActionsKeyboardExtension */ = {
 			isa = PBXGroup;
 			children = (
-				B53BBF7C2BB47AC1001281B2 /* QuantActionsKeyboardEstensionDebug.entitlements */,
-				B53BBF7B2BB4750C001281B2 /* QuantActionsKeyboardEstensionRelease.entitlements */,
+				B53BBF7C2BB47AC1001281B2 /* QuantActionsKeyboardExtensionDebug.entitlements */,
+				B53BBF7B2BB4750C001281B2 /* QuantActionsKeyboardExtensionRelease.entitlements */,
 				B53BBF6E2BB4718E001281B2 /* KeyboardViewController.swift */,
 				B53BBF702BB4718E001281B2 /* Info.plist */,
 			);
-			path = QuantActionsKeyboardEstension;
+			path = QuantActionsKeyboardExtension;
 			sourceTree = "<group>";
 		};
 		CA5EB21FA582E3CC02B0F881 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F844001BE6FC6B0C9A12ACCD /* Pods_QuantActionsKeyboardEstension.framework */,
+				B58D2E002C2EB7BF00BC1D1C /* realm-monorepo.xcframework */,
 				74CBB6A12193D7E2791F2ADC /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
@@ -212,11 +207,10 @@
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B53BBF6B2BB4718E001281B2 /* QuantActionsKeyboardEstension */ = {
+		B53BBF6B2BB4718E001281B2 /* QuantActionsKeyboardExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B53BBF772BB4718E001281B2 /* Build configuration list for PBXNativeTarget "QuantActionsKeyboardEstension" */;
+			buildConfigurationList = B53BBF772BB4718E001281B2 /* Build configuration list for PBXNativeTarget "QuantActionsKeyboardExtension" */;
 			buildPhases = (
-				E7CD65066A7EF4D5665B1439 /* [CP] Check Pods Manifest.lock */,
 				B53BBF682BB4718E001281B2 /* Sources */,
 				B53BBF692BB4718E001281B2 /* Frameworks */,
 				B53BBF6A2BB4718E001281B2 /* Resources */,
@@ -225,9 +219,9 @@
 			);
 			dependencies = (
 			);
-			name = QuantActionsKeyboardEstension;
-			productName = QuantActionsKeyboardEstension;
-			productReference = B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardEstension.appex */;
+			name = QuantActionsKeyboardExtension;
+			productName = QuantActionsKeyboardExtension;
+			productReference = B53BBF6C2BB4718E001281B2 /* QuantActionsKeyboardExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -264,7 +258,7 @@
 			projectRoot = "";
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
-				B53BBF6B2BB4718E001281B2 /* QuantActionsKeyboardEstension */,
+				B53BBF6B2BB4718E001281B2 /* QuantActionsKeyboardExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -360,28 +354,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E7CD65066A7EF4D5665B1439 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-QuantActionsKeyboardEstension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -407,7 +379,7 @@
 /* Begin PBXTargetDependency section */
 		B53BBF7F2BB47EFD001281B2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = B53BBF6B2BB4718E001281B2 /* QuantActionsKeyboardEstension */;
+			target = B53BBF6B2BB4718E001281B2 /* QuantActionsKeyboardExtension */;
 			targetProxy = B53BBF7E2BB47EFD001281B2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -695,7 +667,6 @@
 		};
 		B53BBF742BB4718E001281B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 643BE160A3441F2FBDAC08F0 /* Pods-QuantActionsKeyboardEstension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -703,15 +674,16 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = QuantActionsKeyboardEstension/QuantActionsKeyboardEstensionDebug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = QuantActionsKeyboardExtension/QuantActionsKeyboardExtensionDebug.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65ZXVRTB44;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QuantActionsKeyboardEstension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = QuantActionsKeyboardEstension;
+				INFOPLIST_FILE = QuantActionsKeyboardExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QuantActionsKeyboardExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -724,8 +696,9 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.quantactions.brainaware.QuantActionsKeyboardEstension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quantactions.brainaware.QuantActionsKeyboardExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -737,7 +710,6 @@
 		};
 		B53BBF752BB4718E001281B2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6FA7E5CB6702C73B6EEF740E /* Pods-QuantActionsKeyboardEstension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -745,15 +717,15 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = QuantActionsKeyboardEstension/QuantActionsKeyboardEstensionRelease.entitlements;
+				CODE_SIGN_ENTITLEMENTS = QuantActionsKeyboardExtension/QuantActionsKeyboardExtensionRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65ZXVRTB44;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QuantActionsKeyboardEstension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = QuantActionsKeyboardEstension;
+				INFOPLIST_FILE = QuantActionsKeyboardExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QuantActionsKeyboardExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -765,7 +737,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.quantactions.brainaware.QuantActionsKeyboardEstension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quantactions.brainaware.QuantActionsKeyboardExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -776,7 +748,6 @@
 		};
 		B53BBF762BB4718E001281B2 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8287FD01E689ADCA11522BE2 /* Pods-QuantActionsKeyboardEstension.profile.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -790,8 +761,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QuantActionsKeyboardEstension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = QuantActionsKeyboardEstension;
+				INFOPLIST_FILE = QuantActionsKeyboardExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QuantActionsKeyboardExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -803,7 +774,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.quantactions.brainaware.QuantActionsKeyboardEstension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quantactions.brainaware.QuantActionsKeyboardExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -835,7 +806,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B53BBF772BB4718E001281B2 /* Build configuration list for PBXNativeTarget "QuantActionsKeyboardEstension" */ = {
+		B53BBF772BB4718E001281B2 /* Build configuration list for PBXNativeTarget "QuantActionsKeyboardExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B53BBF742BB4718E001281B2 /* Debug */,

@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
                             ? const Text('Platform: iOS')
                             : const Text('Platform: Web'),
 
-                    Text('Cognitive Fitness:', style: Theme.of(context).textTheme.headline6),
+                    Text('Cognitive Fitness:', style: Theme.of(context).textTheme.labelMedium),
                     SizedBox(
                       height: 200,
                       child: StreamBuilder(
@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
                         },
                       ),
                     ),
-                    Text('Screen Time:', style: Theme.of(context).textTheme.headline6),
+                    Text('Screen Time:', style: Theme.of(context).textTheme.labelMedium),
                     SizedBox(
                       height: 200,
                       child: StreamBuilder(
@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> {
                         },
                       ),
                     ),
-                    Text('Sleep Summary:', style: Theme.of(context).textTheme.headline6),
+                    Text('Sleep Summary:', style: Theme.of(context).textTheme.labelMedium),
                     SizedBox(
                       height: 200,
                       child: StreamBuilder(
