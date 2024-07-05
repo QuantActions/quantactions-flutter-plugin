@@ -151,7 +151,7 @@ class QAFlutterPluginSerializable {
         fun serializeTimeSeriesDouble(timeSeries: TimeSeries.DoubleTimeSeries): String {
             return Json.encodeToString(
                 SerializableTimeSeries(
-                    timeSeries.timestamps.map { v -> v.toEpochSecond().toString() + "+" + v.zone.id },
+                    timeSeries.timestamps.map { v -> v.toEpochSecond().toString() + "=" + v.zone.id },
                     timeSeries.values.map { v -> if (v.isNaN()) null else v },
                     timeSeries.confidenceIntervalLow.map { v -> if (v.isNaN()) null else v },
                     timeSeries.confidenceIntervalHigh.map { v -> if (v.isNaN()) null else v },
@@ -165,7 +165,7 @@ class QAFlutterPluginSerializable {
             return Json.encodeToString(
                 SerializableTimeSeries(
                     timeSeries.timestamps.map { v ->
-                        v.toEpochSecond().toString() + "+" + v.zone.id
+                        v.toEpochSecond().toString() + "=" + v.zone.id
                     },
                     timeSeries.values.map { v -> v.serialize() },
                     timeSeries.confidenceIntervalLow.map { v -> v.serialize() },
@@ -178,7 +178,7 @@ class QAFlutterPluginSerializable {
         fun serializeScreenTimeAggregate(timeSeries: TimeSeries.ScreenTimeAggregateTimeSeries): String {
             return Json.encodeToString(
                 SerializableTimeSeries(
-                    timeSeries.timestamps.map {  v -> v.toEpochSecond().toString() + "+" + v.zone.id  },
+                    timeSeries.timestamps.map {  v -> v.toEpochSecond().toString() + "=" + v.zone.id  },
                     timeSeries.values,
                     timeSeries.confidenceIntervalLow,
                     timeSeries.confidenceIntervalHigh,
@@ -190,7 +190,7 @@ class QAFlutterPluginSerializable {
         fun serializeTrend(timeSeries: TimeSeries.TrendTimeSeries): String {
             return Json.encodeToString(
                 SerializableTimeSeries(
-                    timeSeries.timestamps.map {  v -> v.toEpochSecond().toString() + "+" + v.zone.id  },
+                    timeSeries.timestamps.map {  v -> v.toEpochSecond().toString() + "=" + v.zone.id  },
                     timeSeries.values,
                     timeSeries.confidenceIntervalLow,
                     timeSeries.confidenceIntervalHigh,
