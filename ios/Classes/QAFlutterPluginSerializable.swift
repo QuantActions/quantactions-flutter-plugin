@@ -28,6 +28,7 @@ struct SerializableKeyboardSettings: Encodable{
     public var spacebarMovesCursor: Bool
     public var hapticFeedback: Bool
     public var soundFeedback: Bool
+    public var shouldUseCustomBackground: Bool
 }
 
 struct SerializableTimeSeries<T : Encodable> : Encodable {
@@ -144,7 +145,7 @@ class QAFlutterPluginSerializable : NSObject {
         return encodeObject(object: serializableBasicInfo)
     }
     
-    public static func serializeKeyboardSettings(keyboardSettings: KeyboardSettings) -> String {
+    public static func serializeKeyboardSettings(keyboardSettings: KeyboardSettings, shouldUseCustomBackground: Bool) -> String {
         
         let serializableKeyboardSettings = SerializableKeyboardSettings(
             caseSensitive: keyboardSettings.caseSensitive,
@@ -158,7 +159,8 @@ class QAFlutterPluginSerializable : NSObject {
             autoCorrectAfterPunctuation: keyboardSettings.autoCorrectAfterPunctuation,
             spacebarMovesCursor: keyboardSettings.spacebarMovesCursor,
             hapticFeedback: keyboardSettings.hapticFeedback,
-            soundFeedback: keyboardSettings.soundFeedback
+            soundFeedback: keyboardSettings.soundFeedback,
+            shouldUseCustomBackground: shouldUseCustomBackground
         )
         
         return encodeObject(object: serializableKeyboardSettings)

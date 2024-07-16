@@ -38,6 +38,10 @@ class UpdateKeyboardSettingsMethodChannel : NSObject, FlutterPlugin {
                 let spacebarMovesCursor = params?["spacebarMovesCursor"] as? Bool ?? true
                 let hapticFeedback = params?["hapticFeedback"] as? Bool ?? false
                 let soundFeedback = params?["soundFeedback"] as? Bool ?? false
+
+                let useCustomBackground = params?["shouldUseCustomBackground"] as? Bool ?? true
+
+                QA.shared.setShouldUseCustomBackground(newValue: useCustomBackground)
                 
                 QA.shared.update(
                     keyboardSettings: KeyboardSettings(
