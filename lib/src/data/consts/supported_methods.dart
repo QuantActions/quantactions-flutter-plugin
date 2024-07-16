@@ -10,6 +10,7 @@ class SupportedMethods {
   static const String isDeviceRegistered = 'isDeviceRegistered';
   static const String getJournalEntry = 'getJournalEntry';
   static const String getStatSampleAsync = 'getStatSampleAsync';
+  static const String canActivity = 'canActivity';
   static const String canDraw = 'canDraw';
   static const String canUsage = 'canUsage';
   static const String requestOverlayPermission = 'requestOverlayPermission';

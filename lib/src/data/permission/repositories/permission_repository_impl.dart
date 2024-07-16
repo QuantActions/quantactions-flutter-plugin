@@ -9,6 +9,11 @@ class PermissionRepositoryImpl implements PermissionRepository {
   }) : _permissionProvider = permissionProvider;
 
   @override
+  Future<bool> canActivity() {
+    return _permissionProvider.canActivity();
+  }
+
+  @override
   Future<bool> canDraw() {
     return _permissionProvider.canDraw();
   }

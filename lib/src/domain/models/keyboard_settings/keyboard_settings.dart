@@ -15,6 +15,7 @@ class KeyboardSettings {
   final bool autoCorrectAfterPunctuation;
   final bool hapticFeedback;
   final bool soundFeedback;
+  final bool shouldUseCustomBackground;
 
   KeyboardSettings({
     required this.caseSensitive,
@@ -28,6 +29,7 @@ class KeyboardSettings {
     required this.autoCorrectAfterPunctuation,
     required this.hapticFeedback,
     required this.soundFeedback,
+    required this.shouldUseCustomBackground,
   });
 
   // add some default values
@@ -43,6 +45,7 @@ class KeyboardSettings {
     autoCorrectAfterPunctuation: true,
     hapticFeedback: false,
     soundFeedback: false,
+    shouldUseCustomBackground: true,
   );
 
   // copy with
@@ -58,6 +61,7 @@ class KeyboardSettings {
     bool? autoCorrectAfterPunctuation,
     bool? hapticFeedback,
     bool? soundFeedback,
+    bool? shouldUseCustomBackground,
   }) {
     return KeyboardSettings(
       caseSensitive: caseSensitive ?? this.caseSensitive,
@@ -71,6 +75,7 @@ class KeyboardSettings {
       autoCorrectAfterPunctuation: autoCorrectAfterPunctuation ?? this.autoCorrectAfterPunctuation,
       hapticFeedback: hapticFeedback ?? this.hapticFeedback,
       soundFeedback: soundFeedback ?? this.soundFeedback,
+      shouldUseCustomBackground: shouldUseCustomBackground ?? this.shouldUseCustomBackground,
     );
   }
 

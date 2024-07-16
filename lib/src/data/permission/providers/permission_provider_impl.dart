@@ -8,6 +8,10 @@ import 'permission_provider.dart';
 class PermissionProviderImpl implements PermissionProvider {
   final SDKMethodChannel _sdkMethodChannel;
 
+  final MethodChannel _canActivityMethodChannel = const MethodChannel(
+    '${MethodChannelConsts.mainMethodChannel}/can_activity',
+  );
+
   final MethodChannel _canDrawMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/can_draw',
   );
@@ -27,6 +31,14 @@ class PermissionProviderImpl implements PermissionProvider {
   PermissionProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;
+
+  @override
+  Future<bool> canActivity() async {
+    return _sdkMethodChannel.callMethodChannel<bool>(
+      method: SupportedMethods.canActivity,
+      methodChannel: _canActivityMethodChannel,
+    );
+  }
 
   @override
   Future<bool> canDraw() async {

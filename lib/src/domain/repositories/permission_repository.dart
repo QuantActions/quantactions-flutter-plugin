@@ -1,4 +1,6 @@
 abstract class PermissionRepository {
+  Future<bool> canActivity();
+
   Future<bool> canDraw();
 
   Future<bool> canUsage();

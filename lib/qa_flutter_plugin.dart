@@ -237,6 +237,12 @@ class QAFlutterPlugin {
   }
 
   ///The method is only relevant for Android
+  ///Returns whether or not the ```activity recognition``` permission has been granted
+  Future<bool> canActivity() async {
+    return _permissionRepository.canActivity();
+  }
+
+  ///The method is only relevant for Android
   ///Returns whether or not the ```draw over other apps``` permission has been granted
   Future<bool> canDraw() async {
     return _permissionRepository.canDraw();

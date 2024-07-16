@@ -15,6 +15,7 @@ import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.PasswodMe
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.IdentityIdMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.DataCollectionRunningMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.DeviceIdMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.LastTapsMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEntryMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.InitMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.IsDeviceRegisteredMethodChannelHandler
@@ -26,6 +27,7 @@ import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJou
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEventEntityMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.GetConnectedDevicesMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.OpenBatteryOptimisationSettingsChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanActivityMethodChannelHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -87,9 +89,11 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         DataCollectionRunningMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         IsDeviceRegisteredMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
         DeviceIdMethodChannelHandler(mainScope, qa).register(flutterPluginBinding)
+        LastTapsMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         SaveJournalEntryMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         GetJournalEntryMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         CanDrawMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
+        CanActivityMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         RequestOverlayPermissionMethodChannelHandler(mainScope, qa, context, this::getActivity).register(flutterPluginBinding);
         CanUsageMethodChannelHandler(mainScope, qa, context).register(flutterPluginBinding)
         RequestUsagePermissionMethodChannelHandler(mainScope, qa, context, this::getActivity).register(flutterPluginBinding);
