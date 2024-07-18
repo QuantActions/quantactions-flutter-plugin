@@ -254,9 +254,7 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays
 
   // Adding missing days up to today
   final nMissingFutureDays = newTimestamps.isNotEmpty
-      ? newTimestamps.last
-      .difference(currentDay)
-      .inDays
+      ? currentDay.difference(newTimestamps.last).inDays
       : 0;
   final lastValue = newTimestamps.last;
   for (var j = 0; j < nMissingFutureDays; j++) {
