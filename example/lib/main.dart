@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
                             ? const Text('Platform: iOS')
                             : const Text('Platform: Web'),
 
-                    Text('Cognitive Fitness:', style: Theme.of(context).textTheme.headline6),
+                    Text('Cognitive Fitness:', style: Theme.of(context).textTheme.titleMedium),
                     SizedBox(
                       height: 200,
                       child: StreamBuilder(
@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
                               itemCount: snapshot.data!.timestamps.length,
                               itemBuilder: (_, int index) {
                                 // final DateTime item = snapshot.data!.timestamps[index];
-                                final int item = snapshot.data!.values[index].toInt();
+                                final double item = snapshot.data!.values[index];
                                 final date = snapshot.data!.timestamps[index].toString();
                                 return Text('$date: $item');
                               },
@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
                         },
                       ),
                     ),
-                    Text('Screen Time:', style: Theme.of(context).textTheme.headline6),
+                    Text('Screen Time:', style: Theme.of(context).textTheme.titleMedium),
                     SizedBox(
                       height: 200,
                       child: StreamBuilder(
@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
                                 final ScreenTimeAggregate item = snapshot.data!.values[index];
                                 final timeInMinutes = item.totalScreenTime / 1000 / 60;
                                 final date = snapshot.data!.timestamps[index].toString();
-                                return Text('$date: ${timeInMinutes.toInt()} minutes');
+                                return Text('$date: ${timeInMinutes} minutes');
                               },
                             );
                           }
@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> {
                         },
                       ),
                     ),
-                    Text('Sleep Summary:', style: Theme.of(context).textTheme.headline6),
+                    Text('Sleep Summary:', style: Theme.of(context).textTheme.titleMedium),
                     SizedBox(
                       height: 200,
                       child: StreamBuilder(
