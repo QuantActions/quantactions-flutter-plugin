@@ -1,0 +1,45 @@
+name: core_ui
+version: 0.0.1
+publish_to: none
+description: Project Core UI module
+
+environment:
+  sdk: '>=3.1.1 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_svg: ^2.0.7
+  dropdown_button2: ^2.3.9
+  expandable: ^5.0.1
+  flutter_html: ^3.0.0-beta.2
+  table_calendar: ^3.0.9
+  lottie: ^2.7.0
+  flutter_timezone: ^1.0.8
+
+  qa_flutter_plugin:
+    path: ../../
+
+  charts:
+    path: ../charts
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+  auto_route_generator: 7.3.0
+  build_runner: ^2.4.6
+
+flutter:
+  uses-material-design: true
+  assets:
+    - resources/icons/
+    - resources/images/
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: resources/fonts/roboto_regular.ttf
+        - asset: resources/fonts/roboto_medium.ttf
+          weight: 700
