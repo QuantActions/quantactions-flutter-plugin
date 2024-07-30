@@ -25,6 +25,8 @@ public class QAFlutterPlugin: NSObject, FlutterPlugin {
         GetJournalEventKindsMethodChannel.register(with: registrar)
         SaveJournalEntryMethodChannel.register(with: registrar)
         BasicInfoMethodChannel.register(with: registrar)
+        IdentityIdMethodChannel.register(with: registrar)
+        PasswordMethodChannel.register(with: registrar)
         InitMethodChannel.register(with: registrar)
         
         GetJournalEntitiesEventChannel.register(with: registrar)
