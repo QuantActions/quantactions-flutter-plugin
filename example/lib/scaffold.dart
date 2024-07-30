@@ -3,269 +3,327 @@ import 'package:core_ui/core_ui.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
 
+import 'metrics_bloc/metrics_bloc.dart';
 
 class MyScaffold extends StatelessWidget {
-  static final String tempApiKey = dotenv.env['qa_sdk_api_key'] ?? '';
-  final Stream<TimeSeries<dynamic>> cognitiveFitnessStream;
-  final Stream<TimeSeries<dynamic>> screenTimeStream;
-  final Stream<TimeSeries<dynamic>> sleepSummaryStream;
-  final Stream<TimeSeries<dynamic>> actionTimeStream;
   final targetPlatform = defaultTargetPlatform;
   final String? errorText;
 
-  MyScaffold(
-      {Key? key,
-      required this.cognitiveFitnessStream,
-      required this.screenTimeStream,
-      required this.sleepSummaryStream,
-      required this.actionTimeStream,
-      this.errorText})
-      : super(key: key);
+  MyScaffold({super.key, this.errorText});
 
   @override
   Widget build(BuildContext context) {
 
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('QuantActions UI Guide'),
-      ),
-      body: errorText != null
-          ? Text(errorText!)
-          : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const PoweredByQuantActions(),
-                  Container(
-                    color: Metric.cognitiveFitness.getPrimaryColor(colors: context.theme.colors),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('Cognitive Fitness',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: context.theme.colors.textWhite,
-                              )),
-                        ],
-                      ),
+    return BlocBuilder<MetricsBloc, MetricsState>(
+        builder: (BuildContext content, MetricsState state) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const PoweredByQuantActions(),
+        ),
+        body: errorText != null
+            ? Text(errorText!)
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RadioExample(
+                      onChange: ({ChartMode mode = ChartMode.days}) {
+                        BlocProvider.of<MetricsBloc>(context).add(
+                          ChangeChartMode(mode),
+                        );
+                      },
                     ),
-                  ),
-                  const Divider(),
-                  StreamBuilder(
-                    stream: cognitiveFitnessStream,
-                    builder: (_, AsyncSnapshot<TimeSeries<dynamic>> snapshot) {
-                      if (snapshot.hasData) {
-                        final TimeSeries<double> timeSeries =
-                            snapshot.data! as TimeSeries<double>;
-                        final int scorePercent =
-                            timeSeries.values.safeAverage().round();
-
-                        final TimeSeries<double> groupedTimeSeries =
-                            GroupDataMapper.groupTimeSeriesByChartMode(
-                          chartMode: ChartMode.weeks,
-                          timeSeries: timeSeries,
-                        );
-                        return Column(
-                          children: [
-                            Indicator.big(
-                              percentValue: scorePercent,
-                              metric: Metric.cognitiveFitness,
-                              child: IndicatorData(percent: scorePercent),
-                            ),
-                            ScoreMetricCardTile(
-                              isMetricScoreReady: true,
-                              isDataLoading: false,
-                              metricScoreReadyIn: 0,
-                              metric: Metric.cognitiveFitness,
-                              indicatorValue:
-                                  snapshot.data!.values.last.round(),
-                              shortScoreValue: Pair(
-                                  '${snapshot.data!.values.last.round()}',
-                                  '--'),
-                              scoreChartData: snapshot.data!.values.takeLast(8)
-                                  as List<double>,
-                            ),
-                            const Divider(),
-                            LinePlot.withUncertainty(
-                              data: groupedTimeSeries.values,
-                              timestamps: groupedTimeSeries.timestamps,
-                              confidenceIntervalLow:
-                                  groupedTimeSeries.confidenceIntervalLow,
-                              confidenceIntervalHigh:
-                                  groupedTimeSeries.confidenceIntervalHigh,
-                              metric: Metric.cognitiveFitness,
-                              chartMode: ChartMode.weeks,
-                              journal: const [],
-                              populationRange: Metric
-                                  .cognitiveFitness.populationRange
-                                  .getPopulationRange(),
-                            )
-                          ],
-                        );
-                      } else {
-                        return const ScoreMetricCardTile(
-                          isMetricScoreReady: true,
-                          isDataLoading: false,
-                          metricScoreReadyIn: 3,
-                          metric: Metric.cognitiveFitness,
-                          indicatorValue: 0,
-                          shortScoreValue: Pair('0', '--'),
-                          scoreChartData: [],
-                        );
-                      }
-                    },
-                  ),
-                  const Divider(),
-                  Container(
-                    color: Metric.socialEngagement.getPrimaryColor(colors: context.theme.colors),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('Screen Time',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: context.theme.colors.textWhite,
-                              )),
-                        ],
-                      ),
+                    ColoredTitle(
+                        title: 'Cognitive Fitness',
+                        color: Metric.cognitiveFitness
+                            .getPrimaryColor(colors: context.theme.colors)),
+                    Indicator.big(
+                      percentValue:
+                          state.isScoreLoading[Metric.cognitiveFitness]!
+                              ? 0
+                              : MetricDetailsMapper.getIndicatorValue(
+                            timeSeries: state.score(Metric.cognitiveFitness, state.chartMode),
+                            chartMode: state.chartMode,
+                          ),
+                      metric: Metric.cognitiveFitness,
+                      child: IndicatorData(
+                          percent: state
+                                  .isScoreLoading[Metric.cognitiveFitness]!
+                              ? 0
+                              : MetricDetailsMapper.getIndicatorValue(
+                            timeSeries: state.score(Metric.cognitiveFitness, state.chartMode),
+                            chartMode: state.chartMode,
+                          )),
                     ),
-                  ),
-                  const Divider(),
-                  StreamBuilder(
-                    stream: screenTimeStream,
-                    builder: (_, AsyncSnapshot<TimeSeries<dynamic>> snapshot) {
-                      if (snapshot.hasData) {
-                        final TimeSeries<ScreenTimeAggregate> timeSeries =
-                            snapshot.data! as TimeSeries<ScreenTimeAggregate>;
-                        final groupedTimeSeries =
-                            GroupDataMapper.groupTimeSeriesByChartMode(
-                          chartMode: ChartMode.weeks,
-                          timeSeries: timeSeries,
-                        );
-                        return CumulativeBarPlot(
-                            totalData: groupedTimeSeries.values
-                                .map((ScreenTimeAggregate element) =>
-                                    element.totalScreenTime)
-                                .toList(),
-                            data: groupedTimeSeries.values
-                                .map((ScreenTimeAggregate element) =>
-                                    element.socialScreenTime)
-                                .toList(),
-                            timestamps: groupedTimeSeries.timestamps,
-                            chartMode: ChartMode.weeks,
-                            scores: const [],
-                            journal: const [],
-                            metric: Metric.screenTimeAggregate);
-                      }
-
-                      if (snapshot.hasError) {
-                        return Text('error: ${snapshot.error.toString()}');
-                      }
-
-                      return Text('status: ${snapshot.connectionState.name}');
-                    },
-                  ),
-                  const Divider(),
-                  Container(
-                    color: Metric.sleepScore.getPrimaryColor(colors: context.theme.colors),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('Sleep Summary',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: context.theme.colors.textWhite,
-                              )),
-                        ],
+                    // : const SizedBox.shrink(),
+                    ScoreMetricCardTile(
+                      isMetricScoreReady: true,
+                      isDataLoading:
+                          state.isScoreLoading[Metric.cognitiveFitness]!,
+                      metricScoreReadyIn: 0,
+                      metric: Metric.cognitiveFitness,
+                      indicatorValue:
+                          MetricCardsMapper.getCircleIndicatorValue(
+                        state.doubleMetrics[Metric.socialEngagement]!,
                       ),
-                    ),
-                  ),
-                  const Divider(),
-                  StreamBuilder(
-                    stream: sleepSummaryStream,
-                    builder: (_, AsyncSnapshot<TimeSeries<dynamic>> snapshot) {
-                      if (snapshot.hasData) {
-                        final TimeSeries<SleepSummary> timeSeries =
-                            snapshot.data! as TimeSeries<SleepSummary>;
-                        return InterruptedBarPlot(
-                            timeSeries: GroupDataMapper
-                                .groupTimeSeriesByChartMode<SleepSummary>(
-                              chartMode: ChartMode.days,
-                              timeSeries: timeSeries,
-                            ),
-                            scores: const [],
-                            chartMode: ChartMode.days,
-                            metric: Metric.sleepScore);
-                      }
-
-                      if (snapshot.hasError) {
-                        return Text('error: ${snapshot.error.toString()}');
-                      }
-
-                      return Text('status: ${snapshot.connectionState.name}');
-                    },
-                  ),
-                  const Divider(),
-                  Container(
-                    color: Metric.cognitiveFitness.getPrimaryColor(colors: context.theme.colors),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('Action Time',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: context.theme.colors.textWhite,
-                              )),
-                        ],
+                      shortScoreValue: MetricCardsMapper.getScoreShortValue(
+                        trendHolder: state.trends[Trend.cognitiveFitness],
+                        metric: Metric.cognitiveFitness,
+                        indicatorValue: MetricCardsMapper.getCircleIndicatorValue(
+                          state.doubleMetrics[Metric.cognitiveFitness]!,
+                        ),
                       ),
+                      scoreChartData: state
+                                  .doubleMetrics[Metric.cognitiveFitness]!
+                                  .values
+                                  .takeLast(8),
                     ),
-                  ),
-                  const Divider(),
-                  StreamBuilder(
-                    stream: actionTimeStream,
-                    builder: (_, AsyncSnapshot<TimeSeries<dynamic>> snapshot) {
-                      if (snapshot.hasData) {
-                        final TimeSeries<double> timeSeries =
-                            snapshot.data! as TimeSeries<double>;
-                        final groupedTimeSeries =
-                            GroupDataMapper.groupTimeSeriesByChartMode(
-                          chartMode: ChartMode.weeks,
-                          timeSeries: timeSeries,
-                        );
-                        return AdjustableBarPlot(
-                          data: groupedTimeSeries.values,
-                          timestamps: groupedTimeSeries.timestamps,
-                          chartMode: ChartMode.weeks,
-                          scores: const [],
-                          metric: Metric.cognitiveFitness,
-                          journal: const [],
-                        );
-                      }
-
-                      if (snapshot.hasError) {
-                        return Text('error: ${snapshot.error.toString()}');
-                      }
-
-                      return Text('status: ${snapshot.connectionState.name}');
-                    },
-                  ),
-                ],
+                    const Divider(),
+                    LinePlot.withUncertainty(
+                      data: state
+                          .score(
+                              Metric.cognitiveFitness, state.chartMode)
+                          .values,
+                      timestamps: state
+                          .score(
+                              Metric.cognitiveFitness, state.chartMode)
+                          .timestamps,
+                      confidenceIntervalLow: state
+                          .score(
+                              Metric.cognitiveFitness, state.chartMode)
+                          .confidenceIntervalLow,
+                      confidenceIntervalHigh: state
+                          .score(
+                              Metric.cognitiveFitness, state.chartMode)
+                          .confidenceIntervalHigh,
+                      metric: Metric.cognitiveFitness,
+                      chartMode: state.chartMode,
+                      journal: const [],
+                      populationRange: Metric
+                          .cognitiveFitness.populationRange
+                          .getPopulationRange(),
+                    ),
+                    ColoredTitle(
+                        title: 'Screen Time',
+                        color: Metric.socialEngagement
+                            .getPrimaryColor(colors: context.theme.colors)),
+                    CumulativeBarPlot(
+                        totalData: state
+                            .groupedScreenTimeAggregate(state.chartMode)
+                            .values
+                            .map((ScreenTimeAggregate element) =>
+                                element.totalScreenTime)
+                            .toList(),
+                        data: state
+                            .groupedScreenTimeAggregate(state.chartMode)
+                            .values
+                            .map((ScreenTimeAggregate element) =>
+                                element.socialScreenTime)
+                            .toList(),
+                        timestamps: state
+                            .groupedScreenTimeAggregate(state.chartMode)
+                            .timestamps,
+                        chartMode: state.chartMode,
+                        scores: state.score(Metric.socialEngagement, state.chartMode).values,
+                        journal: const [],
+                        metric: Metric.screenTimeAggregate),
+                    ColoredTitle(
+                        title: 'Sleep Summary',
+                        color: Metric.sleepScore
+                            .getPrimaryColor(colors: context.theme.colors)),
+                    InterruptedBarPlot(
+                        timeSeries: GroupDataMapper
+                            .groupTimeSeriesByChartMode<SleepSummary>(
+                          chartMode: state.chartMode,
+                          timeSeries: state.sleepSummary,
+                        ),
+                        scores: state.score(Metric.sleepScore, state.chartMode).values,
+                        chartMode: state.chartMode,
+                        metric: Metric.sleepScore),
+                    ColoredTitle(
+                        title: 'Action Time',
+                        color: Metric.cognitiveFitness
+                            .getPrimaryColor(colors: context.theme.colors)),
+                    AdjustableBarPlot(
+                      data: state
+                          .groupedDoubleMetrics(
+                              Metric.actionSpeed, state.chartMode)
+                          .values,
+                      timestamps: state
+                          .groupedDoubleMetrics(
+                              Metric.actionSpeed, state.chartMode)
+                          .timestamps,
+                      chartMode: state.chartMode,
+                      scores: state.score(Metric.cognitiveFitness, state.chartMode).values,
+                      metric: Metric.cognitiveFitness,
+                      journal: const [],
+                    ),
+                    ColoredTitle(
+                        title: 'Relations',
+                        color: context.theme.colors.accent),
+                    RelationsChart(scores:
+                        [
+                          state.score(Metric.cognitiveFitness, state.chartMode),
+                          state.score(Metric.sleepScore, state.chartMode),
+                          state.score(Metric.socialEngagement, state.chartMode),
+                        ]
+                        , chartMode: state.chartMode),
+                    const Divider(height: 8)
+                  ],
+                ),
               ),
+      );
+    });
+  }
+}
+
+class ColoredTitle extends StatelessWidget {
+  final String title;
+  final Color color;
+
+  const ColoredTitle({
+    super.key,
+    required this.title,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Divider(),
+        Container(
+          color: color,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: context.theme.colors.textWhite,
+                        )),
+              ],
             ),
+          ),
+        ),
+        const Divider(),
+      ],
+    );
+  }
+}
+
+class RadioExample extends StatefulWidget {
+  
+  final Function({ChartMode mode}) onChange;
+  
+  const RadioExample({
+    super.key,
+    required this.onChange,
+  });
+
+  @override
+  State<RadioExample> createState() => _RadioExampleState();
+}
+
+class _RadioExampleState extends State<RadioExample> {
+  ChartMode? _mode = ChartMode.days;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Row(
+          children: [
+
+            Radio<ChartMode>(
+              activeColor: Colors.black87,
+              value: ChartMode.days,
+              groupValue: _mode,
+              onChanged: (ChartMode? value) {
+                setState(() {
+                  _mode = value;
+                });
+                widget.onChange(mode: value!);
+              },
+            ),
+            const Text('14 Days'),
+          ],
+        ),
+        Row(
+          children: [
+            Radio<ChartMode>(
+              activeColor: Colors.black87,
+              value: ChartMode.weeks,
+              groupValue: _mode,
+              onChanged: (ChartMode? value) {
+                setState(() {
+                  _mode = value;
+                });
+                widget.onChange(mode: value!);
+              },
+            ),
+            const Text('6 weeks'),
+          ],
+        ),
+        Row(
+          children: [
+            Radio<ChartMode>(
+              activeColor: Colors.black87,
+              value: ChartMode.months,
+              groupValue: _mode,
+              onChanged: (ChartMode? value) {
+                setState(() {
+                  _mode = value;
+                });
+                widget.onChange(mode: value!);
+              },
+            ),
+            const Text('12 Months'),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class RelationsChart extends StatelessWidget {
+  final List<TimeSeries<double>> scores;
+  final ChartMode chartMode;
+
+  const RelationsChart({
+    super.key,
+    required this.scores,
+    required this.chartMode
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        MultiLinePlot(
+          journal: const [],
+          colors: <Color>[
+            context.theme.colors.fitnessPrimary,
+            context.theme.colors.sleepPrimary,
+            context.theme.colors.socialPrimary,
+          ],
+          titles: const ["Cognitive Fitness", "Sleep Quality", "Social Engagement"],
+          data: scores.map((TimeSeries<double> e) => e.values).toList(),
+          timestamps: scores.map((TimeSeries<double> e) => e.timestamps).toList(),
+          confidenceIntervalHigh: scores.map((TimeSeries<double> e) => e.confidenceIntervalHigh).toList(),
+          confidenceIntervalLow: scores.map((TimeSeries<double> e) => e.confidenceIntervalLow).toList(),
+          chartMode: chartMode,
+        ),
+      ],
     );
   }
 }

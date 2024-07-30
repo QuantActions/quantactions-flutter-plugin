@@ -9,11 +9,6 @@ class MultiLinePlot extends StatefulWidget {
   final List<Color> colors;
   final List<String> titles;
   final ChartMode chartMode;
-  final bool isBlurred;
-  final Function({
-  required sugar.ZonedDateTime date,
-  required ChartMode chartMode,
-  }) openJournalOverlay;
 
   const MultiLinePlot({
     super.key,
@@ -25,8 +20,6 @@ class MultiLinePlot extends StatefulWidget {
     required this.titles,
     required this.colors,
     required this.chartMode,
-    required this.isBlurred,
-    required this.openJournalOverlay,
   }) : assert(data.length == colors.length);
 
   @override
@@ -156,16 +149,7 @@ class _MultiLinePlotState extends State<MultiLinePlot> {
                           return GestureDetector(
                             onTapDown: (TapDownDetails tapOffset) {
                               setState(() {
-                                if (tapOffset.localPosition.dx > 0) {
-                                  print('tapOffset.localPosition.dx ${tapOffset.localPosition.dx}');
-                                  final int sp = ChartUtils.findClosest(
-                                    flatPointsList.map((Point<double> e) => e.x).toList(),
-                                    tapOffset.localPosition.dx,
-                                  );
-                                  print('Found closest point $sp');
-                                  print('With timestamps being ${widget.timestamps[0]}');
-                                  widget.openJournalOverlay(date: widget.timestamps[0][sp], chartMode: widget.chartMode);
-                                }
+                                if (tapOffset.localPosition.dx > 0) {  }
                               });
                             },
                             child: CustomPaint(

@@ -1,6 +1,7 @@
 library charts;
 
 export 'src/mappers/group_data_mapper.dart';
+export 'src/utils/date_time_utils.dart';
 
 import 'dart:math';
 
@@ -32,6 +33,7 @@ import 'src/painters/x_axis/x_axis_painter.dart';
 import 'src/painters/y_axis_painter.dart';
 import 'src/utils/chart_utils.dart';
 import 'package:core_ui/src/extensions/extensions.dart';
+
 
 part 'src/adjustable_bar_plot.dart';
 part 'src/cumulative_bar_plot.dart';

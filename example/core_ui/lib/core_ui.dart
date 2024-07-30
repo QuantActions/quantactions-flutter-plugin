@@ -6,6 +6,9 @@ import 'core_ui.dart';
 
 export 'src/widgets/widgets.dart';
 export 'src/mappers/metric_mode_mapper.dart';
+export 'src/mappers/average_mapper.dart';
+export 'src/mappers/metric_cards_mapper.dart';
+export 'src/mappers/metric_details_mapper.dart';
 
 part 'src/theme/app_dimens.dart';
 
