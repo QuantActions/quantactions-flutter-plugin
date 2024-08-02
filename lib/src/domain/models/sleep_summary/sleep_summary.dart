@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sugar/sugar.dart';
 
@@ -64,14 +63,11 @@ class SleepSummary {
   static List<ZonedDateTime> _dateTimeListFromJson(List<dynamic> data) => data
       .map<ZonedDateTime>((dynamic item) {
     if (item == null) return ZonedDateTime.now().nan;
-    // print(item);
     final List<String> split = (item as String).split('=');
-    // print(split);
     if (split.length == 1) {
       return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(item) * 1000);
     } else {
-      // print(split[1]);
-      final tz = Timezone(dumbTZMapper(split[1]));
+      final Timezone tz = Timezone(dumbTZMapper(split[1]));
       return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
     }
       })
@@ -81,23 +77,21 @@ class SleepSummary {
 
   static ZonedDateTime _dateTimeFromJson(String? data) {
     if (data == null) return ZonedDateTime.now().nan;
-    // print(data);
-    final List<String> split = (data as String).split('=');
+    final List<String> split = data.split('=');
     if (split.length == 1) {
       return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(data) * 1000);
     } else {
-      final tz = Timezone(dumbTZMapper(split[1]));
+      final Timezone tz = Timezone(dumbTZMapper(split[1]));
       return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
     }
   }
   static ZonedDateTime _truncatedDateTimeFromJson(String? data) {
     if (data == null) return ZonedDateTime.now().nan;
-    // print(data);
-    final List<String> split = (data as String).split('=');
+    final List<String> split = data.split('=');
     if (split.length == 1) {
       return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(data) * 1000);
     } else {
-      final tz = Timezone(dumbTZMapper(split[1]));
+      final Timezone tz = Timezone(dumbTZMapper(split[1]));
       return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
     }
   }

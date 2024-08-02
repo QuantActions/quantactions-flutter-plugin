@@ -137,168 +137,76 @@ extension TrendHolderTimeSeiresExtension on TimeSeries<TrendHolder> {
       confidenceIntervalHigh: newConfidenceIntervalHigh,
       confidence: newConfidence,
     );
-
   }
-
-
 }
-
-// now I write an extension for the SleepSummary time series to extract the average over weeks
-// the following is the kotlin version, I need to write the dart version
-// override fun extractWeeklyAverages(): SleepSummaryTimeTimeSeries {
-//
-// val averagedValues = timestamps.zip(values).groupBy({
-// it.first.with(TemporalAdjusters.previousOrSame(DayOfWeek.of(1)))
-//     .truncatedTo(ChronoUnit.DAYS).toLocalDateTime()
-// }, { Pair(it.first, it.second) }).mapValues { (k, v) ->
-//
-// val vFiltered = v.filter { it.second.sleepStart != ZonedDateTimePlaceholder }
-// val vFilteredAverage = vFiltered.map { it.second.interruptionsStart.size }.average()
-// val averageNumberOfInterruptions = if (vFilteredAverage.isNaN()) 0 else kotlin.math.ceil(
-// vFilteredAverage
-// ).toInt()
-//
-// SleepSummary(
-// periodicMean(
-// v.map { it.second.sleepStart }.dropna(),
-// vFiltered.map { it.first },
-// k
-// ),
-// periodicMean(
-// v.map { it.second.sleepEnd }.dropna(),
-// v.filter { it.second.sleepStart != ZonedDateTimePlaceholder }.map { it.first },
-// k
-// ),
-// List(averageNumberOfInterruptions) { ZonedDateTimePlaceholder },
-// List(averageNumberOfInterruptions) { ZonedDateTimePlaceholder },
-// List(averageNumberOfInterruptions) { 0 },
-// )
-// }
-//
-// return SleepSummaryTimeTimeSeries(
-// averagedValues.values.toList(),
-// averagedValues.keys.toList().map { ZonedDateTime.of(it, ZoneId.systemDefault()) },
-// averagedValues.values.toList(),
-// averagedValues.values.toList(),
-// List(averagedValues.size) { Double.NaN }
-// )
-// }
-
-// this is the kotlin version of the periodicMean function
-// @Keep
-// fun periodicMean(
-// zonedDateTimes: List<ZonedDateTime>,
-// references: List<ZonedDateTime>,
-// reference: LocalDateTime
-// ): ZonedDateTime {
-//
-// if (zonedDateTimes.isEmpty()) return ZonedDateTimePlaceholder
-// val rawShifts = zonedDateTimes.zip(references).map { (z, r) ->
-// z.toEpochSecond() - r.toEpochSecond()
-// }
-// return ZonedDateTime.of(
-// reference.plusSeconds(rawShifts.average().toLong()),
-// ZoneId.systemDefault()
-// )
-// }
 
 ZonedDateTime periodicMean(
     List<ZonedDateTime> dateTimes, List<ZonedDateTime> references, LocalDateTime reference) {
   // remove nan
-  final placeholder = ZonedDateTime.now().nan;
-
-  // print all
-  // for (final pair in zip([dateTimes, references])) {
-  //   print('--> ${pair[0]} - ${pair[1]}');
-  // }
-  // print('Placeholder: $placeholder');
+  final ZonedDateTime placeholder = ZonedDateTime.now().nan;
 
   // rewrite using expand instead of zip
-  final List<int> rawShifts = zip([dateTimes, references])
-      .where((element) => element[0] != placeholder)
-      .map((pair) => pair[0].difference(pair[1]).inSeconds)
+  final List<int> rawShifts = zip(<List<ZonedDateTime>>[dateTimes, references])
+      .where((List<ZonedDateTime> element) => element[0] != placeholder)
+      .map((List<ZonedDateTime> pair) => pair[0].difference(pair[1]).inSeconds)
       .toList();
   if (rawShifts.isEmpty){
-    // print('Raw shifts is empty');
     return ZonedDateTime.now().nan;
   };
-  // print('periodic mean raw shifts: $rawShifts');
-  // print('periodic mean reference: $reference');
-  // print(
-  //     'periodic mean: ${reference.add(Duration(seconds: rawShifts.average.toInt()))}');
 
   return ZonedDateTimeNaN.fromLocalDateTime(reference.add(Duration(seconds: rawShifts.average.toInt())));
 }
 
-// this is the dart version of the periodicMean function
-
-//
-//
-//
-// extension ExtractWeeklyAverages on TimeSeries<SleepSummary>  {
-//
-//   TimeSeries<SleepSummary> extractWeeklyAverages() {
-//     // Group timestamps and values by the start of the week (Sunday)
-//     final List<List<Object>> a = IterableZip([timestamps, values]).toList();
-//     // a.groupListsBy((element) => (element[0] as DateTime).subtract(Duration(days: (element[0] as DateTime).weekday - 1))).truncatedTo(ChronoUnit.days).toLocalDateTime());
-//
-//
-//     final b = a.groupListsBy((element) => Jiffy.parseFromDateTime(element[0] as DateTime).startOf(Unit.week).startOf(Unit.day));
-//     final b = a.groupFoldBy((element) => Jiffy.parseFromDateTime(element[0] as DateTime).startOf(Unit.week).startOf(Unit.day), (previous, element) => element[1])
-//     final c = b.map((element) => elemnt[1][]);
-//   }
-// }
-
 extension ExtractWeeklyAverages on TimeSeries<double> {
   TimeSeries<double> extractWeeklyAverages() {
     final List<List<Object>> zippedValues =
-        IterableZip([timestamps, values]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, values]).toList();
     final List<List<Object>> zippedCIH =
-        IterableZip([timestamps, confidenceIntervalHigh]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, confidenceIntervalHigh]).toList();
     final List<List<Object>> zippedCIL =
-        IterableZip([timestamps, confidenceIntervalLow]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, confidenceIntervalLow]).toList();
     final List<List<Object>> zippedConfidence =
-        IterableZip([timestamps, confidence]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, confidence]).toList();
 
-    final newValues = zippedValues
-        .groupListsBy((element) =>
+    final Map<ZonedDateTime, List<double>> newValues = zippedValues
+        .groupListsBy((List<Object> element) =>
           (element[0] as ZonedDateTime).firstDayOfWeek)
-        .map((key, value) => MapEntry(
-            key, value.map((element) => element[1] as double).toList()));
+        .map((ZonedDateTime key, List<List<Object>> value) => MapEntry<ZonedDateTime, List<double>>(
+            key, value.map((List<Object> element) => element[1] as double).toList()));
 
-    final newCIH = zippedCIH
-        .groupListsBy((element) =>
+    final Map<ZonedDateTime, List<double>> newCIH = zippedCIH
+        .groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfWeek)
-        .map((key, value) => MapEntry(
-            key, value.map((element) => element[1] as double).toList()));
-    final newCIL = zippedCIL
-        .groupListsBy((element) =>
+        .map((ZonedDateTime key, List<List<Object>> value) => MapEntry<ZonedDateTime, List<double>>(
+            key, value.map((List<Object> element) => element[1] as double).toList()));
+    final Map<ZonedDateTime, List<double>> newCIL = zippedCIL
+        .groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfWeek)
-        .map((key, value) => MapEntry(
-            key, value.map((element) => element[1] as double).toList()));
-    final newConfidence = zippedConfidence
-        .groupListsBy((element) =>
+        .map((ZonedDateTime key, List<List<Object>> value) => MapEntry<ZonedDateTime, List<double>>(
+            key, value.map((List<Object> element) => element[1] as double).toList()));
+    final Map<ZonedDateTime, List<double>> newConfidence = zippedConfidence
+        .groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfWeek)
-        .map((key, value) => MapEntry(
-            key, value.map((element) => element[1] as double).toList()));
+        .map((ZonedDateTime key, List<List<Object>> value) => MapEntry<ZonedDateTime, List<double>>(
+            key, value.map((List<Object> element) => element[1] as double).toList()));
 
     return TimeSeries<double>(
       values: newValues.values
           .toList()
-          .map((element) => element.toList().safeAverage())
+          .map((List<double> element) => element.toList().safeAverage())
           .toList(),
       timestamps: newValues.keys.toList(),
       confidenceIntervalLow: newCIL.values
           .toList()
-          .map((element) => element.toList().safeAverage())
+          .map((List<double> element) => element.toList().safeAverage())
           .toList(),
       confidenceIntervalHigh: newCIH.values
           .toList()
-          .map((element) => element.toList().safeAverage())
+          .map((List<double> element) => element.toList().safeAverage())
           .toList(),
       confidence: newConfidence.values
           .toList()
-          .map((element) => element.toList().safeAverage())
+          .map((List<double> element) => element.toList().safeAverage())
           .toList(),
     );
   }
@@ -306,53 +214,53 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
   TimeSeries<double> extractMonthlyAverages() {
     // Group timestamps and values by the start of the week (Sunday)
     final List<List<Object>> zippedValues =
-        IterableZip([timestamps, values]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, values]).toList();
     final List<List<Object>> zippedCIH =
-        IterableZip([timestamps, confidenceIntervalHigh]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, confidenceIntervalHigh]).toList();
     final List<List<Object>> zippedCIL =
-        IterableZip([timestamps, confidenceIntervalLow]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, confidenceIntervalLow]).toList();
     final List<List<Object>> zippedConfidence =
-        IterableZip([timestamps, confidence]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, confidence]).toList();
 
-    final newValues = zippedValues
-        .groupListsBy((element) =>
+    final Map<ZonedDateTime, List<double>> newValues = zippedValues
+        .groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfMonth)
-        .map((key, value) => MapEntry(
-            key, value.map((element) => element[1] as double).toList()));
+        .map((ZonedDateTime key, List<List<Object>> value) => MapEntry<ZonedDateTime, List<double>>(
+            key, value.map((List<Object> element) => element[1] as double).toList()));
 
-    final newCIH = zippedCIH
-        .groupListsBy((element) =>
+    final Map<ZonedDateTime, List<double>> newCIH = zippedCIH
+        .groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfMonth)
-        .map((key, value) => MapEntry(
-            key, value.map((element) => element[1] as double).toList()));
-    final newCIL = zippedCIL
-        .groupListsBy((element) =>
+        .map((ZonedDateTime key, List<List<Object>> value) => MapEntry<ZonedDateTime, List<double>>(
+            key, value.map((List<Object> element) => element[1] as double).toList()));
+    final Map<ZonedDateTime, List<double>> newCIL = zippedCIL
+        .groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfMonth)
-        .map((key, value) => MapEntry(
-            key, value.map((element) => element[1] as double).toList()));
-    final newConfidence = zippedConfidence
-        .groupListsBy((element) =>
+        .map((ZonedDateTime key, List<List<Object>> value) => MapEntry<ZonedDateTime, List<double>>(
+            key, value.map((List<Object> element) => element[1] as double).toList()));
+    final Map<ZonedDateTime, List<double>> newConfidence = zippedConfidence
+        .groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfMonth)
-        .map((key, value) => MapEntry(
-            key, value.map((element) => element[1] as double).toList()));
+        .map((ZonedDateTime key, List<List<Object>> value) => MapEntry<ZonedDateTime, List<double>>(
+            key, value.map((List<Object> element) => element[1] as double).toList()));
 
     return TimeSeries<double>(
       values: newValues.values
           .toList()
-          .map((element) => element.toList().safeAverage())
+          .map((List<double> element) => element.toList().safeAverage())
           .toList(),
       timestamps: newValues.keys.toList(),
       confidenceIntervalLow: newCIL.values
           .toList()
-          .map((element) => element.toList().safeAverage())
+          .map((List<double> element) => element.toList().safeAverage())
           .toList(),
       confidenceIntervalHigh: newCIH.values
           .toList()
-          .map((element) => element.toList().safeAverage())
+          .map((List<double> element) => element.toList().safeAverage())
           .toList(),
       confidence: newConfidence.values
           .toList()
-          .map((element) => element.toList().safeAverage())
+          .map((List<double> element) => element.toList().safeAverage())
           .toList(),
     );
   }
@@ -375,31 +283,27 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
   TimeSeries<SleepSummary> extractWeeklyAverages() {
     // Group timestamps and values by the start of the week (Sunday)
     final List<List<Object>> zippedValues =
-    IterableZip([timestamps, values]).toList();
+    IterableZip<Object>(<List<Object>>[timestamps, values]).toList();
 
-    // for (final pair in zippedValues) {
-    //   print('--> ${pair[0]} - ${pair[1]}');
-    // }
-
-    final newZippedValues = zippedValues.groupListsBy((element) =>
+    final Map<LocalDateTime, List<List<Object>>> newZippedValues = zippedValues.groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfWeek.truncate(to: DateUnit.days).toLocal());
-    final newValues = newZippedValues.entries
-        .map((element) => SleepSummary(
+    final List<SleepSummary> newValues = newZippedValues.entries
+        .map((MapEntry<LocalDateTime, List<List<Object>>> element) => SleepSummary(
         sleepStart: periodicMean(
             element.value
-                .map((element) => (element[1] as SleepSummary).sleepStart)
+                .map((List<Object> element) => (element[1] as SleepSummary).sleepStart)
                 .toList(),
-            element.value.map((element) => element[0] as ZonedDateTime).toList(),
+            element.value.map((List<Object> element) => element[0] as ZonedDateTime).toList(),
             element.key),
         sleepEnd: periodicMean(
             element.value
-                .map((element) => (element[1] as SleepSummary).sleepEnd)
+                .map((List<Object> element) => (element[1] as SleepSummary).sleepEnd)
                 .toList(),
-            element.value.map((element) => element[0] as ZonedDateTime).toList(),
+            element.value.map((List<Object> element) => element[0] as ZonedDateTime).toList(),
             element.key),
         interruptionsStart: List<ZonedDateTime>.filled(
             element.value
-                .map((element) => (element[1] as SleepSummary)
+                .map((List<Object> element) => (element[1] as SleepSummary)
                 .interruptionsNumberOfTaps
                 .length)
                 .toList()
@@ -408,7 +312,7 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
             ZonedDateTime.now().nan),
         interruptionsEnd: List<ZonedDateTime>.filled(
             element.value
-                .map((element) => (element[1] as SleepSummary)
+                .map((List<Object> element) => (element[1] as SleepSummary)
                 .interruptionsNumberOfTaps
                 .length)
                 .toList()
@@ -417,7 +321,7 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
             ZonedDateTime.now().nan),
         interruptionsNumberOfTaps: List<int>.filled(
             element.value
-                .map((element) =>
+                .map((List<Object> element) =>
             (element[1] as SleepSummary).interruptionsNumberOfTaps.length)
                 .toList()
                 .average
@@ -439,33 +343,30 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
   }
 
   TimeSeries<SleepSummary> extractMonthlyAverages() {
+
     // Group timestamps and values by the start of the week (Sunday)
     final List<List<Object>> zippedValues =
-        IterableZip([timestamps, values]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, values]).toList();
 
-    // for (final pair in zippedValues) {
-    //   print('--> ${pair[0]} - ${pair[1]}');
-    // }
-
-    final newZippedValues = zippedValues.groupListsBy((element) =>
+    final Map<LocalDateTime, List<List<Object>>> newZippedValues = zippedValues.groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfMonth.truncate(to: DateUnit.days).toLocal());
-    final newValues = newZippedValues.entries
-        .map((element) => SleepSummary(
+    final List<SleepSummary> newValues = newZippedValues.entries
+        .map((MapEntry<LocalDateTime, List<List<Object>>> element) => SleepSummary(
             sleepStart: periodicMean(
                 element.value
-                    .map((element) => (element[1] as SleepSummary).sleepStart)
+                    .map((List<Object> element) => (element[1] as SleepSummary).sleepStart)
                     .toList(),
-                element.value.map((element) => element[0] as ZonedDateTime).toList(),
+                element.value.map((List<Object> element) => element[0] as ZonedDateTime).toList(),
                 element.key),
             sleepEnd: periodicMean(
                 element.value
-                    .map((element) => (element[1] as SleepSummary).sleepEnd)
+                    .map((List<Object> element) => (element[1] as SleepSummary).sleepEnd)
                     .toList(),
-                element.value.map((element) => element[0] as ZonedDateTime).toList(),
+                element.value.map((List<Object> element) => element[0] as ZonedDateTime).toList(),
                 element.key),
             interruptionsStart: List<ZonedDateTime>.filled(
                 element.value
-                    .map((element) => (element[1] as SleepSummary)
+                    .map((List<Object> element) => (element[1] as SleepSummary)
                         .interruptionsNumberOfTaps
                         .length)
                     .toList()
@@ -474,7 +375,7 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
                 ZonedDateTime.now().nan),
             interruptionsEnd: List<ZonedDateTime>.filled(
                 element.value
-                    .map((element) => (element[1] as SleepSummary)
+                    .map((List<Object> element) => (element[1] as SleepSummary)
                         .interruptionsNumberOfTaps
                         .length)
                     .toList()
@@ -483,7 +384,7 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
                 ZonedDateTime.now().nan),
             interruptionsNumberOfTaps: List<int>.filled(
                 element.value
-                    .map((element) =>
+                    .map((List<Object> element) =>
                         (element[1] as SleepSummary).interruptionsNumberOfTaps.length)
                     .toList()
                     .average
@@ -509,19 +410,19 @@ extension ExtractScreenTimeAggregateWeeklyAverages
     on TimeSeries<ScreenTimeAggregate> {
   TimeSeries<ScreenTimeAggregate> extractWeeklyAverages() {
     final List<List<Object>> zippedValues =
-        IterableZip([timestamps, values]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, values]).toList();
 
-    final newZippedValues = zippedValues.groupListsBy((element) =>
+    final Map<ZonedDateTime, List<List<Object>>> newZippedValues = zippedValues.groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfWeek);
-    final newValues = newZippedValues.entries
-        .map((element) => ScreenTimeAggregate(
+    final List<ScreenTimeAggregate> newValues = newZippedValues.entries
+        .map((MapEntry<ZonedDateTime, List<List<Object>>> element) => ScreenTimeAggregate(
             totalScreenTime: element.value
-                .map((element) =>
+                .map((List<Object> element) =>
                     (element[1] as ScreenTimeAggregate).totalScreenTime)
                 .toList()
                 .safeAverage(),
             socialScreenTime: element.value
-                .map((element) =>
+                .map((List<Object> element) =>
                     (element[1] as ScreenTimeAggregate).socialScreenTime)
                 .toList()
                 .safeAverage()))
@@ -540,19 +441,19 @@ extension ExtractScreenTimeAggregateWeeklyAverages
 
   TimeSeries<ScreenTimeAggregate> extractMonthlyAverages() {
     final List<List<Object>> zippedValues =
-        IterableZip([timestamps, values]).toList();
+        IterableZip<Object>(<List<Object>>[timestamps, values]).toList();
 
-    final newZippedValues = zippedValues.groupListsBy((element) =>
+    final Map<ZonedDateTime, List<List<Object>>> newZippedValues = zippedValues.groupListsBy((List<Object> element) =>
     (element[0] as ZonedDateTime).firstDayOfMonth);
-    final newValues = newZippedValues.entries
-        .map((element) => ScreenTimeAggregate(
+    final List<ScreenTimeAggregate> newValues = newZippedValues.entries
+        .map((MapEntry<ZonedDateTime, List<List<Object>>> element) => ScreenTimeAggregate(
             totalScreenTime: element.value
-                .map((element) =>
+                .map((List<Object> element) =>
                     (element[1] as ScreenTimeAggregate).totalScreenTime)
                 .toList()
                 .safeAverage(),
             socialScreenTime: element.value
-                .map((element) =>
+                .map((List<Object> element) =>
                     (element[1] as ScreenTimeAggregate).socialScreenTime)
                 .toList()
                 .safeAverage()))

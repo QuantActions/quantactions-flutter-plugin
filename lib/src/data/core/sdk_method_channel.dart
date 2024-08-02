@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 
 import '../../domain/domain.dart';
 import '../consts/method_channel_consts.dart';
-import '../mock/mock_data_provider.dart';
 import 'sdk_method_channel_core.dart';
 
 /// An implementation of [SDKMethodChannelCore] that uses method channels.

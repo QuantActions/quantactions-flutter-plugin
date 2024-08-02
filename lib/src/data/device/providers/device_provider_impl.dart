@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/services.dart';
 
 import '../../../domain/models/keyboard_settings/keyboard_settings.dart';
