@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="qa_flutter_plugin_example"
+        android:label="QA Plugin Example"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

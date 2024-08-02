@@ -43,18 +43,11 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                 participationID = subscription.first!.id
             } 
             else {
-//                participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb"
                 QAFlutterPluginHelper.returnInvalidParamsEventChannelError(eventSink: eventSink, methodName: method!)
             }
         } else {
-            participationID = "138e8ff6b05d6b3c48339e2fd40f2fa8854328eb"
+            participationID = "8ff6b05d-6b3c-4833-9e2f-d40f2fa88543"
         }
-        
-        // TODO - remove this!!!
-//        participationID = "enea-test-id";
-//        participationID = "8ff6b05d-6b3c-4833-9e2f-d40f2fa88543";
-//        participationID = "138ef1e23509e1794390859a3e5804b0a88428eb";
-        
         
         let metric = params?["metric"] as? String
         let dateIntervalType = params?["metricInterval"] as? String
@@ -222,7 +215,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                     participationID: participationID,
                                     interval: getDateInterval(dateIntervalType)
                                 )
-//                                print("Sleep summary: sending \(result.count) -> \(Date.now.timeIntervalSince(start))")
+                                print("Sleep summary: sending \(result.count) -> \(result)")
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesSleepSummaryElement(data: result as [DataPoint<SleepSummaryElement>])

@@ -51,7 +51,7 @@ class SaveJournalEntryMethodChannel : NSObject, FlutterPlugin {
                         do {
                             
                             let response = try QA.shared.saveJournalEntry(journalEntry: journalEntry)
-                            result(QAFlutterPluginSerializable.serializeJournalEntry(data: response))
+                            result(await QAFlutterPluginSerializable.serializeJournalEntry(data: response))
                         } catch let error {
                             print(error.localizedDescription)
                         }

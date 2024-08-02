@@ -31,8 +31,10 @@ class GetJournalEventKindsMethodChannel : NSObject, FlutterPlugin {
                     result: result,
                     methodName: "journalEventKinds"
                 ) {
-                    let response = QA.shared.journalEventKinds()
-                    result(QAFlutterPluginSerializable.serializeJournalEventKind(data: response))
+                    Task {
+                        let response = await QA.shared.journalEventKinds()
+                        result(QAFlutterPluginSerializable.serializeJournalEventKind(data: response))
+                    }
                 }
             default: break
             }

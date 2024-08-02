@@ -18,10 +18,13 @@ enum Trend implements MetricType {
   final String code;
   @override
   final int? eta;
+  @override
+  final PopulationRange? populationRange;
 
   const Trend({
     this.eta,
     required this.id,
     required this.code,
+    this.populationRange,
   });
 }

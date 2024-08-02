@@ -30,11 +30,12 @@ class GetJournalEntryMethodChannel : NSObject, FlutterPlugin {
                     methodName: "getJournalEntry"
                 ) {
                     let response = QA.shared.journalEntries().first(where: {$0.id == journalEntryId})
-                    
-                    if let response = response {
-                        result(QAFlutterPluginSerializable.serializeJournalEntry(data: response))
-                    } else {
-                        result(nil)
+                    Task {
+                        if let response = response {
+                            result(await QAFlutterPluginSerializable.serializeJournalEntry(data: response))
+                        } else {
+                            result(nil)
+                        }
                     }
                 }
             } else {
