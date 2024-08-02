@@ -11,11 +11,15 @@ A new Flutter plugin
                        DESC
   s.homepage         = 'https://quantactions.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Quantactions' => 'support@quantactions.com' }
+  s.author           = { 'QuantActions' => 'support@quantactions.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
+  s.dependency 'QASwiftSDK', '0.10.8'
   s.platform = :ios, '15.0'
+
+#   s.vendored_frameworks = 'QuantActionsSDK.framework'
+
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

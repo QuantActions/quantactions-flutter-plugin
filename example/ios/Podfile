@@ -27,24 +27,17 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 
 flutter_ios_podfile_setup
 
+
 target 'Runner' do
-  use_frameworks!
-  use_modular_headers!
-
-#   pod 'QASwiftSDK', '0.7.2'
-
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-#   target 'RunnerTests' do
-#     inherit! :search_paths
-#   end
-end
-
-target 'QuantActionsKeyboardEstension' do
     use_frameworks!
-#     pod 'QASwiftSDK', '0.7.2'
     use_modular_headers!
 
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+    flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+    target 'QuantActionsKeyboardExtension' do
+        inherit! :search_paths
+    end
+
 end
 
 post_install do |installer|

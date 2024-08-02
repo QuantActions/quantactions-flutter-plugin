@@ -46,8 +46,9 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                         let response = QA.shared.journalEntries()
                         let allDates = response.map{ a in a.date}
                         if (response.isEmpty){
+                            let emptyResult = await QAFlutterPluginSerializable.serializeJournalEntryList(data: [], cogScore: [], sleepScore: [], engScore: [])
                             DispatchQueue.main.async {
-                                eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: [], cogScore: [], sleepScore: [], engScore: []))
+                                eventSink(emptyResult)
                             }
                             return;
                         }
@@ -59,10 +60,10 @@ class GetJournalEntitiesEventChannel : NSObject, FlutterStreamHandler {
                         let sleepScore : [DataPoint<SleepScoreElement>] = []
                         let engScore : [DataPoint<DoubleValueElement>] = []
                     
-                        DispatchQueue.main.async {[cogScore, sleepScore, engScore] in
-                            eventSink(QAFlutterPluginSerializable.serializeJournalEntryList(data: response, cogScore: cogScore, sleepScore: sleepScore, engScore: engScore))
+                        let result = await QAFlutterPluginSerializable.serializeJournalEntryList(data: response, cogScore: cogScore, sleepScore: sleepScore, engScore: engScore)
+                        DispatchQueue.main.async {
+                            eventSink(result)
                         }
-                        
                     }
                 
                 }
