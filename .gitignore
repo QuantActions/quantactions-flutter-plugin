@@ -46,3 +46,5 @@ app.*.map.json
 
 *.g.dart
 pubspec.lock
+github.properties
+example/ios/Podfile.lock
