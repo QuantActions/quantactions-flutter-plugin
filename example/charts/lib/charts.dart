@@ -11,7 +11,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
 import 'package:sugar/sugar.dart' as sugar;
 
 import 'src/legend/adjustable_bar_legend.dart';

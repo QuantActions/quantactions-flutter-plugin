@@ -2,7 +2,7 @@ import 'src/core/core.dart';
 import 'src/data/data.dart';
 import 'src/domain/domain.dart';
 
-export 'package:qa_flutter_plugin/src/domain/models/models.dart';
+export 'package:quantactions_flutter_plugin/src/domain/models/models.dart';
 
 class QAFlutterPlugin {
   late CohortRepository _cohortRepository;

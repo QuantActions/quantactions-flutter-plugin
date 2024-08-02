@@ -2,7 +2,7 @@ import 'package:charts/charts.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
 
 import 'average_mapper.dart';
 

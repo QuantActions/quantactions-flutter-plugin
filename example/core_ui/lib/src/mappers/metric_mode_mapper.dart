@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import '../../core_ui.dart';
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
 
 extension MetricModeMapper on Metric {
 

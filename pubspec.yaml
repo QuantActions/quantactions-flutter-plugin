@@ -1,6 +1,6 @@
-name: qa_flutter_plugin
-description: A cross-platform plugin for QA SDK
-version: 0.0.1
+name: quantactions_flutter_plugin
+description: A flutter plugin to add QuantActions functionality to your app
+version: 0.1.0
 homepage: 'https://quantactions.com'
 
 environment:

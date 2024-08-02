@@ -3,9 +3,9 @@
 # Run `pod lib lint qa_flutter_plugin.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'qa_flutter_plugin'
-  s.version          = '0.0.1'
-  s.summary          = 'A Flutter plugin for QA SDK'
+  s.name             = 'quantactions_flutter_plugin'
+  s.version          = '0.1.0'
+  s.summary          = 'A flutter plugin to add QuantActions functionality to your app'
   s.description      = <<-DESC
 A new Flutter plugin
                        DESC

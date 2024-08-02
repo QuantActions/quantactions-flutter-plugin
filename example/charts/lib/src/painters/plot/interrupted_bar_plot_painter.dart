@@ -5,7 +5,7 @@ import 'package:charts/src/utils/extensions.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
 import 'package:sugar/sugar.dart' as sugar;
 
 import '../../../charts.dart';

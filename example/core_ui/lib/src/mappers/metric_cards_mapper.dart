@@ -1,6 +1,6 @@
 import 'package:charts/charts.dart';
 
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
 
 import 'metric_details_mapper.dart';
 import 'package:dartx/dartx.dart';

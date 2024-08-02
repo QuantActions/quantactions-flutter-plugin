@@ -1,6 +1,6 @@
 import 'package:charts/charts.dart';
 import 'package:charts/src/utils/date_time_utils.dart';
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
 
 class GroupDataMapper {
 

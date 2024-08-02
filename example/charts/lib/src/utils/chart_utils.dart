@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:charts/src/utils/extensions.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/painting.dart';
-import 'package:qa_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
 import 'package:scidart/numdart.dart';
 import 'package:sugar/sugar.dart';
 
