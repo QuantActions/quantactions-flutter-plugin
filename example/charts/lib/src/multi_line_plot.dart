@@ -44,9 +44,6 @@ class _MultiLinePlotState extends State<MultiLinePlot> {
 
   @override
   Widget build(BuildContext context) {
-
-    print('Journal dots are ${widget.journal}');
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[

@@ -38,7 +38,7 @@ class MetricCardsMapper {
         ? "Uptrend"
         : dif < 0
         ? "Downtrend"
-        : "Trend";
+        : "Stable";
 
     return Pair<String, String>(scoreBucketValue, trendValue);
   }

@@ -41,7 +41,7 @@ class UpdateKeyboardSettingsMethodChannel : NSObject, FlutterPlugin {
 
                 let useCustomBackground = params?["shouldUseCustomBackground"] as? Bool ?? true
 
-                QA.shared.setShouldUseCustomBackground(newValue: useCustomBackground)
+                // QA.shared.setShouldUseCustomBackground(newValue: useCustomBackground)
                 
                 QA.shared.update(
                     keyboardSettings: KeyboardSettings(

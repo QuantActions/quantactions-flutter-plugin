@@ -28,7 +28,7 @@ class KeyboardSettingsMethodChannel : NSObject, FlutterPlugin {
                 result(
                     QAFlutterPluginSerializable.serializeKeyboardSettings(
                         keyboardSettings: QA.shared.keyboardSettings,
-                        shouldUseCustomBackground: QA.shared.shouldUseCustomBackground
+                        shouldUseCustomBackground: true // QA.shared.shouldUseCustomBackground
                     )
                 )
             }
