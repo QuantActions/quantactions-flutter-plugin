@@ -15,7 +15,7 @@ A new Flutter plugin
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'QASwiftSDK', '0.7.2'
+  s.dependency 'QASwiftSDK', '0.10.8'
   s.platform = :ios, '15.0'
 
 #   s.vendored_frameworks = 'QuantActionsSDK.framework'
