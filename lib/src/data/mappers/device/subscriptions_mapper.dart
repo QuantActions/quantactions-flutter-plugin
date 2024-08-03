@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../../qa_flutter_plugin.dart';
+import '../../../../quantactions_flutter_plugin.dart';
 
 class SubscriptionsMapper {
   static List<Subscription> fromList(List<dynamic> list) {

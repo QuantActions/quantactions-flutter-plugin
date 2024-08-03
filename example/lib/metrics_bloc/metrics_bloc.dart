@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:charts/charts.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/quantactions_flutter_plugin.dart';
 import 'package:equatable/equatable.dart';
 
 part 'metrics_event.dart';

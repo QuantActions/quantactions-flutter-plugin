@@ -2,7 +2,7 @@ import 'dart:math';
 
 
 import 'package:flutter/material.dart';
-import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/quantactions_flutter_plugin.dart';
 
 class AveragePainter extends CustomPainter {
   final Color color;

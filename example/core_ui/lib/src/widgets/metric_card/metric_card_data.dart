@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:dartx/dartx.dart';
-import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/quantactions_flutter_plugin.dart';
 
 import 'metric_summary_info.dart';
 import 'score_waiting_info.dart';

@@ -1,4 +1,4 @@
-import '../../../../qa_flutter_plugin.dart';
+import '../../../../quantactions_flutter_plugin.dart';
 import 'metric_type.dart';
 
 enum Metric implements MetricType{

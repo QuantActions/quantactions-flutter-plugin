@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/quantactions_flutter_plugin.dart';
 import 'package:quantactions_flutter_plugin_example/scaffold.dart';
 
 import 'metrics_bloc/metrics_bloc.dart';

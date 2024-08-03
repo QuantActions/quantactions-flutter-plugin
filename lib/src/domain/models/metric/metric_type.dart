@@ -1,6 +1,6 @@
 import 'package:dartx/dartx.dart';
 
-import '../../../../qa_flutter_plugin.dart';
+import '../../../../quantactions_flutter_plugin.dart';
 
 abstract class MetricType {
   const MetricType({

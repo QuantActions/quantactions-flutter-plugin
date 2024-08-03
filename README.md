@@ -102,7 +102,7 @@ The whole QA functionality can be accessed everywhere in the code by the singlet
 instantiate like this. This will initialize your SDK with the provided `api_key` and some basic information.
 
 ```dart
-import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/quantactions_flutter_plugin.dart';
 final _qa = QAFlutterPlugin();
 _qa.init(
 apiKey: dotenv.env['qa_sdk_api_key'],

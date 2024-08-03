@@ -4,7 +4,7 @@ import 'package:quiver/iterables.dart';
 import 'package:sugar/sugar.dart';
 import 'date_time_extension.dart';
 
-import '../../../../qa_flutter_plugin.dart';
+import '../../../../quantactions_flutter_plugin.dart';
 import '../../domain.dart';
 
 part 'time_series.g.dart';

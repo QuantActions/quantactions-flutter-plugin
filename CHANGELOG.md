@@ -1,3 +1,4 @@
-## 0.0.1
+## 0.1.0
 
-* TODO: Describe initial release.
+* Initial release of the QuantActions Flutter plugin.
+* Includes the basic functionality of the QuantActions SDK in both Android and iOS platforms.

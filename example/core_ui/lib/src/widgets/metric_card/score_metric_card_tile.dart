@@ -3,7 +3,7 @@ import 'package:core_ui/core_ui.dart';
 import 'package:core_ui/src/extensions/extensions.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:quantactions_flutter_plugin/qa_flutter_plugin.dart';
+import 'package:quantactions_flutter_plugin/quantactions_flutter_plugin.dart';
 
 import 'metric_card_data.dart';
 
