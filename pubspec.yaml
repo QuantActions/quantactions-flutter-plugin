@@ -1,6 +1,6 @@
 name: quantactions_flutter_plugin
 description: A flutter plugin to add QuantActions functionality to your app
-version: 0.1.0
+version: 0.1.1
 homepage: 'https://quantactions.com'
 
 environment:
