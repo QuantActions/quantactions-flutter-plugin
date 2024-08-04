@@ -1,3 +1,7 @@
+## 0.1.3
+
+* Fixed an issue with journaling in iOS.
+
 ## 0.1.2
 
 * Fixed a dependency issue in iOS.

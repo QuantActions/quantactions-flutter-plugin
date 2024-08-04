@@ -119,7 +119,7 @@ qa.subscribe(subscriptionIdOrCohortId: '');
 
 When subscribing the device using a `cohortId`, the device gets automatically assigned a `subscriptionId`, to retrieve this id one case use the following code.
 
-```kotlin
+```dart
 final List<Subscription> subscriptions = await _qa.getSubscriptions();
 ```
 
@@ -196,7 +196,7 @@ qa.getSampleMetric(api_key: api_key, metric: Metric.sleepScore, interval: Metric
 ```
 Note that this method needs to be passed the `api_key` since it can be called without the need for the SDk to be initialized.
 
-## 9. Journaling
+## 9. Journaling (Android OK, iOS in WIP)
 
 The SDK allows also to use a journaling function to log a series of entries. Each entry is composed of:
 - A date

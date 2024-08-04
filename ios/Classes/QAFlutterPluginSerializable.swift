@@ -361,7 +361,8 @@ class QAFlutterPluginSerializable : NSObject {
         let dateFormatter = getSimpleDateTimeFormatter()
         
         var dataArray : [SerializableJournalEntry] = []
-        let eventKinds = await QA.shared.journalEventKinds();
+        // FIXME: Real issue when retrieving event kinds
+        let eventKinds: [JournalEventKind] = [] // await QA.shared.journalEventKinds();
         
         for x in data {
             
@@ -410,7 +411,8 @@ class QAFlutterPluginSerializable : NSObject {
     public static func serializeJournalEntry(data: JournalEntry) async -> String {
         let dateFormatter = getSimpleDateTimeFormatter()
         
-        let eventKinds = await QA.shared.journalEventKinds()
+        // FIXME: Real issue when retrieving event kinds
+        let eventKinds: [JournalEventKind] = [] // await QA.shared.journalEventKinds()
 
         let entry = SerializableJournalEntry(
             id: data.id,
