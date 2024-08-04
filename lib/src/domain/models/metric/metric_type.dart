@@ -72,7 +72,7 @@ class PopulationRange {
 
   Pair<int, int> getPopulationRange(
       {int yearOfBirth = 0, Gender gender = Gender.unknown}) {
-    return Pair(getLow(yearOfBirth: yearOfBirth, gender: gender).round(),
+    return Pair<int, int>(getLow(yearOfBirth: yearOfBirth, gender: gender).round(),
         getHigh(yearOfBirth: yearOfBirth, gender: gender).round());
   }
 

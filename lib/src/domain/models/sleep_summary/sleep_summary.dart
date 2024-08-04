@@ -30,10 +30,10 @@ class SleepSummary {
   @JsonKey(defaultValue: <int>[])
   final List<int> interruptionsNumberOfTaps;
 
-  @JsonKey(
-    fromJson: _truncatedDateTimeFromJson,
-    toJson: _dateTimeToJson,
-  )
+  // @JsonKey(
+  //   fromJson: _truncatedDateTimeFromJson,
+  //   toJson: _dateTimeToJson,
+  // )
 
   SleepSummary({
     required this.sleepStart,
@@ -85,16 +85,16 @@ class SleepSummary {
       return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
     }
   }
-  static ZonedDateTime _truncatedDateTimeFromJson(String? data) {
-    if (data == null) return ZonedDateTime.now().nan;
-    final List<String> split = data.split('=');
-    if (split.length == 1) {
-      return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(data) * 1000);
-    } else {
-      final Timezone tz = Timezone(dumbTZMapper(split[1]));
-      return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
-    }
-  }
+  // static ZonedDateTime _truncatedDateTimeFromJson(String? data) {
+  //   if (data == null) return ZonedDateTime.now().nan;
+  //   final List<String> split = data.split('=');
+  //   if (split.length == 1) {
+  //     return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(data) * 1000);
+  //   } else {
+  //     final Timezone tz = Timezone(dumbTZMapper(split[1]));
+  //     return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
+  //   }
+  // }
 
   static String dumbTZMapper (String tz) {
     switch(tz){

@@ -319,7 +319,6 @@ class QAFlutterPlugin {
     Gender? newGender,
     bool? newSelfDeclaredHealthy,
   }) async {
-    print('in plugin updateBasicInfo');
     return _userRepository.updateBasicInfo(
       newYearOfBirth: newYearOfBirth,
       newGender: newGender,
