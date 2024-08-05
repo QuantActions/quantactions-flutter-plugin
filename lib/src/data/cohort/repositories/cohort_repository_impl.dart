@@ -2,9 +2,11 @@ import '../../../domain/domain.dart';
 import '../../mappers/cohort/cohort_mapper.dart';
 import '../providers/cohort_provider.dart';
 
+/// Cohort Repository Implementation
 class CohortRepositoryImpl implements CohortRepository {
   final CohortProvider _cohortProvider;
 
+  /// Cohort Repository Implementation constructor
   CohortRepositoryImpl({
     required CohortProvider cohortProvider,
   }) : _cohortProvider = cohortProvider;

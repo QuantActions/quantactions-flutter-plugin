@@ -2,30 +2,29 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'journal_event_entity.g.dart';
 
+/// Journal Event Entity fot DB
 @JsonSerializable()
 class JournalEventEntity {
+  /// ID
   final String id;
-  final String publicName;
-  final String iconName;
-  // @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  // final DateTime? created;
-  // @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  // final DateTime? modified;
 
+  /// Public Name
+  final String publicName;
+
+  /// Icon Name
+  final String iconName;
+
+  /// Constructor
   JournalEventEntity({
     required this.id,
     required this.publicName,
     required this.iconName,
-    // required this.created,
-    // required this.modified,
   });
 
+  /// From JSON factory
   factory JournalEventEntity.fromJson(Map<String, dynamic> json) =>
       _$JournalEventEntityFromJson(json);
 
+  /// To JSON method
   Map<String, dynamic> toJson() => _$JournalEventEntityToJson(this);
-
-  // static String _dateTimeToJson(DateTime dateTime) => dateTime.toString();
-  //
-  // static DateTime? _dateTimeFromJson(String? date) => DateTime.parse(date ?? '01.01.1970');
 }

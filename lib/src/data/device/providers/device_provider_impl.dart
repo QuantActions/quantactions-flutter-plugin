@@ -6,6 +6,7 @@ import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'device_provider.dart';
 
+/// Device Provider Implementation.
 class DeviceProviderImpl implements DeviceProvider {
   final MethodChannel _getSubscriptionsMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/subscriptions',
@@ -34,27 +35,33 @@ class DeviceProviderImpl implements DeviceProvider {
   final MethodChannel _keyboardSettingsMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/keyboard_settings',
   );
-  final MethodChannel _updateKeyboardSettingsMethodChannel = const MethodChannel(
+  final MethodChannel _updateKeyboardSettingsMethodChannel =
+      const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/update_keyboard_settings',
   );
   final MethodChannel _updateFCMTokenMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/update_fcm_token',
   );
-  final MethodChannel _coreMotionAuthorizationStatusMethodChannel = const MethodChannel(
+  final MethodChannel _coreMotionAuthorizationStatusMethodChannel =
+      const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/core_motion_authorization_status',
   );
-  final MethodChannel _isHealthKitAuthorizationStatusDeterminedMethodChannel = const MethodChannel(
+  final MethodChannel _isHealthKitAuthorizationStatusDeterminedMethodChannel =
+      const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/is_health_kit_authorization_status_determined',
   );
-  final MethodChannel _requestCoreMotionAuthorizationMethodChannel = const MethodChannel(
+  final MethodChannel _requestCoreMotionAuthorizationMethodChannel =
+      const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/request_core_motion_authorization',
   );
-  final MethodChannel _requestHealthKitAuthorizationMethodChannel = const MethodChannel(
+  final MethodChannel _requestHealthKitAuthorizationMethodChannel =
+      const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/request_health_kit_authorization',
   );
 
   final SDKMethodChannel _sdkMethodChannel;
 
+  /// Device Provider Implementation constructor.
   DeviceProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;
@@ -140,7 +147,8 @@ class DeviceProviderImpl implements DeviceProvider {
   }
 
   @override
-  Future<void> updateKeyboardSettings({required KeyboardSettings keyboardSettings}) {
+  Future<void> updateKeyboardSettings(
+      {required KeyboardSettings keyboardSettings}) {
     return _sdkMethodChannel.callMethodChannel<void>(
       method: SupportedMethods.updateKeyboardSettings,
       methodChannel: _updateKeyboardSettingsMethodChannel,
@@ -150,7 +158,6 @@ class DeviceProviderImpl implements DeviceProvider {
 
   @override
   Future<void> updateFCMToken({required String token}) {
-
     return _sdkMethodChannel.callMethodChannel<void>(
       method: SupportedMethods.updateFCMToken,
       methodChannel: _updateFCMTokenMethodChannel,

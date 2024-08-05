@@ -1,5 +1,6 @@
+/// This class contains all the supported methods for the method channel and event channel.
 class SupportedMethods {
-  //method channel
+  // method channel
   static const String getBasicInfo = 'getBasicInfo';
   static const String getDeviceID = 'getDeviceID';
   static const String getLastTaps = 'getLastTaps';
@@ -20,20 +21,26 @@ class SupportedMethods {
   static const String saveJournalEntry = 'saveJournalEntry';
   static const String deleteJournalEntry = 'deleteJournalEntry';
   static const String sendNote = 'sendNote';
-  static const String recordQuestionnaireResponse = 'recordQuestionnaireResponse';
+  static const String recordQuestionnaireResponse =
+      'recordQuestionnaireResponse';
   static const String init = 'init';
   static const String getConnectedDevices = 'getConnectedDevices';
-  static const String openBatteryOptimisationSettings = 'openBatteryOptimisationSettings';
+  static const String openBatteryOptimisationSettings =
+      'openBatteryOptimisationSettings';
   static const String getPassword = 'getPassword';
   static const String getIdentityId = 'getIdentityId';
   static const String subscriptions = 'subscriptions';
   static const String keyboardSettings = 'keyboardSettings';
   static const String updateKeyboardSettings = 'updateKeyboardSettings';
   static const String updateFCMToken = 'updateFCMToken';
-  static const String coreMotionAuthorizationStatus = 'coreMotionAuthorizationStatus';
-  static const String isHealthKitAuthorizationStatusDetermined = 'isHealthKitAuthorizationStatusDetermined';
-  static const String requestCoreMotionAuthorization = 'requestCoreMotionAuthorization';
-  static const String requestHealthKitAuthorization = 'requestHealthKitAuthorization';
+  static const String coreMotionAuthorizationStatus =
+      'coreMotionAuthorizationStatus';
+  static const String isHealthKitAuthorizationStatusDetermined =
+      'isHealthKitAuthorizationStatusDetermined';
+  static const String requestCoreMotionAuthorization =
+      'requestCoreMotionAuthorization';
+  static const String requestHealthKitAuthorization =
+      'requestHealthKitAuthorization';
 
   //event channel
   static const String getCohortList = 'getCohortList';

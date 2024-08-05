@@ -6,6 +6,7 @@ import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'user_provider.dart';
 
+/// User Provider Implementation
 class UserProviderImpl implements UserProvider {
   final MethodChannel _initMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/init',
@@ -22,6 +23,7 @@ class UserProviderImpl implements UserProvider {
 
   final SDKMethodChannel _sdkMethodChannel;
 
+  /// User Provider Implementation
   UserProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;
@@ -29,7 +31,7 @@ class UserProviderImpl implements UserProvider {
   @override
   Future<bool> init({
     required String apiKey,
-    int? age,
+    int? yearOfBirth,
     Gender? gender,
     bool? selfDeclaredHealthy,
     String? identityId,
@@ -40,7 +42,7 @@ class UserProviderImpl implements UserProvider {
       methodChannel: _initMethodChannel,
       params: <String, dynamic>{
         'apiKey': apiKey,
-        'age': age,
+        'age': yearOfBirth,
         'gender': gender?.id,
         'selfDeclaredHealthy': selfDeclaredHealthy,
         'identityId': identityId,

@@ -7,6 +7,7 @@ import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'metric_provider.dart';
 
+/// Metric Provider Implementation
 class MetricProviderImpl implements MetricProvider {
   final HashMap<MetricType, EventChannel> _eventChannels =
       HashMap<MetricType, EventChannel>.fromIterables(
@@ -22,12 +23,14 @@ class MetricProviderImpl implements MetricProvider {
           ? Metric.values[index]
           : Trend.values[index - Metric.values.length] as MetricType),
     )
-        .map((MetricType metricType) => EventChannel('qa_flutter_plugin_stream/${metricType.id}'))
+        .map((MetricType metricType) =>
+            EventChannel('qa_flutter_plugin_stream/${metricType.id}'))
         .toList(),
   );
 
   final SDKMethodChannel _sdkMethodChannel;
 
+  /// Metric Provider Implementation constructor
   MetricProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;
@@ -36,7 +39,7 @@ class MetricProviderImpl implements MetricProvider {
   Stream<dynamic> getMetric({
     required MetricType metric,
     required MetricInterval interval,
-}) {
+  }) {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getMetric,
       eventChannel: _eventChannels[metric]!,

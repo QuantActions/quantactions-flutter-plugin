@@ -5,6 +5,7 @@ import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'data_collection_provider.dart';
 
+/// Data collection provider implementation.
 class DataCollectionProviderImpl implements DataCollectionProvider {
   final MethodChannel _dataCollectionRunningMethodChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/data_collection_running',
@@ -12,6 +13,7 @@ class DataCollectionProviderImpl implements DataCollectionProvider {
 
   final SDKMethodChannel _sdkMethodChannel;
 
+  /// Data collection provider implementation.
   DataCollectionProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;

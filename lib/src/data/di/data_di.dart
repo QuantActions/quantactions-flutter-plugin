@@ -9,9 +9,12 @@ import '../permission/di/permission_di.dart';
 import '../questionnaire/di/questionnaire_di.dart';
 import '../user/di/user_di.dart';
 
+/// Data Dependency Injection
 final DataDI dataDI = DataDI();
 
+/// Data Dependency Injection
 class DataDI {
+  /// Initialize data dependencies
   void initDependencies() {
     appLocator.registerSingleton<SDKMethodChannel>(
       SDKMethodChannel(),

@@ -5,6 +5,7 @@ import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'permission_provider.dart';
 
+/// Permission Provider Implementation
 class PermissionProviderImpl implements PermissionProvider {
   final SDKMethodChannel _sdkMethodChannel;
 
@@ -20,11 +21,13 @@ class PermissionProviderImpl implements PermissionProvider {
     '${MethodChannelConsts.mainMethodChannel}/can_usage',
   );
 
-  final MethodChannel _requestOverlayPermissionMethodChannel = const MethodChannel(
+  final MethodChannel _requestOverlayPermissionMethodChannel =
+      const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/request_overlay_permission',
   );
 
-  final MethodChannel _requestUsagePermissionMethodChannel = const MethodChannel(
+  final MethodChannel _requestUsagePermissionMethodChannel =
+      const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/request_usage_permission',
   );
 

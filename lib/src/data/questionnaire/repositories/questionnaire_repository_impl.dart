@@ -11,7 +11,8 @@ class QuestionnaireRepositoryImpl implements QuestionnaireRepository {
 
   @override
   Stream<List<Questionnaire>> getQuestionnairesList() {
-    final Stream<dynamic> stream = _questionnaireProvider.getQuestionnairesList();
+    final Stream<dynamic> stream =
+        _questionnaireProvider.getQuestionnairesList();
 
     return QuestionnaireMapper.fromStream(stream);
   }

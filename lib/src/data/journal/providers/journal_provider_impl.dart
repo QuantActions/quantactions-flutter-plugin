@@ -9,6 +9,7 @@ import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'journal_provider.dart';
 
+/// Journal Provider Implementation.
 class JournalProviderImpl implements JournalProvider {
   final MethodChannel _getJournalEventKindsEventChannel = const MethodChannel(
     '${MethodChannelConsts.mainMethodChannel}/get_journal_event_kinds',
@@ -28,6 +29,7 @@ class JournalProviderImpl implements JournalProvider {
 
   final SDKMethodChannel _sdkMethodChannel;
 
+  /// Journal Provider Implementation constructor.
   JournalProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;

@@ -10,19 +10,38 @@ import 'date_time_extension.dart';
 part 'time_series.g.dart';
 part 'time_series_extension.dart';
 
+/// Utility class to hold a pair of lists, one with the score values and one with the timestamps
+/// @property timestamps timestamps relative to the score, are always normalized to the CURRENT local
+/// time zone of the device
+///
 @JsonSerializable()
 class TimeSeries<T> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
+
+  /// Values over time, can be a double or a more complex object
   final List<T> values;
+
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
+
+  /// Timestamps relative to the values, are always normalized to the CURRENT local time zone of the device
   final List<ZonedDateTime> timestamps;
+
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
+
+  /// Lower bound of the confidence interval
   final List<T> confidenceIntervalLow;
+
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
+
+  /// Upper bound of the confidence interval
   final List<T> confidenceIntervalHigh;
+
   @JsonKey(fromJson: _dataFromJson<double>, toJson: _dataToJson<double>)
+
+  /// Confidence of the values
   final List<double> confidence;
 
+  /// Constructor
   TimeSeries({
     required this.values,
     required this.timestamps,
@@ -31,8 +50,11 @@ class TimeSeries<T> {
     required this.confidence,
   });
 
-  factory TimeSeries.fromJson(Map<String, dynamic> json) => _$TimeSeriesFromJson<T>(json);
+  /// Create a TimeSeries object from a json
+  factory TimeSeries.fromJson(Map<String, dynamic> json) =>
+      _$TimeSeriesFromJson<T>(json);
 
+  /// Convert the TimeSeries object to a json
   Map<String, dynamic> toJson() {
     return _$TimeSeriesToJson<T>(this);
   }
@@ -48,31 +70,30 @@ class TimeSeries<T> {
   static List<String> _dateTimeToJson(List<ZonedDateTime> dateTime) =>
       dateTime.map((ZonedDateTime dateTime) => dateTime.toString()).toList();
 
-  static List<ZonedDateTime> _dateTimeFromJson(List<dynamic> data) => data
-      .map<ZonedDateTime>((dynamic item) {
+  static List<ZonedDateTime> _dateTimeFromJson(List<dynamic> data) =>
+      data.map<ZonedDateTime>((dynamic item) {
         // print(item);
         final List<String> split = (item as String).split('=');
         if (split.length == 1) {
-          return ZonedDateTime.fromEpochMilliseconds(Timezone.now(), int.parse(item) * 1000);
-        } else  {
-          if (split.length == 2){
+          return ZonedDateTime.fromEpochMilliseconds(
+              Timezone.now(), int.parse(item) * 1000);
+        } else {
+          if (split.length == 2) {
             final Timezone tz = Timezone(dumbTZMapper(split[1]));
-            return ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
+            return ZonedDateTime.fromEpochMilliseconds(
+                tz, int.parse(split[0]) * 1000);
           } else {
-
             final Timezone tz = Timezone(dumbTZMapper(split[1]));
-            final ZonedDateTime a = ZonedDateTime.fromEpochMilliseconds(tz, int.parse(split[0]) * 1000);
+            final ZonedDateTime a = ZonedDateTime.fromEpochMilliseconds(
+                tz, int.parse(split[0]) * 1000);
             return a.truncate(to: DateUnit.days);
           }
-
-
-
         }
-      })
-      .toList();
+      }).toList();
 
-  static String dumbTZMapper (String tz) {
-    switch(tz){
+  /// A naive timezone mapper
+  static String dumbTZMapper(String tz) {
+    switch (tz) {
       case 'GMT+0:00':
         return 'Etc/GMT';
       case 'GMT+1:00':
@@ -124,6 +145,7 @@ class TimeSeries<T> {
     }
   }
 
+  /// Empty constructor
   factory TimeSeries.empty() {
     return TimeSeries<T>(
       values: List<T>.empty(),
@@ -166,7 +188,8 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
         return double.nan as T;
       } else {
         return json
-            .map<double?>((dynamic item) => item == null ? double.nan : checkDouble(item))
+            .map<double?>(
+                (dynamic item) => item == null ? double.nan : checkDouble(item))
             .cast<double>()
             .toList();
       }
@@ -199,12 +222,16 @@ class _QATimeSeriesConverter<T> implements JsonConverter<T, dynamic> {
       return value.toDouble();
     }
   }
-
 }
 
-
-
-TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays) {
+/// Use this function to fill missing days (the function adds NaNs) both in the future and in the
+/// past (up to the specified number of days in the past). Since the SDK does not return a value
+/// for the score in a day where the confidence it too low, this function can be useful to fill
+/// in blanks for UI/UX purposes.
+/// [timeSeries] the current [TimeSeries]
+/// [rewindDays] how many days to fill in in the past
+TimeSeries<double> fillMissingDays(
+    TimeSeries<double> timeSeries, int rewindDays) {
   final List<ZonedDateTime> newTimestamps = <ZonedDateTime>[];
   final List<double> newValues = <double>[];
   final List<double> newConfidenceIntervalLow = <double>[];
@@ -219,9 +246,7 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays
   // print(prevDate);
   // print(timeSeries.timestamps.isEmpty);
   if (timeSeries.timestamps.isEmpty) {
-    final int nMissingDays = currentDay
-        .difference(prevDate)
-        .inDays - 1;
+    final int nMissingDays = currentDay.difference(prevDate).inDays - 1;
     // print('Nmising days: $nMissingDays');
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
@@ -234,9 +259,8 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays
   // print(newTimestamps.length);
 
   for (int i = 0; i < timeSeries.values.length; i++) {
-    final int nMissingDays = timeSeries.timestamps[i]
-        .difference(prevDate)
-        .inDays - 1;
+    final int nMissingDays =
+        timeSeries.timestamps[i].difference(prevDate).inDays - 1;
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(double.nan);
@@ -274,9 +298,14 @@ TimeSeries<double> fillMissingDays(TimeSeries<double> timeSeries, int rewindDays
   );
 }
 
-// now I need a similar fillMissing function for TimeSeries<SleepSummary> and TimeSeries<ScreenTimeAggregate>
-
-TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> timeSeries , int rewindDays) {
+/// Use this function to fill missing days (the function adds NaNs) both in the future and in the
+/// past (up to the specified number of days in the past). Since the SDK does not return a value
+/// for the score in a day where the confidence it too low, this function can be useful to fill
+/// in blanks for UI/UX purposes.
+/// [timeSeries] the current [TimeSeries]
+/// [rewindDays] how many days to fill in in the past
+TimeSeries<SleepSummary> fillMissingDaysSleepSummary(
+    TimeSeries<SleepSummary> timeSeries, int rewindDays) {
   final List<ZonedDateTime> newTimestamps = <ZonedDateTime>[];
   final List<SleepSummary> newValues = <SleepSummary>[];
   final List<SleepSummary> newConfidenceIntervalLow = <SleepSummary>[];
@@ -290,9 +319,7 @@ TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> ti
       : currentDay.minus(days: rewindDays);
 
   if (timeSeries.timestamps.isEmpty) {
-    final int nMissingDays = currentDay
-        .difference(prevDate)
-        .inDays - 1;
+    final int nMissingDays = currentDay.difference(prevDate).inDays - 1;
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(SleepSummary.emptySummary());
@@ -303,9 +330,8 @@ TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> ti
   }
 
   for (int i = 0; i < timeSeries.values.length; i++) {
-    final int nMissingDays = timeSeries.timestamps[i]
-        .difference(prevDate)
-        .inDays - 1;
+    final int nMissingDays =
+        timeSeries.timestamps[i].difference(prevDate).inDays - 1;
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(SleepSummary.emptySummary());
@@ -323,9 +349,7 @@ TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> ti
 
   // Adding missing days up to today
   final int nMissingFutureDays = newTimestamps.isNotEmpty
-      ? newTimestamps.last
-      .difference(currentDay)
-      .inDays
+      ? newTimestamps.last.difference(currentDay).inDays
       : 0;
   final ZonedDateTime lastValue = newTimestamps.last;
   for (int j = 0; j < nMissingFutureDays; j++) {
@@ -343,14 +367,22 @@ TimeSeries<SleepSummary> fillMissingDaysSleepSummary(TimeSeries<SleepSummary> ti
     confidenceIntervalHigh: newConfidenceIntervalHigh,
     confidence: newConfidence,
   );
-
 }
 
-TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<ScreenTimeAggregate> timeSeries , int rewindDays) {
+/// Use this function to fill missing days (the function adds NaNs) both in the future and in the
+/// past (up to the specified number of days in the past). Since the SDK does not return a value
+/// for the score in a day where the confidence it too low, this function can be useful to fill
+/// in blanks for UI/UX purposes.
+/// [timeSeries] the current [TimeSeries]
+/// [rewindDays] how many days to fill in in the past
+TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(
+    TimeSeries<ScreenTimeAggregate> timeSeries, int rewindDays) {
   final List<ZonedDateTime> newTimestamps = <ZonedDateTime>[];
   final List<ScreenTimeAggregate> newValues = <ScreenTimeAggregate>[];
-  final List<ScreenTimeAggregate> newConfidenceIntervalLow = <ScreenTimeAggregate>[];
-  final List<ScreenTimeAggregate> newConfidenceIntervalHigh = <ScreenTimeAggregate>[];
+  final List<ScreenTimeAggregate> newConfidenceIntervalLow =
+      <ScreenTimeAggregate>[];
+  final List<ScreenTimeAggregate> newConfidenceIntervalHigh =
+      <ScreenTimeAggregate>[];
   final List<double> newConfidence = <double>[];
   final ZonedDateTime currentDay = ZonedDateTime.now();
   // print('Current day is $currentDay [screen agg]');
@@ -360,9 +392,7 @@ TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<Sc
       : currentDay.subtract(Duration(days: rewindDays));
 
   if (timeSeries.timestamps.isEmpty) {
-    final int nMissingDays = currentDay
-        .difference(prevDate)
-        .inDays - 1;
+    final int nMissingDays = currentDay.difference(prevDate).inDays - 1;
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(ScreenTimeAggregate.empty());
@@ -373,9 +403,8 @@ TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<Sc
   }
 
   for (int i = 0; i < timeSeries.values.length; i++) {
-    final int nMissingDays = timeSeries.timestamps[i]
-        .difference(prevDate)
-        .inDays - 1;
+    final int nMissingDays =
+        timeSeries.timestamps[i].difference(prevDate).inDays - 1;
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(ScreenTimeAggregate.empty());
@@ -393,9 +422,7 @@ TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<Sc
 
   // Adding missing days up to today
   final int nMissingFutureDays = newTimestamps.isNotEmpty
-      ? newTimestamps.last
-      .difference(currentDay)
-      .inDays
+      ? newTimestamps.last.difference(currentDay).inDays
       : 0;
   final ZonedDateTime lastValue = newTimestamps.last;
   for (int j = 0; j < nMissingFutureDays; j++) {
@@ -414,9 +441,15 @@ TimeSeries<ScreenTimeAggregate> fillMissingDaysScreenTimeAggregate(TimeSeries<Sc
     confidence: newConfidence,
   );
 }
-// I need a fill missing days function for TrendHolder
 
-TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeSeries , int rewindDays) {
+/// Use this function to fill missing days (the function adds NaNs) both in the future and in the
+/// past (up to the specified number of days in the past). Since the SDK does not return a value
+/// for the score in a day where the confidence it too low, this function can be useful to fill
+/// in blanks for UI/UX purposes.
+/// [timeSeries] the current [TimeSeries]
+/// [rewindDays] how many days to fill in in the past
+TimeSeries<TrendHolder> fillMissingDaysTrendHolder(
+    TimeSeries<TrendHolder> timeSeries, int rewindDays) {
   final List<ZonedDateTime> newTimestamps = <ZonedDateTime>[];
   final List<TrendHolder> newValues = <TrendHolder>[];
   final List<TrendHolder> newConfidenceIntervalLow = <TrendHolder>[];
@@ -430,9 +463,7 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
       : currentDay.subtract(Duration(days: rewindDays));
 
   if (timeSeries.timestamps.isEmpty) {
-    final int nMissingDays = currentDay
-        .difference(prevDate)
-        .inDays - 1;
+    final int nMissingDays = currentDay.difference(prevDate).inDays - 1;
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(TrendHolder.empty());
@@ -443,9 +474,8 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
   }
 
   for (int i = 0; i < timeSeries.values.length; i++) {
-    final int nMissingDays = timeSeries.timestamps[i]
-        .difference(prevDate)
-        .inDays - 1;
+    final int nMissingDays =
+        timeSeries.timestamps[i].difference(prevDate).inDays - 1;
     for (int j = 0; j < nMissingDays; j++) {
       newTimestamps.add(prevDate.add(Duration(days: j + 1)));
       newValues.add(TrendHolder.empty());
@@ -463,9 +493,7 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
 
   // Adding missing days up to today
   final int nMissingFutureDays = newTimestamps.isNotEmpty
-      ? newTimestamps.last
-      .difference(currentDay)
-      .inDays
+      ? newTimestamps.last.difference(currentDay).inDays
       : 0;
   final ZonedDateTime lastValue = newTimestamps.last;
   for (int j = 0; j < nMissingFutureDays; j++) {
@@ -485,85 +513,8 @@ TimeSeries<TrendHolder> fillMissingDaysTrendHolder(TimeSeries<TrendHolder> timeS
   );
 }
 
-// and also a takeLast function for TrendHolder
-
-// TimeSeries<TrendHolder> takeLastTrendHolder(TimeSeries<TrendHolder> timeSeries, int n) {
-//
-//   final timeSeries2 = fillMissingDaysTrendHolder(timeSeries, n);
-//
-//   return TimeSeries<TrendHolder>(
-//     values: timeSeries2.values.sublist(timeSeries2.values.length - n),
-//     timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
-//     confidenceIntervalLow:
-//     timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
-//     confidenceIntervalHigh:
-//     timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
-//     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
-//   );
-// }
-//
-//
-// TimeSeries<double> takeLast(TimeSeries<double> timeSeries, int n) {
-//
-//   final timeSeries2 = fillMissingDays(timeSeries, n);
-//
-//   return TimeSeries<double>(
-//     values: timeSeries2.values.sublist(timeSeries2.values.length - n),
-//     timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
-//     confidenceIntervalLow:
-//     timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
-//     confidenceIntervalHigh:
-//     timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
-//     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
-//   );
-// }
-//
-// // now I need the similar function for TimeSeries<SleepSummary> and TimeSeries<ScreenTimeAggregate>
-//
-// TimeSeries<SleepSummary> takeLastSleepSummary(TimeSeries<SleepSummary> timeSeries, int n) {
-//
-//   final timeSeries2 = fillMissingDaysSleepSummary(timeSeries, n);
-//
-//   return TimeSeries<SleepSummary>(
-//     values: timeSeries2.values.sublist(timeSeries2.values.length - n),
-//     timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
-//     confidenceIntervalLow:
-//     timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
-//     confidenceIntervalHigh:
-//     timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
-//     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
-//   );
-// }
-//
-// TimeSeries<ScreenTimeAggregate> takeLastScreenTimeAggregate(TimeSeries<ScreenTimeAggregate> timeSeries, int n) {
-//
-//   final timeSeries2 = fillMissingDaysScreenTimeAggregate(timeSeries, n);
-//
-//   return TimeSeries<ScreenTimeAggregate>(
-//     values: timeSeries2.values.sublist(timeSeries2.values.length - n),
-//     timestamps: timeSeries2.timestamps.sublist(timeSeries2.timestamps.length - n),
-//     confidenceIntervalLow:
-//     timeSeries2.confidenceIntervalLow.sublist(timeSeries2.confidenceIntervalLow.length - n),
-//     confidenceIntervalHigh:
-//     timeSeries2.confidenceIntervalHigh.sublist(timeSeries2.confidenceIntervalHigh.length - n),
-//     confidence: timeSeries2.confidence.sublist(timeSeries2.confidence.length - n),
-//   );
-// }
-
-// an interface for the time series objects that allows to check if the object is nan
+/// an interface for the time series objects that allows to check if the object is nan
 abstract class TimeSeriesObjectNan {
+  /// check if the object is nan
   bool isNan();
 }
-
-// extension ExtractWeeklyAverages on TimeSeries<SleepSummary>  {
-//
-//   TimeSeries<SleepSummary> extractWeeklyAverages() {
-//     // Group timestamps and values by the start of the week (Sunday)
-//     final a = zip([timestamps, values]).groupListsBy((pair) => (pair[0] as DateTime).fir);
-//
-//   }
-//
-//
-// }
-
-

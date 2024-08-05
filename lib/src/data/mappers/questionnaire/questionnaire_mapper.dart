@@ -11,7 +11,8 @@ class QuestionnaireMapper {
 
   static List<Questionnaire> fromList(List<dynamic> list) {
     return list
-        .map((dynamic json) => Questionnaire.fromJson(json as Map<String, dynamic>))
+        .map((dynamic json) =>
+            Questionnaire.fromJson(json as Map<String, dynamic>))
         .toList();
   }
 }

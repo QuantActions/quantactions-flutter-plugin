@@ -34,7 +34,8 @@ class MockDataProvider {
             SupportedMethods.pauseDataCollection ||
             SupportedMethods.updateBasicInfo:
         return;
-      case SupportedMethods.getJournalEntry || SupportedMethods.saveJournalEntry:
+      case SupportedMethods.getJournalEntry ||
+            SupportedMethods.saveJournalEntry:
         return _getJournalEntry();
       case SupportedMethods.getStatSampleAsync:
         if (metricType == null) return;
@@ -43,19 +44,21 @@ class MockDataProvider {
       case SupportedMethods.getPassword:
         return faker.randomGenerator.string(16, min: 16);
 
-      case SupportedMethods.subscriptions: {
-        return jsonEncode(<Subscription>[
-          SubscriptionFactory().generateFake(),
-          SubscriptionFactory().generateFake(),
-        ]);
-      }
+      case SupportedMethods.subscriptions:
+        {
+          return jsonEncode(<Subscription>[
+            SubscriptionFactory().generateFake(),
+            SubscriptionFactory().generateFake(),
+          ]);
+        }
 
       //methods for event channel
       case SupportedMethods.getCohortList:
         return _getCohortList();
       case SupportedMethods.subscribe:
         return _getSubscriptionWithQuestionnaires();
-      case SupportedMethods.journalEntries || SupportedMethods.journalEntriesSample:
+      case SupportedMethods.journalEntries ||
+            SupportedMethods.journalEntriesSample:
         return _getJournalEntries(length: 10);
       case SupportedMethods.journalEventKinds:
         return _getJournalEventEntityList();

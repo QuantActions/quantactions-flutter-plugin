@@ -4,22 +4,24 @@ import '../../../domain/domain.dart';
 import '../../mappers/time_series/time_series_mapper.dart';
 import '../providers/metric_provider.dart';
 
+/// Metric Repository Implementation
 class MetricRepositoryImpl implements MetricRepository {
   final MetricProvider _metricProvider;
 
+  /// Metric Repository Implementation constructor
   MetricRepositoryImpl({
     required MetricProvider metricProvider,
   }) : _metricProvider = metricProvider;
 
   @override
   Stream<TimeSeries<dynamic>> getMetric({
-  required MetricType metric,
-  required MetricInterval interval,
-}) {
+    required MetricType metric,
+    required MetricInterval interval,
+  }) {
     return _mapStream(
       stream: _metricProvider.getMetric(
-          metric: metric,
-          interval: interval,
+        metric: metric,
+        interval: interval,
       ),
       metric: metric,
     );

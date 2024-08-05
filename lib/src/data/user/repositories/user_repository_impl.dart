@@ -3,9 +3,11 @@ import 'dart:convert';
 import '../../../domain/domain.dart';
 import '../providers/user_provider.dart';
 
+/// User Repository Implementation
 class UserRepositoryImpl implements UserRepository {
   final UserProvider _userProvider;
 
+  /// User Repository Implementation constructor
   UserRepositoryImpl({
     required UserProvider userProvider,
   }) : _userProvider = userProvider;
@@ -13,7 +15,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<bool> init({
     required String apiKey,
-    int? age,
+    int? yearOfBirth,
     Gender? gender,
     bool? selfDeclaredHealthy,
     String? identityId,
@@ -21,7 +23,7 @@ class UserRepositoryImpl implements UserRepository {
   }) async {
     return _userProvider.init(
       apiKey: apiKey,
-      age: age,
+      yearOfBirth: yearOfBirth,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
       identityId: identityId,

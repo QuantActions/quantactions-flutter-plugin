@@ -7,9 +7,11 @@ import '../../mappers/journal_entry/journal_event_entity_mapper.dart';
 import '../../mappers/journal_entry/journal_stream_mapper.dart';
 import '../providers/journal_provider.dart';
 
+/// Journal Repository Implementation.
 class JournalRepositoryImpl implements JournalRepository {
   final JournalProvider _journalProvider;
 
+  /// Journal Repository Implementation constructor.
   JournalRepositoryImpl({
     required JournalProvider journalProvider,
   }) : _journalProvider = journalProvider;
@@ -65,7 +67,8 @@ class JournalRepositoryImpl implements JournalRepository {
   Future<List<JournalEntry>> getJournalEntriesSample({
     required String apiKey,
   }) async {
-    final String json = await _journalProvider.getJournalEntriesSample(apiKey: apiKey);
+    final String json =
+        await _journalProvider.getJournalEntriesSample(apiKey: apiKey);
 
     return JournalEntryMapper.fromList(jsonDecode(json));
   }

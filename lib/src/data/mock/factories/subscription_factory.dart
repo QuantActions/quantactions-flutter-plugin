@@ -11,7 +11,6 @@ class SubscriptionFactory extends MockModelFactory<Subscription> {
       cohortName: faker.conference.name(),
       premiumFeaturesTTL: faker.randomGenerator.integer(50),
       token: 'ABCDEFGJH',
-
     );
   }
 

@@ -4,7 +4,12 @@ import 'src/domain/domain.dart';
 
 export 'package:quantactions_flutter_plugin/src/domain/models/models.dart';
 
+/// Main QA entry point.
 class QAFlutterPlugin {
+  /// This is the main element one needs to use to access all the functionality of the QA SDK.
+  /// As a singleton it can be called easily from anywhere in the code and gives access to all the
+  /// possible interactions with the QA backend, as well as some functions to retrieve user metrics.
+  /// Since most of the calls are asynchronous server interactions, they return  flows.
   late CohortRepository _cohortRepository;
   late DataCollectionRepository _dataCollectionRepository;
   late DeviceRepository _deviceRepository;
@@ -14,6 +19,7 @@ class QAFlutterPlugin {
   late QuestionnaireRepository _questionnaireRepository;
   late UserRepository _userRepository;
 
+  /// Singleton initialization.
   QAFlutterPlugin() {
     dataDI.initDependencies();
 
@@ -41,7 +47,8 @@ class QAFlutterPlugin {
   Future<String> get identityId => _userRepository.getIdentityId();
 
   ///KeyboardSettings
-  Future<KeyboardSettings> get keyboardSettings => _deviceRepository.keyboardSettings();
+  Future<KeyboardSettings> get keyboardSettings =>
+      _deviceRepository.keyboardSettings();
 
   ///The method is only relevant for iOS
   ///A boolean indicating if the keyboard is added in the system Keyboards settings.
@@ -49,7 +56,6 @@ class QAFlutterPlugin {
   ///from Info.plist file of the keyboard companion app.
   ///Returns nil if the KEYBOARD_EXTENSION_BUNDLE_ID is not added to the Info.plist file properly.
   Future<bool?> get isKeyboardAdded => _deviceRepository.getIsKeyboardAdded();
-
 
   ///Retrieves last taps in requested backward time
   Future<int> getLastTaps({required int backwardDays}) async {
@@ -65,7 +71,8 @@ class QAFlutterPlugin {
   Future<void> updateKeyboardSettings({
     required KeyboardSettings keyboardSettings,
   }) async {
-    await _deviceRepository.updateKeyboardSettings(keyboardSettings: keyboardSettings);
+    await _deviceRepository.updateKeyboardSettings(
+        keyboardSettings: keyboardSettings);
   }
 
   /// Updates current keyboard settings. See [KeyboardSettings] fields for more details.
@@ -118,10 +125,14 @@ class QAFlutterPlugin {
     return _deviceRepository.getSubscriptions();
   }
 
+  /// Return whether the device is registered or not.
   Future<bool> isDeviceRegistered() async {
     return _deviceRepository.isDeviceRegistered();
   }
 
+  /// [Android only] Use this function to open the battery optimization settings
+  /// and prompt the user to disable them such that the background process is
+  /// not killed
   Future<void> openBatteryOptimisationSettings() async {
     await _deviceRepository.openBatteryOptimisationSettings();
   }
@@ -303,7 +314,7 @@ class QAFlutterPlugin {
   }) async {
     return _userRepository.init(
       apiKey: apiKey,
-      age: yearOfBirth,
+      yearOfBirth: yearOfBirth,
       gender: gender,
       selfDeclaredHealthy: selfDeclaredHealthy,
       identityId: identityId,

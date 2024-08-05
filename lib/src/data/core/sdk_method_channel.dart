@@ -10,8 +10,10 @@ import 'sdk_method_channel_core.dart';
 /// An implementation of [SDKMethodChannelCore] that uses method channels.
 class SDKMethodChannel extends SDKMethodChannelCore {
   /// The method channel used to interact with the native platform.
-  final MethodChannel _methodChannel = const MethodChannel(MethodChannelConsts.mainMethodChannel);
+  final MethodChannel _methodChannel =
+      const MethodChannel(MethodChannelConsts.mainMethodChannel);
 
+  /// Calls a method channel with the given [method] and [params].
   Future<T> callMethodChannel<T>({
     required String method,
     Map<String, dynamic>? params,
@@ -28,6 +30,7 @@ class SDKMethodChannel extends SDKMethodChannelCore {
     );
   }
 
+  /// Calls an event channel with the given [method] and [params].
   Stream<dynamic> callEventChannel({
     required String method,
     required EventChannel eventChannel,
@@ -68,7 +71,8 @@ class SDKMethodChannel extends SDKMethodChannelCore {
       }
     } else {
       throw QAError(
-        description: 'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
+        description:
+            'QAFlutterPlugin is not implemented for ${Platform.operatingSystem}',
       );
     }
   }

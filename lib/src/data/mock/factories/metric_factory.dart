@@ -11,7 +11,8 @@ import 'trend_holder_factory.dart';
 class MetricFactory<T> extends MockModelFactory<TimeSeries<T>> {
   @override
   TimeSeries<T> generateFake([dynamic data]) {
-    final DateTime now = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    final DateTime now =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     final List<T> values = List<T>.generate(
       365,
       (int index) => generateData(now.subtract(Duration(days: index))),
@@ -19,14 +20,23 @@ class MetricFactory<T> extends MockModelFactory<TimeSeries<T>> {
 
     return TimeSeries<T>(
       values: values,
-      timestamps: List<ZonedDateTime>.generate(365, (int index) => ZonedDateTime.now().subtract(Duration(days: index)))
+      timestamps: List<ZonedDateTime>.generate(
+              365,
+              (int index) =>
+                  ZonedDateTime.now().subtract(Duration(days: index)))
           .reversed
           .toList(),
       confidenceIntervalLow: (T == double)
-          ? values.map((T e) => (e as double) - Random().nextInt(10)).cast<T>().toList()
+          ? values
+              .map((T e) => (e as double) - Random().nextInt(10))
+              .cast<T>()
+              .toList()
           : values,
       confidenceIntervalHigh: (T == double)
-          ? values.map((T e) => (e as double) + Random().nextInt(10)).cast<T>().toList()
+          ? values
+              .map((T e) => (e as double) + Random().nextInt(10))
+              .cast<T>()
+              .toList()
           : values,
       confidence: List<double>.generate(365, (int index) => generateDouble),
     );

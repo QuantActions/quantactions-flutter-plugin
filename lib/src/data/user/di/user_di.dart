@@ -5,9 +5,12 @@ import '../providers/user_provider.dart';
 import '../providers/user_provider_impl.dart';
 import '../repositories/user_repository_impl.dart';
 
+/// User Dependency Injection instance
 final UserDI userDI = UserDI();
 
+/// User Dependency Injection
 class UserDI {
+  /// Initialize dependencies
   void initDependencies() {
     appLocator.registerSingleton<UserProvider>(
       UserProviderImpl(

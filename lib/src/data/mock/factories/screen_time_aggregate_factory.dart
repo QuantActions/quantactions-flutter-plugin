@@ -15,6 +15,7 @@ class ScreenTimeAggregateFactory extends MockModelFactory<ScreenTimeAggregate> {
 
   @override
   List<ScreenTimeAggregate> generateListFake({required int length}) {
-    return List<ScreenTimeAggregate>.generate(length, (int index) => generateFake());
+    return List<ScreenTimeAggregate>.generate(
+        length, (int index) => generateFake());
   }
 }

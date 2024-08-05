@@ -18,7 +18,8 @@ class SleepSummaryFactory extends MockModelFactory<SleepSummary> {
       interruptionsStart: List<ZonedDateTime>.generate(
         Random().nextInt(2),
         (int index) => data.subtract(const Duration(days: 1)).copyWith(
-              hour: Random().nextInt(24 - sleepStart.hour) + sleepStart.hour + 1,
+              hour:
+                  Random().nextInt(24 - sleepStart.hour) + sleepStart.hour + 1,
             ),
       ),
       interruptionsEnd: List<ZonedDateTime>.generate(

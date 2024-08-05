@@ -5,9 +5,12 @@ import '../providers/journal_provider.dart';
 import '../providers/journal_provider_impl.dart';
 import '../repositories/journal_repository_impl.dart';
 
+/// Journal Dependency Injection instance.
 final JournalDI journalDI = JournalDI();
 
+/// Journal Dependency Injection class.
 class JournalDI {
+  /// Initialize dependencies.
   void initDependencies() {
     appLocator.registerSingleton<JournalProvider>(
       JournalProviderImpl(

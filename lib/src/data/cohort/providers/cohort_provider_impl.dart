@@ -5,6 +5,7 @@ import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'cohort_provider.dart';
 
+/// Cohort Provider Implementation
 class CohortProviderImpl implements CohortProvider {
   final EventChannel _getCohortListEventChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/get_cohort_list',
@@ -12,6 +13,7 @@ class CohortProviderImpl implements CohortProvider {
 
   final SDKMethodChannel _sdkMethodChannel;
 
+  /// Cohort Provider Implementation constructor
   CohortProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;

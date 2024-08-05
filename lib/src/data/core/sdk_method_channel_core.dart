@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'sdk_method_channel.dart';
 
+/// The interface that implementations of sdk_method_channel must implement.
 abstract class SDKMethodChannelCore extends PlatformInterface {
   /// Constructs a TestPluginPlatform.
   SDKMethodChannelCore() : super(token: _token);

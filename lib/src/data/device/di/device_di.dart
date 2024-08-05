@@ -5,9 +5,12 @@ import '../providers/device_provider.dart';
 import '../providers/device_provider_impl.dart';
 import '../repositories/device_repository_impl.dart';
 
+/// Device Dependency Injection instance.
 final DeviceDI deviceDI = DeviceDI();
 
+/// Device Dependency Injection class.
 class DeviceDI {
+  /// Initialize dependencies.
   void initDependencies() {
     appLocator.registerSingleton<DeviceProvider>(
       DeviceProviderImpl(

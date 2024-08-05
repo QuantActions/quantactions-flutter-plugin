@@ -4,9 +4,11 @@ import '../../../domain/domain.dart';
 import '../../mappers/device/subscriptions_mapper.dart';
 import '../providers/device_provider.dart';
 
+/// Device Repository Implementation.
 class DeviceRepositoryImpl implements DeviceRepository {
   final DeviceProvider _deviceProvider;
 
+  /// Device Repository Implementation constructor.
   DeviceRepositoryImpl({
     required DeviceProvider deviceProvider,
   }) : _deviceProvider = deviceProvider;
@@ -72,7 +74,8 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Future<void> updateKeyboardSettings({
     required KeyboardSettings keyboardSettings,
   }) async {
-    await _deviceProvider.updateKeyboardSettings(keyboardSettings: keyboardSettings);
+    await _deviceProvider.updateKeyboardSettings(
+        keyboardSettings: keyboardSettings);
   }
 
   @override
