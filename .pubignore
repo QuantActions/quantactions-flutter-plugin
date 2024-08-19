@@ -47,3 +47,4 @@ app.*.map.json
 pubspec.lock
 github.properties
 example/ios/Podfile.lock
+EnvConfig.xcconfig
