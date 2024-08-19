@@ -1,0 +1,7 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+#include "Generated.xcconfig"
+#include "EnvConfig.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER=com.quantactions.flutterexample
+KEYBOARD_BUNDLE_ID=com.quantactions.flutterexample.QuantActionsKeyboardEstension
+APP_GROUP=group.com.quantactions.flutterexample
