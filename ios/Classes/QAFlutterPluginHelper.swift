@@ -11,7 +11,7 @@ import QuantActionsSDK
 
 class QAFlutterPluginHelper{
     public static let metricChannelNames : [String] = [
-        "sleep", "cognitive", "social", "action", "typing", "sleep_summary", "screen_time_aggregate", "social_taps",
+        "sleep", "cognitive", "social", "action", "typing", "sleep_summary", "screen_time_aggregate", "social_taps", "age",
         "sleep_trend", "cognitive_trend", "social_engagement_trend", "action_trend", "typing_trend", "sleep_length_trend",
         "sleep_interruptions_trend", "social_screen_time_trend", "social_taps_trend", "the_wave_trend",
     ]

@@ -360,7 +360,7 @@ class QAFlutterPluginSerializable : NSObject {
         
         var dataArray : [SerializableJournalEntry] = []
         let eventKinds: [JournalEventKind] = QA.shared.journalEventKinds();
-        
+
         for x in data {
             
             var scores = [String: Int]();

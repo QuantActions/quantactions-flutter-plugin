@@ -32,6 +32,9 @@ class MyScaffold extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Text(
+                      'Behavioural Age: ${ state.doubleMetrics[Metric.behaviouralAge]!.values.lastOrNull ?? 0}',
+                    ),
                     RadioExample(
                       onChange: ({ChartMode mode = ChartMode.days}) {
                         BlocProvider.of<MetricsBloc>(context).add(

@@ -18,6 +18,7 @@ class QAFlutterPluginHelper {
             Metric.SLEEP_SCORE,
             Metric.SCREEN_TIME_AGGREGATE,
             Metric.SOCIAL_TAPS,
+            Metric.BEHAVIOURAL_AGE,
             Trend.COGNITIVE_FITNESS,
             Trend.ACTION_SPEED,
             Trend.SOCIAL_ENGAGEMENT,

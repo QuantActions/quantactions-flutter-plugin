@@ -69,6 +69,8 @@ class MetricsState extends Equatable {
           initialMetrics[Metric.typingSpeed] ?? fillMissingDays(TimeSeries<double>.empty(), 365),
       Metric.socialTaps:
           initialMetrics[Metric.socialTaps] ?? fillMissingDays(TimeSeries<double>.empty(), 365),
+      Metric.behaviouralAge:
+      initialMetrics[Metric.behaviouralAge] ?? fillMissingDays(TimeSeries<double>.empty(), 365),
     };
 
     trends = <Trend, TrendHolder?>{

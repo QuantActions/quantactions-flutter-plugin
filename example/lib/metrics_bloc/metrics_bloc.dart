@@ -32,6 +32,7 @@ class MetricsBloc extends Bloc<MetricsEvent, MetricsState> {
     Trend.socialTaps: false,
     Metric.typingSpeed: false,
     Trend.typingSpeed: false,
+    Metric.behaviouralAge: false,
   };
 
   final Map<MetricType, MetricType> nextInChain = <MetricType, MetricType>{
@@ -42,7 +43,8 @@ class MetricsBloc extends Bloc<MetricsEvent, MetricsState> {
     Metric.sleepSummary: Metric.screenTimeAggregate,
     Metric.screenTimeAggregate: Metric.socialTaps,
     Metric.socialTaps: Metric.typingSpeed,
-    Metric.typingSpeed: Trend.actionSpeed,
+    Metric.typingSpeed: Metric.behaviouralAge,
+    Metric.behaviouralAge: Trend.actionSpeed,
     Trend.actionSpeed: Trend.sleepLength,
     Trend.sleepLength: Trend.socialScreenTime,
     Trend.socialScreenTime: Trend.socialTaps,
@@ -135,7 +137,7 @@ class MetricsBloc extends Bloc<MetricsEvent, MetricsState> {
       if (nextInChain[event.metric] != null &&
           wasCalled[nextInChain[event.metric]] == false) {
         wasCalled[nextInChain[event.metric]!] = true;
-        if (event.metric == Metric.typingSpeed) {
+        if (event.metric == Metric.behaviouralAge) {
           add(ListenTrend(trend: nextInChain[event.metric]! as Trend));
         } else {
           add(ListenMetric(metric: nextInChain[event.metric]! as Metric));
