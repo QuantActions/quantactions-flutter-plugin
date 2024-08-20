@@ -39,7 +39,7 @@ allprojects {
 **Recommended**: You might want to add some Android specific customization (see below and [QuantaActions Android SDK](https://quantactions.github.io/QA-Android-SDK-public/) to do so you will have to add also the direct dependencies to your app/build.gradle file 
 
 ```gradle
-implementation 'com.quantactions:quantactions-android-sdk:1.1.0-rc01'
+implementation 'com.quantactions:quantactions-android-sdk:1.1.0-rc02'
 ```
 
 These steps suffice to correctly integrate the plugin into the app (Android side) but continue reading the [QuantaActions Android SDK](https://quantactions.github.io/QA-Android-SDK-public/) documentations for more information on how to setup the android permissions necessary to start the data collection.
@@ -47,7 +47,7 @@ These steps suffice to correctly integrate the plugin into the app (Android side
 ## Initial (iOS) setup
 
 For iOS you can follow the instructions in the [QuantaActions iOS SDK](https://quantactions.github.io/QA-Swift-SDK/documentation/quantactionssdk) documentation in particular you can start from [adding your `api_key`](https://quantactions.github.io/QA-Swift-SDK/documentation/quantactionssdk/#API-Key).
-Note that you can skip the installation step of the native SDk as this is already do ne by the plugin.
+Note that you can skip the installation step of the native SDk as this is already done by the plugin.
 
 You will se in the native iOS documentation that you will need to add a [custom keyboard extension](https://quantactions.github.io/QA-Swift-SDK/documentation/quantactionssdk/#Custom-Keyboard-Extension) that will be responsible to collect the data.
 
@@ -196,7 +196,7 @@ qa.getSampleMetric(api_key: api_key, metric: Metric.sleepScore, interval: Metric
 ```
 Note that this method needs to be passed the `api_key` since it can be called without the need for the SDk to be initialized.
 
-## 9. Journaling (Android OK, iOS in WIP)
+## 9. Journaling
 
 The SDK allows also to use a journaling function to log a series of entries. Each entry is composed of:
 - A date

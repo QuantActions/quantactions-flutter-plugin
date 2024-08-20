@@ -1,3 +1,7 @@
+## 0.1.8
+
+* New metric Behavioural Age added.
+
 ## 0.1.7
 
 * Updated documentation.
