@@ -18,6 +18,7 @@ class QAFlutterPluginMetricMapper {
                 "sleep_summary" -> Metric.SLEEP_SUMMARY
                 "screen_time_aggregate" -> Metric.SCREEN_TIME_AGGREGATE
                 "social_taps" -> Metric.SOCIAL_TAPS
+                "age" -> Metric.BEHAVIOURAL_AGE
                 "sleep_trend" -> Trend.SLEEP_SCORE
                 "cognitive_trend" -> Trend.COGNITIVE_FITNESS
                 "social_engagement_trend" -> Trend.SOCIAL_ENGAGEMENT
@@ -39,7 +40,7 @@ class QAFlutterPluginMetricMapper {
             }
 
             when (metric) {
-                "sleep", "cognitive", "social", "action", "typing", "social_taps" -> {
+                "sleep", "cognitive", "social", "action", "typing", "social_taps", "age" -> {
                     return QAFlutterPluginSerializable.serializeTimeSeriesDouble(
                         response as TimeSeries.DoubleTimeSeries
 

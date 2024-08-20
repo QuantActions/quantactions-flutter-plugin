@@ -48,7 +48,7 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
         } else {
             participationID = "8ff6b05d-6b3c-4833-9e2f-d40f2fa88543"
         }
-        
+
         let metric = params?["metric"] as? String
         let dateIntervalType = params?["metricInterval"] as? String
         
@@ -193,6 +193,30 @@ class MetricAndTrendEventChannel : NSObject, FlutterStreamHandler {
                                     )
                                 }
                             } catch _ {
+                                DispatchQueue.main.async {
+                                    eventSink(
+                                        QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
+                                    )
+                                }
+                            }
+                        }
+                    case "age":
+                        Task { [participationID] in
+
+                            do {
+                            let result : [DataPoint<DoubleValueElement>]  = try await QA.shared.behavioralAgeMetric(
+                                participationID: participationID,
+                                interval: getDateInterval(dateIntervalType)
+                            )
+                                print("AGE: sending \(result.count) -> \(result.last?.element?.value)")
+                            let a = QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: result as [DataPoint<DoubleValueElement>])
+                            DispatchQueue.main.async {
+                                eventSink(
+                                    a
+                                )
+                            }
+                            } catch let error {
+                                print(error)
                                 DispatchQueue.main.async {
                                     eventSink(
                                         QAFlutterPluginSerializable.serializeTimeSeriesDoubleValueElement(data: [])
