@@ -359,8 +359,7 @@ class QAFlutterPluginSerializable : NSObject {
         let dateFormatter = getSimpleDateTimeFormatter()
         
         var dataArray : [SerializableJournalEntry] = []
-        // FIXME: Real issue when retrieving event kinds
-        let eventKinds: [JournalEventKind] = [] // await QA.shared.journalEventKinds();
+        let eventKinds: [JournalEventKind] = QA.shared.journalEventKinds();
         
         for x in data {
             
@@ -409,8 +408,7 @@ class QAFlutterPluginSerializable : NSObject {
     public static func serializeJournalEntry(data: JournalEntry) async -> String {
         let dateFormatter = getSimpleDateTimeFormatter()
         
-        // FIXME: Real issue when retrieving event kinds
-        let eventKinds: [JournalEventKind] = [] // await QA.shared.journalEventKinds()
+        let eventKinds: [JournalEventKind] = QA.shared.journalEventKinds()
 
         let entry = SerializableJournalEntry(
             id: data.id,
@@ -427,27 +425,7 @@ class QAFlutterPluginSerializable : NSObject {
         return encodeObject(object: entry)
     }
     
-//    public static func serializeJournalEntryFromQAModel (data: JournalEntry) -> String {
-//        let dateFormatter = getSimpleDateTimeFormatter()
-//        let eventKinds = QA.shared.journalEventKinds()
-//        
-//        let serializableObject =  SerializableJournalEntry(
-//            id: data.id,
-//            timestamp: dateFormatter.string(from: data.date),
-//            note: data.note,
-//            events: data.events.map {
-//                journalEntryEvent in
-//                let ee = eventKinds.filter{ek in journalEntryEvent.eventKindID == ek.id}.first;
-//                return serializeJournalEntryEvent(journalEntryEvent: journalEntryEvent, eventName: ee!.publicName, eventIcon: ee!.publicName);
-//            },
-//            scores: [String: Int]()
-//        )
-//        
-//        return encodeObject(object: serializableObject)
-//    }
-    
     public static func serializeJournalEventKind(data: [JournalEventKind]) -> String {
-//        let dateFormatter = getDateTimeFormatter()
         
         var dataArray : [SerializableJournalEventKind] = []
         
