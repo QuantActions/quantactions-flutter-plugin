@@ -22,7 +22,8 @@ dependencies:
 
 ## Initial (Android) setup 
 We recommend using Android Gradle Plugin (AGP) 8.5+ and Kotlin 2.0+.
-In your [<root>/android/build.gradle](./example/android/build.gradle) add the github maven repo containing the QuantActions Android SDK:
+In your [<root>/android/build.gradle](./example/android/build.gradle) add the github maven repo containing the QuantActions Android SDK,
+the repo and the package are public but you still need a github account to access them, it is best to use a personal access token for this:
 
 ```gradle
 allprojects {
@@ -31,6 +32,10 @@ allprojects {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/QuantActions/quantactions-android-sdk")
+            credentials {
+                username = '...'
+                password = '...'
+            }
         }
     }
 }
