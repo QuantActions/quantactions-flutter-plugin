@@ -150,6 +150,12 @@ identityId: identityId,
 password:password
 );
 ```
+
+IMPORTANT NOTE: Since QuantActions does not have any connection with the user identity, data recovery in case of loss or damage of the device is not possible.
+For this reason we suggest storing the QuantActions' `identityId` and `password` together with the user's account info.
+In case of loss of damage of the device, the QuantActions SDK can be initialized on the new device with the user's
+`identityId` and `password` which will restore the data and guarantee no interruptions of metrics between old and new device.
+
 ------------------
 
 ## 5. Setup notes:
