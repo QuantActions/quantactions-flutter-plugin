@@ -19,8 +19,7 @@ dependencies:
   lottie: ^2.7.0
   flutter_timezone: ^1.0.8
 
-  quantactions_flutter_plugin:
-    path: ../../
+  quantactions_flutter_plugin: ^0.1.8
 
   charts:
     path: ../charts

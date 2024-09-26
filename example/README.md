@@ -1,16 +1,18 @@
-# qa_flutter_plugin_example
-
-Demonstrates how to use the qa_flutter_plugin plugin.
-
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This example app shows the minimal setup to use the QuantActions Flutter Plugin.
+It is also useful to test your API KEY 
 
-A few resources to get you started if this is your first Flutter project:
+To setup and successfully run the app you will need to specify the API KEY in two files:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- example/.env
+```bash
+QA_API_KEY=<your_api_key>
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- example/ios/EnvConfig.xcconfig
+```bash
+API_KEY=<your_api_key>
+```
+
+After this you can simply run the app and see sample metrics and sample chart powered by QuantActions.
