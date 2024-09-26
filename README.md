@@ -44,7 +44,7 @@ allprojects {
 **Recommended**: You might want to add some Android specific customization (see below and [QuantaActions Android SDK](https://quantactions.github.io/QA-Android-SDK-public/) to do so you will have to add also the direct dependencies to your app/build.gradle file 
 
 ```gradle
-implementation 'com.quantactions:quantactions-android-sdk:1.1.0-rc02'
+implementation 'com.quantactions:quantactions-android-sdk:1.1.0-rc04'
 ```
 
 These steps suffice to correctly integrate the plugin into the app (Android side) but continue reading the [QuantaActions Android SDK](https://quantactions.github.io/QA-Android-SDK-public/) documentations for more information on how to setup the android permissions necessary to start the data collection.
