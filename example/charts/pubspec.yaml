@@ -18,7 +18,8 @@ dependencies:
   core_ui:
     path: ../core_ui
 
-  quantactions_flutter_plugin: ^0.1.9
+  quantactions_flutter_plugin:
+    path: ../../
 
 dev_dependencies:
   flutter_test:
