@@ -113,4 +113,9 @@ class DeviceRepositoryImpl implements DeviceRepository {
   Future<void> updateFCMToken({required String token}) async {
     await _deviceProvider.updateFCMToken(token: token);
   }
+
+  @override
+  Future<void> syncData() async {
+    await _deviceProvider.syncData();
+  }
 }

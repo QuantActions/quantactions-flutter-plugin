@@ -54,6 +54,16 @@ class VoidMethodChannelHandler(
                         }
                     )
 
+                "syncData" ->
+                    QAFlutterPluginHelper.safeMethodChannel(
+                        result = result,
+                        methodName = "syncData",
+                        method = {
+                            qa.syncData(context)
+                            result.success(true)
+                        }
+                    )
+
                 "deleteJournalEntry" -> {
                     val params = call.arguments as Map<*, *>
 

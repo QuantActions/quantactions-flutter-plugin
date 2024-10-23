@@ -198,4 +198,11 @@ class DeviceProviderImpl implements DeviceProvider {
       methodChannel: _requestHealthKitAuthorizationMethodChannel,
     );
   }
+
+  @override
+  Future<void> syncData() async {
+    await _sdkMethodChannel.callMethodChannel(
+      method: SupportedMethods.syncData,
+    );
+  }
 }
