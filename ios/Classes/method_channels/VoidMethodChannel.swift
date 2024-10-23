@@ -118,6 +118,14 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
                 QA.shared.resumeDataCollection()
                 result(true)
             }
+        case "syncData":
+                    QAFlutterPluginHelper.safeMethodChannel(
+                        result: result,
+                        methodName: "syncData"
+                    ) {
+                        QA.shared.syncData()
+                        result(true)
+                    }
         case "recordQuestionnaireResponse": break
             //TODO: implement when will be ready
         default: break

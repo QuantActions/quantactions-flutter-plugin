@@ -357,4 +357,9 @@ class QAFlutterPlugin {
   Future<AuthorizationStatus> coreMotionAuthorizationStatus() async {
     return _deviceRepository.coreMotionAuthorizationStatus();
   }
+
+  /// Sync Data
+  Future<void> syncData() async {
+    return _deviceRepository.syncData();
+  }
 }
