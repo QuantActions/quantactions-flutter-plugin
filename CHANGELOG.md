@@ -1,3 +1,8 @@
+## 0.2.1-rc01
+
+* [ios] new languages
+* [android] bug fixes
+
 ## 0.2.0
 
 * Bug fixes
