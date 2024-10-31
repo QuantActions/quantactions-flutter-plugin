@@ -9,6 +9,7 @@ import com.quantactions.sdk.TimeSeries
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
@@ -21,23 +22,30 @@ class MetricAndTrendStreamHandler(
     private var qa: QA,
     private var context: Context
 ) : EventChannel.StreamHandler {
-    private var eventSink: EventChannel.EventSink? = null
+    private var mainEventSink: EventChannel.EventSink? = null
 
-    fun register(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    fun destroy() {
+        mainEventSink = null
+    }
+
+    fun register(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding): List<MetricAndTrendStreamHandler> {
         val metricEventChannels = QAFlutterPluginHelper.listOfMetricsAndTrends.map {
             Log.d("QAFlutterPlugin", "Creating event channel for ${it.id}")
             EventChannel(flutterPluginBinding.binaryMessenger, "qa_flutter_plugin_stream/${it.id}")
         }
 
-        metricEventChannels.forEach {
+        val handlers = metricEventChannels.map {
+            val thisHandler = MetricAndTrendStreamHandler(mainScope, ioScope, qa, context)
             it.setStreamHandler(
-                MetricAndTrendStreamHandler(mainScope, ioScope, qa, context)
+                thisHandler
             )
+            thisHandler
         }
+        return handlers
     }
 
     override fun onListen(arguments: Any?, eventSink: EventChannel.EventSink) {
-        this.eventSink = eventSink
+        this.mainEventSink = eventSink
 
         ioScope.launch {
             val params = arguments as Map<*, *>
@@ -45,100 +53,176 @@ class MetricAndTrendStreamHandler(
             val metric = params["metric"] as String
             val metricToAsk = QAFlutterPluginMetricMapper.getMetric(metric)
             val dateIntervalType = params["metricInterval"] as? String
+            val fromLocalDate =
+                getFromDateInterval(dateIntervalType)
+            val toLocalDate = LocalDate.now()
 
-            mainScope.launch {
-                when (params["method"] as? String) {
-                    "getMetricSample" -> {
-                        val apiKey = params["apiKey"] as String?
+            when (params["method"] as? String) {
+                "getMetricSample" -> {
+                    val apiKey = params["apiKey"] as String?
+                    if (apiKey != null) {
+                        val flow = qa.getMetricSample(
+                            context = context,
+                            apiKey = apiKey,
+                            score = metricToAsk,
+                            from = fromLocalDate.atStartOfDay()
+                                .toInstant(ZoneOffset.UTC).toEpochMilli(),
+                            to = toLocalDate.atStartOfDay().plusDays(1)
+                                .toInstant(ZoneOffset.UTC)
+                                .toEpochMilli()
+                        )
 
-                        if (apiKey != null) {
-                            QAFlutterPluginHelper.safeEventChannel(
-                                eventSink = eventSink,
-                                methodName = "getMetricSample",
-                                method = {
-                                    val fromLocalDate = getFromDateInterval(dateIntervalType)
-                                    val toLocalDate = LocalDate.now()
+                        val first = flow.first()
+                        val rewindDays = ChronoUnit.DAYS.between(
+                            fromLocalDate,
+                            toLocalDate
+                        ).toInt() - first.timestamps.size
 
-                                    qa.getMetricSample(
-                                        context = context,
-                                        apiKey = apiKey,
-                                        score = metricToAsk,
-                                        from = fromLocalDate.atStartOfDay()
-                                            .toInstant(ZoneOffset.UTC).toEpochMilli(),
-                                        to = toLocalDate.atStartOfDay().plusDays(1).toInstant(ZoneOffset.UTC)
-                                            .toEpochMilli()
-                                    ).collect {
-                                        val rewindDays = ChronoUnit.DAYS.between(
-                                            fromLocalDate,
-                                            toLocalDate
-                                        ).toInt() - it.timestamps.size
-
-                                        eventSink.success(
-                                            QAFlutterPluginMetricMapper.mapMetricResponse(
-                                                metric, it.fillMissingDays(
-                                                    rewindDays = rewindDays,
-                                                    inplace = true,
-                                                )
-                                            )
-                                        )
-                                    }
-                                },
-                            )
-                        } else {
-                            QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
-                                eventSink = eventSink, methodName = "getMetricSample"
+                        mainScope.launch {
+                            mainEventSink?.success(
+                                QAFlutterPluginMetricMapper.mapMetricResponse(
+                                    metric, first.fillMissingDays(
+                                        rewindDays = rewindDays,
+                                        inplace = true,
+                                    )
+                                )
                             )
                         }
-                    }
+                        return@launch
 
-                    "getMetric" -> {
-                        QAFlutterPluginHelper.safeEventChannel(
-                            eventSink = eventSink,
-                            methodName = "getMetric",
-                            method = {
-//                                eventSink.success(
-//                                    runBlocking {
-//                                        launch {
-                                            val fromLocalDate =
-                                                getFromDateInterval(dateIntervalType)
-                                            val toLocalDate = LocalDate.now()
-
-                                            qa.getMetric(
-                                                score = metricToAsk,
-                                                from = fromLocalDate.atStartOfDay()
-                                                    .toInstant(ZoneOffset.UTC)
-                                                    .toEpochMilli(),
-                                                to = toLocalDate.atStartOfDay().plusDays(30)
-                                                    .toInstant(ZoneOffset.UTC)
-                                                    .toEpochMilli()
-                                            ).collect {
-                                                val rewindDays = ChronoUnit.DAYS.between(
-                                                    fromLocalDate,
-                                                    toLocalDate
-                                                ).toInt() - it.timestamps.size
-
-                                                eventSink.success(
-                                                    QAFlutterPluginMetricMapper.mapMetricResponse(
-                                                        metric, it.fillMissingDays(
-                                                            rewindDays = rewindDays,
-                                                            inplace = true,
-                                                        )
-                                                    )
-                                                )
-                                            }
-//                                        }
-//                                    },
-//                                )
-                            },
+                    } else {
+                        QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
+                            eventSink = eventSink, methodName = "getMetricSample"
                         )
                     }
                 }
+
+                "getMetric" -> {
+                    val flow = qa.getMetric(
+                        score = metricToAsk,
+                        from = fromLocalDate.atStartOfDay()
+                            .toInstant(ZoneOffset.UTC)
+                            .toEpochMilli(),
+                        to = toLocalDate.atStartOfDay().plusDays(30)
+                            .toInstant(ZoneOffset.UTC)
+                            .toEpochMilli()
+                    )
+
+                    val first = flow.first()
+
+                    val rewindDays = ChronoUnit.DAYS.between(
+                        fromLocalDate,
+                        toLocalDate
+                    ).toInt() - first.timestamps.size
+                    mainScope.launch {
+                        mainEventSink?.success(
+                            QAFlutterPluginMetricMapper.mapMetricResponse(
+                                metric, first.fillMissingDays(
+                                    rewindDays = rewindDays,
+                                    inplace = true,
+                                )
+                            )
+                        )
+                    }
+                    return@launch
+                }
+
             }
+
+
+//            when (params["method"] as? String) {
+//                "getMetricSample" -> {
+//                    val apiKey = params["apiKey"] as String?
+//
+//                    if (apiKey != null) {
+//                        QAFlutterPluginHelper.safeEventChannel(
+//                            eventSink = eventSink,
+//                            methodName = "getMetricSample",
+//                            mainScope = mainScope,
+//                            method = {
+//
+//
+//                                qa.getMetricSample(
+//                                    context = context,
+//                                    apiKey = apiKey,
+//                                    score = metricToAsk,
+//                                    from = fromLocalDate.atStartOfDay()
+//                                        .toInstant(ZoneOffset.UTC).toEpochMilli(),
+//                                    to = toLocalDate.atStartOfDay().plusDays(1)
+//                                        .toInstant(ZoneOffset.UTC)
+//                                        .toEpochMilli()
+//                                ).collect {
+//                                    val rewindDays = ChronoUnit.DAYS.between(
+//                                        fromLocalDate,
+//                                        toLocalDate
+//                                    ).toInt() - it.timestamps.size
+//
+//                                    if (mainEventSink == null) return@collect
+//                                    mainScope.launch {
+//                                        mainEventSink?.success(
+//                                            QAFlutterPluginMetricMapper.mapMetricResponse(
+//                                                metric, it.fillMissingDays(
+//                                                    rewindDays = rewindDays,
+//                                                    inplace = true,
+//                                                )
+//                                            )
+//                                        )
+//                                    }
+//                                    return@collect
+//                                }
+//                            },
+//                        )
+//                    } else {
+//                        QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
+//                            eventSink = eventSink, methodName = "getMetricSample"
+//                        )
+//                    }
+//                }
+//
+//                "getMetric" -> {
+//                    QAFlutterPluginHelper.safeEventChannel(
+//                        eventSink = eventSink,
+//                        methodName = "getMetric",
+//                        mainScope = mainScope,
+//                        method = {
+//
+//
+//                            qa.getMetric(
+//                                score = metricToAsk,
+//                                from = fromLocalDate.atStartOfDay()
+//                                    .toInstant(ZoneOffset.UTC)
+//                                    .toEpochMilli(),
+//                                to = toLocalDate.atStartOfDay().plusDays(30)
+//                                    .toInstant(ZoneOffset.UTC)
+//                                    .toEpochMilli()
+//                            ).collect {
+//                                val rewindDays = ChronoUnit.DAYS.between(
+//                                    fromLocalDate,
+//                                    toLocalDate
+//                                ).toInt() - it.timestamps.size
+//                                if (mainEventSink == null) return@collect
+//                                mainScope.launch {
+//                                    mainEventSink?.success(
+//                                        QAFlutterPluginMetricMapper.mapMetricResponse(
+//                                            metric, it.fillMissingDays(
+//                                                rewindDays = rewindDays,
+//                                                inplace = true,
+//                                            )
+//                                        )
+//                                    )
+//                                }
+//                                return@collect
+//                            }
+//                        },
+//                    )
+//                }
+//
+//            }
         }
     }
 
     override fun onCancel(arguments: Any?) {
-        eventSink = null
+        mainEventSink = null
     }
 
     private fun getFromDateInterval(dateIntervalType: String?): LocalDate {

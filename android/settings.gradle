@@ -18,5 +18,5 @@ plugins {
 }
 
 rootProject.name = 'qa_flutter_plugin'
-//include 'qa_sdk'
-//project(':qa_sdk').projectDir = file("${settings.ext.find("localQASDKLocation")}")
+include 'qa_sdk'
+project(':qa_sdk').projectDir = file("${settings.ext.find("localQASDKLocation")}")
