@@ -80,7 +80,7 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        Log.d("QAFlutterPlugin", "setting journal to null")
+        Log.d("QAFlutterPlugin", "Destroying event channels")
         journalChannel.destroy()
         metricChannels.forEach { it.destroy() }
         Log.d("QAFlutterPlugin", "Detached from engine")
@@ -113,7 +113,7 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         GetCohortListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetCohortListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetJournalEventEntityMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
-        journalChannel = GetJournalEntriesStreamHandler(mainScope, qa, context).register(flutterPluginBinding)
+        journalChannel = GetJournalEntriesStreamHandler(ioScope, mainScope, qa).register(flutterPluginBinding)
         GetQuestionnairesListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetJournalEntriesSampleMethodChannelHandler(ioScope, qa, context).register(flutterPluginBinding)
         GetConnectedDevicesMethodChannelHandler(mainScope, qa).register(flutterPluginBinding);

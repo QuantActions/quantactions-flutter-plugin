@@ -5,13 +5,11 @@ import android.util.Log
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginHelper
 import com.quantactions.qa_flutter_plugin.QAFlutterPluginMetricMapper
 import com.quantactions.sdk.QA
-import com.quantactions.sdk.TimeSeries
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Job
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
@@ -23,9 +21,11 @@ class MetricAndTrendStreamHandler(
     private var context: Context
 ) : EventChannel.StreamHandler {
     private var mainEventSink: EventChannel.EventSink? = null
+    private var job: Job? = null
 
     fun destroy() {
         mainEventSink = null
+        job?.cancel()
     }
 
     fun register(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding): List<MetricAndTrendStreamHandler> {
@@ -47,7 +47,7 @@ class MetricAndTrendStreamHandler(
     override fun onListen(arguments: Any?, eventSink: EventChannel.EventSink) {
         this.mainEventSink = eventSink
 
-        ioScope.launch {
+        job = ioScope.launch {
             val params = arguments as Map<*, *>
 
             val metric = params["metric"] as String
@@ -61,7 +61,7 @@ class MetricAndTrendStreamHandler(
                 "getMetricSample" -> {
                     val apiKey = params["apiKey"] as String?
                     if (apiKey != null) {
-                        val flow = qa.getMetricSample(
+                        qa.getMetricSample(
                             context = context,
                             apiKey = apiKey,
                             score = metricToAsk,
@@ -70,25 +70,25 @@ class MetricAndTrendStreamHandler(
                             to = toLocalDate.atStartOfDay().plusDays(1)
                                 .toInstant(ZoneOffset.UTC)
                                 .toEpochMilli()
-                        )
+                        ).collect{
+                            val rewindDays = ChronoUnit.DAYS.between(
+                                fromLocalDate,
+                                toLocalDate
+                            ).toInt() - it.timestamps.size
 
-                        val first = flow.first()
-                        val rewindDays = ChronoUnit.DAYS.between(
-                            fromLocalDate,
-                            toLocalDate
-                        ).toInt() - first.timestamps.size
-
-                        mainScope.launch {
-                            mainEventSink?.success(
-                                QAFlutterPluginMetricMapper.mapMetricResponse(
-                                    metric, first.fillMissingDays(
-                                        rewindDays = rewindDays,
-                                        inplace = true,
+                            mainScope.launch {
+                                mainEventSink?.success(
+                                    QAFlutterPluginMetricMapper.mapMetricResponse(
+                                        metric, it.fillMissingDays(
+                                            rewindDays = rewindDays,
+                                            inplace = true,
+                                        )
                                     )
                                 )
-                            )
+                            }
                         }
-                        return@launch
+
+
 
                     } else {
                         QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
@@ -98,7 +98,7 @@ class MetricAndTrendStreamHandler(
                 }
 
                 "getMetric" -> {
-                    val flow = qa.getMetric(
+                    qa.getMetric(
                         score = metricToAsk,
                         from = fromLocalDate.atStartOfDay()
                             .toInstant(ZoneOffset.UTC)
@@ -106,123 +106,33 @@ class MetricAndTrendStreamHandler(
                         to = toLocalDate.atStartOfDay().plusDays(30)
                             .toInstant(ZoneOffset.UTC)
                             .toEpochMilli()
-                    )
-
-                    val first = flow.first()
-
-                    val rewindDays = ChronoUnit.DAYS.between(
-                        fromLocalDate,
-                        toLocalDate
-                    ).toInt() - first.timestamps.size
-                    mainScope.launch {
-                        mainEventSink?.success(
-                            QAFlutterPluginMetricMapper.mapMetricResponse(
-                                metric, first.fillMissingDays(
-                                    rewindDays = rewindDays,
-                                    inplace = true,
+                    ).collect {
+                        val rewindDays = ChronoUnit.DAYS.between(
+                            fromLocalDate,
+                            toLocalDate
+                        ).toInt() - it.timestamps.size
+                        mainScope.launch {
+                            mainEventSink?.success(
+                                QAFlutterPluginMetricMapper.mapMetricResponse(
+                                    metric, it.fillMissingDays(
+                                        rewindDays = rewindDays,
+                                        inplace = true,
+                                    )
                                 )
                             )
-                        )
+                        }
                     }
-                    return@launch
-                }
 
+
+                }
             }
 
-
-//            when (params["method"] as? String) {
-//                "getMetricSample" -> {
-//                    val apiKey = params["apiKey"] as String?
-//
-//                    if (apiKey != null) {
-//                        QAFlutterPluginHelper.safeEventChannel(
-//                            eventSink = eventSink,
-//                            methodName = "getMetricSample",
-//                            mainScope = mainScope,
-//                            method = {
-//
-//
-//                                qa.getMetricSample(
-//                                    context = context,
-//                                    apiKey = apiKey,
-//                                    score = metricToAsk,
-//                                    from = fromLocalDate.atStartOfDay()
-//                                        .toInstant(ZoneOffset.UTC).toEpochMilli(),
-//                                    to = toLocalDate.atStartOfDay().plusDays(1)
-//                                        .toInstant(ZoneOffset.UTC)
-//                                        .toEpochMilli()
-//                                ).collect {
-//                                    val rewindDays = ChronoUnit.DAYS.between(
-//                                        fromLocalDate,
-//                                        toLocalDate
-//                                    ).toInt() - it.timestamps.size
-//
-//                                    if (mainEventSink == null) return@collect
-//                                    mainScope.launch {
-//                                        mainEventSink?.success(
-//                                            QAFlutterPluginMetricMapper.mapMetricResponse(
-//                                                metric, it.fillMissingDays(
-//                                                    rewindDays = rewindDays,
-//                                                    inplace = true,
-//                                                )
-//                                            )
-//                                        )
-//                                    }
-//                                    return@collect
-//                                }
-//                            },
-//                        )
-//                    } else {
-//                        QAFlutterPluginHelper.returnInvalidParamsEventChannelError(
-//                            eventSink = eventSink, methodName = "getMetricSample"
-//                        )
-//                    }
-//                }
-//
-//                "getMetric" -> {
-//                    QAFlutterPluginHelper.safeEventChannel(
-//                        eventSink = eventSink,
-//                        methodName = "getMetric",
-//                        mainScope = mainScope,
-//                        method = {
-//
-//
-//                            qa.getMetric(
-//                                score = metricToAsk,
-//                                from = fromLocalDate.atStartOfDay()
-//                                    .toInstant(ZoneOffset.UTC)
-//                                    .toEpochMilli(),
-//                                to = toLocalDate.atStartOfDay().plusDays(30)
-//                                    .toInstant(ZoneOffset.UTC)
-//                                    .toEpochMilli()
-//                            ).collect {
-//                                val rewindDays = ChronoUnit.DAYS.between(
-//                                    fromLocalDate,
-//                                    toLocalDate
-//                                ).toInt() - it.timestamps.size
-//                                if (mainEventSink == null) return@collect
-//                                mainScope.launch {
-//                                    mainEventSink?.success(
-//                                        QAFlutterPluginMetricMapper.mapMetricResponse(
-//                                            metric, it.fillMissingDays(
-//                                                rewindDays = rewindDays,
-//                                                inplace = true,
-//                                            )
-//                                        )
-//                                    )
-//                                }
-//                                return@collect
-//                            }
-//                        },
-//                    )
-//                }
-//
-//            }
         }
     }
 
     override fun onCancel(arguments: Any?) {
         mainEventSink = null
+        job?.cancel()
     }
 
     private fun getFromDateInterval(dateIntervalType: String?): LocalDate {
