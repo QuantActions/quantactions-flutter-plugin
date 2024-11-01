@@ -54,6 +54,7 @@ android {
     namespace 'com.quantactions.qa_flutter_plugin'
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -72,11 +73,12 @@ android {
     }
 
     dependencies {
+        coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
         implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
 //        implementation project(':qa_sdk')
-        implementation 'com.quantactions:quantactions-android-sdk:1.1.1-rc03'
+        implementation 'com.quantactions:quantactions-android-sdk:1.1.1-rc05'
         implementation 'com.squareup.moshi:moshi:1.14.0'
         implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'
         implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0'
