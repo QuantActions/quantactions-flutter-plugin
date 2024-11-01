@@ -1,3 +1,7 @@
+## 0.2.1-rc02
+
+* [android] optimized for speed
+
 ## 0.2.1-rc01
 
 * [ios] new languages
