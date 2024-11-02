@@ -53,6 +53,7 @@ class MetricAndTrendStreamHandler(
             val metric = params["metric"] as String
             val metricToAsk = QAFlutterPluginMetricMapper.getMetric(metric)
             val dateIntervalType = params["metricInterval"] as? String
+            val refresh = params["refresh"] as? Boolean
             val fromLocalDate =
                 getFromDateInterval(dateIntervalType)
             val toLocalDate = LocalDate.now()
@@ -105,7 +106,8 @@ class MetricAndTrendStreamHandler(
                             .toEpochMilli(),
                         to = toLocalDate.atStartOfDay().plusDays(30)
                             .toInstant(ZoneOffset.UTC)
-                            .toEpochMilli()
+                            .toEpochMilli(),
+                        refresh = refresh ?: false
                     ).collect {
                         val rewindDays = ChronoUnit.DAYS.between(
                             fromLocalDate,

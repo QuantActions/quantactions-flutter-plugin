@@ -39,6 +39,7 @@ class MetricProviderImpl implements MetricProvider {
   Stream<dynamic> getMetric({
     required MetricType metric,
     required MetricInterval interval,
+    bool refresh = false
   }) {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getMetric,
@@ -46,6 +47,7 @@ class MetricProviderImpl implements MetricProvider {
       params: <String, dynamic>{
         'metric': metric.id,
         'metricInterval': interval.id,
+        'refresh': refresh,
       },
       metricType: metric,
     );
