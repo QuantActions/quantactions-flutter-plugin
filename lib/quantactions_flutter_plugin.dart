@@ -208,10 +208,12 @@ class QAFlutterPlugin {
   Stream<TimeSeries<dynamic>> getMetric({
     required MetricType metric,
     required MetricInterval interval,
+    bool refresh = false,
   }) {
     return _metricRepository.getMetric(
       metric: metric,
       interval: interval,
+      refresh: refresh,
     );
   }
 

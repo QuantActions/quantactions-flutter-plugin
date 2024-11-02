@@ -6,6 +6,7 @@ abstract class MetricProvider {
   Stream<dynamic> getMetric({
     required MetricType metric,
     required MetricInterval interval,
+    bool refresh
   });
 
   /// Get metric sample (stream) for a given metric and interval, expect up-to-date
