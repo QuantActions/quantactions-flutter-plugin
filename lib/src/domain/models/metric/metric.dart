@@ -153,11 +153,10 @@ enum Metric implements MetricType {
 
   /// Behavioral age
   behaviouralAge(
-        id: 'age',
-        code: '003-001-001-007',
-        eta: 21,
-        populationRange: placeholder);
-
+      id: 'age',
+      code: '003-001-001-007',
+      eta: 21,
+      populationRange: placeholder);
 
   @override
   final String id;

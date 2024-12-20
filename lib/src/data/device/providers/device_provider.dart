@@ -52,4 +52,7 @@ abstract class DeviceProvider {
 
   /// [iOS only] Get CoreMotion authorization status.
   Future<int> coreMotionAuthorizationStatus();
+
+  /// Sync data
+  Future<void> syncData();
 }

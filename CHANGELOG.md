@@ -1,3 +1,17 @@
+## 0.2.1
+
+* [android] bumped sdk to 1.1.1
+* [ios] bumped sdk 1.0.5
+
+## 0.2.1-rc02
+
+* [android] optimized for speed
+
+## 0.2.1-rc01
+
+* [ios] new languages
+* [android] bug fixes
+
 ## 0.2.0
 
 * Bug fixes

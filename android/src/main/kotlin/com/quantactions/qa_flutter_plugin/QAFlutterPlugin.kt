@@ -1,41 +1,43 @@
 package com.quantactions.qa_flutter_plugin
 
 import android.app.Activity
+import android.util.Log
 import android.content.Context
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanDrawMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanUsageMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.RequestOverlayPermissionMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.RequestUsagePermissionMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetCohortListStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetJournalEntriesStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.GetQuestionnairesListStreamHandler
 import com.quantactions.qa_flutter_plugin.event_channel_handlers.MetricAndTrendStreamHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.BasicInfoMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.PasswodMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.IdentityIdMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.DataCollectionRunningMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.DeviceIdMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.LastTapsMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEntryMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.InitMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.IsDeviceRegisteredMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.SaveJournalEntryMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.SubscribeMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.VoidMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.DeviceIdMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.GetConnectedDevicesMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.IsDeviceRegisteredMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.LastTapsMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.OpenBatteryOptimisationSettingsChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.SubscribeMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.SubscriptionMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEntriesSampleMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEntryMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.GetJournalEventEntityMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.GetConnectedDevicesMethodChannelHandler
-import com.quantactions.qa_flutter_plugin.method_channel_handlers.device.OpenBatteryOptimisationSettingsChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.journal.SaveJournalEntryMethodChannelHandler
 import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanActivityMethodChannelHandler
-
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanDrawMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.CanUsageMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.RequestOverlayPermissionMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.permission.RequestUsagePermissionMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.BasicInfoMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.IdentityIdMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.InitMethodChannelHandler
+import com.quantactions.qa_flutter_plugin.method_channel_handlers.user.PasswodMethodChannelHandler
+import com.quantactions.sdk.QA
+import io.flutter.embedding.engine.FlutterJNI
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
-
-import com.quantactions.sdk.QA
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 /** TestPlugin */
 class QAFlutterPlugin : FlutterPlugin, ActivityAware {
@@ -49,6 +51,9 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
     // The scope for the UI thread
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private val ioScope = CoroutineScope(Dispatchers.IO)
+
+    private lateinit var journalChannel: GetJournalEntriesStreamHandler
+    private lateinit var metricChannels: List<MetricAndTrendStreamHandler>
 
     private lateinit var qa: QA
 
@@ -74,7 +79,12 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         initChannels(flutterPluginBinding)
     }
 
-    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        Log.d("QAFlutterPlugin", "Destroying event channels")
+        journalChannel.destroy()
+        metricChannels.forEach { it.destroy() }
+        Log.d("QAFlutterPlugin", "Detached from engine")
+    }
 
     private fun getActivity(): Activity {
         return activity;
@@ -99,11 +109,11 @@ class QAFlutterPlugin : FlutterPlugin, ActivityAware {
         RequestUsagePermissionMethodChannelHandler(mainScope, qa, context, this::getActivity).register(flutterPluginBinding);
         SubscribeMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
         SubscriptionMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
-        MetricAndTrendStreamHandler(mainScope, ioScope, qa, context).register(flutterPluginBinding)
+        metricChannels = MetricAndTrendStreamHandler(mainScope, ioScope, qa, context).register(flutterPluginBinding)
         GetCohortListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetCohortListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetJournalEventEntityMethodChannelHandler(ioScope, qa).register(flutterPluginBinding)
-        GetJournalEntriesStreamHandler(mainScope, qa, context).register(flutterPluginBinding)
+        journalChannel = GetJournalEntriesStreamHandler(ioScope, mainScope, qa).register(flutterPluginBinding)
         GetQuestionnairesListStreamHandler(mainScope, qa).register(flutterPluginBinding)
         GetJournalEntriesSampleMethodChannelHandler(ioScope, qa, context).register(flutterPluginBinding)
         GetConnectedDevicesMethodChannelHandler(mainScope, qa).register(flutterPluginBinding);

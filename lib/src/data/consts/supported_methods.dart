@@ -21,6 +21,7 @@ class SupportedMethods {
   static const String saveJournalEntry = 'saveJournalEntry';
   static const String deleteJournalEntry = 'deleteJournalEntry';
   static const String sendNote = 'sendNote';
+  static const String syncData = 'syncData';
   static const String recordQuestionnaireResponse =
       'recordQuestionnaireResponse';
   static const String init = 'init';

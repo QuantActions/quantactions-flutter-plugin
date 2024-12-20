@@ -208,10 +208,12 @@ class QAFlutterPlugin {
   Stream<TimeSeries<dynamic>> getMetric({
     required MetricType metric,
     required MetricInterval interval,
+    bool refresh = false,
   }) {
     return _metricRepository.getMetric(
       metric: metric,
       interval: interval,
+      refresh: refresh,
     );
   }
 
@@ -356,5 +358,10 @@ class QAFlutterPlugin {
   ///CoreMotion [AuthorizationStatus]
   Future<AuthorizationStatus> coreMotionAuthorizationStatus() async {
     return _deviceRepository.coreMotionAuthorizationStatus();
+  }
+
+  /// Sync Data
+  Future<void> syncData() async {
+    return _deviceRepository.syncData();
   }
 }

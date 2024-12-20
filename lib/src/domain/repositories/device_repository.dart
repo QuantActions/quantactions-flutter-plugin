@@ -52,4 +52,7 @@ abstract class DeviceRepository {
 
   /// [iOS only] Get CoreMotion authorization status.
   Future<AuthorizationStatus> coreMotionAuthorizationStatus();
+
+  /// Sync data
+  Future<void> syncData();
 }
