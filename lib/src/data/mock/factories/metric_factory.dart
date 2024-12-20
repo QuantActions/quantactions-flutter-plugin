@@ -8,6 +8,7 @@ import 'screen_time_aggregate_factory.dart';
 import 'sleep_summary_factory.dart';
 import 'trend_holder_factory.dart';
 
+/// Factory for [TimeSeries] model.
 class MetricFactory<T> extends MockModelFactory<TimeSeries<T>> {
   @override
   TimeSeries<T> generateFake([dynamic data]) {
@@ -42,6 +43,7 @@ class MetricFactory<T> extends MockModelFactory<TimeSeries<T>> {
     );
   }
 
+  /// Generate data for [TimeSeries].
   T generateData(DateTime dateTime) {
     if (T == TrendHolder) {
       return TrendHolderFactory().generateFake() as T;
