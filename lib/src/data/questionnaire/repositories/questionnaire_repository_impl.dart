@@ -2,9 +2,11 @@ import '../../../domain/domain.dart';
 import '../../mappers/questionnaire/questionnaire_mapper.dart';
 import '../providers/questionnaire_provider.dart';
 
+/// Repository for Questionnaire.
 class QuestionnaireRepositoryImpl implements QuestionnaireRepository {
   final QuestionnaireProvider _questionnaireProvider;
 
+  /// Constructor for [QuestionnaireRepositoryImpl].
   QuestionnaireRepositoryImpl({
     required QuestionnaireProvider questionnaireProvider,
   }) : _questionnaireProvider = questionnaireProvider;

@@ -1,6 +1,7 @@
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 
+/// Factory for [Subscription] model.
 class SubscriptionFactory extends MockModelFactory<Subscription> {
   @override
   Subscription generateFake([dynamic data]) {

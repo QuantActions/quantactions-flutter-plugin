@@ -3,6 +3,7 @@ import 'cohort_factory.dart';
 import 'mock_model_factory.dart';
 import 'questionnaire_factory.dart';
 
+/// Factory for [SubscriptionWithQuestionnaires] model.
 class SubscriptionWithQuestionnairesFactory
     extends MockModelFactory<SubscriptionWithQuestionnaires> {
   @override

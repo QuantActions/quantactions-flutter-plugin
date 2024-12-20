@@ -31,6 +31,7 @@ class PermissionProviderImpl implements PermissionProvider {
     '${MethodChannelConsts.mainMethodChannel}/request_usage_permission',
   );
 
+  /// Constructor for [PermissionProviderImpl].
   PermissionProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;

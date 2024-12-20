@@ -4,6 +4,7 @@ import 'package:sugar/sugar.dart';
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 
+/// Factory for [SleepSummary] model.
 class SleepSummaryFactory extends MockModelFactory<SleepSummary> {
   @override
   SleepSummary generateFake([dynamic data]) {

@@ -13,7 +13,9 @@ import 'factories/questionnaire_factory.dart';
 import 'factories/subscription_factory.dart';
 import 'factories/subscription_with_questionnaires_factory.dart';
 
+/// Mock data provider for QA SDK.
 class MockDataProvider {
+  /// Call mock method.
   static dynamic callMockMethod({
     required String method,
     required MetricType? metricType,

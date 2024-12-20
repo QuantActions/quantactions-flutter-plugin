@@ -5,9 +5,12 @@ import '../providers/questionnaire_provider.dart';
 import '../providers/questionnaire_provider_impl.dart';
 import '../repositories/questionnaire_repository_impl.dart';
 
+/// Dependency injection for Questionnaire.
 final QuestionnaireDI questionnaireDI = QuestionnaireDI();
 
+/// Class for Questionnaire dependency injection.
 class QuestionnaireDI {
+  /// Initialize dependencies.
   void initDependencies() {
     appLocator.registerSingleton<QuestionnaireProvider>(
       QuestionnaireProviderImpl(

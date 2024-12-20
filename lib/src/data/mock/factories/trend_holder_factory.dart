@@ -1,6 +1,7 @@
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 
+/// Factory for [TrendHolder] model.
 class TrendHolderFactory extends MockModelFactory<TrendHolder> {
   @override
   TrendHolder generateFake([dynamic data]) {

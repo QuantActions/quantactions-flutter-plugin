@@ -1,6 +1,7 @@
 import '../../../domain/domain.dart';
 import 'mock_model_factory.dart';
 
+/// Factory for [Questionnaire] model.
 class QuestionnaireFactory extends MockModelFactory<Questionnaire> {
   @override
   Questionnaire generateFake([dynamic data]) {

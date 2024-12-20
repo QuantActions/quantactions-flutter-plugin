@@ -5,6 +5,7 @@ import '../../consts/supported_methods.dart';
 import '../../core/sdk_method_channel.dart';
 import 'questionnaire_provider.dart';
 
+/// Implementation of [QuestionnaireProvider].
 class QuestionnaireProviderImpl implements QuestionnaireProvider {
   final EventChannel _getQuestionnairesListChannel = const EventChannel(
     '${MethodChannelConsts.eventMethodChannelPrefix}/get_questionnaires_list',
@@ -12,6 +13,7 @@ class QuestionnaireProviderImpl implements QuestionnaireProvider {
 
   final SDKMethodChannel _sdkMethodChannel;
 
+  /// Constructor for [QuestionnaireProviderImpl].
   QuestionnaireProviderImpl({
     required SDKMethodChannel sdkMethodChannel,
   }) : _sdkMethodChannel = sdkMethodChannel;
