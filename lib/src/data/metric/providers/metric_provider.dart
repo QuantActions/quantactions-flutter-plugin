@@ -3,11 +3,10 @@ import '../../../domain/domain.dart';
 /// Metric Provider
 abstract class MetricProvider {
   /// Get metric stream for a given metric and interval.
-  Stream<dynamic> getMetric({
-    required MetricType metric,
-    required MetricInterval interval,
-    bool refresh
-  });
+  Stream<dynamic> getMetric(
+      {required MetricType metric,
+      required MetricInterval interval,
+      bool refresh});
 
   /// Get metric sample (stream) for a given metric and interval, expect up-to-date
   /// (up to today) data.
