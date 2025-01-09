@@ -1,5 +1,9 @@
 ## 0.2.1
 
+* [android] bumped sdk to 1.1.2-alpha01
+
+## 0.2.1
+
 * [android] bumped sdk to 1.1.1
 * [ios] bumped sdk 1.0.5
 
