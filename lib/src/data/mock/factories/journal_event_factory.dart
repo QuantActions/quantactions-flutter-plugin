@@ -1,6 +1,7 @@
 import '../../../domain/models/models.dart';
 import 'mock_model_factory.dart';
 
+/// Factory for [JournalEvent] model.
 class JournalEventFactory extends MockModelFactory<JournalEvent> {
   @override
   JournalEvent generateFake([dynamic data]) {
