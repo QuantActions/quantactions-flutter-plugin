@@ -1,6 +1,6 @@
 name: quantactions_flutter_plugin
 description: A flutter plugin to add QuantActions functionality to your app
-version: 0.2.2-alpha01
+version: 0.2.2-alpha02
 homepage: https://quantactions.com
 repository: https://github.com/QuantActions/quantactions-flutter-plugin
 documentation: https://github.com/QuantActions/quantactions-flutter-plugin/wiki
