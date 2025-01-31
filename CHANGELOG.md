@@ -1,3 +1,8 @@
+## 0.2.2-alpha03
+
+* [android] bumped sdk to 1.1.2-alpha03
+* [ios] bumped sdk to 1.0.7
+
 ## 0.2.2-alpha02
 
 * [ios] bug fix for data sync in the absence of a connection 
