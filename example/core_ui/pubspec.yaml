@@ -18,7 +18,7 @@ dependencies:
   table_calendar: ^3.0.9
   lottie: ^2.7.0
 
-  quantactions_flutter_plugin: ^0.2.2-alpha03
+  quantactions_flutter_plugin: ^0.2.2
 
   charts:
     path: ../charts
