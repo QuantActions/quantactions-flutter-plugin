@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'quantactions_flutter_plugin'
-  s.version          = '0.2.2-alpha03'
+  s.version          = '0.2.2'
   s.summary          = 'A flutter plugin to add QuantActions functionality to your app'
   s.description      = <<-DESC
 A new Flutter plugin
@@ -15,7 +15,7 @@ A new Flutter plugin
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'QASwiftSDK', '1.0.7'
+  s.dependency 'QASwiftSDK', '1.0.9'
   s.platform = :ios, '15.0'
 
   # Flutter.framework does not contain a i386 slice.
