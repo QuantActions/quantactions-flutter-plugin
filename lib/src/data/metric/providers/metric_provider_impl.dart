@@ -36,11 +36,10 @@ class MetricProviderImpl implements MetricProvider {
   }) : _sdkMethodChannel = sdkMethodChannel;
 
   @override
-  Stream<dynamic> getMetric({
-    required MetricType metric,
-    required MetricInterval interval,
-    bool refresh = false
-  }) {
+  Stream<dynamic> getMetric(
+      {required MetricType metric,
+      required MetricInterval interval,
+      bool refresh = false}) {
     return _sdkMethodChannel.callEventChannel(
       method: SupportedMethods.getMetric,
       eventChannel: _eventChannels[metric]!,

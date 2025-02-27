@@ -5,7 +5,6 @@ part 'questionnaire.g.dart';
 /// Model for Questionnaire.
 @JsonSerializable()
 class Questionnaire {
-
   /// Unique identifier for the questionnaire.
   final String id;
 

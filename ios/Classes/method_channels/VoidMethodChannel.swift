@@ -124,8 +124,13 @@ class VoidMethodChannel : NSObject, FlutterPlugin {
                 methodName: "syncData"
             ) {
                 Task {
-                    try await QA.shared.syncData()
-                    result(true)
+                    do {
+                        try await QA.shared.syncData()
+                        result(true)
+                    } catch let e {
+                        print(e)
+                        result(false)
+                    }
                 }
             }
         case "recordQuestionnaireResponse": break

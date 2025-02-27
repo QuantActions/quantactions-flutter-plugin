@@ -3,7 +3,6 @@ import 'mock_model_factory.dart';
 
 /// Factory for [ScreenTimeAggregate] model.
 class ScreenTimeAggregateFactory extends MockModelFactory<ScreenTimeAggregate> {
-
   /// Number of milliseconds in a day.
   final int h24 = 86400000;
 

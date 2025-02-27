@@ -1,3 +1,22 @@
+## 0.2.2
+
+* [android] bumped sdk to 1.1.2 (bug fixes)
+* [ios] bumped sdk to 1.0.9 (bug fixes)
+
+## 0.2.2-alpha03
+
+* [android] bumped sdk to 1.1.2-alpha03
+* [ios] bumped sdk to 1.0.7
+
+## 0.2.2-alpha02
+
+* [ios] bug fix for data sync in the absence of a connection 
+
+## 0.2.2-alpha01
+
+* [android] bumped sdk to 1.1.2-alpha02
+* [ios] bumped sdk to 1.0.6
+
 ## 0.2.1
 
 * [android] bumped sdk to 1.1.1

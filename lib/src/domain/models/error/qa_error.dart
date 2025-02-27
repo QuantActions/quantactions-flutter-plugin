@@ -2,6 +2,7 @@
 class QAError implements Exception {
   /// Description of the error.
   final String description;
+
   /// Reason for the error.
   final String? reason;
 
