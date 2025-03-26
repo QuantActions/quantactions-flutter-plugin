@@ -243,7 +243,7 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
 
     final Map<ZonedDateTime, List<double>> newValues = zippedValues
         .groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfWeek)
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfWeek)
         .map((ZonedDateTime key, List<List<Object>> value) =>
             MapEntry<ZonedDateTime, List<double>>(
                 key,
@@ -253,7 +253,7 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
 
     final Map<ZonedDateTime, List<double>> newCIH = zippedCIH
         .groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfWeek)
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfWeek)
         .map((ZonedDateTime key, List<List<Object>> value) =>
             MapEntry<ZonedDateTime, List<double>>(
                 key,
@@ -262,7 +262,7 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
                     .toList()));
     final Map<ZonedDateTime, List<double>> newCIL = zippedCIL
         .groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfWeek)
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfWeek)
         .map((ZonedDateTime key, List<List<Object>> value) =>
             MapEntry<ZonedDateTime, List<double>>(
                 key,
@@ -271,7 +271,7 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
                     .toList()));
     final Map<ZonedDateTime, List<double>> newConfidence = zippedConfidence
         .groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfWeek)
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfWeek)
         .map((ZonedDateTime key, List<List<Object>> value) =>
             MapEntry<ZonedDateTime, List<double>>(
                 key,
@@ -316,7 +316,7 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
 
     final Map<ZonedDateTime, List<double>> newValues = zippedValues
         .groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfMonth)
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).copyWith(timezone: Timezone.now()).firstDayOfMonth)
         .map((ZonedDateTime key, List<List<Object>> value) =>
             MapEntry<ZonedDateTime, List<double>>(
                 key,
@@ -326,7 +326,7 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
 
     final Map<ZonedDateTime, List<double>> newCIH = zippedCIH
         .groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfMonth)
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfMonth)
         .map((ZonedDateTime key, List<List<Object>> value) =>
             MapEntry<ZonedDateTime, List<double>>(
                 key,
@@ -335,7 +335,7 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
                     .toList()));
     final Map<ZonedDateTime, List<double>> newCIL = zippedCIL
         .groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfMonth)
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfMonth)
         .map((ZonedDateTime key, List<List<Object>> value) =>
             MapEntry<ZonedDateTime, List<double>>(
                 key,
@@ -344,7 +344,7 @@ extension ExtractWeeklyAverages on TimeSeries<double> {
                     .toList()));
     final Map<ZonedDateTime, List<double>> newConfidence = zippedConfidence
         .groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfMonth)
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfMonth)
         .map((ZonedDateTime key, List<List<Object>> value) =>
             MapEntry<ZonedDateTime, List<double>>(
                 key,
@@ -400,7 +400,7 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
         IterableZip<Object>(<List<Object>>[timestamps, values]).toList();
 
     final Map<LocalDateTime, List<List<Object>>> newZippedValues = zippedValues
-        .groupListsBy((List<Object> element) => (element[0] as ZonedDateTime)
+        .groupListsBy((List<Object> element) => (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now())
             .firstDayOfWeek
             .truncate(to: DateUnit.days)
             .toLocal());
@@ -451,7 +451,7 @@ extension ExtractSleepSummaryWeeklyAverages on TimeSeries<SleepSummary> {
         IterableZip<Object>(<List<Object>>[timestamps, values]).toList();
 
     final Map<LocalDateTime, List<List<Object>>> newZippedValues = zippedValues
-        .groupListsBy((List<Object> element) => (element[0] as ZonedDateTime)
+        .groupListsBy((List<Object> element) => (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now())
             .firstDayOfMonth
             .truncate(to: DateUnit.days)
             .toLocal());
@@ -506,7 +506,7 @@ extension ExtractScreenTimeAggregateWeeklyAverages
 
     final Map<ZonedDateTime, List<List<Object>>> newZippedValues =
         zippedValues.groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfWeek);
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfWeek);
     final List<ScreenTimeAggregate> newValues = newZippedValues.entries
         .map((MapEntry<ZonedDateTime, List<List<Object>>> element) =>
             ScreenTimeAggregate(
@@ -540,7 +540,7 @@ extension ExtractScreenTimeAggregateWeeklyAverages
 
     final Map<ZonedDateTime, List<List<Object>>> newZippedValues =
         zippedValues.groupListsBy((List<Object> element) =>
-            (element[0] as ZonedDateTime).firstDayOfMonth);
+            (element[0] as ZonedDateTime).copyWith(timezone: Timezone.now()).firstDayOfMonth);
     final List<ScreenTimeAggregate> newValues = newZippedValues.entries
         .map((MapEntry<ZonedDateTime, List<List<Object>>> element) =>
             ScreenTimeAggregate(
