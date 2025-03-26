@@ -1,3 +1,7 @@
+## 0.2.3
+
+* Fixed a bug in aggregation
+
 ## 0.2.2
 
 * [android] bumped sdk to 1.1.2 (bug fixes)
