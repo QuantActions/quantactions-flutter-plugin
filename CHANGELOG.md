@@ -1,3 +1,7 @@
+## 0.2.4
+
+* [ios] bumped to 1.0.11
+* 
 ## 0.2.3
 
 * Fixed a bug in aggregation
