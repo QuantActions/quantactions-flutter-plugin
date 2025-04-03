@@ -17,7 +17,7 @@ Add the dependency to your pubspec.yaml file:
 
 ```yaml
 dependencies:
-  quantactions_flutter_plugin: ^0.2.3
+  quantactions_flutter_plugin: ^0.2.4
 ```
 
 ## Initial (Android) setup 
