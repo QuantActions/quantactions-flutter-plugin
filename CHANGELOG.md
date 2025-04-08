@@ -1,3 +1,7 @@
+## 0.2.5
+
+* [ios] bumped to 1.0.13
+
 ## 0.2.4
 
 * [ios] bumped to 1.0.11
