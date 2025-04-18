@@ -6,6 +6,7 @@ import com.quantactions.sdk.data.api.adapters.SubscriptionWithQuestionnaires
 import com.quantactions.sdk.data.entity.Cohort
 import com.quantactions.sdk.data.model.JournalEntry
 import com.quantactions.sdk.data.entity.Questionnaire
+import com.quantactions.sdk.data.entity.QuestionnaireWithCohortName
 import com.quantactions.sdk.Subscription
 import com.quantactions.sdk.data.entity.JournalEventEntity
 import com.quantactions.sdk.data.model.JournalEntryEvent
@@ -217,12 +218,24 @@ class QAFlutterPluginSerializable {
             )
         }
 
-        fun serializeQuestionnaireList(questionnaires: List<Questionnaire>): String {
+        fun serializeQuestionnaireList(questionnaires: List<QuestionnaireWithCohortName>): String {
             return Json.encodeToString(
                 questionnaires.map { questionnaire ->
                     questionnaireToSerializableQuestionnaire(questionnaire)
                 }
             )
+        }
+
+        private fun questionnaireToSerializableQuestionnaire(questionnaire: QuestionnaireWithCohortName): SerializableQuestionnaire {
+            return SerializableQuestionnaire(
+                questionnaire.id,
+                questionnaire.questionnaireName,
+                questionnaire.questionnaireDescription,
+                questionnaire.questionnaireCode,
+                questionnaire.questionnaireCohort,
+                questionnaire.questionnaireBody,
+                // TODO: add cohort name here if relevant
+                )
         }
 
         private fun questionnaireToSerializableQuestionnaire(questionnaire: Questionnaire): SerializableQuestionnaire {
@@ -233,8 +246,7 @@ class QAFlutterPluginSerializable {
                 questionnaire.questionnaireCode,
                 questionnaire.questionnaireCohort,
                 questionnaire.questionnaireBody,
-
-                )
+            )
         }
 
         fun serializeJournalEntryList(journalEntries: List<JournalEntry>): String {
