@@ -22,6 +22,7 @@ public class QAFlutterPlugin: NSObject, FlutterPlugin {
         IsHealthKitAuthorizationStatusDeterminedMethodChannel.register(with: registrar)
         CoreMotionAuthorizationStatusMethodChannel.register(with: registrar)
         GetJournalEntryMethodChannel.register(with: registrar)
+        GetJournalEntriesSampleMethodChannel.register(with: registrar)
         GetJournalEventKindsMethodChannel.register(with: registrar)
         SaveJournalEntryMethodChannel.register(with: registrar)
         BasicInfoMethodChannel.register(with: registrar)
