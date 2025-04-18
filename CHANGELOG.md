@@ -1,3 +1,7 @@
+## 0.2.6-alpha01
+
+* [android] bumped to 1.1.3-alpha02
+
 ## 0.2.5
 
 * [ios] bumped to 1.0.13
