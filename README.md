@@ -235,7 +235,11 @@ The full journal (all entries) can be retrieved with
 qa.getJournalEntries();
 ```
 
-## 10. Issue tracking and contact
+## 10. Known issues
+Check the wiki for all the details on known issues and how to solve them: [Known Issues](https://github.com/QuantActions/quantactions-flutter-plugin/wiki/Known-Issues)
+### [iOS] [Conflict between the QuantActions keyboard extension and flavors in iOS](https://github.com/QuantActions/quantactions-flutter-plugin/wiki/Known-Issues#ios-conflict-between-the-quantactions-keyboard-extension-and-flavors-in-ios)
+
+## 11. Issue tracking and contact
 Feel free to contact us at [development@quantactions.com](mailto:development@quantactions.com)
 
 
