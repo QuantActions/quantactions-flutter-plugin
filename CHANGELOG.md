@@ -1,3 +1,7 @@
+## 0.2.6-rc01
+
+* [android] bumped to 1.1.3-rc03 with support for SDK 36
+
 ## 0.2.6-alpha01
 
 * [android] bumped to 1.1.3-alpha02

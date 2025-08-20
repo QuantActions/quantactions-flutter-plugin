@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'quantactions_flutter_plugin'
-  s.version          = '0.2.6-alpha01'
+  s.version          = '0.2.6-rc01'
   s.summary          = 'A flutter plugin to add QuantActions functionality to your app'
   s.description      = <<-DESC
 A new Flutter plugin
