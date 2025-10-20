@@ -1,4 +1,8 @@
-## 0.2.6-rc01
+## 0.2.6-rc03
+
+* small dependency updates
+
+## 0.2.6-rc02
 
 * [android] bumped to 1.1.4-beta02
 * [ios] bumped to 1.1.0
